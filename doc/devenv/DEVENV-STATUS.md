@@ -1,17 +1,17 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-12 — ENV-0 session 1 interrompue (hook inactif).
+Dernière mise à jour : 2026-10-12 — ENV-0 terminée (session 2).
 
 ## Prochaine action
 
-Relancer Claude Code depuis `/Users/cle_d_anton/lepton-tools-dev/lepton-tools`, puis reprendre ENV-0 à la tâche 5 (test du hook) d'après `handoff/env-0.md`.
+Démarrer ENV-1 (levée des risques éditeur) d'après `etapes/ENV-01-risques-editeur.md` et `handoff/env-0.md`, depuis `main` + `devenv/env-0` (non fusionnée : demander à l'utilisateur la base de `devenv/env-1`).
 
 ## Étapes
 
 | Étape | Titre | Statut | Branche(s) | Passation |
 | --- | --- | --- | --- | --- |
-| ENV-0 | Cadrage | bloquée (hook inactif : session lancée hors de `<LEPTON_TOOLS>`) | lepton-tools `devenv/env-0` | `handoff/env-0.md` |
+| ENV-0 | Cadrage | terminée (2026-10-12) | lepton-tools `devenv/env-0` | `handoff/env-0.md` |
 | ENV-1 | Levée des risques éditeur | à faire | — | — |
 | ENV-2 | Audit de l'existant | à faire | — | — |
 | ENV-3 | Schémas | à faire | — | — |
@@ -50,6 +50,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | Python | 3.11.5 — python.org, `/Library/Frameworks/Python.framework` (hors MacPorts) | 2026-10-12 |
 | ninja | 1.13.2 — `/opt/local/bin` (MacPorts) | 2026-10-12 |
 | MacPorts | 2.12.6 | 2026-10-12 |
+| embOS (paquet Segger, hors git) | 5.20.0.0 — `~/lepton/third_party/embos/cortexm-gcc/5.20.0.0`, via `LEPTON_EMBOS_ROOT` (`scripts/lepton-env.sh` du clone noyau) | 2026-10-12 |
 | VSCodium | <à relever en ENV-10> | |
 
 ## Décisions
@@ -64,6 +65,8 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-12 | — | NUCLEO-WL55JC1 : Lepton sur le cœur M4, M0+ non utilisé. Carte supportée et testée pendant le portage. |
 | 2026-10-12 | — | Carte STM32F4 de validation : NUCLEO-F429ZI (et non F439ZI). |
 | 2026-10-12 | PA-0 | `<LEPTON_TOOLS>` = `~/lepton-tools-dev/lepton-tools` ; `<ROOTSTOCK>` = `~/lepton` (réutilisé) ; `<SEED_SCIONS>` = clone neuf `~/lepton-tools-dev/seed.scions` ; branche noyau `master` ; échange Mac/VM par distant GitHub, push soumis à accord. |
+| 2026-10-12 | — (ENV-0) | Oracle de départ sur les 4 presets QEMU mps2-an386 (embos, freertos, embos-soft, freertos-soft), rangé dans `rapports/oracles/env-0/<preset>/` ; sorties de la migration dans `~/lepton/build/` supprimées et reconstruites. |
+| 2026-10-12 | — | Après ENV-0 : ENV-1 avant ENV-2. |
 
 ## Journal
 
@@ -72,3 +75,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-12 | — | Plan créé : 13 étapes ENV-0 à ENV-12. |
 | 2026-10-12 | — | Ajout des skills devenv-session, lepton-rootstock, lepton-oracle, lepton-cibles, du hook proteger-trunk.py et des scripts d'oracle ; MacPorts sur Mac Intel. |
 | 2026-10-12 | ENV-0 | Session 1 : PA-0 tranché, dépôt git initialisé, seed.scions cloné, rootstock et versions vérifiés ; arrêt en tâche 5 (hook non chargé, session lancée depuis le dossier parent). |
+| 2026-10-12 | ENV-0 | Session 2 : hook vérifié (refus), oracle des 4 presets an386 capturé (ctest 100 %), rapport `rapports/env-0-reference.md` ; étape terminée. |
