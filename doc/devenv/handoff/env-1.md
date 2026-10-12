@@ -25,9 +25,9 @@ Aucun push.
   propre.
 
 ## Reste à faire dans l'étape
-- Rien. Nettoyage facultatif, sur accord : `~/lepton/build/essais-env1/` (copie jetable du
-  rootstock, constructions d'essai, cache clangd). La copie jetable contient la modification FIC-5
-  dans son clone ; elle ne doit pas être réutilisée.
+- Rien. `~/lepton/build/essais-env1/` (copie jetable, constructions d'essai, cache clangd, espaces
+  `.code-workspace`) supprimé sur demande de l'utilisateur ; les essais se refont d'après la
+  procédure du rapport.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
