@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:lepton:schema:greffon:1",
   "title": "Manifeste de greffon Lepton",
-  "description": "Manifeste déclaratif d'un greffon (scion), lu par CMake (string(JSON)) et par l'outil lepton. Fichier lepton-greffon.json à la racine scion/ du greffon.",
+  "description": "Manifeste déclaratif d'un greffon (scion), lu par CMake (string(JSON)) et par l'outil lepton. Fichier lepton-greffon.json dans le répertoire de destination du greffon, sys/root/src/<destination>/ (la racine scion/ est commune à tous les greffons du trunk ; ENV-5).",
   "$comment": "GRF-2 (manifeste JSON validé par JSON Schema), décision 9 (JSON + JSON Schema, champ description). ENV-3.",
   "type": "object",
   "required": ["nom", "type", "version"],

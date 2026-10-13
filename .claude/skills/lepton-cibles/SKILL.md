@@ -30,7 +30,8 @@ Jamais de répertoire de construction dans le trunk.
 | NUCLEO-WL55JC1 (M4) | `nucleo-wl55jc1-embos`, `nucleo-wl55jc1-freertos` (ABI soft) | `<ROOTSTOCK>/build/<preset>/lepton.elf` |
 
 <!-- Sources : CMakePresets.json:41-103,165-186 ; cmake/components/firmware.cmake:66-86
-     (lepton.elf, lepton.bin, lepton.map, tests/kal/kal_bench.elf ; aucun .hex). -->
+     (lepton.elf, lepton.bin, lepton.map, tests/kal/kal_bench.elf). Depuis ENV-5 : aussi lepton.hex et
+     lepton.occupation.txt (flash/RAM par bibliothèque) ; cibles kernel, lib, sbin, bin, bsp. -->
 
 ## QEMU
 
