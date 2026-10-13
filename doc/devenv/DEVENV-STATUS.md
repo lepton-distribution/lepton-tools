@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-13 — ENV-5 en cours.
+Dernière mise à jour : 2026-10-13 — ENV-5 terminée.
 
 ## Prochaine action
 
-Démarrer ENV-5 (restructuration CMake du greffon noyau) d'après `etapes/ENV-05-cmake.md` et `handoff/env-4.md` : d'abord fusionner localement `devenv/env-4` dans `main` (lepton-tools) et dans `master` (clone noyau), puis créer `devenv/env-5` depuis ces branches ; PA-5 (oracle) avant toute modification CMake.
+Démarrer ENV-6 (greffons BSP de référence) d'après `etapes/ENV-06-bsp.md` et `handoff/env-5.md` : d'abord fusionner localement `devenv/env-5` dans `main` (lepton-tools) et dans `master` (clone noyau), puis créer `devenv/env-6` ; oracle avant ENV-6 avec `scripts/oracle/rejouer-oracle.sh` (mêmes presets qu'ENV-5) ; PA-7 avant toute extraction.
 
 ## Étapes
 
@@ -16,7 +16,7 @@ Démarrer ENV-5 (restructuration CMake du greffon noyau) d'après `etapes/ENV-05
 | ENV-2 | Audit de l'existant | terminée (2026-10-13) | lepton-tools `devenv/env-2` | `handoff/env-2.md` |
 | ENV-3 | Schémas | terminée (2026-10-13) | lepton-tools `devenv/env-3` | `handoff/env-3.md` |
 | ENV-4 | Format XML de mklepton | terminée (2026-10-13) | lepton-tools `devenv/env-4` ; clone noyau `devenv/env-4` | `handoff/env-4.md` |
-| ENV-5 | Restructuration CMake | en cours | lepton-tools `devenv/env-5` ; clone noyau `devenv/env-5` | — |
+| ENV-5 | Restructuration CMake | terminée (2026-10-13) | lepton-tools `devenv/env-5` ; clone noyau `devenv/env-5` | `handoff/env-5.md` |
 | ENV-6 | Greffons BSP de référence | à faire | — | — |
 | ENV-7 | Évolutions de scion | à faire | — | — |
 | ENV-8 | Outil `lepton` | à faire | — | — |
@@ -52,6 +52,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | MacPorts | 2.12.6 | 2026-10-12 |
 | embOS (paquet Segger, hors git) | 5.20.0.0 — `~/lepton/third_party/embos/cortexm-gcc/5.20.0.0`, via `LEPTON_EMBOS_ROOT` (`scripts/lepton-env.sh` du clone noyau) | 2026-10-12 |
 | VSCodium (essai ENV-1, installé à la main) | 1.135.06055 (commit 1a46a584) — `/Applications/VSCodium.app` ; version épinglée à fixer en ENV-10 | 2026-10-12 |
+| Manifeste de greffon | `lepton-greffon.json` dans `sys/root/src/<destination>/` (noyau : `sys/root/src/`), lu par `cmake/lepton_greffons.cmake` du clone noyau | 2026-10-13 |
 | Format XML mklepton | 2 (`<mklepton version="2">`, `schemas/mklepton.xsd`) ; format 1 refusé | 2026-10-13 |
 | clangd | 21.1.8 — `/opt/local/bin/clangd-mp-21`, MacPorts `clang-21 @21.1.8_3` | 2026-10-12 |
 | check-jsonschema | 0.38.2 — pipx (`~/.local/bin`), Python 3.11.5 | 2026-10-13 |
@@ -110,6 +111,9 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | PA-5 | Oracle avant validé : `rapports/env-5-validation.md`, `rapports/oracles/env-5-avant/` (script `scripts/oracle/rejouer-oracle.sh`). |
 | 2026-10-13 | — (ENV-5) | Manifestes BSP transitoires : métadonnées seules (fréquence, en-tête de configuration, script de liens, machine QEMU, cœur, ABI, démarrage) lues par CMake ; listes de sources dans `cmake/boards` jusqu'à ENV-6 ; découverte par GLOB prouvée par le greffon d'essai. |
 | 2026-10-13 | — (ENV-5) | Code de famille (`kernel/dev/arch`) dans la bibliothèque `kernel` dès ENV-5 ; `bsp` limitée à `kernel/dev/bsp`. |
+| 2026-10-13 | — (ENV-5) | Manifestes BSP transitoires reportés à ENV-6 (conflit avec le schéma : chemins hors `kernel/dev/bsp`, répertoire `qemu_mps2` partagé) ; ENV-5 : manifeste du noyau, lecteur, greffon d'essai ; démarrage générique, vecteurs F4 et `hal_tick` WL en OBJECT ; démarrage de carte en OBJECT avec le découpage d'ENV-6. Amende la décision « métadonnées seules » du même jour. |
+| 2026-10-13 | — (ENV-5) | Emplacement du manifeste : `sys/root/src/<destination>/lepton-greffon.json` (la racine `scion/` est commune aux greffons : conflit scion) ; `destination` contrôlée par CMake ; description du schéma mise à jour. |
+| 2026-10-13 | PA-6 | Non-régression ENV-5 validée (`rapports/env-5-validation.md`) : symboles identiques sur 14 presets, écarts de sections = remplissage (démontré), fumée et banc KAL identiques ; ENV-5 terminée ; fusions locales au début de la session suivante. Aucun push. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -124,3 +128,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | ENV-2 | Audit CMake, mklepton, cartes, scion, outillage et lecture intégrale de la doc du portage (`rapports/env-2-*.md`) ; skill `lepton-cibles` complétée ; PA-2 tranché (Q1-Q8) ; étape terminée. |
 | 2026-10-13 | ENV-3 | Schémas greffon (type famille ajouté), graine, XSD mklepton format 2, 12 exemples valides et 28 invalides, `scripts/valider-schemas.sh` conforme ; PA-3 tranché (cpufs auto) ; spécification amendée ; étape terminée. |
 | 2026-10-13 | ENV-4 | PA-4 tranché ; mklepton format 2 (version, `--cpu-freq`, `--kernel-config-header`, cpufs automatique, test `host.mklepton_format`) ; 6 XML migrés, 23 supprimés ; pilote hôte `dev_host_fileflash` (accès hors disque) ; non-régression `rapports/env-4-validation.md` ; étape terminée. |
+| 2026-10-13 | ENV-5 | PA-5 et PA-6 tranchés ; bibliothèques `kernel`, `lib`, `sbin`, `bin`, `bsp`, OBJECT `generated`/`kernel_demarrage`/`bsp_objets`, lecteur `cmake/lepton_greffons.cmake`, manifeste noyau, HEX et occupation par bibliothèque ; greffon d'essai ; non-régression `rapports/env-5-validation.md` ; étape terminée. |
