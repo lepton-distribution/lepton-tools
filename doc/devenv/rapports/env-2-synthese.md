@@ -81,3 +81,25 @@ Le critère d'ENV-7 « `grep -ri lepton scion/` vide » échoue déjà (URL et a
 6. CMake minimum du chantier : corriger `DEVENV-STATUS.md` à 3.24 ?
 7. Critère « `grep -ri lepton` vide » d'ENV-7 : restreint au code fonctionnel (métadonnées exclues) ?
 8. Ordre des étapes suivantes : ENV-3 ensuite, ou ENV-7 d'abord ?
+
+## Périmètres validés (PA-2, 2026-10-13)
+
+Décisions Q1 à Q8 consignées dans `DEVENV-STATUS.md` §Décisions.
+
+- **ENV-4** : attribut `version` ; expat conservé. Retrait de `<target>` comme sélecteur, de
+  `<arch dest_path>`, de `<cpu type>` avec l'énumération `CPU_*` (dont `CPU_TYPE_M16C62`), de
+  `cpufs block/option` et du code M16C (`MK_DEV_*`, `_mk_rtc`). `<cpu freq>` et
+  `<arch include_absolute_path>` (propriétés de carte) : à trancher en PA-4. Migration des 6 XML actifs ;
+  sort des 23 hérités en PA-4. Toute sortie modifiée d'un octet : nouvelle référence d'empreintes
+  décidée explicitement.
+- **ENV-5** : bibliothèques `kernel`, `lib`, `sbin`, `bin`, `bsp` ; `LINK_GROUP RESCAN` conservé tant
+  que le cycle existe ; bibliothèque OBJECT pour démarrage générique (greffon noyau), vecteurs par MCU
+  et remplaçants forts de la HAL ; sources générées dans l'exécutif ; HEX et occupation par
+  bibliothèque ; 15 presets construisibles. Code des familles provisoirement dans `kernel/dev/arch`
+  (extraction en ENV-6).
+- **ENV-6** : greffons famille (`stm32f4xx`, `stm32wlxx`, `qemu-mps2`) avec couche Lepton, pilotes ST
+  et table de vecteurs ; BSP réduits à l'horloge (`SystemInit`) et aux GPIO : `qemu-mps2-an386`,
+  `nucleo-f429zi`, `nucleo-f439zi`, `nucleo-wl55jc1`. an500, F746, SAMD21 construisibles (greffons en
+  ENV-6 ou transitoires : PA-7). Place de `ld/mem`, mkconf, `user_kernel_mkconf.h`, cfg OpenOCD : PA-7.
+- **ENV-7** : ajout / retrait / suppression de greffon, regreffe d'un chemin, sortie de `scion git`,
+  conflit fichier / répertoire ; critère NF-2 limité au code fonctionnel ; `INSTALL_LAYOUT` en PA-8.
