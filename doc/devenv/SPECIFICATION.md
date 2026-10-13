@@ -1,6 +1,6 @@
 # Environnement de développement Lepton — spécification fonctionnelle
 
-Version du 2026-10-12. Copie de référence pour les sessions Claude Code ; toute modification de la
+Version du 2026-10-12, amendée le 2026-10-13 (PA-2, PA-3). Copie de référence pour les sessions Claude Code ; toute modification de la
 spécification passe par l'utilisateur (point d'arrêt), puis par une mise à jour de ce fichier.
 
 ## Objet et vocabulaire
@@ -22,8 +22,9 @@ Types de greffons :
 
 | Type | Destination dans le trunk (besoin) | Contenu | Bibliothèque CMake |
 | --- | --- | --- | --- |
-| Noyau | `kernel/`, `kernel/dev/arch`, `lib/`, `sbin/`, `bin/` de base | Greffons de base Lepton | `kernel`, `lib`, `sbin`, `bin` |
-| BSP (carte) | `kernel/dev/bsp/<carte>` | Démarrage, vecteurs, script d'édition de liens, GPIO, pilotes des composants de la carte (EEPROM, modem, ADC/DAC, NFC…) | `bsp` (bibliothèque distincte) |
+| Noyau | `kernel/`, `kernel/dev/arch`, `lib/`, `sbin/`, `bin/` de base | Greffons de base Lepton, `main` générique, démarrage générique par ISA (`kernel/core/arch/cortexm`) | `kernel`, `lib`, `sbin`, `bin` |
+| Famille | `kernel/dev/arch/<famille>` | Couche Lepton d'une famille de puces, pilotes tiers (HAL/SPL, CMSIS device), table de vecteurs par MCU, remplaçants forts de symboles faibles | `kernel` |
+| BSP (carte) | `kernel/dev/bsp/<carte>` | Initialisation d'horloge (`SystemInit`), script d'édition de liens, GPIO, pilotes des composants de la carte (EEPROM, modem, ADC/DAC, NFC…) ; repose sur un greffon famille | `bsp` (bibliothèque distincte) |
 | Application | `bin/<appli>` | Programmes de l'utilisateur | `bin` |
 | Bibliothèque | `lib/<nom>` | Bibliothèques tierces ou métier | `lib` ou dédiée |
 
@@ -91,8 +92,8 @@ L'extension C/C++ de Microsoft est exclue : sa licence l'interdit hors VS Code.
 | ID | Exigence | Vérification | Prio. |
 | --- | --- | --- | --- |
 | GRF-1 | Créer un greffon d'un type donné (BSP, application, bibliothèque) depuis un modèle : arborescence `scion/…`, manifeste, `CMakeLists.txt` facultatif (règles propres au greffon), fichier exemple, dépôt git initialisé. | Greffon neuf greffé et construit sans édition manuelle | P1 |
-| GRF-2 | Chaque greffon porte un manifeste déclaratif en JSON, lu directement par CMake (`string(JSON)`, CMake ≥ 3.19) : nom, type, version, destination dans le trunk, bibliothèque cible, dépendances, options configurables. | Validation du manifeste par JSON Schema | P1 |
-| GRF-3 | Un greffon BSP déclare : famille de cœur (M0+, M4, M7…), MCU, script d'édition de liens, démarrage, configuration OpenOCD/sonde, cible QEMU éventuelle. | Les presets et `launch.json` en sont dérivés | P1 |
+| GRF-2 | Chaque greffon porte un manifeste déclaratif en JSON, lu directement par CMake (`string(JSON)`, CMake ≥ 3.24) : nom, type, version, destination dans le trunk, bibliothèque cible, dépendances, options configurables. | Validation du manifeste par JSON Schema | P1 |
+| GRF-3 | Un greffon BSP déclare : greffon famille, famille de cœur (M0+, M4, M7…), ABI flottante imposée éventuelle, MCU, fréquence du cœur, en-tête de configuration noyau de la carte, script d'édition de liens, démarrage (horloge), configuration OpenOCD/sonde, SVD, cible QEMU éventuelle. Un greffon famille déclare ses cœurs, ses MCU, ses tables de vecteurs et ses remplaçants forts. | Les presets et `launch.json` en sont dérivés | P1 |
 | GRF-4 | Supprimer un greffon retire ses liens du trunk et ses cibles CMake, sans toucher à son dépôt. | Trunk sans lien orphelin ; clone intact | P1 |
 | GRF-5 | Les dépendances déclarées sont vérifiées (un BSP M4 avec un noyau sans `arch` M4 est refusé). | Message d'erreur avant compilation | P2 |
 
@@ -118,13 +119,13 @@ L'extension C/C++ de Microsoft est exclue : sa licence l'interdit hors VS Code.
 | CFG-5 | Aucune génération entre le XML et CMake. Vérification facultative (`lepton check`) : signaler avant l'édition de liens un pilote ou un binaire déclaré dans le XML mais fourni par aucun greffon. | Pilote ou binaire manquant signalé avant l'édition de liens | P2 |
 | CFG-6 | Plusieurs configurations par projet (debug, release, cible QEMU, carte réelle) via des presets CMake générés. | `cmake --list-presets` | P1 |
 | CFG-7 | Édition de la configuration dans l'éditeur avec complétion et validation : XML mklepton par schéma XSD, manifestes JSON par JSON Schema. | Erreur signalée à la saisie | P2 |
-| CFG-8 | Le format XML mklepton est formalisé par un schéma XSD versionné. Inventaire des éléments inutiles (hérités d'IAR, cibles gelées ARM7, ARM9, M16C) à retirer, et des éléments manquants à ajouter. Le XML se limite à la configuration logicielle de Lepton et de son système de fichiers racine : ni cœur, ni architecture matérielle, ni backend. mklepton refuse un XML de version inconnue. | XML existants validés par le schéma ou migrés | P1 |
+| CFG-8 | Le format XML mklepton est formalisé par un schéma XSD versionné. Inventaire des éléments inutiles (hérités d'IAR, cibles gelées ARM7, ARM9, M16C) à retirer, et des éléments manquants à ajouter. Le XML se limite à la configuration logicielle de Lepton et de son système de fichiers racine : ni cœur, ni architecture matérielle, ni backend. mklepton refuse un XML de version inconnue. Fréquence du cœur et en-tête de configuration noyau de la carte relèvent du manifeste BSP. L'image du système de fichiers racine est dimensionnée automatiquement si sa taille n'est pas imposée. | XML existants validés par le schéma ou migrés | P1 |
 
 ### F. Construction
 
 | ID | Exigence | Vérification | Prio. |
 | --- | --- | --- | --- |
-| BLD-1 | Produire les bibliothèques statiques `kernel` (`kernel/`, `kernel/dev/arch`), `lib`, `sbin`, `bin`, `bsp`, puis l'exécutif lié avec elles : `main` (greffon noyau), table des périphériques et sources générées par mklepton. Démarrage et vecteurs, fournis par le BSP, sont liés comme objets (bibliothèque OBJECT CMake) et non via l'archive `bsp`. | Cibles CMake visibles et nommées ainsi | P1 |
+| BLD-1 | Produire les bibliothèques statiques `kernel` (`kernel/`, `kernel/dev/arch`), `lib`, `sbin`, `bin`, `bsp`, puis l'exécutif lié avec elles : `main` (greffon noyau), table des périphériques et sources générées par mklepton. Démarrage générique (greffon noyau), vecteurs et remplaçants forts (greffon famille), démarrage de la carte (BSP) sont liés comme objets (bibliothèque OBJECT CMake) et non via une archive. | Cibles CMake visibles et nommées ainsi | P1 |
 | BLD-2 | Chaque greffon contribue ses sources à la bibliothèque déclarée dans son manifeste, sans modifier les `CMakeLists.txt` du noyau. | Ajout d'un greffon sans toucher au greffon noyau | P1 |
 | BLD-3 | `mklepton` s'exécute comme étape de construction et produit l'image du système de fichiers et les sources générées dans le répertoire de construction. | Aucune sortie dans le trunk | P1 |
 | BLD-4 | Sorties : ELF, HEX, BIN, MAP, rapport d'occupation mémoire (flash/RAM par bibliothèque). | Fichiers présents ; rapport lisible | P1 |
@@ -199,7 +200,7 @@ lien (FIC-5) ; chemins de sources dans l'ELF (`-ffile-prefix-map` ou `substitute
 | 1 | Chemins `/kernel`, `/lib`, `/bin` du besoin | Arbre actuel conservé ; chemins relatifs à `sys/root/src/`. |
 | 2 | BSP dans la bibliothèque `kernel` ? | Bibliothèque `bsp` distincte. La table des périphériques générée par mklepton est placée dans l'exécutif, lié en premier, pour éviter la dépendance croisée kernel ↔ bsp. |
 | 3 | `bin` : base + application ? | Une seule `bin` ; binaires de l'image choisis par la configuration mklepton. |
-| 4 | Où vit l'exécutif ? | Démarrage et vecteurs dans le BSP ; `main` générique dans le greffon noyau. |
+| 4 | Où vit l'exécutif ? | `main` générique et démarrage générique par ISA dans le greffon noyau ; table de vecteurs par MCU et remplaçants forts dans le greffon famille ; initialisation d'horloge dans le BSP ; liaison en OBJECT. (Amendée le 2026-10-13, PA-2 Q2/Q3 ; texte initial : démarrage et vecteurs dans le BSP.) |
 | 5 | Source de vérité de la configuration | XML mklepton maître de la configuration logicielle et du système de fichiers racine, indépendant de CMake ; format à faire évoluer (CFG-8). |
 | 6 | Graine git obligatoire ? | Oui pour une livraison ; répertoire local toléré en prototypage. |
 | 7 | Assembleur | `.S` uniquement. |
