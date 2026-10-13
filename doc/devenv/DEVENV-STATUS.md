@@ -13,7 +13,7 @@ Démarrer ENV-2 (audit de l'existant) d'après `etapes/ENV-02-audit.md` et `hand
 | --- | --- | --- | --- | --- |
 | ENV-0 | Cadrage | terminée (2026-10-12) | lepton-tools `devenv/env-0` | `handoff/env-0.md` |
 | ENV-1 | Levée des risques éditeur | terminée (2026-10-12) | lepton-tools `devenv/env-1` | `handoff/env-1.md` |
-| ENV-2 | Audit de l'existant | à faire | — | — |
+| ENV-2 | Audit de l'existant | en cours | lepton-tools `devenv/env-2` | — |
 | ENV-3 | Schémas | à faire | — | — |
 | ENV-4 | Format XML de mklepton | à faire | — | — |
 | ENV-5 | Restructuration CMake | à faire | — | — |
@@ -72,6 +72,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-12 | — (ENV-1) | `devenv/env-0` fusionnée localement dans `main` ; `devenv/env-1` créée depuis `main`. Essais ENV-1 en mode mixte (CLI par Claude, GUI par l'utilisateur) ; clangd LLVM via MacPorts. |
 | 2026-10-12 | PA-1 | Fichiers ouverts **par le trunk** ; clones pour git seulement (ENV-9 évite leur ouverture sous un second chemin). |
 | 2026-10-12 | PA-1 | clangd LLVM, `--compile-commands-dir=<ROOTSTOCK>/build/<preset>`, `--background-index`, `--query-driver=…/arm-none-eabi-gcc` ; rien dans le trunk. |
+| 2026-10-13 | — (ENV-2) | `devenv/env-1` fusionnée localement dans `main` ; `devenv/env-2` créée depuis `main`. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
