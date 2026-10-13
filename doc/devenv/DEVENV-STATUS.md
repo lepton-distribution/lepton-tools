@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-13 — ENV-3 terminée.
+Dernière mise à jour : 2026-10-13 — ENV-4 terminée.
 
 ## Prochaine action
 
-Démarrer ENV-4 (format XML de mklepton) d'après `etapes/ENV-04-mklepton-xml.md`, `handoff/env-3.md` et `schemas/mklepton.xsd` (contrat validé en PA-3) ; ENV-5 est permutable (à confirmer) ; base de `devenv/env-4` à demander (`devenv/env-3` non fusionnée dans `main`).
+Démarrer ENV-5 (restructuration CMake du greffon noyau) d'après `etapes/ENV-05-cmake.md` et `handoff/env-4.md` : d'abord fusionner localement `devenv/env-4` dans `main` (lepton-tools) et dans `master` (clone noyau), puis créer `devenv/env-5` depuis ces branches ; PA-5 (oracle) avant toute modification CMake.
 
 ## Étapes
 
@@ -15,7 +15,7 @@ Démarrer ENV-4 (format XML de mklepton) d'après `etapes/ENV-04-mklepton-xml.md
 | ENV-1 | Levée des risques éditeur | terminée (2026-10-12) | lepton-tools `devenv/env-1` | `handoff/env-1.md` |
 | ENV-2 | Audit de l'existant | terminée (2026-10-13) | lepton-tools `devenv/env-2` | `handoff/env-2.md` |
 | ENV-3 | Schémas | terminée (2026-10-13) | lepton-tools `devenv/env-3` | `handoff/env-3.md` |
-| ENV-4 | Format XML de mklepton | à faire | — | — |
+| ENV-4 | Format XML de mklepton | terminée (2026-10-13) | lepton-tools `devenv/env-4` ; clone noyau `devenv/env-4` | `handoff/env-4.md` |
 | ENV-5 | Restructuration CMake | à faire | — | — |
 | ENV-6 | Greffons BSP de référence | à faire | — | — |
 | ENV-7 | Évolutions de scion | à faire | — | — |
@@ -52,6 +52,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | MacPorts | 2.12.6 | 2026-10-12 |
 | embOS (paquet Segger, hors git) | 5.20.0.0 — `~/lepton/third_party/embos/cortexm-gcc/5.20.0.0`, via `LEPTON_EMBOS_ROOT` (`scripts/lepton-env.sh` du clone noyau) | 2026-10-12 |
 | VSCodium (essai ENV-1, installé à la main) | 1.135.06055 (commit 1a46a584) — `/Applications/VSCodium.app` ; version épinglée à fixer en ENV-10 | 2026-10-12 |
+| Format XML mklepton | 2 (`<mklepton version="2">`, `schemas/mklepton.xsd`) ; format 1 refusé | 2026-10-13 |
 | clangd | 21.1.8 — `/opt/local/bin/clangd-mp-21`, MacPorts `clang-21 @21.1.8_3` | 2026-10-12 |
 | check-jsonschema | 0.38.2 — pipx (`~/.local/bin`), Python 3.11.5 | 2026-10-13 |
 | xmllint (libxml2) | 2.15.4 (21504) — `/opt/local/bin` (MacPorts) | 2026-10-13 |
@@ -94,6 +95,15 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | PA-3 | Origine des greffons (git ou local, GRA-3) portée par `.scion.sources.list` seul ; la graine JSON référence les greffons par nom et rôle. |
 | 2026-10-13 | PA-3 | Champs retenus en plus de la liste d'ENV-3 : `abi_flottante`, `frequence_cpu`, `entete_config_noyau` (BSP), `compilation` (tous greffons, CFG-3). |
 | 2026-10-13 | PA-3 | `SPECIFICATION.md` amendée (types, GRF-2 CMake 3.24, GRF-3, CFG-8, BLD-1, décision 4) : commit 6e1ef34. |
+| 2026-10-13 | — (ENV-4) | ENV-4 avant ENV-5 ; `devenv/env-3` fusionnée localement dans `main` (16bd416) ; `devenv/env-4` créée depuis `main` (lepton-tools) et depuis `master` 6b62af5 (clone noyau). |
+| 2026-10-13 | PA-4 | Changements du format XML validés : `rapports/env-4-changements.md` (ajout `version="2"` ; retrait `<target>`/`-t`, `<arch>`, `<cpu>`, `cpufs block/option`, code M16C/`_mk_rtc` ; fusion des `<devices>`). |
+| 2026-10-13 | PA-4 | Fréquence et en-tête de carte passés à mklepton par `--cpu-freq` et `--kernel-config-header`, valeurs dans `cmake/boards/*.cmake` (`LEPTON_BOARD_CPU_FREQ`, `LEPTON_BOARD_KERNEL_CONFIG_HEADER`) jusqu'au manifeste BSP. |
+| 2026-10-13 | PA-4 | Deux temps : (1) format 2 et migration, empreintes identiques à l'oracle ; (2) retrait de `CPU_*`, nouvelle référence pour `kernel_mkconf.h` seul (ligne `//#define CPU_…`), écart démontré. |
+| 2026-10-13 | PA-4 | 23 XML hérités supprimés (aucun preset). Défauts corrigés : débordement `"%s/%s"`, `-r` seul ; `strncat` de `_mk_dir` et `kernel_stub.h` hors périmètre. |
+| 2026-10-13 | PA-4 (amendement) | `_mk_rtc` conservé : horloge hôte `dev_host_rtc` (`SOURCE_DATE_EPOCH`), nécessaire à la reproductibilité de l'image ; seuls `MK_DEV_*` et `/dev/kb0` retirés. |
+| 2026-10-13 | PA-4 (amendement) | Défaut `/dev/kb0` de `<boot dev>` conservé : écrit dans `.boot` quand `dev` est absent (Olimex). |
+| 2026-10-13 | — (ENV-4) | Les 6 XML gardent `cpufs size/node` imposés (empreintes identiques) ; passage en dimensionnement automatique reporté (à décider avec essai sur cartes). |
+| 2026-10-13 | — (ENV-4) | ENV-4 terminée ; fusions locales de `devenv/env-4` au début de la session suivante. Aucun push. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -107,3 +117,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-12 | ENV-1 | Essais clangd, sauvegarde via lien, GDB/Cortex-Debug, git multi-racines ; rapport `rapports/env-1-essais.md` ; PA-1 tranché ; étape terminée. |
 | 2026-10-13 | ENV-2 | Audit CMake, mklepton, cartes, scion, outillage et lecture intégrale de la doc du portage (`rapports/env-2-*.md`) ; skill `lepton-cibles` complétée ; PA-2 tranché (Q1-Q8) ; étape terminée. |
 | 2026-10-13 | ENV-3 | Schémas greffon (type famille ajouté), graine, XSD mklepton format 2, 12 exemples valides et 28 invalides, `scripts/valider-schemas.sh` conforme ; PA-3 tranché (cpufs auto) ; spécification amendée ; étape terminée. |
+| 2026-10-13 | ENV-4 | PA-4 tranché ; mklepton format 2 (version, `--cpu-freq`, `--kernel-config-header`, cpufs automatique, test `host.mklepton_format`) ; 6 XML migrés, 23 supprimés ; pilote hôte `dev_host_fileflash` (accès hors disque) ; non-régression `rapports/env-4-validation.md` ; étape terminée. |
