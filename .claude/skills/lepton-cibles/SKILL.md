@@ -26,7 +26,7 @@ Jamais de répertoire de construction dans le trunk.
 | Cible | Preset | Exécutable |
 | --- | --- | --- |
 | QEMU `mps2-an386` | `qemu-mps2-an386-embos`, `-embos-soft`, `-freertos`, `-freertos-soft` | `<ROOTSTOCK>/build/<preset>/lepton.elf` |
-| NUCLEO-F429ZI | `nucleo-f439zi-embos`, `nucleo-f439zi-freertos` (nommés F439, validés sur F429ZI) | `<ROOTSTOCK>/build/<preset>/lepton.elf` |
+| NUCLEO-F429ZI | `nucleo-f429zi-embos`, `nucleo-f429zi-freertos` (BSP `nucleo-f429zi`, ENV-6 ; `nucleo-f439zi-*` avant) | `<ROOTSTOCK>/build/<preset>/lepton.elf` |
 | NUCLEO-WL55JC1 (M4) | `nucleo-wl55jc1-embos`, `nucleo-wl55jc1-freertos` (ABI soft) | `<ROOTSTOCK>/build/<preset>/lepton.elf` |
 
 <!-- Sources : CMakePresets.json:41-103,165-186 ; cmake/components/firmware.cmake:66-86
@@ -58,10 +58,11 @@ openocd -f <cfg> -c "init; targets; shutdown"
 
 | Carte | Fichiers OpenOCD | Console série |
 | --- | --- | --- |
-| NUCLEO-F429ZI | `-f <clone>/scion/debug/openocd-nucleo-f439zi.cfg` (→ `board/st_nucleo_f4.cfg`, ST-LINK/V2-1) | `/dev/cu.usbmodem1454303`, 115200 8N1 |
+| NUCLEO-F429ZI | `-f <BSP>/debug/openocd-nucleo-f439zi.cfg` (→ `board/st_nucleo_f4.cfg`, ST-LINK/V2-1) | `/dev/cu.usbmodem1454303`, 115200 8N1 |
 | NUCLEO-WL55JC1 | `-f <ROOTSTOCK>/build/<preset>/openocd-nucleo-wl55jc1.cfg` (généré : `interface/stlink.cfg` + `adapter serial` + `debug/openocd-nucleo-wl55jc1.cfg` → `target/stm32wlx.cfg`, STLINK-V3) (cœur M4 uniquement) | carte A `/dev/cu.usbmodem1454303`, carte B `/dev/cu.usbmodem1454403`, 115200 8N1 |
 
-<!-- Sources : debug/openocd-nucleo-f439zi.cfg ; cmake/boards/nucleo-wl55jc1.cmake:54-65 ;
+<!-- <BSP> = sys/root/src/kernel/dev/bsp/nucleo-f429zi, relatif au trunk (champ openocd du manifeste,
+     ENV-6). Sources : debug/openocd-nucleo-f439zi.cfg du BSP ; cmake/boards/nucleo-wl55jc1.cmake:54-65 ;
      doc/migration/validation-macos.md:26-30 (ports relevés en étape 10, à revérifier : ils
      dépendent du port USB) ; tests/smoke_lsh.py:126 (débit). Sondes : F429 ST-LINK/V2-1
      n° 0672FF495252717267243842 ; WL55 A 002700253431510837393937, B 004F003E3431510937393937
@@ -73,8 +74,10 @@ Flash puis vérification :
 openocd -f <cfg> -c "program <elf> verify reset exit"
 ```
 Débogage : `openocd -f <cfg>` dans un terminal, puis
-`arm-none-eabi-gdb -x <clone>/scion/debug/gdbinit-<carte> <elf> -ex "target extended-remote :3333" -ex "monitor reset halt"`
-(`doc/migration/debug-gcc.md:18-19` ; gdbinit `nucleo-f439zi` ou `nucleo-wl55jc1`).
+depuis la racine du trunk, `arm-none-eabi-gdb -x <gdbinit de la carte> <elf> -ex "target extended-remote :3333" -ex "monitor reset halt"`
+(`doc/migration/debug-gcc.md:18-19`). gdbinit de carte : F429ZI `<BSP>/debug/gdbinit-nucleo-f439zi` ;
+WL55JC1 `debug/gdbinit-nucleo-wl55jc1` (noyau, jusqu'au lot WL) ; tous sourcent `debug/gdbinit-lepton`
+(commandes communes, ENV-6 Q8).
 
 ## Pièges
 
