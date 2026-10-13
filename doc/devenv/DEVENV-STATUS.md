@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-13 — ENV-6 en cours (lots QEMU et F4 faits ; lot WL à faire).
+Dernière mise à jour : 2026-10-13 — ENV-6 terminée (lots QEMU, F4, WL).
 
 ## Prochaine action
 
-Reprendre ENV-6, lot WL, d'après `handoff/env-6.md` et `rapports/env-6-extraction.md` §4 : revérifier la liste (`ninja -C ~/lepton/build/nucleo-wl55jc1-embos -t deps`), décider la séparation des vecteurs de `stm32wl55jci_nucleo_system.c` et le traitement de la cfg OpenOCD générée (champ `openocd` à un seul fichier), créer la famille `stm32wlxx` et le BSP `nucleo-wl55jc1` comme pour F4, puis oracle `env-6-lot-wl` comparé à `oracles/env-6-lot-f4/`.
+Démarrer ENV-7 (évolutions de scion) d'après `handoff/env-6.md` : d'abord fusionner localement `devenv/env-6` (lepton-tools → `main`, clone noyau → `master`, graine → `original-tree`, 7 greffons famille/BSP → `master`), puis créer `devenv/env-7` dans lepton-tools et `<SEED_SCIONS>` ; PA-8 avant toute implémentation.
 
 ## Étapes
 
@@ -17,7 +17,7 @@ Reprendre ENV-6, lot WL, d'après `handoff/env-6.md` et `rapports/env-6-extracti
 | ENV-3 | Schémas | terminée (2026-10-13) | lepton-tools `devenv/env-3` | `handoff/env-3.md` |
 | ENV-4 | Format XML de mklepton | terminée (2026-10-13) | lepton-tools `devenv/env-4` ; clone noyau `devenv/env-4` | `handoff/env-4.md` |
 | ENV-5 | Restructuration CMake | terminée (2026-10-13) | lepton-tools `devenv/env-5` ; clone noyau `devenv/env-5` | `handoff/env-5.md` |
-| ENV-6 | Greffons BSP de référence | en cours (lots QEMU et F4 faits ; lot WL à faire) | `devenv/env-6` : lepton-tools, clone noyau, graine de travail, greffons `qemu-mps2`, `qemu-mps2-an386`, `qemu-mps2-an500`, `stm32f4xx`, `nucleo-f429zi` | `handoff/env-6.md` |
+| ENV-6 | Greffons BSP de référence | terminée (2026-10-13) | `devenv/env-6` : lepton-tools, clone noyau, graine de travail, greffons `qemu-mps2`, `qemu-mps2-an386`, `qemu-mps2-an500`, `stm32f4xx`, `nucleo-f429zi`, `stm32wlxx`, `nucleo-wl55jc1` | `handoff/env-6.md` |
 | ENV-7 | Évolutions de scion | à faire | — | — |
 | ENV-8 | Outil `lepton` | à faire | — | — |
 | ENV-9 | Fichiers de l'éditeur | à faire | — | — |
@@ -36,7 +36,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | `<SEED_SCIONS>` | `/Users/cle_d_anton/lepton-tools-dev/seed.scions` (clone neuf, `master` e0adb2c, tags jusqu'à 0.5.0.1) |
 | Branche de départ du clone noyau | `master` (6b62af5) |
 | Échange git Mac / VM | Distant GitHub ; chaque push soumis à accord (PA-P) |
-| Greffons famille et BSP (ENV-6) | Dépôts git locaux `<ROOTSTOCK>/depots/lepton-famille/<nom>` et `<ROOTSTOCK>/depots/lepton-bsp/<nom>` (`master` vide, travail sur `devenv/env-6`), inscrits en version `*` dans la graine de travail `depots/lepton-seed.scions/original-tree` ; à ce jour : `qemu-mps2`, `qemu-mps2-an386`, `qemu-mps2-an500`, `stm32f4xx`, `nucleo-f429zi` |
+| Greffons famille et BSP (ENV-6) | Dépôts git locaux `<ROOTSTOCK>/depots/lepton-famille/<nom>` et `<ROOTSTOCK>/depots/lepton-bsp/<nom>` (`master` vide, travail sur `devenv/env-6`), inscrits en version `*` dans la graine de travail `depots/lepton-seed.scions/original-tree` ; familles `qemu-mps2`, `stm32f4xx`, `stm32wlxx` ; BSP `qemu-mps2-an386`, `qemu-mps2-an500`, `nucleo-f429zi`, `nucleo-wl55jc1` |
 
 ## Versions épinglées
 
@@ -125,6 +125,8 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | — (ENV-6, lot F4) | Lecteur : champ `openocd` du BSP → `LEPTON_BOARD_OPENOCD_CFG` ; un seul fichier accepté jusqu'à ENV-9. Proposition appliquée, à confirmer. |
 | 2026-10-13 | — (ENV-6, lot F4) | Noms de fichiers du BSP `nucleo-f429zi` conservés (`nucleo_f439zi_*`, `mem_nucleo-f439zi.ld`, `openocd-`/`gdbinit-nucleo-f439zi`, R3) ; XML mkconf et `etc/nucleo-f439zi/` inchangés (Q4). |
 | 2026-10-13 | — (ENV-6, lot F4) | Signalés, non déplacés (hors liste PA-7, non compilés) : `kernel/usb/stm32f4-usb-core/`, démos `freeRTOS_{8-0-0,9-0-0}/…/stm32f4/` ; table de vecteurs de la famille liée par symbole aux gestionnaires du BSP (à revoir avant un second BSP F4). |
+| 2026-10-13 | PA-7 (lot WL) | Liste WL revérifiée (`ninja -t deps`), identique au §4. Relais IRQ11/12/37/50 sortis de `stm32wl55jci_nucleo_system.c` vers la famille (`vecteurs/stm32wl55xx_vectors.c`). OpenOCD : manifeste `openocd` = cfg statique du BSP, cfg enveloppe générée par le `CMakeLists.txt` du BSP (remplace `LEPTON_BOARD_OPENOCD_CFG`). Radio : `dev_stm32wlxx_bsp_radio_if.c` (famille) inclut `radio_board_if.h` par nom, inclusions publiques radio dans le BSP. `sys/user/tauon-basic/src/arch/st-stm32wl55jci-nucleo/` (IAR, non utilisé) laissé, signalé. |
+| 2026-10-13 | — (ENV-6) | ENV-6 terminée. Cartes validées : QEMU an386 ×4, an500 ×2 (construction, fumée, banc KAL identiques) ; NUCLEO-F429ZI ×2 et NUCLEO-WL55JC1 ×2 (construction, symboles identiques, écarts de sections expliqués : `rapports/env-6-validation.md`) ; flash et fumée série en ENV-11 (PA-11). Fusions locales de `devenv/env-6` au début de la session suivante. Aucun push. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -142,3 +144,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | ENV-5 | PA-5 et PA-6 tranchés ; bibliothèques `kernel`, `lib`, `sbin`, `bin`, `bsp`, OBJECT `generated`/`kernel_demarrage`/`bsp_objets`, lecteur `cmake/lepton_greffons.cmake`, manifeste noyau, HEX et occupation par bibliothèque ; greffon d'essai ; non-régression `rapports/env-5-validation.md` ; étape terminée. |
 | 2026-10-13 | ENV-6 | Session 1 : oracle avant ; PA-7 tranché (`rapports/env-6-extraction.md`) ; schéma amendé ; lecteur famille/BSP ; lot QEMU (famille `qemu-mps2`, BSP an386 et an500) extrait et greffé ; non-régression `rapports/env-6-validation.md` ; lots F4 et WL restent. |
 | 2026-10-13 | ENV-6 | Session 2 : Q7 tranché (BSP F439ZI reporté) ; lot F4 (famille `stm32f4xx`, BSP `nucleo-f429zi`, presets `nucleo-f429zi-*`, `gdbinit-lepton`, `openocd` lu par le lecteur) ; non-régression `env-6-validation.md` §Lot F4, `oracles/env-6-lot-f4/` ; skill `lepton-cibles` mise à jour ; lot WL reste. |
+| 2026-10-13 | ENV-6 | Session 3 : PA-7 lot WL tranché ; lot WL (famille `stm32wlxx`, BSP `nucleo-wl55jc1`, vecteurs dans la famille, cfg OpenOCD générée par le BSP) ; non-régression `env-6-validation.md` §Lot WL, `oracles/env-6-lot-wl/` (`.data` WL : remplissage, démontré sur copie d'essai) ; skill `lepton-cibles` ; étape terminée. |

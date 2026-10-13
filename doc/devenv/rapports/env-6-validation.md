@@ -197,3 +197,105 @@ réussi ; host ctest 7/7. Comparaison avec `oracles/env-6-lot-qemu/` (F4 : `nucl
 (`nucleo_f439zi_board.c:127-130`, `USART3_IRQHandler`…). Dépendance par symbole, pas par `#include`,
 conforme à la liste validée. Une autre carte F429 qui utiliserait d'autres IRQ demanderait une table
 complète (tous les vecteurs vers des noms CMSIS faibles) : à décider avant un second BSP F4.
+
+## Lot WL (session 3)
+
+PA-7 lot WL (utilisateur, 2026-10-13) : relais IRQ11/12/37/50 sortis de `stm32wl55jci_nucleo_system.c`
+vers la famille ; manifeste `openocd` = cfg statique du BSP, cfg enveloppe générée par le `CMakeLists.txt`
+du BSP ; `dev_stm32wlxx_bsp_radio_if.c` inclut `radio_board_if.h` par nom ;
+`sys/user/tauon-basic/src/arch/st-stm32wl55jci-nucleo/` laissé, signalé.
+
+### Liste revérifiée
+
+`ninja -C ~/lepton/build/nucleo-wl55jc1-{embos,freertos} -t deps` (avant extraction, e0895ee) : identique à
+`env-6-extraction.md` §4 — compilés : HAL 12 `.c`, `dev_stm32wlxx/` 3 `.c` + `dev_stm32wlxx_hal_tick.c`
+(remplaçant fort), `Utilities/misc/stm32_mem.c`, SubGHz_Phy 5 `.c`, `stm32_radio_target/radio_board_if.c`,
+BSP 4 `.c` (`stm32wl55jci_nucleo_system.c`, USART2, 2 radio). CMSIS device : 3 en-têtes lus.
+
+### Réalisation
+
+| Dépôt | Branche | Commits |
+| --- | --- | --- |
+| `depots/lepton-famille/stm32wlxx` (nouveau) | `devenv/env-6` (sur `master` 709bada, vide) | 8ea1490 import à l'identique depuis e0895ee (234 fichiers : `dev_stm32wlxx/`, `cubemx_hal_driver/`, `radio_subghz_phy/` sans `stm32_radio_target/`, `Utilities/`, CMSIS device `stm32wlxx` au même chemin de trunk) ; fa31306 manifeste (`sources` : 21 fichiers, Q2 ; `vecteurs` ; `remplacants_forts` `dev_stm32wlxx_hal_tick.c` ; `USE_HAL_DRIVER` et 9 inclusions publiques, Q1), `vecteurs/stm32wl55xx_vectors.c` (relais IRQ ; 62 IRQ < 64 : pas de table étendue), `radio_board_if.h` inclus par nom |
+| `depots/lepton-bsp/nucleo-wl55jc1` (nouveau) | `devenv/env-6` (sur `master` a5200b4, vide) | 5653f97 import (20 fichiers : contenu de `kernel/dev/bsp/stm32wl55jci_nucleo/`, `stm32_radio_target/` (Q10), `ld/mem_nucleo-wl55jc1.ld`, `include/user_kernel_mkconf.h`, `debug/openocd-nucleo-wl55jc1.cfg`, `debug/gdbinit-nucleo-wl55jc1`) ; 58ff413 manifeste (`demarrage` système, `sources` 4 fichiers, ABI soft, `openocd` statique, `sonde` stlink ; `STM32WL55xx`, `CORE_CM4` et inclusions radio publiques), `CMakeLists.txt` (Q3 : nom uname, cfg OpenOCD générée qui remplace `LEPTON_BOARD_OPENOCD_CFG`, test `board.radio`), relais IRQ retirés, `#include` par le chemin du BSP (Q12), commentaires à nombre de lignes constant |
+| clone noyau | `devenv/env-6` | 8d5a082 retrait des 254 fichiers déplacés (mécanique) ; 2b9bfc2 module `cmake/boards/nucleo-wl55jc1.cmake` retiré, presets WL (`LEPTON_MKCONF`), commentaire des cartes transitoires ; 94ea0e3 nouvelle référence d'empreintes mklepton |
+| graine `depots/lepton-seed.scions/original-tree` | `devenv/env-6` | d6605f0 deux lignes `*` |
+| lepton-tools | `devenv/env-6` | ad4374c skill `lepton-cibles` (cfg OpenOCD et gdbinit du BSP WL) |
+
+Vérifié : la cfg générée (`build/nucleo-wl55jc1-embos/openocd-nucleo-wl55jc1.cfg`) source
+`interface/stlink.cfg` puis `…/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg`.
+Le message de configuration « bsp : aucune source pour la carte » (`cmake/components/kernel.cmake:167`)
+porte sur la liste transitoire `LEPTON_BSP_SOURCES` ; il apparaît aussi pour les BSP QEMU et F4 ; les
+4 sources du BSP sont bien compilées dans `bsp` (`CMakeFiles/bsp.dir/…`).
+
+Greffe : `scion ungraft`, `scion seed-clone --seed depots/lepton-seed.scions/original-tree`, `scion graft` :
+4 037 feuilles (4 034 − 255 retirés du noyau + 236 famille + 22 BSP) ; `.scion.grafted.list` à 9 lignes ;
+aucun fichier régulier ni lien cassé ; `scion ungraft && scion graft` sans erreur. 8 manifestes du trunk
+valides (`check-jsonschema` 0.38.2) ; `scripts/valider-schemas.sh` conforme.
+
+### Empreintes mklepton (PA-7 Q5)
+
+Sorties WL rangées `mkconf_tauon_basic_nucleo_wl55jc1-nucleo-wl55jc1/` ; 5 fichiers identiques à
+l'ancienne référence ; `kernel_mkconf.h` : ligne 15 seule (`#include
+"sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/include/user_kernel_mkconf.h"`). Contre-épreuve : même mklepton,
+ancien chemin d'en-tête → `04d6f4ce…` (ancienne référence) ; nouveau chemin → `f71ede49…`. Les 38 autres
+empreintes sont inchangées.
+
+### Oracle après le lot (`oracles/env-6-lot-wl/`, clone noyau 2b9bfc2 ; host rejoué sur 94ea0e3)
+
+`rejouer-oracle.sh` (commande du §Commandes, `nucleo-f429zi-*`) : 14 presets croisés construits et capturés ;
+seul échec `host:ctest` (`host.mklepton_empreintes`, référence pas encore mise à jour) ; host rejoué après
+94ea0e3 : ctest 7/7. Comparaison avec `oracles/env-6-lot-f4/` :
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| qemu-mps2-an386 ×4, an500 ×2 | code 0 | différente | identique | 18/18 (hard), 14/14 (soft), même liste | date |
+| nucleo-f429zi ×2, F746 ×2, SAMD21 ×2 | code 0 | différente | – | – | date |
+| nucleo-wl55jc1-embos | symboles identiques ; `.data` 832→828 ; DWARF (`.debug_*`) | différente | – | – | remplissage de `.data` ; unité de compilation des vecteurs et chemins (DWARF) |
+| nucleo-wl55jc1-freertos | symboles identiques ; `.data` 836→832, `.bss` 6892→6896 ; DWARF | différente | – | – | remplissage de `.data` et `.bss` ; idem |
+
+- WL, sections chargées : démontré sur les cartes d'édition (`lepton.map`) de l'état précédent, reconstruit
+  dans une copie d'essai du rootstock (scratchpad : clone noyau e0895ee, greffons WL absents, 4 034 feuilles ;
+  `.data`/`.bss` identiques à `env-6-lot-f4`). Mêmes sections d'entrée (nom, taille, objet) avant et après
+  dans `.data` et `.bss`, dans un autre ordre : `.data.SystemCoreClock` (4 octets) passe de `libbsp.a` à
+  l'OBJECT `bsp_demarrage`, lié en tête, et les objets radio de `libkernel.a` (descripteurs de 2 octets,
+  `MaxPayloadLength` 1 octet) sont extraits plus tôt ; les petites sections se regroupent : remplissage de
+  `.data` 6 → 2 octets (avant : 1 après `_buf.0` de `lsh`, 2 après `printk_trace_desc_w`, 3 après `MaxPayloadLength` ; après : 1 après
+  `_buf.0`, 1 après `MaxPayloadLength`) ; FreeRTOS,
+  `.bss` : début avancé de 4 octets (0x20006604 → 0x20006600), remplissage 37 → 41 octets, fin inchangée.
+  `.text` et les autres sections chargées : tailles identiques.
+- WL, DWARF : une unité de compilation de plus (`vecteurs/stm32wl55xx_vectors.c`) et chemins changés
+  (`stm32_radio_target` et répertoire du BSP) : `.debug_abbrev`, `.debug_aranges`, `.debug_frame`,
+  `.debug_info`, `.debug_line`, `.debug_rnglists`, `.debug_str` ; sections non chargées.
+- Fumée : écarts limités à la date, au jeton UART1 et à la place de `rcv SIGCHLD` (et du chiffre qu'il
+  préfixe à l'invite suivante).
+- Avertissements de compilation : même nombre sur les 15 constructions ; `outils.txt` identiques (hors
+  horodatage).
+- Copie d'essai : les écarts DWARF et `.text` FreeRTOS (+480) entre la copie et `env-6-lot-f4` viennent du
+  chemin plus long du scratchpad (chaînes de chemin) ; seules `.data`/`.bss` y ont été exploitées.
+
+### Recherche des restes dans le noyau
+
+`git ls-files scion | grep -i -E 'wl55|stm32wl|wlxx'` et `git grep -l` des chemins
+`kernel/dev/arch/cortexm/stm32wlxx`, `kernel/dev/bsp/stm32wl55jci_nucleo`, `cmsis/Device/st/stm32wlxx`
+(clone noyau 94ea0e3) :
+- restent, par décision : `etc/mkconf_tauon_basic_nucleo_wl55jc1.xml`, `etc/nucleo-wl55jc1/{.boot,.init}` (Q4) ;
+  `sys/user/tauon-basic/src/arch/st-stm32wl55jci-nucleo/` (en-tête du portage IAR, non utilisé ; PA-7 lot WL) ;
+- génériques, non propres à la carte : entrée `__tauon_cpu_device_cortexM4_stm32wlxx__` de
+  `kernel/core/kernelconf.h` (table des puces), programme de test `bin/radiotst.c` (utilise `/dev/radio`),
+  `tests/board_radio.py` ;
+- historiques, chemins périmés (non construits, comme au lot F4) : `doc/BUILDING.md`, `doc/migration/*`,
+  `tools/migration/*.py` ;
+- aucun fichier source, en-tête, script de liens, configuration de débogage ni module CMake propre à
+  la NUCLEO-WL55JC1.
+
+### Points signalés (non bloquants)
+
+- Comme pour F4 : `vecteurs/stm32wl55xx_vectors.c` (famille) ne relie que les IRQ utilisées par la carte
+  (11, 12, 37, 50), vers des gestionnaires aux noms CMSIS dont trois sont définis par le BSP (USART2 et
+  DMA) et un par la famille (`SUBGHZ_Radio_IRQHandler`, `dev_stm32wlxx_bsp_radio_if.c`). À compléter avant
+  un second BSP WL.
+- Dépendance famille → carte par nom d'en-tête (schéma ST) : SubGHz_Phy et `dev_stm32wlxx_bsp_radio_if.c`
+  (famille) incluent `radio_conf.h`, `timer.h`, `mw_log_conf.h`, `radio_board_if.h`, fournis par le BSP
+  (`stm32_radio_target`, inclusion publique). `dev_stm32wlxx_bsp_radio_if.c` porte aussi les paramètres
+  FSK 868 MHz : candidat au BSP si une seconde carte WL apparaît.
