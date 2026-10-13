@@ -1,7 +1,7 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-13 — ENV-4 terminée.
+Dernière mise à jour : 2026-10-13 — ENV-5 en cours.
 
 ## Prochaine action
 
@@ -16,7 +16,7 @@ Démarrer ENV-5 (restructuration CMake du greffon noyau) d'après `etapes/ENV-05
 | ENV-2 | Audit de l'existant | terminée (2026-10-13) | lepton-tools `devenv/env-2` | `handoff/env-2.md` |
 | ENV-3 | Schémas | terminée (2026-10-13) | lepton-tools `devenv/env-3` | `handoff/env-3.md` |
 | ENV-4 | Format XML de mklepton | terminée (2026-10-13) | lepton-tools `devenv/env-4` ; clone noyau `devenv/env-4` | `handoff/env-4.md` |
-| ENV-5 | Restructuration CMake | à faire | — | — |
+| ENV-5 | Restructuration CMake | en cours | lepton-tools `devenv/env-5` ; clone noyau `devenv/env-5` | — |
 | ENV-6 | Greffons BSP de référence | à faire | — | — |
 | ENV-7 | Évolutions de scion | à faire | — | — |
 | ENV-8 | Outil `lepton` | à faire | — | — |
@@ -104,6 +104,9 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | PA-4 (amendement) | Défaut `/dev/kb0` de `<boot dev>` conservé : écrit dans `.boot` quand `dev` est absent (Olimex). |
 | 2026-10-13 | — (ENV-4) | Les 6 XML gardent `cpufs size/node` imposés (empreintes identiques) ; passage en dimensionnement automatique reporté (à décider avec essai sur cartes). |
 | 2026-10-13 | — (ENV-4) | ENV-4 terminée ; fusions locales de `devenv/env-4` au début de la session suivante. Aucun push. |
+| 2026-10-13 | — (ENV-5) | `devenv/env-4` fusionnée localement dans `main` (lepton-tools, bf95024) et `master` (clone noyau, 49ed8fe) ; `devenv/env-5` créée depuis ces branches. |
+| 2026-10-13 | — (ENV-5) | Oracle ENV-5 : capture binaire du preset host et des 14 presets croisés ; fumée et banc KAL sur an386 ×4 et an500 ×2 ; pas de matériel. NUCLEO-F429ZI = presets `nucleo-f439zi-*`. |
+| 2026-10-13 | — (ENV-5) | Nom du manifeste de greffon : `lepton-greffon.json` (graine : `lepton-graine.json`). |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal

@@ -9,7 +9,7 @@ archétype migration, non-régression stricte, aucune refactorisation d'opportun
 ## Prérequis
 - ENV-3 terminée (schéma de manifeste validé).
 - `env-2-cmake.md` : structure actuelle et écarts avec BLD-1.
-- CMake ≥ 3.19. Branche `devenv/env-5` dans le clone noyau.
+- CMake ≥ 3.24 (PA-2 Q6). Branche `devenv/env-5` dans le clone noyau.
 - Session principale seule ; aucun sous-agent en écriture.
 
 ## Tâches
@@ -22,8 +22,7 @@ Présenter, attendre PA-5.
 
 ### 2. Lecteur de manifestes CMake
 Module `cmake/lepton_greffons.cmake` (dans le greffon noyau) :
-- découvre les manifestes `*.lepton.json` <À CONFIRMER : nom de fichier, fixé en ENV-3> dans le
-  trunk ;
+- découvre les manifestes `lepton-greffon.json` (décision 2026-10-13) dans le trunk ;
 - lit les champs par `string(JSON …)` ; refuse un manifeste sans champ obligatoire, message citant
   le fichier ;
 - ajoute les sources des répertoires déclarés (`file(GLOB … CONFIGURE_DEPENDS)`) à la
