@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:lepton:schema:graine:1",
+  "title": "Manifeste de graine Lepton",
+  "description": "Manifeste d'un projet (graine, seed scion) : greffons retenus par rôle, backend micro-noyau, configurations de construction, XML mklepton. Fichier lepton-graine.json à côté de .scion.sources.list. L'origine de chaque greffon (dépôt git et branche ou tag, ou répertoire local) reste dans .scion.sources.list, géré par scion.",
+  "$comment": "GRA-2, CFG-1, CFG-2, CFG-6, décision 9. Aucun champ de configuration logicielle (CFG-1). Origine des greffons non dupliquée : GRA-3 est porté par .scion.sources.list (proposition soumise à PA-3). ENV-3.",
+  "type": "object",
+  "required": ["projet", "noyau", "bsp", "backend", "configurations", "mklepton_xml"],
+  "properties": {
+    "$schema": {
+      "description": "Référence au présent schéma, pour la validation à la saisie dans l'éditeur.",
+      "$comment": "CFG-7.",
+      "type": "string"
+    },
+    "projet": {
+      "description": "Identité du logiciel embarqué (une graine = un logiciel).",
+      "$comment": "GRA-1 (nom du projet).",
+      "type": "object",
+      "required": ["nom", "version"],
+      "properties": {
+        "nom": {
+          "description": "Nom du projet.",
+          "$ref": "#/$defs/identifiant"
+        },
+        "version": {
+          "description": "Version du logiciel embarqué.",
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "description": "Résumé du projet.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "noyau": {
+      "description": "Nom du greffon noyau (champ nom de son manifeste). Obligatoire.",
+      "$comment": "GRA-2 (noyau obligatoire).",
+      "$ref": "#/$defs/identifiant"
+    },
+    "bsp": {
+      "description": "Nom du greffon BSP de la carte ; son greffon famille est déduit de son manifeste. Obligatoire.",
+      "$comment": "GRA-2 (BSP obligatoire), PA-2 Q2.",
+      "$ref": "#/$defs/identifiant"
+    },
+    "applications": {
+      "description": "Noms des greffons application (zéro ou plusieurs).",
+      "$comment": "GRA-2 (facultatif), décision 10.",
+      "$ref": "#/$defs/liste_noms"
+    },
+    "bibliotheques": {
+      "description": "Noms des greffons bibliothèque (zéro ou plusieurs).",
+      "$comment": "GRA-2 (facultatif).",
+      "$ref": "#/$defs/liste_noms"
+    },
+    "backend": {
+      "description": "Backend micro-noyau du projet.",
+      "$comment": "CFG-2 (backend dans les manifestes), CFG-1.",
+      "enum": ["embos", "freertos"]
+    },
+    "configurations": {
+      "description": "Configurations du projet ; chacune donne un preset CMake généré.",
+      "$comment": "CFG-6 (debug, release, cible QEMU, carte réelle via presets générés).",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/configuration" }
+    },
+    "mklepton_xml": {
+      "description": "Chemin du XML mklepton du projet, relatif au trunk.",
+      "$comment": "CFG-1 (XML mklepton, seconde source de configuration, versionnée dans la graine).",
+      "$ref": "#/$defs/chemin_relatif"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "identifiant": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "liste_noms": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/identifiant" },
+      "uniqueItems": true
+    },
+    "chemin_relatif": {
+      "$comment": "Chemin relatif : segments sans barre initiale, ni . ni ...",
+      "type": "string",
+      "pattern": "^\\.?[A-Za-z0-9_+@-][A-Za-z0-9_.+@-]*(/\\.?[A-Za-z0-9_+@-][A-Za-z0-9_.+@-]*)*$"
+    },
+    "configuration": {
+      "type": "object",
+      "required": ["nom", "construction", "execution"],
+      "properties": {
+        "nom": {
+          "description": "Nom de la configuration, suffixe du preset généré (ex. debug-qemu).",
+          "$ref": "#/$defs/identifiant"
+        },
+        "construction": {
+          "description": "Type de construction CMake.",
+          "$comment": "CFG-6 (debug, release).",
+          "enum": ["Debug", "Release", "RelWithDebInfo", "MinSizeRel"]
+        },
+        "execution": {
+          "description": "Cible d'exécution : qemu (le BSP doit déclarer qemu) ou carte (le BSP doit déclarer openocd et sonde).",
+          "$comment": "CFG-6 (cible QEMU, carte réelle) ; cohérence avec le BSP vérifiée par lepton (ENV-8).",
+          "enum": ["qemu", "carte"]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

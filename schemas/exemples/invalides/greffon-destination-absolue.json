@@ -1,0 +1,34 @@
+{
+  "$schema": "../../greffon.schema.json",
+  "nom": "mesure",
+  "type": "application",
+  "version": "0.1.0",
+  "description": "Application exemple : acquisition périodique.",
+  "destination": "/bin/mesure",
+  "bibliotheque": "bin",
+  "sources": [
+    ""
+  ],
+  "dependances": [
+    "lepton-noyau",
+    "capteurs"
+  ],
+  "options": [
+    {
+      "nom": "MESURE_PERIODE_MS",
+      "type": "entier",
+      "defaut": 100,
+      "min": 10,
+      "max": 10000,
+      "portee": "privee",
+      "description": "Période d'acquisition en millisecondes."
+    },
+    {
+      "nom": "MESURE_NOM_FICHIER",
+      "type": "chaine",
+      "defaut": "/var/mesure.log",
+      "portee": "privee",
+      "description": "Fichier de journal des mesures."
+    }
+  ]
+}

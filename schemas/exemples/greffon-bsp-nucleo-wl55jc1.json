@@ -1,0 +1,36 @@
+{
+  "$schema": "../greffon.schema.json",
+  "nom": "nucleo-wl55jc1",
+  "type": "bsp",
+  "version": "1.0.0",
+  "description": "Carte NUCLEO-WL55JC1, cœur M4 (CPU1) sans FPU, MSI 48 MHz, USART2 console, radio Sub-GHz.",
+  "destination": "kernel/dev/bsp/nucleo-wl55jc1",
+  "bibliotheque": "bsp",
+  "sources": [
+    "peripheriques",
+    "radio"
+  ],
+  "famille": "stm32wlxx",
+  "coeur": "cortex-m4f",
+  "abi_flottante": "soft",
+  "mcu": "STM32WL55JC",
+  "frequence_cpu": 48000000,
+  "entete_config_noyau": "include/user_kernel_mkconf.h",
+  "script_liens": "ld/mem_nucleo-wl55jc1.ld",
+  "demarrage": [
+    "stm32wl55jci_nucleo_system.c"
+  ],
+  "openocd": [
+    "debug/openocd-nucleo-wl55jc1.cfg"
+  ],
+  "sonde": "stlink",
+  "svd": "debug/STM32WL5x_CM4.svd",
+  "compilation": {
+    "publique": {
+      "definitions": [
+        "STM32WL55xx",
+        "CORE_CM4"
+      ]
+    }
+  }
+}

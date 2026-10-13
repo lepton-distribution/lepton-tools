@@ -1,0 +1,40 @@
+{
+  "$schema": "../greffon.schema.json",
+  "nom": "capteurs",
+  "type": "bibliotheque",
+  "version": "0.1.0",
+  "description": "Bibliothèque exemple : conversion des mesures de capteurs.",
+  "destination": "lib/capteurs",
+  "bibliotheque": "lib",
+  "sources": [
+    "src"
+  ],
+  "dependances": [
+    "lepton-noyau"
+  ],
+  "compilation": {
+    "privee": {
+      "drapeaux": [
+        "-O2"
+      ]
+    },
+    "publique": {
+      "definitions": [
+        "CAPTEURS_API=1"
+      ]
+    }
+  },
+  "options": [
+    {
+      "nom": "CAPTEURS_UNITE",
+      "type": "enumeration",
+      "valeurs": [
+        "si",
+        "brut"
+      ],
+      "defaut": "si",
+      "portee": "publique",
+      "description": "Unité des valeurs rendues."
+    }
+  ]
+}

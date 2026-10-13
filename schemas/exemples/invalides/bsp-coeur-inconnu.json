@@ -1,0 +1,33 @@
+{
+  "$schema": "../../greffon.schema.json",
+  "nom": "nucleo-f429zi",
+  "type": "bsp",
+  "version": "1.0.0",
+  "description": "Carte NUCLEO-F429ZI : HSE 8 MHz bypass, PLL 168 MHz, USART3 console, Ethernet RMII.",
+  "destination": "kernel/dev/bsp/nucleo-f429zi",
+  "bibliotheque": "bsp",
+  "sources": [
+    "gpio"
+  ],
+  "famille": "stm32f4xx",
+  "coeur": "cortex-m33",
+  "mcu": "STM32F429ZI",
+  "frequence_cpu": 168000000,
+  "entete_config_noyau": "include/user_kernel_mkconf.h",
+  "script_liens": "ld/mem_nucleo-f429zi.ld",
+  "demarrage": [
+    "nucleo_f429zi_system.c"
+  ],
+  "openocd": [
+    "debug/openocd-nucleo-f429zi.cfg"
+  ],
+  "sonde": "stlink",
+  "svd": "debug/STM32F429.svd",
+  "compilation": {
+    "publique": {
+      "definitions": [
+        "STM32F429xx"
+      ]
+    }
+  }
+}

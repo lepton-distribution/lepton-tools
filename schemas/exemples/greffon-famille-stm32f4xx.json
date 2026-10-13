@@ -1,0 +1,34 @@
+{
+  "$schema": "../greffon.schema.json",
+  "nom": "stm32f4xx",
+  "type": "famille",
+  "version": "1.0.0",
+  "description": "Famille STM32F4 : couche Lepton, SPL ST, CMSIS device, tables de vecteurs par MCU.",
+  "destination": "kernel/dev/arch/cortexm/stm32f4xx",
+  "bibliotheque": "kernel",
+  "sources": [
+    "dev_stm32f4xx",
+    "driverlib/src"
+  ],
+  "dependances": [
+    "lepton-noyau"
+  ],
+  "coeurs": [
+    "cortex-m4f"
+  ],
+  "mcu": [
+    "STM32F429xx",
+    "STM32F439xx"
+  ],
+  "vecteurs": [
+    "vecteurs/stm32f429xx_vectors.c",
+    "vecteurs/stm32f439xx_vectors.c"
+  ],
+  "compilation": {
+    "publique": {
+      "definitions": [
+        "USE_STDPERIPH_DRIVER"
+      ]
+    }
+  }
+}
