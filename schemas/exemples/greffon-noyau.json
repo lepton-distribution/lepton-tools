@@ -1,0 +1,34 @@
+{
+  "$schema": "../greffon.schema.json",
+  "nom": "lepton-noyau",
+  "type": "noyau",
+  "version": "1.0.0",
+  "description": "Noyau Lepton : kernel, kernel/dev/arch, lib, sbin, bin de base, main générique, démarrage générique Cortex-M.",
+  "destination": "",
+  "coeurs": [
+    "cortex-m0plus",
+    "cortex-m3",
+    "cortex-m4f",
+    "cortex-m7"
+  ],
+  "backends": [
+    "embos",
+    "freertos"
+  ],
+  "compilation": {
+    "privee": {
+      "drapeaux": [
+        "-Wall"
+      ]
+    }
+  },
+  "options": [
+    {
+      "nom": "LEPTON_KAL_TRACE",
+      "type": "booleen",
+      "defaut": false,
+      "portee": "privee",
+      "description": "Active les traces de la couche KAL."
+    }
+  ]
+}

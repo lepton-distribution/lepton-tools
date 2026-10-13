@@ -1,0 +1,26 @@
+{
+  "$schema": "../greffon.schema.json",
+  "nom": "stm32wlxx",
+  "type": "famille",
+  "version": "1.0.0",
+  "description": "Famille STM32WL : couche Lepton, HAL CubeWL, SubGHz_Phy, CMSIS device.",
+  "destination": "kernel/dev/arch/cortexm/stm32wlxx",
+  "bibliotheque": "kernel",
+  "sources": [
+    "dev_stm32wlxx",
+    "cubemx_hal_driver/src",
+    "radio_subghz_phy/stm32_radio_driver"
+  ],
+  "dependances": [
+    "lepton-noyau"
+  ],
+  "coeurs": [
+    "cortex-m4f"
+  ],
+  "mcu": [
+    "STM32WL55xx"
+  ],
+  "remplacants_forts": [
+    "dev_stm32wlxx/dev_stm32wlxx_hal_tick.c"
+  ]
+}
