@@ -17,7 +17,7 @@ Démarrer ENV-6 (greffons BSP de référence) d'après `etapes/ENV-06-bsp.md` et
 | ENV-3 | Schémas | terminée (2026-10-13) | lepton-tools `devenv/env-3` | `handoff/env-3.md` |
 | ENV-4 | Format XML de mklepton | terminée (2026-10-13) | lepton-tools `devenv/env-4` ; clone noyau `devenv/env-4` | `handoff/env-4.md` |
 | ENV-5 | Restructuration CMake | terminée (2026-10-13) | lepton-tools `devenv/env-5` ; clone noyau `devenv/env-5` | `handoff/env-5.md` |
-| ENV-6 | Greffons BSP de référence | à faire | — | — |
+| ENV-6 | Greffons BSP de référence | en cours | lepton-tools `devenv/env-6` ; clone noyau `devenv/env-6` ; graine de travail `devenv/env-6` | — |
 | ENV-7 | Évolutions de scion | à faire | — | — |
 | ENV-8 | Outil `lepton` | à faire | — | — |
 | ENV-9 | Fichiers de l'éditeur | à faire | — | — |
@@ -114,6 +114,9 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | — (ENV-5) | Manifestes BSP transitoires reportés à ENV-6 (conflit avec le schéma : chemins hors `kernel/dev/bsp`, répertoire `qemu_mps2` partagé) ; ENV-5 : manifeste du noyau, lecteur, greffon d'essai ; démarrage générique, vecteurs F4 et `hal_tick` WL en OBJECT ; démarrage de carte en OBJECT avec le découpage d'ENV-6. Amende la décision « métadonnées seules » du même jour. |
 | 2026-10-13 | — (ENV-5) | Emplacement du manifeste : `sys/root/src/<destination>/lepton-greffon.json` (la racine `scion/` est commune aux greffons : conflit scion) ; `destination` contrôlée par CMake ; description du schéma mise à jour. |
 | 2026-10-13 | PA-6 | Non-régression ENV-5 validée (`rapports/env-5-validation.md`) : symboles identiques sur 14 presets, écarts de sections = remplissage (démontré), fumée et banc KAL identiques ; ENV-5 terminée ; fusions locales au début de la session suivante. Aucun push. |
+| 2026-10-13 | — (ENV-6) | `devenv/env-5` fusionnée localement dans `main` (lepton-tools, 4d22d67) et `master` (clone noyau, 1551afb) ; `devenv/env-6` créée depuis ces branches et dans la graine de travail `depots/lepton-seed.scions/original-tree` (depuis `original-tree` 083c30b). |
+| 2026-10-13 | — (ENV-6) | ENV-6 par lots bornés : session 1 = PA-7 (toutes cartes), lecteur CMake, lot QEMU ; lots F4 puis WL dans les sessions suivantes. |
+| 2026-10-13 | — (ENV-6) | Dépôts git des greffons famille et BSP locaux sous `<ROOTSTOCK>/depots/`, inscrits en version `*` ; graine de travail modifiée et commitée sur sa branche `devenv/env-6`, sans push. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
