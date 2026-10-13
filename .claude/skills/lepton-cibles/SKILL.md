@@ -59,10 +59,11 @@ openocd -f <cfg> -c "init; targets; shutdown"
 | Carte | Fichiers OpenOCD | Console série |
 | --- | --- | --- |
 | NUCLEO-F429ZI | `-f <BSP>/debug/openocd-nucleo-f439zi.cfg` (→ `board/st_nucleo_f4.cfg`, ST-LINK/V2-1) | `/dev/cu.usbmodem1454303`, 115200 8N1 |
-| NUCLEO-WL55JC1 | `-f <ROOTSTOCK>/build/<preset>/openocd-nucleo-wl55jc1.cfg` (généré : `interface/stlink.cfg` + `adapter serial` + `debug/openocd-nucleo-wl55jc1.cfg` → `target/stm32wlx.cfg`, STLINK-V3) (cœur M4 uniquement) | carte A `/dev/cu.usbmodem1454303`, carte B `/dev/cu.usbmodem1454403`, 115200 8N1 |
+| NUCLEO-WL55JC1 | `-f <ROOTSTOCK>/build/<preset>/openocd-nucleo-wl55jc1.cfg` (généré par le `CMakeLists.txt` du BSP : `interface/stlink.cfg` + `adapter serial` + `<BSP-WL>/debug/openocd-nucleo-wl55jc1.cfg` → `target/stm32wlx.cfg`, STLINK-V3) (cœur M4 uniquement) | carte A `/dev/cu.usbmodem1454303`, carte B `/dev/cu.usbmodem1454403`, 115200 8N1 |
 
-<!-- <BSP> = sys/root/src/kernel/dev/bsp/nucleo-f429zi, relatif au trunk (champ openocd du manifeste,
-     ENV-6). Sources : debug/openocd-nucleo-f439zi.cfg du BSP ; cmake/boards/nucleo-wl55jc1.cmake:54-65 ;
+<!-- <BSP> = sys/root/src/kernel/dev/bsp/nucleo-f429zi, <BSP-WL> = sys/root/src/kernel/dev/bsp/nucleo-wl55jc1,
+     relatifs au trunk (champ openocd du manifeste, ENV-6). Sources : debug/openocd-nucleo-f439zi.cfg du BSP F429 ;
+     CMakeLists.txt du BSP nucleo-wl55jc1 (cfg générée) ;
      doc/migration/validation-macos.md:26-30 (ports relevés en étape 10, à revérifier : ils
      dépendent du port USB) ; tests/smoke_lsh.py:126 (débit). Sondes : F429 ST-LINK/V2-1
      n° 0672FF495252717267243842 ; WL55 A 002700253431510837393937, B 004F003E3431510937393937
@@ -76,7 +77,7 @@ openocd -f <cfg> -c "program <elf> verify reset exit"
 Débogage : `openocd -f <cfg>` dans un terminal, puis
 depuis la racine du trunk, `arm-none-eabi-gdb -x <gdbinit de la carte> <elf> -ex "target extended-remote :3333" -ex "monitor reset halt"`
 (`doc/migration/debug-gcc.md:18-19`). gdbinit de carte : F429ZI `<BSP>/debug/gdbinit-nucleo-f439zi` ;
-WL55JC1 `debug/gdbinit-nucleo-wl55jc1` (noyau, jusqu'au lot WL) ; tous sourcent `debug/gdbinit-lepton`
+WL55JC1 `<BSP-WL>/debug/gdbinit-nucleo-wl55jc1` ; tous sourcent `debug/gdbinit-lepton`
 (commandes communes, ENV-6 Q8).
 
 ## Pièges
