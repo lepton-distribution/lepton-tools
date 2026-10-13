@@ -64,7 +64,7 @@ openocd -f <cfg> -c "init; targets; shutdown"
      doc/migration/validation-macos.md:26-30 (ports relevés en étape 10, à revérifier : ils
      dépendent du port USB) ; tests/smoke_lsh.py:126 (débit). Sondes : F429 ST-LINK/V2-1
      n° 0672FF495252717267243842 ; WL55 A 002700253431510837393937, B 004F003E3431510937393937
-     (validation-nucleo-wl55jc1.md:7-10). Cible CMake équivalente : `cmake --build <build> --target flash`
+     (doc/migration/validation-nucleo-wl55jc1.md:7-10). Cible CMake équivalente : `cmake --build <build> --target flash`
      (cmake/components/firmware.cmake:90-95). -->
 
 Flash puis vérification :

@@ -18,7 +18,8 @@ analyse des sources.
   `STM32F429xx USE_STDPERIPH_DRIVER` ; puce relue STM32F429ZI rév. 3 (`DBGMCU_IDCODE 0x20016419`),
   ST-LINK/V2-1 `V2J27M15` (`doc/migration/validation-nucleo-f439zi.md:3-5`).
 - **Question pour ENV-6** : nom du greffon BSP et des presets (`nucleo-f429zi` conforme à la carte
-  réelle et à la décision du chantier, ou conservation de `nucleo-f439zi`).
+  réelle et à la décision du chantier, ou conservation de `nucleo-f439zi`, conforme à la décision du
+  portage `doc/migration/MIGRATION-STATUS.md:110` : F439ZI carte de base nominale, noms conservés).
 
 ## 1. Socle commun Cortex-M (hors greffons de carte)
 
@@ -110,8 +111,8 @@ OpenOCD 0.12.0 sur Debian et macOS (`doc/migration/MIGRATION-STATUS.md:217,225` 
 
 | Carte | OpenOCD | Sonde | Console macOS (étape 10) | Console Debian |
 | --- | --- | --- | --- | --- |
-| NUCLEO-F429ZI | `-f debug/openocd-nucleo-f439zi.cfg` → `board/st_nucleo_f4.cfg` | ST-LINK/V2-1 `V2J27M15`, `0483:374b`, n° `0672FF495252717267243842` | `/dev/cu.usbmodem1454303` (`validation-macos.md:26,34`) | `/dev/ttyACM0` |
-| NUCLEO-WL55JC1 (A / B) | `-f $B/<preset>/openocd-nucleo-wl55jc1.cfg` (généré : `interface/stlink.cfg` + `adapter serial <n°>` + `debug/openocd-nucleo-wl55jc1.cfg` → `target/stm32wlx.cfg`) | STLINK-V3 `0483:374e` ; A `002700253431510837393937`, B `004F003E3431510937393937` (`validation-nucleo-wl55jc1.md:7-10`) | A `/dev/cu.usbmodem1454303`, B `/dev/cu.usbmodem1454403` (`validation-macos.md:29-30`) | `/dev/ttyACM0`, `ttyACM1` |
+| NUCLEO-F429ZI | `-f debug/openocd-nucleo-f439zi.cfg` → `board/st_nucleo_f4.cfg` | ST-LINK/V2-1 `V2J27M15`, `0483:374b`, n° `0672FF495252717267243842` | `/dev/cu.usbmodem1454303` (`doc/migration/validation-macos.md:26,34`) | `/dev/ttyACM0` |
+| NUCLEO-WL55JC1 (A / B) | `-f $B/<preset>/openocd-nucleo-wl55jc1.cfg` (généré : `interface/stlink.cfg` + `adapter serial <n°>` + `debug/openocd-nucleo-wl55jc1.cfg` → `target/stm32wlx.cfg`) | STLINK-V3 `0483:374e` ; A `002700253431510837393937`, B `004F003E3431510937393937` (`doc/migration/validation-nucleo-wl55jc1.md:7-10`) | A `/dev/cu.usbmodem1454303`, B `/dev/cu.usbmodem1454403` (`doc/migration/validation-macos.md:29-30`) | `/dev/ttyACM0`, `ttyACM1` |
 
 Commandes du portage :
 - Flash : cible CMake `flash` = `openocd -f <cfg> -c "program <lepton.elf> verify reset exit"`
@@ -120,19 +121,19 @@ Commandes du portage :
   (`tests/kal_openocd.py:30-36`).
 - Débogage : `openocd -f <cfg>` (port 3333) puis `gdb-multiarch -x debug/gdbinit-<carte> $LEPTON_BUILD/<preset>/lepton.elf`
   (`doc/migration/debug-gcc.md:18-19`) ; sur macOS `gdb-multiarch` = lien vers `arm-none-eabi-gdb` 17.2
-  MacPorts `+python313` (`validation-macos.md:14`).
+  MacPorts `+python313` (`doc/migration/validation-macos.md:14`).
 - Validation F429 depuis macOS : `cmake --preset nucleo-f439zi-embos -DLEPTON_BOARD_SERIAL_PORT=/dev/cu.usbmodem1454303 -DLEPTON_NET_TEST_HOST_IP=192.168.2.10`,
-  `--target flash`, `ctest --preset … -L board` (`BUILDING.md:178-181`). WL55 : `-DLEPTON_BOARD_STLINK_SERIAL`,
-  `-DLEPTON_RADIO_PEER_STLINK_SERIAL`, `-DLEPTON_RADIO_PEER_SERIAL_PORT` (`BUILDING.md:266-271`).
+  `--target flash`, `ctest --preset … -L board` (`doc/BUILDING.md:178-181`). WL55 : `-DLEPTON_BOARD_STLINK_SERIAL`,
+  `-DLEPTON_RADIO_PEER_STLINK_SERIAL`, `-DLEPTON_RADIO_PEER_SERIAL_PORT` (`doc/BUILDING.md:266-271`).
 - Journal hors clone `$B/etape10-f429-embos-flash.log` : « Open On-Chip Debugger 0.12.0 », « ** Verified OK ** ».
 
 ## 6. Autres cartes
 
 | Carte | État |
 | --- | --- |
-| `qemu-mps2-an500` (M7) | Partage BSP `qemu_mps2` et mkconf avec an386 ; fumée, réseau, KAL verts en CI (`BUILDING.md:14`) |
-| `stm32f746g-disco` (M7) | Validée sur carte et depuis macOS (`validation-macos.md:72-88`) |
-| `samd21-xplained-pro` (M0+) | embOS validé ; FreeRTOS : fumée en échec (RAM), écart accepté (`validation-macos.md:101-117`) |
+| `qemu-mps2-an500` (M7) | Partage BSP `qemu_mps2` et mkconf avec an386 ; fumée, réseau, KAL verts en CI (`doc/BUILDING.md:14`) |
+| `stm32f746g-disco` (M7) | Validée sur carte et depuis macOS (`doc/migration/validation-macos.md:72-88`) |
+| `samd21-xplained-pro` (M0+) | embOS validé ; FreeRTOS : fumée en échec (RAM), écart accepté (`doc/migration/validation-macos.md:101-117`) |
 | BSP hérités sans module `cmake/boards` | `src/kernel/dev/bsp/{discovery_f4, discovery_f4-baseboard-modem, olimex_p407, samd20xplained_pro, same70xplained, samv71xplained_ultra, stm32f469i-eval}` |
 
 ## 7. Estimation pour ENV-6 (greffons BSP des trois cartes retenues)

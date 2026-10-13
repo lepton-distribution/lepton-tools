@@ -1,6 +1,6 @@
 # ENV-2 — Scripts et bancs existants
 
-Relevé du 2026-10-13, lecture seule, clone noyau `master` 6b62af5. Chemins relatifs au clone ;
+Relevé du 2026-10-13, lecture seule, clone noyau `master` 6b62af5. Chemins relatifs au clone (racine `master/`, sauf mention `scion/`) ;
 `$LEPTON_BUILD` = `<ROOTSTOCK>/build`.
 
 ## 1. Scripts d'installation (`scripts/`)
@@ -8,7 +8,7 @@ Relevé du 2026-10-13, lecture seule, clone noyau `master` 6b62af5. Chemins rela
 | Script | Installe | Usage |
 | --- | --- | --- |
 | `scripts/install-macos.sh` (238 l. ; Mac Intel visé, Apple Silicon non validé, l. 3-4) | MacPorts par défaut sur Intel (l. 63-69) : cmake, ninja, python313, pipx ; scion 0.5.0.1 par pipx (l. 124-131) ; cloc, doxygen, graphviz, coccinelle facultatifs ; `qemu +target_arm` (l. 149) ; Arm GNU Toolchain 14.2.Rel1 dans `~/opt`, SHA-256 vérifié (l. 155-173). `--with-debug-tools` : `openocd +ftdi +cmsis`, texinfo, `arm-none-eabi-gdb +python313`, lien `~/.local/bin/gdb-multiarch` (l. 184-204). | `./install-macos.sh [--with-debug-tools] [--toolchain-dir <dir>] [--pkg-manager macports\|brew]` ; n'édite pas le shell (affiche la ligne `PATH`, l. 232-233) ; embOS copié à la main (l. 235-236) |
-| `scripts/install-debian.sh` (126 l.) | build-essential, gdb, clang, cmake, ninja, python3, pipx, libexpat1-dev ; scion 0.5.0.1 ; cloc, coccinelle ; gcc-arm-none-eabi, libnewlib, gdb-multiarch ; qemu-system-arm, iproute2, iputils-ping ; doxygen, graphviz. `--with-debug-tools` : openocd + rappel udev (l. 101-107) ; `--with-riscv`. | `./install-debian.sh [--with-debug-tools] [--with-riscv]` (`BUILDING.md:28`) |
+| `scripts/install-debian.sh` (126 l.) | build-essential, gdb, clang, cmake, ninja, python3, pipx, libexpat1-dev ; scion 0.5.0.1 ; cloc, coccinelle ; gcc-arm-none-eabi, libnewlib, gdb-multiarch ; qemu-system-arm, iproute2, iputils-ping ; doxygen, graphviz. `--with-debug-tools` : openocd + rappel udev (l. 101-107) ; `--with-riscv`. | `./install-debian.sh [--with-debug-tools] [--with-riscv]` (`doc/BUILDING.md:28`) |
 
 ## 2. Environnement
 
@@ -43,7 +43,7 @@ Produits par preset (`scion/cmake/components/firmware.cmake:66-86`) : `lepton.el
 - ctest (`firmware.cmake:131-143`) : test `smoke.lsh`, labels `smoke;kal;arch:…;backend:…`,
   TIMEOUT 120, fixture `kal_t0`.
 - Lancement : `PYTHONDONTWRITEBYTECODE=1 ctest --preset qemu-mps2-an386-embos -L smoke`
-  (`BUILDING.md:66` ; variable : `CLAUDE.md:75`).
+  (`doc/BUILDING.md:66` ; variable : `CLAUDE.md:75`).
 - QEMU : `/opt/local/bin/qemu-system-arm` 11.1.2 (macOS), 10.0.13 (Debian).
 
 ## 5. Banc KAL
