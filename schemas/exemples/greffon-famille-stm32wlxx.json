@@ -8,7 +8,8 @@
   "bibliotheque": "kernel",
   "sources": [
     "dev_stm32wlxx",
-    "cubemx_hal_driver/src",
+    "cubemx_hal_driver/src/stm32wlxx_hal.c",
+    "cubemx_hal_driver/src/stm32wlxx_hal_rcc.c",
     "radio_subghz_phy/stm32_radio_driver"
   ],
   "dependances": [
@@ -22,5 +23,16 @@
   ],
   "remplacants_forts": [
     "dev_stm32wlxx/dev_stm32wlxx_hal_tick.c"
-  ]
+  ],
+  "compilation": {
+    "publique": {
+      "definitions": [
+        "USE_HAL_DRIVER"
+      ],
+      "inclusions": [
+        "kernel/dev/arch/cortexm/stm32wlxx/cubemx_hal_driver/inc",
+        "kernel/core/ucore/cmsis/Device/st/stm32wlxx"
+      ]
+    }
+  }
 }

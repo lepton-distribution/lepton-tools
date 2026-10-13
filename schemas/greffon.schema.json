@@ -44,8 +44,8 @@
       "$ref": "#/$defs/identifiant"
     },
     "sources": {
-      "description": "Répertoires, relatifs à destination, dont les fichiers .c, .cpp et .S sont découverts et compilés sans liste CMake.",
-      "$comment": "FIC-4 (découverte par répertoire déclaré dans le manifeste).",
+      "description": "Répertoires, relatifs à destination, dont les fichiers .c, .cpp et .S sont découverts et compilés sans liste CMake ; un élément qui désigne un fichier (.c, .S) est compilé tel quel (répertoire dont seule une partie des fichiers est compilée, ex. pilotes tiers).",
+      "$comment": "FIC-4 (découverte par répertoire déclaré dans le manifeste) ; fichiers acceptés : PA-7 Q2 (ENV-6).",
       "type": "array",
       "items": { "$ref": "#/$defs/chemin_relatif_ou_vide" },
       "uniqueItems": true
@@ -58,7 +58,7 @@
       "uniqueItems": true
     },
     "compilation": {
-      "description": "Options de compilation fixes du greffon (définitions, drapeaux d'optimisation et d'avertissement), par portée.",
+      "description": "Options de compilation fixes du greffon (définitions, drapeaux d'optimisation et d'avertissement, répertoires d'inclusion), par portée.",
       "$comment": "CFG-3 (options de compilation avec portée privée ou publique).",
       "type": "object",
       "properties": {
@@ -67,7 +67,7 @@
           "$ref": "#/$defs/jeu_compilation"
         },
         "publique": {
-          "description": "Visible aussi des greffons qui dépendent de celui-ci.",
+          "description": "Visible aussi des greffons qui dépendent de celui-ci ; noyau, famille et BSP : tout l'exécutif (PA-7 R7).",
           "$ref": "#/$defs/jeu_compilation"
         }
       },
@@ -287,6 +287,13 @@
           "description": "Drapeaux du compilateur (optimisation, avertissements), ex. -O2, -Wall.",
           "type": "array",
           "items": { "type": "string", "pattern": "^-" }
+        },
+        "inclusions": {
+          "description": "Répertoires d'inclusion, relatifs à sys/root/src/ (forme des #include de Lepton), ex. kernel/dev/arch/cortexm/stm32f4xx/driverlib.",
+          "$comment": "PA-7 Q1 (ENV-6).",
+          "type": "array",
+          "items": { "$ref": "#/$defs/chemin_relatif" },
+          "uniqueItems": true
         }
       },
       "additionalProperties": false

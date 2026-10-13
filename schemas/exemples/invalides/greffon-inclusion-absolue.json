@@ -1,0 +1,18 @@
+{
+  "$schema": "../../greffon.schema.json",
+  "nom": "inclusion-absolue",
+  "type": "bibliotheque",
+  "version": "1.0.0",
+  "destination": "lib/essai",
+  "bibliotheque": "lib",
+  "sources": [
+    ""
+  ],
+  "compilation": {
+    "publique": {
+      "inclusions": [
+        "/usr/include"
+      ]
+    }
+  }
+}

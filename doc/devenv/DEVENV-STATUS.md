@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-13 — ENV-5 terminée.
+Dernière mise à jour : 2026-10-13 — ENV-6 terminée (lots QEMU, F4, WL).
 
 ## Prochaine action
 
-Démarrer ENV-6 (greffons BSP de référence) d'après `etapes/ENV-06-bsp.md` et `handoff/env-5.md` : d'abord fusionner localement `devenv/env-5` dans `main` (lepton-tools) et dans `master` (clone noyau), puis créer `devenv/env-6` ; oracle avant ENV-6 avec `scripts/oracle/rejouer-oracle.sh` (mêmes presets qu'ENV-5) ; PA-7 avant toute extraction.
+Démarrer ENV-7 (évolutions de scion) d'après `handoff/env-6.md` : d'abord fusionner localement `devenv/env-6` (lepton-tools → `main`, clone noyau → `master`, graine → `original-tree`, 7 greffons famille/BSP → `master`), puis créer `devenv/env-7` dans lepton-tools et `<SEED_SCIONS>` ; PA-8 avant toute implémentation.
 
 ## Étapes
 
@@ -17,7 +17,7 @@ Démarrer ENV-6 (greffons BSP de référence) d'après `etapes/ENV-06-bsp.md` et
 | ENV-3 | Schémas | terminée (2026-10-13) | lepton-tools `devenv/env-3` | `handoff/env-3.md` |
 | ENV-4 | Format XML de mklepton | terminée (2026-10-13) | lepton-tools `devenv/env-4` ; clone noyau `devenv/env-4` | `handoff/env-4.md` |
 | ENV-5 | Restructuration CMake | terminée (2026-10-13) | lepton-tools `devenv/env-5` ; clone noyau `devenv/env-5` | `handoff/env-5.md` |
-| ENV-6 | Greffons BSP de référence | à faire | — | — |
+| ENV-6 | Greffons BSP de référence | terminée (2026-10-13) | `devenv/env-6` : lepton-tools, clone noyau, graine de travail, greffons `qemu-mps2`, `qemu-mps2-an386`, `qemu-mps2-an500`, `stm32f4xx`, `nucleo-f429zi`, `stm32wlxx`, `nucleo-wl55jc1` | `handoff/env-6.md` |
 | ENV-7 | Évolutions de scion | à faire | — | — |
 | ENV-8 | Outil `lepton` | à faire | — | — |
 | ENV-9 | Fichiers de l'éditeur | à faire | — | — |
@@ -36,6 +36,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | `<SEED_SCIONS>` | `/Users/cle_d_anton/lepton-tools-dev/seed.scions` (clone neuf, `master` e0adb2c, tags jusqu'à 0.5.0.1) |
 | Branche de départ du clone noyau | `master` (6b62af5) |
 | Échange git Mac / VM | Distant GitHub ; chaque push soumis à accord (PA-P) |
+| Greffons famille et BSP (ENV-6) | Dépôts git locaux `<ROOTSTOCK>/depots/lepton-famille/<nom>` et `<ROOTSTOCK>/depots/lepton-bsp/<nom>` (`master` vide, travail sur `devenv/env-6`), inscrits en version `*` dans la graine de travail `depots/lepton-seed.scions/original-tree` ; familles `qemu-mps2`, `stm32f4xx`, `stm32wlxx` ; BSP `qemu-mps2-an386`, `qemu-mps2-an500`, `nucleo-f429zi`, `nucleo-wl55jc1` |
 
 ## Versions épinglées
 
@@ -52,7 +53,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | MacPorts | 2.12.6 | 2026-10-12 |
 | embOS (paquet Segger, hors git) | 5.20.0.0 — `~/lepton/third_party/embos/cortexm-gcc/5.20.0.0`, via `LEPTON_EMBOS_ROOT` (`scripts/lepton-env.sh` du clone noyau) | 2026-10-12 |
 | VSCodium (essai ENV-1, installé à la main) | 1.135.06055 (commit 1a46a584) — `/Applications/VSCodium.app` ; version épinglée à fixer en ENV-10 | 2026-10-12 |
-| Manifeste de greffon | `lepton-greffon.json` dans `sys/root/src/<destination>/` (noyau : `sys/root/src/`), lu par `cmake/lepton_greffons.cmake` du clone noyau | 2026-10-13 |
+| Manifeste de greffon | `lepton-greffon.json` dans `sys/root/src/<destination>/` (noyau : `sys/root/src/`), lu par `cmake/lepton_greffons.cmake` du clone noyau ; schéma amendé en ENV-6 (`compilation.<portée>.inclusions`, fichier dans `sources`) ; BSP choisi par `LEPTON_BOARD` = `nom`, XML par `LEPTON_MKCONF` ; champ `openocd` lu (un fichier) | 2026-10-13 |
 | Format XML mklepton | 2 (`<mklepton version="2">`, `schemas/mklepton.xsd`) ; format 1 refusé | 2026-10-13 |
 | clangd | 21.1.8 — `/opt/local/bin/clangd-mp-21`, MacPorts `clang-21 @21.1.8_3` | 2026-10-12 |
 | check-jsonschema | 0.38.2 — pipx (`~/.local/bin`), Python 3.11.5 | 2026-10-13 |
@@ -114,6 +115,18 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | — (ENV-5) | Manifestes BSP transitoires reportés à ENV-6 (conflit avec le schéma : chemins hors `kernel/dev/bsp`, répertoire `qemu_mps2` partagé) ; ENV-5 : manifeste du noyau, lecteur, greffon d'essai ; démarrage générique, vecteurs F4 et `hal_tick` WL en OBJECT ; démarrage de carte en OBJECT avec le découpage d'ENV-6. Amende la décision « métadonnées seules » du même jour. |
 | 2026-10-13 | — (ENV-5) | Emplacement du manifeste : `sys/root/src/<destination>/lepton-greffon.json` (la racine `scion/` est commune aux greffons : conflit scion) ; `destination` contrôlée par CMake ; description du schéma mise à jour. |
 | 2026-10-13 | PA-6 | Non-régression ENV-5 validée (`rapports/env-5-validation.md`) : symboles identiques sur 14 presets, écarts de sections = remplissage (démontré), fumée et banc KAL identiques ; ENV-5 terminée ; fusions locales au début de la session suivante. Aucun push. |
+| 2026-10-13 | — (ENV-6) | `devenv/env-5` fusionnée localement dans `main` (lepton-tools, 4d22d67) et `master` (clone noyau, 1551afb) ; `devenv/env-6` créée depuis ces branches et dans la graine de travail `depots/lepton-seed.scions/original-tree` (depuis `original-tree` 083c30b). |
+| 2026-10-13 | — (ENV-6) | ENV-6 par lots bornés : session 1 = PA-7 (toutes cartes), lecteur CMake, lot QEMU ; lots F4 puis WL dans les sessions suivantes. |
+| 2026-10-13 | — (ENV-6) | Dépôts git des greffons famille et BSP locaux sous `<ROOTSTOCK>/depots/`, inscrits en version `*` ; graine de travail modifiée et commitée sur sa branche `devenv/env-6`, sans push. |
+| 2026-10-13 | PA-7 | Liste d'extraction validée : `rapports/env-6-extraction.md` (règles R1-R9, lots QEMU, F4, WL). Q1 : `compilation.<portée>.inclusions` (relatifs à `sys/root/src`) ajouté au schéma ; Q2 : `sources` accepte un fichier ; Q3 : `CMakeLists.txt` facultatif du BSP inclus par le lecteur ; Q4 : XML mkconf, `.boot`, `.init` dans le noyau, choisis par `LEPTON_MKCONF` (preset) ; Q5 : `user_kernel_mkconf.h` dans le BSP, nouvelle référence d'empreintes mklepton ; Q6 : BSP an500 dans le lot QEMU (fichiers dupliqués) ; Q8 : `debug/gdbinit-lepton` générique dans le noyau ; Q9 : F746 et SAMD21 transitoires dans le noyau ; Q10 : `stm32_radio_target/` dans le BSP WL ; Q11 : `svd` omis en ENV-6 ; Q12 : `kernel/dev/bsp/<nom du greffon>`. |
+| 2026-10-13 | PA-7 (Q7) | BSP `nucleo-f429zi` = code actuel ; sort du BSP `nucleo-f439zi` (copie déclarant `STM32F429xx` ou report après ENV-6) : à trancher au début du lot F4. |
+| 2026-10-13 | PA-7 (Q7, tranché) | BSP `nucleo-f439zi` reporté après ENV-6 (PA-2 Q4 maintenue, échéance repoussée) ; lot F4 = famille `stm32f4xx` + BSP `nucleo-f429zi` seul ; presets renommés `nucleo-f429zi-*`. |
+| 2026-10-13 | — (ENV-6) | Démarrage de carte (`demarrage` du BSP) dans l'OBJECT `bsp_demarrage`, lié par `lepton_link_firmware` (exécutif et banc KAL) ; vecteurs et remplaçants forts de la famille dans `bsp_objets`, lié à l'exécutif seul, comme avant. Proposition appliquée, à confirmer. |
+| 2026-10-13 | — (ENV-6, lot F4) | Lecteur : champ `openocd` du BSP → `LEPTON_BOARD_OPENOCD_CFG` ; un seul fichier accepté jusqu'à ENV-9. Proposition appliquée, à confirmer. |
+| 2026-10-13 | — (ENV-6, lot F4) | Noms de fichiers du BSP `nucleo-f429zi` conservés (`nucleo_f439zi_*`, `mem_nucleo-f439zi.ld`, `openocd-`/`gdbinit-nucleo-f439zi`, R3) ; XML mkconf et `etc/nucleo-f439zi/` inchangés (Q4). |
+| 2026-10-13 | — (ENV-6, lot F4) | Signalés, non déplacés (hors liste PA-7, non compilés) : `kernel/usb/stm32f4-usb-core/`, démos `freeRTOS_{8-0-0,9-0-0}/…/stm32f4/` ; table de vecteurs de la famille liée par symbole aux gestionnaires du BSP (à revoir avant un second BSP F4). |
+| 2026-10-13 | PA-7 (lot WL) | Liste WL revérifiée (`ninja -t deps`), identique au §4. Relais IRQ11/12/37/50 sortis de `stm32wl55jci_nucleo_system.c` vers la famille (`vecteurs/stm32wl55xx_vectors.c`). OpenOCD : manifeste `openocd` = cfg statique du BSP, cfg enveloppe générée par le `CMakeLists.txt` du BSP (remplace `LEPTON_BOARD_OPENOCD_CFG`). Radio : `dev_stm32wlxx_bsp_radio_if.c` (famille) inclut `radio_board_if.h` par nom, inclusions publiques radio dans le BSP. `sys/user/tauon-basic/src/arch/st-stm32wl55jci-nucleo/` (IAR, non utilisé) laissé, signalé. |
+| 2026-10-13 | — (ENV-6) | ENV-6 terminée. Cartes validées : QEMU an386 ×4, an500 ×2 (construction, fumée, banc KAL identiques) ; NUCLEO-F429ZI ×2 et NUCLEO-WL55JC1 ×2 (construction, symboles identiques, écarts de sections expliqués : `rapports/env-6-validation.md`) ; flash et fumée série en ENV-11 (PA-11). Fusions locales de `devenv/env-6` au début de la session suivante. Aucun push. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -129,3 +142,6 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | ENV-3 | Schémas greffon (type famille ajouté), graine, XSD mklepton format 2, 12 exemples valides et 28 invalides, `scripts/valider-schemas.sh` conforme ; PA-3 tranché (cpufs auto) ; spécification amendée ; étape terminée. |
 | 2026-10-13 | ENV-4 | PA-4 tranché ; mklepton format 2 (version, `--cpu-freq`, `--kernel-config-header`, cpufs automatique, test `host.mklepton_format`) ; 6 XML migrés, 23 supprimés ; pilote hôte `dev_host_fileflash` (accès hors disque) ; non-régression `rapports/env-4-validation.md` ; étape terminée. |
 | 2026-10-13 | ENV-5 | PA-5 et PA-6 tranchés ; bibliothèques `kernel`, `lib`, `sbin`, `bin`, `bsp`, OBJECT `generated`/`kernel_demarrage`/`bsp_objets`, lecteur `cmake/lepton_greffons.cmake`, manifeste noyau, HEX et occupation par bibliothèque ; greffon d'essai ; non-régression `rapports/env-5-validation.md` ; étape terminée. |
+| 2026-10-13 | ENV-6 | Session 1 : oracle avant ; PA-7 tranché (`rapports/env-6-extraction.md`) ; schéma amendé ; lecteur famille/BSP ; lot QEMU (famille `qemu-mps2`, BSP an386 et an500) extrait et greffé ; non-régression `rapports/env-6-validation.md` ; lots F4 et WL restent. |
+| 2026-10-13 | ENV-6 | Session 2 : Q7 tranché (BSP F439ZI reporté) ; lot F4 (famille `stm32f4xx`, BSP `nucleo-f429zi`, presets `nucleo-f429zi-*`, `gdbinit-lepton`, `openocd` lu par le lecteur) ; non-régression `env-6-validation.md` §Lot F4, `oracles/env-6-lot-f4/` ; skill `lepton-cibles` mise à jour ; lot WL reste. |
+| 2026-10-13 | ENV-6 | Session 3 : PA-7 lot WL tranché ; lot WL (famille `stm32wlxx`, BSP `nucleo-wl55jc1`, vecteurs dans la famille, cfg OpenOCD générée par le BSP) ; non-régression `env-6-validation.md` §Lot WL, `oracles/env-6-lot-wl/` (`.data` WL : remplissage, démontré sur copie d'essai) ; skill `lepton-cibles` ; étape terminée. |
