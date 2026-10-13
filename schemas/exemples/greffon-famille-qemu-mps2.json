@@ -4,7 +4,7 @@
   "type": "famille",
   "version": "1.0.0",
   "description": "Machines QEMU MPS2 : UART CMSDK, Ethernet LAN9118, en-têtes CMSIS ARMCM4/ARMCM7.",
-  "destination": "kernel/dev/arch/qemu-mps2",
+  "destination": "kernel/dev/arch/cortexm/qemu-mps2",
   "bibliotheque": "kernel",
   "sources": [
     "uart",
