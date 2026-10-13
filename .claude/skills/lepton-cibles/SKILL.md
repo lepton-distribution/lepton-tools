@@ -5,10 +5,9 @@ description: Construire Lepton, l'exécuter sous QEMU (mps2-an386), le flasher e
 
 # Construire, exécuter, flasher, déboguer
 
-Les commandes de ce fichier reprennent celles du portage. Les valeurs marquées `<RELEVÉ ENV-2>`
-sont complétées en ENV-2 à partir de `doc/devenv/rapports/env-2-outillage.md` et
-`env-2-cartes.md` ; tant qu'elles ne le sont pas, les relever dans le dépôt, ne jamais les
-deviner.
+Les commandes de ce fichier reprennent celles du portage, relevées en ENV-2
+(`doc/devenv/rapports/env-2-outillage.md`, `env-2-cartes.md`). Chemins de source relatifs à
+`scion/` du clone noyau. Toute valeur absente : la relever dans le dépôt, ne jamais la deviner.
 
 ## Construire
 
@@ -17,22 +16,35 @@ cmake -S <ROOTSTOCK>/trunk --list-presets
 cmake -S <ROOTSTOCK>/trunk -B <ROOTSTOCK>/build/<preset> --preset <preset>
 cmake --build <ROOTSTOCK>/build/<preset>
 ```
+Les presets fixent eux-mêmes le répertoire `${sourceDir}/../build/<preset>` = `<ROOTSTOCK>/build/<preset>`
+(`CMakePresets.json:13`). Le preset `host` (mklepton hôte, `<ROOTSTOCK>/build/host/mklepton`) est
+prérequis de tout preset croisé (`CMakePresets.json:37`). embOS : `source <clone>/scripts/lepton-env.sh`
+(exporte `LEPTON_EMBOS_ROOT`). Avant tout `ctest` à la main : `export PYTHONDONTWRITEBYTECODE=1`.
 Répertoire de construction neuf pour un oracle (`rm -rf <ROOTSTOCK>/build/<preset>` avant).
 Jamais de répertoire de construction dans le trunk.
 
 | Cible | Preset | Exécutable |
 | --- | --- | --- |
-| QEMU `mps2-an386` | `<RELEVÉ ENV-2>` | `<RELEVÉ ENV-2>` |
-| NUCLEO-F429ZI | `<RELEVÉ ENV-2>` | `<RELEVÉ ENV-2>` |
-| NUCLEO-WL55JC1 (M4) | `<RELEVÉ ENV-2>` | `<RELEVÉ ENV-2>` |
+| QEMU `mps2-an386` | `qemu-mps2-an386-embos`, `-embos-soft`, `-freertos`, `-freertos-soft` | `<ROOTSTOCK>/build/<preset>/lepton.elf` |
+| NUCLEO-F429ZI | `nucleo-f439zi-embos`, `nucleo-f439zi-freertos` (nommés F439, validés sur F429ZI) | `<ROOTSTOCK>/build/<preset>/lepton.elf` |
+| NUCLEO-WL55JC1 (M4) | `nucleo-wl55jc1-embos`, `nucleo-wl55jc1-freertos` (ABI soft) | `<ROOTSTOCK>/build/<preset>/lepton.elf` |
+
+<!-- Sources : CMakePresets.json:41-103,165-186 ; cmake/components/firmware.cmake:66-86
+     (lepton.elf, lepton.bin, lepton.map, tests/kal/kal_bench.elf ; aucun .hex). -->
 
 ## QEMU
 
 ```bash
-<RELEVÉ ENV-2 : commande qemu-system-arm -M mps2-an386 … du portage>
+qemu-system-arm -M mps2-an386 -kernel <ROOTSTOCK>/build/<preset>/lepton.elf -nographic -monitor none -serial stdio -serial file:<tmp>/uart1.log
 ```
-Test de fumée : attendre l'invite `lsh`, taper `uname -a`, conserver la console complète.
-Banc KAL : `<RELEVÉ ENV-2 : commande du banc>`.
+<!-- Source : tests/smoke_lsh.py:143-144 ; qemu-system-arm = /opt/local/bin (MacPorts). -->
+Test de fumée : attendre l'invite `lepton#<n>$ `, taper `uname -a` (doit contenir
+`cortexM4-qemu-mps2-an386`), conserver la console complète. Automatisé :
+`ctest --preset <preset> -L smoke` (test `smoke.lsh`, `cmake/components/firmware.cmake:131-143`).
+Banc KAL : `ctest --preset <preset> -L kal` (18 tests en hard, 14 en soft ; `tests/kal/CMakeLists.txt`,
+`ci/run.sh:111-113`). Un test isolé :
+`qemu-system-arm -M mps2-an386 -kernel <build>/tests/kal/kal_bench.elf -nographic -monitor none -serial null -semihosting-config enable=on,target=native,arg=kal_bench,arg=<T>`
+(`tests/kal/CMakeLists.txt:44-45`).
 Débogage : QEMU avec `-s -S`, puis `arm-none-eabi-gdb <elf>` et `target remote :1234`.
 
 ## Cartes réelles
@@ -40,20 +52,28 @@ Débogage : QEMU avec `-s -S`, puis `arm-none-eabi-gdb <elf>` et `target remote 
 Écriture flash : uniquement après autorisation de l'utilisateur pour la session (PA-11 ou point
 d'arrêt de l'étape). Vérifier d'abord quelle carte est branchée :
 ```bash
-openocd -f <interface> -f <target> -c "init; targets; shutdown"
+openocd -f <cfg> -c "init; targets; shutdown"
 ```
 
 | Carte | Fichiers OpenOCD | Console série |
 | --- | --- | --- |
-| NUCLEO-F429ZI | `<RELEVÉ ENV-2>` | `<RELEVÉ ENV-2>` |
-| NUCLEO-WL55JC1 | `<RELEVÉ ENV-2>` (cœur M4 uniquement) | `<RELEVÉ ENV-2>` |
+| NUCLEO-F429ZI | `-f <clone>/scion/debug/openocd-nucleo-f439zi.cfg` (→ `board/st_nucleo_f4.cfg`, ST-LINK/V2-1) | `/dev/cu.usbmodem1454303`, 115200 8N1 |
+| NUCLEO-WL55JC1 | `-f <ROOTSTOCK>/build/<preset>/openocd-nucleo-wl55jc1.cfg` (généré : `interface/stlink.cfg` + `adapter serial` + `debug/openocd-nucleo-wl55jc1.cfg` → `target/stm32wlx.cfg`, STLINK-V3) (cœur M4 uniquement) | carte A `/dev/cu.usbmodem1454303`, carte B `/dev/cu.usbmodem1454403`, 115200 8N1 |
+
+<!-- Sources : debug/openocd-nucleo-f439zi.cfg ; cmake/boards/nucleo-wl55jc1.cmake:54-65 ;
+     doc/migration/validation-macos.md:26-30 (ports relevés en étape 10, à revérifier : ils
+     dépendent du port USB) ; tests/smoke_lsh.py:126 (débit). Sondes : F429 ST-LINK/V2-1
+     n° 0672FF495252717267243842 ; WL55 A 002700253431510837393937, B 004F003E3431510937393937
+     (doc/migration/validation-nucleo-wl55jc1.md:7-10). Cible CMake équivalente : `cmake --build <build> --target flash`
+     (cmake/components/firmware.cmake:90-95). -->
 
 Flash puis vérification :
 ```bash
-openocd -f <interface> -f <target> -c "program <elf> verify reset exit"
+openocd -f <cfg> -c "program <elf> verify reset exit"
 ```
-Débogage : `openocd -f <interface> -f <target>` dans un terminal, puis
-`arm-none-eabi-gdb <elf> -ex "target extended-remote :3333" -ex "monitor reset halt"`.
+Débogage : `openocd -f <cfg>` dans un terminal, puis
+`arm-none-eabi-gdb -x <clone>/scion/debug/gdbinit-<carte> <elf> -ex "target extended-remote :3333" -ex "monitor reset halt"`
+(`doc/migration/debug-gcc.md:18-19` ; gdbinit `nucleo-f439zi` ou `nucleo-wl55jc1`).
 
 ## Pièges
 
