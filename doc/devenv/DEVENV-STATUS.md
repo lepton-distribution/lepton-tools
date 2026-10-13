@@ -99,6 +99,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | PA-4 | Fréquence et en-tête de carte passés à mklepton par `--cpu-freq` et `--kernel-config-header`, valeurs dans `cmake/boards/*.cmake` (`LEPTON_BOARD_CPU_FREQ`, `LEPTON_BOARD_KERNEL_CONFIG_HEADER`) jusqu'au manifeste BSP. |
 | 2026-10-13 | PA-4 | Deux temps : (1) format 2 et migration, empreintes identiques à l'oracle ; (2) retrait de `CPU_*`, nouvelle référence pour `kernel_mkconf.h` seul (ligne `//#define CPU_…`), écart démontré. |
 | 2026-10-13 | PA-4 | 23 XML hérités supprimés (aucun preset). Défauts corrigés : débordement `"%s/%s"`, `-r` seul ; `strncat` de `_mk_dir` et `kernel_stub.h` hors périmètre. |
+| 2026-10-13 | PA-4 (amendement) | `_mk_rtc` conservé : horloge hôte `dev_host_rtc` (`SOURCE_DATE_EPOCH`), nécessaire à la reproductibilité de l'image ; seuls `MK_DEV_*` et `/dev/kb0` retirés. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal

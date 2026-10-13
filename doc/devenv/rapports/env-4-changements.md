@@ -18,7 +18,8 @@ nucleo_wl55jc1, samd21_xplained_pro, stm32f746g_disco, lwip_stm32f4-olimex-p407}
 | `<cpu type>` + `cpu_type_enum_t`, `cpu_type_list` | **retiré** | Ne produit qu'un commentaire | Olimex (`cpu_arm7`) | **`kernel_mkconf.h`** : disparition de la ligne `//#define CPU_…` (commentaire) |
 | `<cpufs block>`, `<cpufs option>` | **retiré** | Lus sans effet | 0 | aucun |
 | `<cpufs size>`, `<cpufs node>` | **facultatifs** ; absents ⇒ dimensionnement automatique (PA-3) | CFG-8 | 0 (valeurs conservées à la migration) | aucun pour les 6 ; nouvelle sortie testée à part |
-| `MK_DEV_*` M16C/LCD/RTC, `_mk_rtc`, `boot_dev` `/dev/kb0` | **retiré** (code) | Code mort ; `_mk_rtc` exige `/dev/rtc0` | – | à vérifier par empreintes |
+| `MK_DEV_*` M16C/LCD/RTC, `boot_dev` `/dev/kb0` | **retiré** (code) | Code mort | – | aucun |
+| `_mk_rtc` | **conservé** (amendement PA-4) | Règle l'horloge depuis `/dev/rtc0` = `dev_host_rtc` (`SOURCE_DATE_EPOCH`) : dates de l'image UFS reproductibles | – | – |
 | `heap`, `process`, `thread`, `openfiles`, `descriptors`, `env`, `network`, `devices/dev`, `binaries/bin`, `files/file`, `directories/directory`, `boot/command`, `mount/disk` | **conservés** | Configuration logicielle | – | aucun |
 | Deux sections `<devices>` (`cortexm_lepton` + commune) | **fusionnées** en une, ordre conservé | Lisibilité ; ordre de `dev_lst[]` inchangé | 5 cartes | aucun si l'ordre est conservé |
 
@@ -44,4 +45,4 @@ Contrainte de forme pour la migration : `firmware.cmake:26-47` lit `<binaries �
 | `strncat(…,32)` dans `_mk_dir` | Hors périmètre (aucun `<directory>` en usage) |
 | `-r` non analysé seul | Corrigé (une ligne) |
 | `kernel_stub.h` désynchronisé | Hors périmètre (ENV-5) |
-| `_mk_rtc` exige `/dev/rtc0` | Disparaît avec `_mk_rtc` |
+| `_mk_rtc` exige `/dev/rtc0` | Assumé : `rtc0` toujours fourni par le noyau hôte (`dev_host_rtc`) |
