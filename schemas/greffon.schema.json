@@ -1,0 +1,357 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:lepton:schema:greffon:1",
+  "title": "Manifeste de greffon Lepton",
+  "description": "Manifeste déclaratif d'un greffon (scion), lu par CMake (string(JSON)) et par l'outil lepton. Fichier lepton-greffon.json à la racine scion/ du greffon.",
+  "$comment": "GRF-2 (manifeste JSON validé par JSON Schema), décision 9 (JSON + JSON Schema, champ description). ENV-3.",
+  "type": "object",
+  "required": ["nom", "type", "version"],
+  "properties": {
+    "$schema": {
+      "description": "Référence au présent schéma, pour la validation à la saisie dans l'éditeur.",
+      "$comment": "CFG-7.",
+      "type": "string"
+    },
+    "nom": {
+      "description": "Nom du greffon, unique dans une graine ; sert de référence dans les dépendances et dans la graine.",
+      "$comment": "GRF-2 (nom).",
+      "$ref": "#/$defs/identifiant"
+    },
+    "type": {
+      "description": "Type du greffon. famille : couche Lepton et pilotes tiers d'une famille de puces, table de vecteurs par MCU ; bsp : adaptation d'une carte (horloge, GPIO).",
+      "$comment": "GRF-2 (type) ; type famille ajouté le 2026-10-13 (PA-2 Q2/Q3, cadrage ENV-3).",
+      "enum": ["noyau", "famille", "bsp", "application", "bibliotheque"]
+    },
+    "version": {
+      "description": "Version du greffon (texte libre non vide, par exemple 1.0.0).",
+      "$comment": "GRF-2 (version).",
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "description": "Résumé du rôle du greffon.",
+      "$comment": "Décision 9 (documentation par champ description).",
+      "type": "string"
+    },
+    "destination": {
+      "description": "Répertoire du greffon dans le trunk, relatif à sys/root/src/ (chaîne vide : sys/root/src/ lui-même).",
+      "$comment": "GRF-2 (destination dans le trunk), décision 1.",
+      "$ref": "#/$defs/chemin_relatif_ou_vide"
+    },
+    "bibliotheque": {
+      "description": "Bibliothèque CMake qui reçoit les sources du greffon : kernel, lib, sbin, bin, bsp, ou nom d'une bibliothèque dédiée.",
+      "$comment": "GRF-2 (bibliothèque cible), BLD-1.",
+      "$ref": "#/$defs/identifiant"
+    },
+    "sources": {
+      "description": "Répertoires, relatifs à destination, dont les fichiers .c, .cpp et .S sont découverts et compilés sans liste CMake.",
+      "$comment": "FIC-4 (découverte par répertoire déclaré dans le manifeste).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/chemin_relatif_ou_vide" },
+      "uniqueItems": true
+    },
+    "dependances": {
+      "description": "Noms des greffons dont celui-ci dépend (leurs options publiques lui sont visibles).",
+      "$comment": "GRF-2 (dépendances), CFG-3 (portée publique), GRF-5.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/identifiant" },
+      "uniqueItems": true
+    },
+    "compilation": {
+      "description": "Options de compilation fixes du greffon (définitions, drapeaux d'optimisation et d'avertissement), par portée.",
+      "$comment": "CFG-3 (options de compilation avec portée privée ou publique).",
+      "type": "object",
+      "properties": {
+        "privee": {
+          "description": "Visible des seules sources du greffon.",
+          "$ref": "#/$defs/jeu_compilation"
+        },
+        "publique": {
+          "description": "Visible aussi des greffons qui dépendent de celui-ci.",
+          "$ref": "#/$defs/jeu_compilation"
+        }
+      },
+      "additionalProperties": false
+    },
+    "options": {
+      "description": "Options configurables du greffon, typées et documentées ; chacune devient une définition de compilation <nom>=<valeur>.",
+      "$comment": "GRF-2 (options configurables), CFG-3, CFG-4.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/option" }
+    },
+    "coeurs": {
+      "description": "Cœurs pris en charge (noyau : architectures KAL disponibles ; famille : cœurs des MCU couverts).",
+      "$comment": "GRF-5 (un BSP M4 avec un noyau sans arch M4 est refusé).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/coeur" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "backends": {
+      "description": "Backends micro-noyau fournis par le greffon noyau.",
+      "$comment": "CFG-2 (backend dans les manifestes), GRF-5.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/backend" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "mcu": {
+      "description": "famille : MCU couverts (liste) ; bsp : MCU de la carte (texte).",
+      "$comment": "GRF-3 (MCU)."
+    },
+    "vecteurs": {
+      "description": "Fichiers de table de vecteurs par MCU, relatifs à destination, liés comme objets (bibliothèque OBJECT).",
+      "$comment": "BLD-1 (vecteurs liés en OBJECT), PA-2 Q3 (table de vecteurs par MCU dans le greffon famille).",
+      "$ref": "#/$defs/liste_fichiers"
+    },
+    "remplacants_forts": {
+      "description": "Fichiers qui remplacent des symboles faibles d'un pilote tiers (ex. HAL_GetTick), relatifs à destination, liés comme objets.",
+      "$comment": "BLD-1, PA-2 Q3 (liaison OBJECT, remplaçants forts compris).",
+      "$ref": "#/$defs/liste_fichiers"
+    },
+    "famille": {
+      "description": "Nom du greffon famille sur lequel repose la carte ; dépendance implicite.",
+      "$comment": "PA-2 Q2 (BSP limité à la carte, sur un greffon famille).",
+      "$ref": "#/$defs/identifiant"
+    },
+    "coeur": {
+      "description": "Cœur de la carte (axe CPU CMake).",
+      "$comment": "GRF-3 (famille de cœur), CFG-1 (cœur dans les manifestes).",
+      "$ref": "#/$defs/coeur"
+    },
+    "abi_flottante": {
+      "description": "ABI flottante imposée par la carte (soft pour un Cortex-M4 sans FPU, ex. STM32WL55) ; absente : ABI par défaut du cœur.",
+      "$comment": "CFG-1 (architecture dans les manifestes) ; proposition soumise à PA-3.",
+      "enum": ["hard", "soft"]
+    },
+    "frequence_cpu": {
+      "description": "Fréquence du cœur en Hz après initialisation de l'horloge (__KERNEL_CPU_FREQ).",
+      "$comment": "CFG-1, CFG-8 : propriété de carte retirée du XML (<cpu freq>), cadrage ENV-3 du 2026-10-13, confirmation en PA-4.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "entete_config_noyau": {
+      "description": "En-tête de configuration noyau de la carte (user_kernel_mkconf.h), relatif à destination.",
+      "$comment": "CFG-1, CFG-8 : remplace <arch include_absolute_path> du XML, cadrage ENV-3 du 2026-10-13 ; emplacement définitif en PA-7.",
+      "$ref": "#/$defs/chemin_relatif"
+    },
+    "script_liens": {
+      "description": "Script d'édition de liens propre à la carte (bloc MEMORY), relatif à destination.",
+      "$comment": "GRF-3 (script d'édition de liens).",
+      "$ref": "#/$defs/chemin_relatif"
+    },
+    "demarrage": {
+      "description": "Fichiers de démarrage propres à la carte (SystemInit, horloge), relatifs à destination, liés comme objets.",
+      "$comment": "GRF-3 (démarrage), BLD-1 (OBJECT), PA-2 Q2/Q3 (horloge dans le BSP, démarrage générique dans le noyau).",
+      "$ref": "#/$defs/liste_fichiers"
+    },
+    "openocd": {
+      "description": "Fichiers de configuration OpenOCD de la carte, relatifs à destination, passés dans l'ordre par -f.",
+      "$comment": "GRF-3 (configuration OpenOCD).",
+      "$ref": "#/$defs/liste_fichiers"
+    },
+    "sonde": {
+      "description": "Famille de sonde de débogage de la carte (pour launch.json).",
+      "$comment": "GRF-3 (sonde).",
+      "enum": ["stlink", "jlink", "cmsis-dap"]
+    },
+    "svd": {
+      "description": "Fichier SVD du MCU, relatif à destination (vue des périphériques au débogage).",
+      "$comment": "GRF-3 ; ENV-3 (svd).",
+      "$ref": "#/$defs/chemin_relatif"
+    },
+    "qemu": {
+      "description": "Exécution sous QEMU, si la carte est émulée.",
+      "$comment": "GRF-3 (cible QEMU éventuelle).",
+      "type": "object",
+      "required": ["machine"],
+      "properties": {
+        "machine": {
+          "description": "Machine QEMU (option -machine), ex. mps2-an386.",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "Noyau : coeurs et backends obligatoires (GRF-5, CFG-2) ; ses bibliothèques kernel, lib, sbin, bin sont définies par son CMakeLists.txt (BLD-1).",
+      "if": { "properties": { "type": { "const": "noyau" } } },
+      "then": {
+        "required": ["destination", "coeurs", "backends"],
+        "properties": {
+          "bibliotheque": false, "mcu": false, "vecteurs": false, "remplacants_forts": false,
+          "famille": false, "coeur": false, "abi_flottante": false, "frequence_cpu": false,
+          "entete_config_noyau": false, "script_liens": false, "demarrage": false,
+          "openocd": false, "sonde": false, "svd": false, "qemu": false
+        }
+      }
+    },
+    {
+      "$comment": "Famille : sous kernel/dev/arch, dans la bibliothèque kernel (BLD-1, PA-2 Q2/Q3).",
+      "if": { "properties": { "type": { "const": "famille" } } },
+      "then": {
+        "required": ["destination", "bibliotheque", "coeurs", "mcu"],
+        "properties": {
+          "destination": { "pattern": "^kernel/dev/arch/" },
+          "bibliotheque": { "const": "kernel" },
+          "mcu": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1, "uniqueItems": true },
+          "backends": false, "famille": false, "coeur": false, "abi_flottante": false,
+          "frequence_cpu": false, "entete_config_noyau": false, "script_liens": false,
+          "demarrage": false, "openocd": false, "sonde": false, "svd": false, "qemu": false
+        }
+      }
+    },
+    {
+      "$comment": "BSP : GRF-3 ; débogage sur carte (openocd + sonde) ou exécution QEMU, au moins l'un des deux.",
+      "if": { "properties": { "type": { "const": "bsp" } } },
+      "then": {
+        "required": ["destination", "bibliotheque", "famille", "coeur", "mcu", "frequence_cpu", "script_liens", "demarrage"],
+        "properties": {
+          "destination": { "pattern": "^kernel/dev/bsp/" },
+          "bibliotheque": { "const": "bsp" },
+          "mcu": { "type": "string", "minLength": 1 },
+          "coeurs": false, "backends": false, "vecteurs": false, "remplacants_forts": false
+        },
+        "anyOf": [
+          { "required": ["openocd", "sonde"] },
+          { "required": ["qemu"] }
+        ]
+      }
+    },
+    {
+      "$comment": "Application : sous bin/, bibliothèque bin (décision 3).",
+      "if": { "properties": { "type": { "const": "application" } } },
+      "then": {
+        "required": ["destination", "bibliotheque", "sources"],
+        "properties": {
+          "destination": { "pattern": "^bin/" },
+          "bibliotheque": { "const": "bin" }
+        },
+        "$ref": "#/$defs/sans_champ_materiel"
+      }
+    },
+    {
+      "$comment": "Bibliothèque : sous lib/, bibliothèque lib ou dédiée.",
+      "if": { "properties": { "type": { "const": "bibliotheque" } } },
+      "then": {
+        "required": ["destination", "bibliotheque", "sources"],
+        "properties": {
+          "destination": { "pattern": "^lib/" }
+        },
+        "$ref": "#/$defs/sans_champ_materiel"
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "identifiant": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "chemin_relatif": {
+      "$comment": "Chemin relatif : segments sans barre initiale, ni . ni .. (un segment peut commencer par un point, ex. .boot).",
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\.?[A-Za-z0-9_+@-][A-Za-z0-9_.+@-]*(/\\.?[A-Za-z0-9_+@-][A-Za-z0-9_.+@-]*)*$"
+    },
+    "chemin_relatif_ou_vide": {
+      "anyOf": [ { "const": "" }, { "$ref": "#/$defs/chemin_relatif" } ]
+    },
+    "liste_fichiers": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/chemin_relatif" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "coeur": {
+      "$comment": "Valeurs des fichiers cmake/cpu/*.cmake du greffon noyau (ENV-2).",
+      "enum": ["cortex-m0plus", "cortex-m3", "cortex-m4f", "cortex-m7"]
+    },
+    "backend": {
+      "$comment": "Backends KAL du portage (cmake/kal/), hors static réservé à l'hôte.",
+      "enum": ["embos", "freertos"]
+    },
+    "jeu_compilation": {
+      "type": "object",
+      "properties": {
+        "definitions": {
+          "description": "Définitions du préprocesseur, NOM ou NOM=valeur.",
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*(=.*)?$" },
+          "uniqueItems": true
+        },
+        "drapeaux": {
+          "description": "Drapeaux du compilateur (optimisation, avertissements), ex. -O2, -Wall.",
+          "type": "array",
+          "items": { "type": "string", "pattern": "^-" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "option": {
+      "$comment": "CFG-4 : option typée (booléen, entier borné, énumération, chaîne), défaut et description obligatoires ; CFG-3 : portée. L'appartenance du défaut aux bornes ou aux valeurs n'est pas exprimable en JSON Schema : contrôle par lepton (ENV-8).",
+      "type": "object",
+      "required": ["nom", "type", "defaut", "portee", "description"],
+      "properties": {
+        "nom": {
+          "description": "Nom de l'option, aussi nom de la définition de compilation produite.",
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "type": {
+          "description": "Type de la valeur.",
+          "enum": ["booleen", "entier", "enumeration", "chaine"]
+        },
+        "defaut": { "description": "Valeur par défaut, du type déclaré." },
+        "min": { "description": "Borne inférieure incluse (entier).", "type": "integer" },
+        "max": { "description": "Borne supérieure incluse (entier).", "type": "integer" },
+        "valeurs": {
+          "description": "Valeurs admises (énumération).",
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "portee": {
+          "description": "privee : sources du greffon seulement ; publique : aussi les greffons dépendants.",
+          "enum": ["privee", "publique"]
+        },
+        "description": {
+          "description": "Rôle de l'option ; obligatoire (décision 9).",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "booleen" } } },
+          "then": { "properties": { "defaut": { "type": "boolean" }, "min": false, "max": false, "valeurs": false } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "entier" } } },
+          "then": { "required": ["min", "max"], "properties": { "defaut": { "type": "integer" }, "valeurs": false } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "enumeration" } } },
+          "then": { "required": ["valeurs"], "properties": { "defaut": { "type": "string" }, "min": false, "max": false } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "chaine" } } },
+          "then": { "properties": { "defaut": { "type": "string" }, "min": false, "max": false, "valeurs": false } }
+        }
+      ]
+    },
+    "sans_champ_materiel": {
+      "properties": {
+        "coeurs": false, "backends": false, "mcu": false, "vecteurs": false,
+        "remplacants_forts": false, "famille": false, "coeur": false, "abi_flottante": false,
+        "frequence_cpu": false, "entete_config_noyau": false, "script_liens": false,
+        "demarrage": false, "openocd": false, "sonde": false, "svd": false, "qemu": false
+      }
+    }
+  }
+}

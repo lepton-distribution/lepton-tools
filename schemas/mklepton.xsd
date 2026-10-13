@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Format XML de mklepton, version 2 (ENV-3, 2026-10-13).
+     Le format 1 est le format implicite, sans attribut version, des XML du portage.
+     Source : doc/devenv/rapports/env-2-mklepton.md (inventaire des éléments et attributs). -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:annotation>
+    <xs:documentation>
+      CFG-8 : schéma XSD versionné ; le XML se limite à la configuration logicielle de Lepton et de
+      son système de fichiers racine. Retirés du format 1 : &lt;target&gt; (sélecteur
+      d'architecture), &lt;arch&gt; (dest_path : sortie fixée par CMake via -o ;
+      include_absolute_path : manifeste BSP, entete_config_noyau), &lt;cpu&gt; (type : architecture ;
+      freq : manifeste BSP, frequence_cpu), attributs block et option de &lt;cpufs&gt; (lus sans
+      effet). CFG-1 : aucun cœur, architecture ni backend.
+    </xs:documentation>
+  </xs:annotation>
+
+  <!-- Types simples -->
+
+  <xs:simpleType name="interrupteur">
+    <xs:annotation><xs:documentation>on ou off (mklepton : strcasecmp "on").</xs:documentation></xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="on"/>
+      <xs:enumeration value="off"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="nom_c">
+    <xs:annotation><xs:documentation>Identifiant C (symbole de pilote, nom de binaire).</xs:documentation></xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Za-z_][A-Za-z0-9_]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="chemin">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Racine -->
+
+  <xs:element name="mklepton">
+    <xs:annotation>
+      <xs:documentation>
+        Racine. Attribut version obligatoire ; mklepton refuse une version inconnue (CFG-8).
+        Un seul &lt;kernel&gt;, puis les autres sections dans un ordre quelconque.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="kernel" type="kernel"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="devices" type="devices"/>
+          <xs:element name="binaries" type="binaries"/>
+          <xs:element name="files" type="files"/>
+          <xs:element name="directories" type="directories"/>
+          <xs:element name="boot" type="boot"/>
+          <xs:element name="mount" type="mount"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="version" use="required">
+        <xs:annotation><xs:documentation>Version du format (CFG-8). Seule valeur admise : 2.</xs:documentation></xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Paramètres dimensionnants du noyau → kernel_mkconf.h -->
+
+  <xs:complexType name="kernel">
+    <xs:annotation>
+      <xs:documentation>CFG-2 : paramètres dimensionnants du noyau (kernel_mkconf.h).</xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="heap" minOccurs="0">
+        <xs:annotation><xs:documentation>CFG-2 : __KERNEL_HEAP_SIZE (octets).</xs:documentation></xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="size" type="xs:positiveInteger" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="process" minOccurs="0" type="maximum">
+        <xs:annotation><xs:documentation>CFG-2 : __KERNEL_PROCESS_MAX.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="thread" minOccurs="0" type="maximum">
+        <xs:annotation><xs:documentation>CFG-2 : __KERNEL_PTHREAD_MAX.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="openfiles" minOccurs="0" type="maximum">
+        <xs:annotation><xs:documentation>CFG-2 : MAX_OPEN_FILE.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="descriptors" minOccurs="0" type="maximum">
+        <xs:annotation><xs:documentation>CFG-2 : OPEN_MAX.</xs:documentation></xs:annotation>
+      </xs:element>
+      <xs:element name="cpufs" minOccurs="0">
+        <xs:annotation><xs:documentation>CFG-1 : système de fichiers racine en flash (image UFS, filecpu_memory).</xs:documentation></xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="size" type="xs:positiveInteger" use="required"/>
+          <xs:attribute name="node" type="xs:positiveInteger" use="required"/>
+          <xs:attribute name="blocksz" type="xs:positiveInteger" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="env" minOccurs="0">
+        <xs:annotation><xs:documentation>CFG-2 : __KERNEL_ENV_PATH.</xs:documentation></xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="path" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="network" minOccurs="0">
+        <xs:annotation><xs:documentation>CFG-2 : __KERNEL_NET_IPSTACK.</xs:documentation></xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="use" type="interrupteur" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="maximum">
+    <xs:attribute name="max" type="xs:positiveInteger" use="required"/>
+  </xs:complexType>
+
+  <!-- Pilotes logiciels → dev_mkconf.c (table des périphériques) -->
+
+  <xs:complexType name="devices">
+    <xs:annotation><xs:documentation>CFG-2 : pilotes logiciels retenus (table des périphériques, décision 2).</xs:documentation></xs:annotation>
+    <xs:sequence>
+      <xs:element name="dev" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="name" type="nom_c" use="required"/>
+          <xs:attribute name="use" type="interrupteur" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Binaires de l'image → bin_mkconf.c et rootfs -->
+
+  <xs:complexType name="binaries">
+    <xs:annotation><xs:documentation>Décision 3 : binaires de l'image choisis par la configuration mklepton.</xs:documentation></xs:annotation>
+    <xs:sequence>
+      <xs:element name="bin" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="name" type="nom_c" use="required"/>
+          <xs:attribute name="stack" type="xs:positiveInteger" use="required"/>
+          <xs:attribute name="priority" type="xs:nonNegativeInteger" use="required"/>
+          <xs:attribute name="timeslice" type="xs:nonNegativeInteger" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="src_path" type="chemin" use="required"/>
+    <xs:attribute name="dest_path" type="chemin" use="required"/>
+  </xs:complexType>
+
+  <!-- Fichiers et répertoires du système de fichiers racine -->
+
+  <xs:complexType name="files">
+    <xs:annotation><xs:documentation>CFG-1 : fichiers copiés dans le système de fichiers racine.</xs:documentation></xs:annotation>
+    <xs:sequence>
+      <xs:element name="file" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="name" type="chemin" use="required"/>
+          <xs:attribute name="src_file" type="chemin" use="required"/>
+          <xs:attribute name="dest_path" type="chemin" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="directories">
+    <xs:annotation><xs:documentation>CFG-1 : répertoires copiés dans le système de fichiers racine (accepté par mklepton, absent des XML du portage).</xs:documentation></xs:annotation>
+    <xs:sequence>
+      <xs:element name="directory" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="src_path" type="chemin" use="required"/>
+          <xs:attribute name="dest_path" type="chemin" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Fichiers .boot et .mount -->
+
+  <xs:complexType name="boot">
+    <xs:annotation><xs:documentation>CFG-1 : fichier .boot du système de fichiers racine (commandes de démarrage).</xs:documentation></xs:annotation>
+    <xs:sequence>
+      <xs:element name="command" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="arg" type="xs:string" use="required"/>
+          <xs:attribute name="value" type="xs:string"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="dest_path" type="chemin" use="required"/>
+    <xs:attribute name="dev" type="chemin"/>
+    <xs:attribute name="delay" type="xs:nonNegativeInteger"/>
+  </xs:complexType>
+
+  <xs:complexType name="mount">
+    <xs:annotation><xs:documentation>CFG-1 : fichier .mount du système de fichiers racine (montages au démarrage).</xs:documentation></xs:annotation>
+    <xs:sequence>
+      <xs:element name="disk" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="type" type="xs:string" use="required"/>
+          <xs:attribute name="dev" type="chemin" use="required"/>
+          <xs:attribute name="point" type="chemin" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="dest_path" type="chemin" use="required"/>
+  </xs:complexType>
+
+</xs:schema>
