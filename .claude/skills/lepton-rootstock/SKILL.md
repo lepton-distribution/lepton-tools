@@ -21,8 +21,12 @@ réels et l'historique git sont dans les clones (`<ROOTSTOCK>/depots/…`). Chem
    ```bash
    cd <ROOTSTOCK> && scion graft
    ```
-3. Déplacer ou renommer : `git -C <clone> mv …` puis `scion ungraft && scion graft`.
-4. Supprimer : `git -C <clone> rm …` puis `scion ungraft && scion graft`.
+   Depuis scion 0.5.1.0, regreffe du seul greffon touché (clé de `.scion.grafted.list`, `/` → `@`) :
+   ```bash
+   cd <ROOTSTOCK> && scion graft --scion lepton@bsp::nucleo-f429zi
+   ```
+3. Déplacer ou renommer : `git -C <clone> mv …` puis `scion graft` (ou `scion graft --scion <clé>`).
+4. Supprimer : `git -C <clone> rm …` puis `scion graft` (ou `scion graft --scion <clé>`).
 
 Le hook du dépôt refuse les écritures directes sous `trunk/` (Write, Edit, et commandes shell
 évidentes). Un refus du hook n'est pas à contourner : il signale une erreur de chemin.
@@ -33,7 +37,9 @@ Le hook du dépôt refuse les écritures directes sous `trunk/` (Write, Edit, et
   chemin du trunk : il remplace le lien par un fichier régulier non versionné.
 - Répertoire de construction ou sortie de mklepton dans le trunk.
 - `scion seed-update`, `scion graft-update` (font un `git pull`) sans accord de l'utilisateur.
-- `scion git` pour lire : sa sortie n'est pas affichée en 0.5.0.1. Utiliser `git -C <clone>`.
+- `scion graft-remove --purge`, `scion seed-scion-add` / `seed-scion-remove` sur `<ROOTSTOCK>` sans
+  accord : ils modifient la graine ou suppriment un clone.
+- Git : préférer `git -C <clone>` (la sortie de `scion git` n'est affichée qu'à partir de 0.5.1.0).
 
 ## Contrôles (à lancer après toute série d'écritures)
 
