@@ -1,7 +1,7 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-13 — ENV-3 terminée.
+Dernière mise à jour : 2026-10-13 — ENV-4 en cours.
 
 ## Prochaine action
 
@@ -15,7 +15,7 @@ Démarrer ENV-4 (format XML de mklepton) d'après `etapes/ENV-04-mklepton-xml.md
 | ENV-1 | Levée des risques éditeur | terminée (2026-10-12) | lepton-tools `devenv/env-1` | `handoff/env-1.md` |
 | ENV-2 | Audit de l'existant | terminée (2026-10-13) | lepton-tools `devenv/env-2` | `handoff/env-2.md` |
 | ENV-3 | Schémas | terminée (2026-10-13) | lepton-tools `devenv/env-3` | `handoff/env-3.md` |
-| ENV-4 | Format XML de mklepton | à faire | — | — |
+| ENV-4 | Format XML de mklepton | en cours | lepton-tools `devenv/env-4` ; clone noyau `devenv/env-4` | — |
 | ENV-5 | Restructuration CMake | à faire | — | — |
 | ENV-6 | Greffons BSP de référence | à faire | — | — |
 | ENV-7 | Évolutions de scion | à faire | — | — |
@@ -94,6 +94,11 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | PA-3 | Origine des greffons (git ou local, GRA-3) portée par `.scion.sources.list` seul ; la graine JSON référence les greffons par nom et rôle. |
 | 2026-10-13 | PA-3 | Champs retenus en plus de la liste d'ENV-3 : `abi_flottante`, `frequence_cpu`, `entete_config_noyau` (BSP), `compilation` (tous greffons, CFG-3). |
 | 2026-10-13 | PA-3 | `SPECIFICATION.md` amendée (types, GRF-2 CMake 3.24, GRF-3, CFG-8, BLD-1, décision 4) : commit 6e1ef34. |
+| 2026-10-13 | — (ENV-4) | ENV-4 avant ENV-5 ; `devenv/env-3` fusionnée localement dans `main` (16bd416) ; `devenv/env-4` créée depuis `main` (lepton-tools) et depuis `master` 6b62af5 (clone noyau). |
+| 2026-10-13 | PA-4 | Changements du format XML validés : `rapports/env-4-changements.md` (ajout `version="2"` ; retrait `<target>`/`-t`, `<arch>`, `<cpu>`, `cpufs block/option`, code M16C/`_mk_rtc` ; fusion des `<devices>`). |
+| 2026-10-13 | PA-4 | Fréquence et en-tête de carte passés à mklepton par `--cpu-freq` et `--kernel-config-header`, valeurs dans `cmake/boards/*.cmake` (`LEPTON_BOARD_CPU_FREQ`, `LEPTON_BOARD_KERNEL_CONFIG_HEADER`) jusqu'au manifeste BSP. |
+| 2026-10-13 | PA-4 | Deux temps : (1) format 2 et migration, empreintes identiques à l'oracle ; (2) retrait de `CPU_*`, nouvelle référence pour `kernel_mkconf.h` seul (ligne `//#define CPU_…`), écart démontré. |
+| 2026-10-13 | PA-4 | 23 XML hérités supprimés (aucun preset). Défauts corrigés : débordement `"%s/%s"`, `-r` seul ; `strncat` de `_mk_dir` et `kernel_stub.h` hors périmètre. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
