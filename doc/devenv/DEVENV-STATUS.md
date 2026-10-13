@@ -107,6 +107,9 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | — (ENV-5) | `devenv/env-4` fusionnée localement dans `main` (lepton-tools, bf95024) et `master` (clone noyau, 49ed8fe) ; `devenv/env-5` créée depuis ces branches. |
 | 2026-10-13 | — (ENV-5) | Oracle ENV-5 : capture binaire du preset host et des 14 presets croisés ; fumée et banc KAL sur an386 ×4 et an500 ×2 ; pas de matériel. NUCLEO-F429ZI = presets `nucleo-f439zi-*`. |
 | 2026-10-13 | — (ENV-5) | Nom du manifeste de greffon : `lepton-greffon.json` (graine : `lepton-graine.json`). |
+| 2026-10-13 | PA-5 | Oracle avant validé : `rapports/env-5-validation.md`, `rapports/oracles/env-5-avant/` (script `scripts/oracle/rejouer-oracle.sh`). |
+| 2026-10-13 | — (ENV-5) | Manifestes BSP transitoires : métadonnées seules (fréquence, en-tête de configuration, script de liens, machine QEMU, cœur, ABI, démarrage) lues par CMake ; listes de sources dans `cmake/boards` jusqu'à ENV-6 ; découverte par GLOB prouvée par le greffon d'essai. |
+| 2026-10-13 | — (ENV-5) | Code de famille (`kernel/dev/arch`) dans la bibliothèque `kernel` dès ENV-5 ; `bsp` limitée à `kernel/dev/bsp`. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
