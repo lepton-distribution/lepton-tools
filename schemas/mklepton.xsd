@@ -96,10 +96,10 @@
         <xs:annotation><xs:documentation>CFG-2 : OPEN_MAX.</xs:documentation></xs:annotation>
       </xs:element>
       <xs:element name="cpufs" minOccurs="0">
-        <xs:annotation><xs:documentation>CFG-1 : système de fichiers racine en flash (image UFS, filecpu_memory).</xs:documentation></xs:annotation>
+        <xs:annotation><xs:documentation>CFG-1 : système de fichiers racine en flash (image UFS, filecpu_memory), en lecture seule à l'exécution. size (octets) et node (nombre de nœuds) facultatifs : absents, mklepton dimensionne l'image au plus juste d'après son contenu ; présents, valeurs imposées, refusées si trop petites (ENV-4, décision PA-3 du 2026-10-13). blocksz : taille de bloc, choix de l'utilisateur.</xs:documentation></xs:annotation>
         <xs:complexType>
-          <xs:attribute name="size" type="xs:positiveInteger" use="required"/>
-          <xs:attribute name="node" type="xs:positiveInteger" use="required"/>
+          <xs:attribute name="size" type="xs:positiveInteger"/>
+          <xs:attribute name="node" type="xs:positiveInteger"/>
           <xs:attribute name="blocksz" type="xs:positiveInteger" use="required"/>
         </xs:complexType>
       </xs:element>
