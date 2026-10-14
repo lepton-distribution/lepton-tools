@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-13 — ENV-6 terminée (lots QEMU, F4, WL).
+Dernière mise à jour : 2026-10-13 — ENV-7 terminée (scion 0.5.1.0).
 
 ## Prochaine action
 
-Démarrer ENV-7 (évolutions de scion) d'après `handoff/env-6.md` : d'abord fusionner localement `devenv/env-6` (lepton-tools → `main`, clone noyau → `master`, graine → `original-tree`, 7 greffons famille/BSP → `master`), puis créer `devenv/env-7` dans lepton-tools et `<SEED_SCIONS>` ; PA-8 avant toute implémentation.
+Démarrer ENV-8 (outil `lepton`) d'après `handoff/env-7.md` : d'abord fusionner localement `devenv/env-7` de lepton-tools dans `main` (seed.scions déjà fusionné et taggé 0.5.1.0), puis créer `devenv/env-8` dans lepton-tools ; PA-9 (interface) avant toute implémentation.
 
 ## Étapes
 
@@ -18,7 +18,7 @@ Démarrer ENV-7 (évolutions de scion) d'après `handoff/env-6.md` : d'abord fus
 | ENV-4 | Format XML de mklepton | terminée (2026-10-13) | lepton-tools `devenv/env-4` ; clone noyau `devenv/env-4` | `handoff/env-4.md` |
 | ENV-5 | Restructuration CMake | terminée (2026-10-13) | lepton-tools `devenv/env-5` ; clone noyau `devenv/env-5` | `handoff/env-5.md` |
 | ENV-6 | Greffons BSP de référence | terminée (2026-10-13) | `devenv/env-6` : lepton-tools, clone noyau, graine de travail, greffons `qemu-mps2`, `qemu-mps2-an386`, `qemu-mps2-an500`, `stm32f4xx`, `nucleo-f429zi`, `stm32wlxx`, `nucleo-wl55jc1` | `handoff/env-6.md` |
-| ENV-7 | Évolutions de scion | à faire | — | — |
+| ENV-7 | Évolutions de scion | terminée (2026-10-13) | lepton-tools `devenv/env-7` ; seed.scions `devenv/env-7` (fusionnée dans `master`, tag 0.5.1.0) | `handoff/env-7.md` |
 | ENV-8 | Outil `lepton` | à faire | — | — |
 | ENV-9 | Fichiers de l'éditeur | à faire | — | — |
 | ENV-10 | Script d'installation VSCodium | à faire | — | — |
@@ -42,7 +42,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 
 | Outil | Version | Relevé le |
 | --- | --- | --- |
-| scion | 0.5.0.1 (tag 54dc319) — `~/.local/bin/scion` (pipx), code identique au tag | 2026-10-13 |
+| scion | 0.5.1.0 (tag annoté sur 79f4f96, `master` de `<SEED_SCIONS>`, non poussé) — `~/.local/bin/scion` (pipx `git+file://<SEED_SCIONS>@0.5.1.0`), modules identiques au tag ; 0.5.0.1 (54dc319) auparavant | 2026-10-13 |
 | CMake (minimum requis) | 3.24 | décision 2026-10-13 (PA-2 Q6 ; 3.19 le 2026-10-12) |
 | CMake (hôte Mac) | 3.31.12 — `/opt/local/bin/cmake` (MacPorts) | 2026-10-12 |
 | arm-none-eabi-gcc | 14.2.Rel1 (14.2.1 20241119) — Arm GNU Toolchain, `~/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi` (hors MacPorts) | 2026-10-12 |
@@ -127,6 +127,11 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | — (ENV-6, lot F4) | Signalés, non déplacés (hors liste PA-7, non compilés) : `kernel/usb/stm32f4-usb-core/`, démos `freeRTOS_{8-0-0,9-0-0}/…/stm32f4/` ; table de vecteurs de la famille liée par symbole aux gestionnaires du BSP (à revoir avant un second BSP F4). |
 | 2026-10-13 | PA-7 (lot WL) | Liste WL revérifiée (`ninja -t deps`), identique au §4. Relais IRQ11/12/37/50 sortis de `stm32wl55jci_nucleo_system.c` vers la famille (`vecteurs/stm32wl55xx_vectors.c`). OpenOCD : manifeste `openocd` = cfg statique du BSP, cfg enveloppe générée par le `CMakeLists.txt` du BSP (remplace `LEPTON_BOARD_OPENOCD_CFG`). Radio : `dev_stm32wlxx_bsp_radio_if.c` (famille) inclut `radio_board_if.h` par nom, inclusions publiques radio dans le BSP. `sys/user/tauon-basic/src/arch/st-stm32wl55jci-nucleo/` (IAR, non utilisé) laissé, signalé. |
 | 2026-10-13 | — (ENV-6) | ENV-6 terminée. Cartes validées : QEMU an386 ×4, an500 ×2 (construction, fumée, banc KAL identiques) ; NUCLEO-F429ZI ×2 et NUCLEO-WL55JC1 ×2 (construction, symboles identiques, écarts de sections expliqués : `rapports/env-6-validation.md`) ; flash et fumée série en ENV-11 (PA-11). Fusions locales de `devenv/env-6` au début de la session suivante. Aucun push. |
+| 2026-10-13 | — (ENV-7) | `devenv/env-6` fusionnée localement (`--no-ff`) : lepton-tools `main` f4a8088, clone noyau `master` 42733ce, graine `original-tree` 43d12e6, 7 greffons famille/BSP `master` ; branches cibles extraites dans le rootstock (trunk inchangé, 4 037 feuilles) ; `devenv/env-7` créée depuis `main` (lepton-tools). |
+| 2026-10-13 | PA-8 | Évolutions de scion retenues : E1 à E6 de `rapports/env-7-evolutions.md` §2 telles quelles (`seed-scion-add [--replace]`, `seed-scion-remove`, `graft-remove [--purge]`, `graft --scion`, sortie de `scion git`, conflits fichier / répertoire) ; E7 : option B, `rootstock-install --bare` (layout par défaut conservé). |
+| 2026-10-13 | PA-8 | Version cible 0.5.1.0 ; `devenv/env-7` de `<SEED_SCIONS>` créée depuis `master` e0adb2c (et non le tag) ; critère de test : `python3 -m unittest discover -s tests` (pytest non installé). |
+| 2026-10-13 | PA-8 (tag) | `devenv/env-7` de seed.scions fusionnée localement dans `master` (79f4f96, `--no-ff`), tag annoté `0.5.1.0`, installation pipx depuis le tag ; aucun push. |
+| 2026-10-13 | — (ENV-7) | ENV-7 terminée : `rapports/env-7-evolutions.md` §6 (104 tests, NF-2, essai sur copie, regreffe de `<ROOTSTOCK>` identique). Fusion locale de `devenv/env-7` (lepton-tools) au début de la session suivante. Aucun push. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -145,3 +150,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | ENV-6 | Session 1 : oracle avant ; PA-7 tranché (`rapports/env-6-extraction.md`) ; schéma amendé ; lecteur famille/BSP ; lot QEMU (famille `qemu-mps2`, BSP an386 et an500) extrait et greffé ; non-régression `rapports/env-6-validation.md` ; lots F4 et WL restent. |
 | 2026-10-13 | ENV-6 | Session 2 : Q7 tranché (BSP F439ZI reporté) ; lot F4 (famille `stm32f4xx`, BSP `nucleo-f429zi`, presets `nucleo-f429zi-*`, `gdbinit-lepton`, `openocd` lu par le lecteur) ; non-régression `env-6-validation.md` §Lot F4, `oracles/env-6-lot-f4/` ; skill `lepton-cibles` mise à jour ; lot WL reste. |
 | 2026-10-13 | ENV-6 | Session 3 : PA-7 lot WL tranché ; lot WL (famille `stm32wlxx`, BSP `nucleo-wl55jc1`, vecteurs dans la famille, cfg OpenOCD générée par le BSP) ; non-régression `env-6-validation.md` §Lot WL, `oracles/env-6-lot-wl/` (`.data` WL : remplissage, démontré sur copie d'essai) ; skill `lepton-cibles` ; étape terminée. |
+| 2026-10-13 | ENV-7 | Fusions locales de `devenv/env-6` ; PA-8 tranché (E1-E6, `--bare`, 0.5.1.0) ; scion 0.5.1.0 : `seed-scion-add/remove`, `graft --scion`, `graft-remove [--purge]`, `rootstock-install --bare`, sortie de `scion git`, conflits fichier / répertoire (écriture dans un clone corrigée) ; 104 tests ; tag et installation ; skill `lepton-rootstock` ; étape terminée. |
