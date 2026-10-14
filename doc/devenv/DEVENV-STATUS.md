@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-14 — ENV-8 en cours (session 2 : jalons 2 et 3).
+Dernière mise à jour : 2026-10-14 — ENV-8 en cours (session 3 : jalons 4 et 5).
 
 ## Prochaine action
 
-Reprendre ENV-8, session S3 (PA-9 Q9), d'après `handoff/env-8.md` : sur `devenv/env-8` de lepton-tools, jalons 4 (`scion new` depuis `lepton/templates/`, BSP par `--from`, `scion remove`) et 5 (`file`/`dir` dans le clone propriétaire puis `scion graft --scion`, `lepton graft` avec suppression des `.DS_Store` réguliers), interface `rapports/env-8-interface.md` §3.6-§3.8 et §8.
+Reprendre ENV-8, session S4 (PA-9 Q9), d'après `handoff/env-8.md` : sur `devenv/env-8` de lepton-tools, jalon 6 (`check` sans argument puis complet — §3.9, `seed lock` — §3.5), bout en bout scripté (`seed new` noyau + famille + BSP an386 → cmake host puis an386 → fumée QEMU) et `pipx install` pour l'utilisateur (à proposer) ; puis clôture d'ENV-8.
 
 ## Étapes
 
@@ -19,7 +19,7 @@ Reprendre ENV-8, session S3 (PA-9 Q9), d'après `handoff/env-8.md` : sur `devenv
 | ENV-5 | Restructuration CMake | terminée (2026-10-13) | lepton-tools `devenv/env-5` ; clone noyau `devenv/env-5` | `handoff/env-5.md` |
 | ENV-6 | Greffons BSP de référence | terminée (2026-10-13) | `devenv/env-6` : lepton-tools, clone noyau, graine de travail, greffons `qemu-mps2`, `qemu-mps2-an386`, `qemu-mps2-an500`, `stm32f4xx`, `nucleo-f429zi`, `stm32wlxx`, `nucleo-wl55jc1` | `handoff/env-6.md` |
 | ENV-7 | Évolutions de scion | terminée (2026-10-13) | lepton-tools `devenv/env-7` ; seed.scions `devenv/env-7` (fusionnée dans `master`, tag 0.5.1.0) | `handoff/env-7.md` |
-| ENV-8 | Outil `lepton` | en cours (jalons 1-3/6) | lepton-tools `devenv/env-8` | `handoff/env-8.md` |
+| ENV-8 | Outil `lepton` | en cours (jalons 1-5/6) | lepton-tools `devenv/env-8` | `handoff/env-8.md` |
 | ENV-9 | Fichiers de l'éditeur | à faire | — | — |
 | ENV-10 | Script d'installation VSCodium | à faire | — | — |
 | ENV-11 | Validation de bout en bout | à faire | — | — |
@@ -58,7 +58,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | clangd | 21.1.8 — `/opt/local/bin/clangd-mp-21`, MacPorts `clang-21 @21.1.8_3` | 2026-10-12 |
 | check-jsonschema | 0.38.2 — pipx (`~/.local/bin`), Python 3.11.5 | 2026-10-13 |
 | xmllint (libxml2) | 2.15.4 (21504) — `/opt/local/bin` (MacPorts) | 2026-10-13 |
-| lepton | 0.1.0 (jalons 1-3) — `lepton-tools/pyproject.toml`, build hatchling 1.32.4 ; installable par `pipx install <LEPTON_TOOLS>` (essai dans un PIPX_HOME isolé, non installé pour l'utilisateur) | 2026-10-14 |
+| lepton | 0.1.0 (jalons 1-5) — `lepton-tools/pyproject.toml`, build hatchling 1.32.4 ; installable par `pipx install <LEPTON_TOOLS>` (essai dans un PIPX_HOME isolé, non installé pour l'utilisateur) | 2026-10-14 |
 | jsonschema (dépendance de lepton) | 4.26.0 (épinglée dans `pyproject.toml`) | 2026-10-14 |
 | pytest | 9.1.1 — extra `[test]`, venv de développement `~/lepton-tools-dev/venv-lepton-tools` (Python 3.11.5, `pip install -e '.[test]'`) | 2026-10-14 |
 | Extensions VSCodium (essai ENV-1, Open VSX) | clangd 0.6.0 ; CMake Tools 1.24.42 ; Cortex-Debug 1.13.0-pre6 (pré-version) + mcu-debug rtos-views 0.0.16, peripheral-viewer 1.6.4, memory-view 0.0.29, debug-tracker 0.0.15 | 2026-10-12 |
@@ -141,6 +141,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-14 | PA-9 (Q8) | `.DS_Store` et `._*` ignorés par `lepton` : jamais signalés ; supprimés du trunk avant `scion graft` s'ils sont réguliers (jamais un lien) ; liens venus des clones conservés en 0.1 ; filtre générique de scion (fichiers ignorés par git) = reliquat hors ENV-8. |
 | 2026-10-14 | — (ENV-8 S2) | `--origin` : noyau désigné par `lepton-noyau` (nom du manifeste) ; `templates/bsp/` = manifeste squelette, champs matériels repris du BSP `--from` ; URL sans `@VERSION` → `master`, chemin local → `*` (`@VERSION` refusé). |
 | 2026-10-14 | — (ENV-8 S2) | Clés scion des greffons créés par lepton : `<kind>-<nom>` sans suffixe (`bsp-`, `application-`, `library-`) au lieu de `<kind>::<nom>` : scion clone une origine distante dans `depots/<shelf>/<préfixe>/<version>`. Amende PA-9 Q10. Propositions à confirmer : `rapports/env-8-interface.md` §8. |
+| 2026-10-14 | — (ENV-8 S3) | S3-1 : `scion new --type bsp --from SRC` remplace, dans les fichiers texte copiés, la destination `kernel/dev/bsp/<SRC>` par la destination neuve ; noms de fichiers et identifiants C conservés. S3-2 : fichiers copiés = suivis par git du répertoire du BSP source greffé (arbre de travail). Propositions à confirmer : `rapports/env-8-interface.md` §9. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -162,3 +163,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | ENV-7 | Fusions locales de `devenv/env-6` ; PA-8 tranché (E1-E6, `--bare`, 0.5.1.0) ; scion 0.5.1.0 : `seed-scion-add/remove`, `graft --scion`, `graft-remove [--purge]`, `rootstock-install --bare`, sortie de `scion git`, conflits fichier / répertoire (écriture dans un clone corrigée) ; 104 tests ; tag et installation ; skill `lepton-rootstock` ; étape terminée. |
 | 2026-10-14 | ENV-8 | Session 1 : fusion locale de `devenv/env-7` ; PA-9 tranché (`rapports/env-8-interface.md`, nommage anglais US des options et répertoires, `.DS_Store` ignorés) ; jalon 1 : paquet `lepton` 0.1.0, `--version`, `check FILE` (JSON Schema, XSD par xmllint), 56 tests pytest verts, pipx vérifié ; jalons 2-6 restent. |
 | 2026-10-14 | ENV-8 | Session 2 : jalon 2 (modèles graine, BSP squelette, application, bibliothèque ; `templates.py`) ; jalon 3 (`rootstock.py`, `seed new/status/add/remove/replace`, clés `<kind>-<nom>`) ; 82 tests pytest verts ; `seed new` réel (noyau + famille + BSP an386) dans le scratchpad ; `~/lepton` lu seulement ; jalons 4-6 restent. |
+| 2026-10-14 | ENV-8 | Session 3 : jalon 4 (`scions.py` : `scion new` application, bibliothèque, BSP `--from` ; `scion remove`) ; jalon 5 (`files.py` : `file add/remove/mv`, `dir add/remove`, `graft`) ; rôle « non utilisé » dans `seed status` ; 98 tests pytest verts ; essai réel : BSP dérivé d'an386 construit (freertos) et `smoke.lsh` passé ; jalon 6 reste. |
