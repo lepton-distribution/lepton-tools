@@ -157,6 +157,8 @@ def test_workspace_folders_settings_launch_tasks(project, tools):
 
     s = ws["settings"]
     active = project / "build" / gen.ACTIVE_DIR
+    assert s["files.exclude"] == {"**/.DS_Store": True, "**/._*": True,       # fichiers greffés masqués
+                                  "scion/[!.]*": True, "project/scion": True}  # dans les clones (P5)
     assert s["cmake.useCMakePresets"] == "always" and s["cmake.configureOnOpen"] is False
     assert s["cmake.copyCompileCommands"] == str(active / "compile_commands.json")
     assert s["clangd.path"] == str(tools / "clangd-mp-21")

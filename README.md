@@ -29,6 +29,12 @@ lepton generate        # CMakeUserPresets.json (graine, greffé) et ~/demo/demo.
 codium ~/demo/demo.code-workspace
 ```
 
+Dans VSCodium, ouvrir les fichiers par le dossier `trunk` (les fichiers greffés sont masqués dans les
+dossiers `git · …`). Après un changement de preset, rouvrir les fichiers déjà ouverts (ou
+*clangd: Restart language server*) pour qu'ils prennent la nouvelle configuration. À l'arrêt du
+débogueur, le source s'affiche sous le chemin du clone (écart accepté en PA-1). Validation :
+`doc/devenv/rapports/env-9-validation.md`.
+
 Bout en bout (construction et fumée QEMU, chaîne Arm et QEMU requis) :
 `scripts/bout-en-bout.sh <répertoire jetable>`.
 

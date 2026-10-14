@@ -195,7 +195,11 @@ def workspace_folders(ctx: Context) -> list[dict]:
 def workspace_settings(ctx: Context, tools: dict) -> dict:
     active = ctx.rs.build / ACTIVE_DIR
     settings = {
-        "files.exclude": {"**/.DS_Store": True, "**/._*": True},
+        # Dossiers « git · … » : fichiers greffés masqués (ouverts par le trunk seul, IDE-4) ; restent
+        # visibles les fichiers non greffés et `scion/.scion/` de la graine. Le trunk n'a ni `scion/`
+        # ni `project/` à sa racine.
+        "files.exclude": {"**/.DS_Store": True, "**/._*": True, f"{STEM_DIR}/[!.]*": True,
+                          f"{PROJECT_SUBPATH}/{STEM_DIR}": True},
         "cmake.useCMakePresets": "always",
         "cmake.configureOnOpen": False,
         "cmake.ignoreCMakeListsMissing": True,
