@@ -16,8 +16,6 @@ SEED_VALUES = {
     "kernel": "lepton-noyau", "bsp": "qemu-mps2-an386", "backend": "embos",
     "configurations": [{"nom": "debug-qemu", "construction": "Debug", "execution": "qemu"}],
     "mkconf": "sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml",
-    "sources": "lepton\toriginal::tree\tmaster\thttps://example.org/kernel.git",
-    "ramifications": "lepton\toriginal::tree\tmaster",
 }
 
 SCION_VALUES = {
@@ -50,7 +48,7 @@ def test_seed_template_valid(tmp_path):
     assert validate_file(dot / "lepton-graine.json") == []
     for name in (".scion.sources.list", ".scion.ramifications"):
         text = (dot / name).read_text()
-        assert "{{" not in text and "original::tree" in text
+        assert "{{" not in text and "building" in text
 
 
 @pytest.mark.parametrize("kind,typ,dest", [("application", "application", "bin/my-app"),

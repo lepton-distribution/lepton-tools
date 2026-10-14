@@ -10,9 +10,19 @@ Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée 
 requis). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`, puis
 `pip install -e '.[test]'` et `python -m pytest`.
 
+Commandes disponibles (0.1.0, jalons 1 à 3) : `lepton --version`, `lepton check FILE...`,
+`lepton seed new | status | add | remove | replace` (`lepton seed <action> --help`). Exemple :
+
+```
+lepton seed new demo -C ~/demo --bsp qemu-mps2-an386 \
+    --mkconf sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml \
+    --origin qemu-mps2=<dépôt de la famille> --origin qemu-mps2-an386=<dépôt du BSP>
+```
+
 | Fichier | Rôle |
 | --- | --- |
 | `pyproject.toml`, `lepton/`, `tests/` | Outil `lepton` (interface : `doc/devenv/rapports/env-8-interface.md`) et ses tests `pytest` |
+| `lepton/templates/` | Modèles de graine, BSP, application et bibliothèque |
 | `schemas/` | Schémas des manifestes (copiés dans le paquet `lepton`) et exemples |
 | `CLAUDE.md` | Consignes permanentes pour Claude Code |
 | `.claude/skills/` | Skills : session, rootstock, oracle, cibles |
