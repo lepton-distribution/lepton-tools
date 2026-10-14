@@ -75,11 +75,16 @@ def template_files(kind: str) -> list[Path]:
     return sorted(p.relative_to(root) for p in root.rglob("*") if p.is_file())
 
 
-def render_tree(kind: str, destination: Path, values: dict) -> list[Path]:
-    """Écrit le modèle `kind` sous `destination` ; refuse d'écraser un fichier existant."""
+def render_tree(kind: str, destination: Path, values: dict, only=None, exclude=()) -> list[Path]:
+    """Écrit le modèle `kind` sous `destination` ; refuse d'écraser un fichier existant.
+
+    `only` / `exclude` : chemins relatifs du modèle à écrire seuls / à omettre.
+    """
     root = templates_dir() / kind
     written = []
     for rel in template_files(kind):
+        if (only is not None and rel not in only) or rel in exclude:
+            continue
         target = destination / _substitute(str(rel), values, str, f"{kind}/{rel}")
         if target.exists() or target.is_symlink():
             raise LeptonError(f"{target} existe déjà", "choisir un autre nom ou un répertoire vide")

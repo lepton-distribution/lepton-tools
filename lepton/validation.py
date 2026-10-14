@@ -109,6 +109,12 @@ def _message(err: ValidationError) -> str:
     return err.message
 
 
+def validate_data(data, kind: str, label: str) -> list[Anomaly]:
+    """Valide un manifeste déjà chargé (`label` : nom affiché dans les anomalies)."""
+    errors = sorted(_validator(kind).iter_errors(data), key=lambda e: list(e.absolute_path))
+    return [Anomaly(label, _pointer(e), _message(e)) for e in errors]
+
+
 def validate_json(path: Path, kind: str) -> list[Anomaly]:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -116,8 +122,7 @@ def validate_json(path: Path, kind: str) -> list[Anomaly]:
         return [Anomaly(str(path), "", f"lecture impossible : {e.strerror}")]
     except ValueError as e:
         return [Anomaly(str(path), "", f"JSON mal formé : {e}")]
-    errors = sorted(_validator(kind).iter_errors(data), key=lambda e: list(e.absolute_path))
-    return [Anomaly(str(path), _pointer(e), _message(e)) for e in errors]
+    return validate_data(data, kind, str(path))
 
 
 def validate_xml(path: Path) -> list[Anomaly]:
