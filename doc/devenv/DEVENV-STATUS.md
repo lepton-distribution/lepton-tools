@@ -19,7 +19,7 @@ Démarrer ENV-8 (outil `lepton`) d'après `handoff/env-7.md` : d'abord fusionner
 | ENV-5 | Restructuration CMake | terminée (2026-10-13) | lepton-tools `devenv/env-5` ; clone noyau `devenv/env-5` | `handoff/env-5.md` |
 | ENV-6 | Greffons BSP de référence | terminée (2026-10-13) | `devenv/env-6` : lepton-tools, clone noyau, graine de travail, greffons `qemu-mps2`, `qemu-mps2-an386`, `qemu-mps2-an500`, `stm32f4xx`, `nucleo-f429zi`, `stm32wlxx`, `nucleo-wl55jc1` | `handoff/env-6.md` |
 | ENV-7 | Évolutions de scion | terminée (2026-10-13) | lepton-tools `devenv/env-7` ; seed.scions `devenv/env-7` (fusionnée dans `master`, tag 0.5.1.0) | `handoff/env-7.md` |
-| ENV-8 | Outil `lepton` | à faire | — | — |
+| ENV-8 | Outil `lepton` | en cours | lepton-tools `devenv/env-8` | — |
 | ENV-9 | Fichiers de l'éditeur | à faire | — | — |
 | ENV-10 | Script d'installation VSCodium | à faire | — | — |
 | ENV-11 | Validation de bout en bout | à faire | — | — |
@@ -132,6 +132,10 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | PA-8 | Version cible 0.5.1.0 ; `devenv/env-7` de `<SEED_SCIONS>` créée depuis `master` e0adb2c (et non le tag) ; critère de test : `python3 -m unittest discover -s tests` (pytest non installé). |
 | 2026-10-13 | PA-8 (tag) | `devenv/env-7` de seed.scions fusionnée localement dans `master` (79f4f96, `--no-ff`), tag annoté `0.5.1.0`, installation pipx depuis le tag ; aucun push. |
 | 2026-10-13 | — (ENV-7) | ENV-7 terminée : `rapports/env-7-evolutions.md` §6 (104 tests, NF-2, essai sur copie, regreffe de `<ROOTSTOCK>` identique). Fusion locale de `devenv/env-7` (lepton-tools) au début de la session suivante. Aucun push. |
+| 2026-10-14 | — (ENV-8) | `devenv/env-7` fusionnée localement dans `main` (lepton-tools, a26c9b8, `--no-ff`) ; `devenv/env-8` créée depuis `main`. Session 1 d'ENV-8 : PA-9 puis jalon 1 si tranché. |
+| 2026-10-14 | PA-9 | Interface de `lepton` 0.1 validée : `rapports/env-8-interface.md` (§1-§5, décisions §7). Options, métavariables, modules et répertoires créés par `lepton` en anglais US (§5bis) ; messages et documentation en français ; noms fixés par scion, les schémas (enums), les manifestes et ENV-6 inchangés en 0.1 (Q10). |
+| 2026-10-14 | PA-9 (Q1-Q7, Q9, Q11) | Sous-commande `lepton scion` ; `jsonschema` dépendance d'exécution, `pytest` en extra `[test]` dans le venv `~/lepton-tools-dev/venv-lepton-tools` (accès PyPI accordé) ; graine créée dans `depots/lepton-seed/<NAME>` ; `--origin` obligatoire pour famille et BSP ; `--mkconf` obligatoire ; `scion new` : `bin/<NAME>`, `lib/<NAME>`, BSP `--from` ; pas de `git add` implicite ; sessions S1 (PA-9, jalon 1), S2 (jalons 2-3), S3 (4-5), S4 (6, bout en bout, pipx) ; clés `--json` en anglais. |
+| 2026-10-14 | PA-9 (Q8) | `.DS_Store` et `._*` ignorés par `lepton` : jamais signalés ; supprimés du trunk avant `scion graft` s'ils sont réguliers (jamais un lien) ; liens venus des clones conservés en 0.1 ; filtre générique de scion (fichiers ignorés par git) = reliquat hors ENV-8. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
