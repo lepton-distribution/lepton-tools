@@ -59,7 +59,8 @@ Par configuration `C` de la graine : preset de configuration, de construction et
 - `folders` : `trunk` d'abord (seul chemin d'ouverture des fichiers, PA-1), puis un dossier
   `git · <nom>` par dépôt git distinct : graine, puis greffons greffés (racine git de chaque
   clone, dédoublonnée ; `building`, hors git, omis ; greffon projet = dépôt de la graine).
-- `settings` : `files.exclude` (`.DS_Store`, `._*`) ; CMake Tools : `useCMakePresets: always`,
+- `settings` : `files.exclude` (`.DS_Store`, `._*` ; fichiers greffés des dossiers `git · …` :
+  `scion/[!.]*`, `project/scion`, ajout de S2) ; CMake Tools : `useCMakePresets: always`,
   `configureOnOpen: false`, `ignoreCMakeListsMissing: true`,
   `copyCompileCommands: <ROOTSTOCK>/build/.active/compile_commands.json` ; clangd : `clangd.path`
   (§4, P3), `--compile-commands-dir=<ROOTSTOCK>/build/.active`, `--background-index`,
@@ -80,7 +81,7 @@ Par configuration `C` de la graine : preset de configuration, de construction et
   `flasher` (`openocd -f … -c "program <elf> verify reset exit"`).
 - `extensions.recommendations` : clangd, CMake Tools, Cortex-Debug.
 
-## 4. Propositions appliquées, à confirmer
+## 4. Propositions appliquées (validées par l'utilisateur en S2, 2026-10-14 ; `env-9-validation.md` §4)
 
 | # | Proposition |
 | --- | --- |
@@ -88,7 +89,7 @@ Par configuration `C` de la graine : preset de configuration, de construction et
 | P2 | Cœur QEMU (`-cpu` de Cortex-Debug) : `cortex-m4f` → `cortex-m4`, `cortex-m0plus` → `cortex-m0`, sinon identique. |
 | P3 | clangd : `--clangd PATH`, sinon le plus récent des `clangd`, `clangd-N`, `clangd-mp-N` du PATH dont `--version` n'est pas celle d'Apple ; à défaut `clangd` avec avertissement. Mac : `/opt/local/bin/clangd-mp-21`. |
 | P4 | Preset actif → clangd : `cmake.copyCompileCommands` vers `build/.active/` et `--compile-commands-dir` fixe ; index clangd unique dans `build/.active/.cache` (IDE-5 à vérifier en S2). |
-| P5 | Clones en dossiers de l'espace (IDE-2) ; risque d'ouverture sous un second chemin (PA-1) : masquage à essayer en S2. |
+| P5 | Clones en dossiers de l'espace (IDE-2) ; fichiers greffés masqués dans ces dossiers par `files.exclude` (`scion/[!.]*`, `project/scion`), essai S2 concluant. |
 | P6 | Noms : preset `<projet>-<configuration>`, tâches `lepton : …`, dossiers `git · <nom>`. |
 | P7 | `lepton generate` n'a pas d'option `--no-cmake` : il ne reconfigure jamais. |
 | P8 | Greffon projet hors du verrou `seed lock` (c'est le dépôt de la graine, qui porte le verrou) ; rôle `projet` dans `seed status`. |

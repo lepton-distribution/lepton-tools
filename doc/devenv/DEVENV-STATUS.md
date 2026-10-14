@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-14 — ENV-9 en cours (S1 faite : `lepton generate`, essais CLI ; S2 : validation VSCodium).
+Dernière mise à jour : 2026-10-14 — ENV-9 terminée (S2 : validation VSCodium, `rapports/env-9-validation.md`).
 
 ## Prochaine action
 
-Reprendre ENV-9, session S2 (validation VSCodium avec l'utilisateur) : lire `handoff/env-9.md` et `rapports/env-9-generation.md` §4 (propositions P1-P9) et §7, relancer `lepton generate -C ~/lepton-tools-dev/essais/env-9`, faire ouvrir `codium ~/lepton-tools-dev/essais/env-9/env9.code-workspace` et dérouler la procédure de l'étape §3 ; rapport `rapports/env-9-validation.md`.
+Démarrer ENV-10 (script d'installation VSCodium) : d'abord fusionner localement `devenv/env-9` dans `main` (lepton-tools, `--no-ff`) et dans `master` du BSP `~/lepton/depots/lepton-bsp/nucleo-wl55jc1` (puis extraire `master` dans le rootstock et regreffer), créer `devenv/env-10` depuis `main`, lire `etapes/ENV-10-install-vscodium.md` et `rapports/env-2-outillage.md` ; point d'arrêt PA-10 (extensions et versions épinglées).
 
 ## Étapes
 
@@ -20,7 +20,7 @@ Reprendre ENV-9, session S2 (validation VSCodium avec l'utilisateur) : lire `han
 | ENV-6 | Greffons BSP de référence | terminée (2026-10-13) | `devenv/env-6` : lepton-tools, clone noyau, graine de travail, greffons `qemu-mps2`, `qemu-mps2-an386`, `qemu-mps2-an500`, `stm32f4xx`, `nucleo-f429zi`, `stm32wlxx`, `nucleo-wl55jc1` | `handoff/env-6.md` |
 | ENV-7 | Évolutions de scion | terminée (2026-10-13) | lepton-tools `devenv/env-7` ; seed.scions `devenv/env-7` (fusionnée dans `master`, tag 0.5.1.0) | `handoff/env-7.md` |
 | ENV-8 | Outil `lepton` | terminée (2026-10-14) | lepton-tools `devenv/env-8` | `handoff/env-8.md` |
-| ENV-9 | Fichiers de l'éditeur | en cours (S1 faite, S2 reste) | lepton-tools `devenv/env-9` ; BSP `nucleo-wl55jc1` `devenv/env-9` | `handoff/env-9.md` |
+| ENV-9 | Fichiers de l'éditeur | terminée (2026-10-14) | lepton-tools `devenv/env-9` ; BSP `nucleo-wl55jc1` `devenv/env-9` | `handoff/env-9.md` |
 | ENV-10 | Script d'installation VSCodium | à faire | — | — |
 | ENV-11 | Validation de bout en bout | à faire | — | — |
 | ENV-12 | Extension VSCodium | à faire | — | — |
@@ -36,7 +36,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | `<SEED_SCIONS>` | `/Users/cle_d_anton/lepton-tools-dev/seed.scions` (clone neuf, `master` e0adb2c, tags jusqu'à 0.5.0.1) |
 | Branche de départ du clone noyau | `master` (6b62af5) |
 | Échange git Mac / VM | Distant GitHub ; chaque push soumis à accord (PA-P) |
-| Fichiers générés (ENV-9) | `CMakeUserPresets.json` : `<graine>/project/scion/`, greffé à la racine du trunk (greffon local `lepton@project-<projet>`) ; `<ROOTSTOCK>/<projet>.code-workspace` (non versionné, `launch` et `tasks` intégrés) |
+| Fichiers générés (ENV-9) | `CMakeUserPresets.json` : `<graine>/project/scion/`, greffé à la racine du trunk (greffon local `lepton@project-<projet>`) ; `<ROOTSTOCK>/<projet>.code-workspace` (non versionné, `launch` et `tasks` intégrés) ; index clangd et `compile_commands.json` du preset actif : `<ROOTSTOCK>/build/.active/` |
 | Rootstock de validation (ENV-9) | `~/lepton-tools-dev/essais/env-9` (graine `env9` : an386, freertos, `debug-qemu` + `release-qemu` ; greffons clonés de `~/lepton/depots` en `file://`) |
 | Greffons famille et BSP (ENV-6) | Dépôts git locaux `<ROOTSTOCK>/depots/lepton-famille/<nom>` et `<ROOTSTOCK>/depots/lepton-bsp/<nom>` (`master` vide, travail sur `devenv/env-6`), inscrits en version `*` dans la graine de travail `depots/lepton-seed.scions/original-tree` ; familles `qemu-mps2`, `stm32f4xx`, `stm32wlxx` ; BSP `qemu-mps2-an386`, `qemu-mps2-an500`, `nucleo-f429zi`, `nucleo-wl55jc1` |
 
@@ -60,7 +60,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | clangd | 21.1.8 — `/opt/local/bin/clangd-mp-21`, MacPorts `clang-21 @21.1.8_3` | 2026-10-12 |
 | check-jsonschema | 0.38.2 — pipx (`~/.local/bin`), Python 3.11.5 | 2026-10-13 |
 | xmllint (libxml2) | 2.15.4 (21504) — `/opt/local/bin` (MacPorts) | 2026-10-13 |
-| lepton | 0.1.0 (jalons 1-6 + `generate` d'ENV-9) — `lepton-tools/pyproject.toml`, build hatchling 1.32.4 ; installé pour l'utilisateur par `pipx install --force <LEPTON_TOOLS>` (`~/.local/bin/lepton`, Python 3.11.5, depuis `devenv/env-9` 4604b26) | 2026-10-14 |
+| lepton | 0.1.0 (jalons 1-6 + `generate` d'ENV-9) — `lepton-tools/pyproject.toml`, build hatchling 1.32.4 ; installé pour l'utilisateur par `pipx install --force <LEPTON_TOOLS>` (`~/.local/bin/lepton`, Python 3.11.5, depuis `devenv/env-9` ffd618c) | 2026-10-14 |
 | jsonschema (dépendance de lepton) | 4.26.0 (épinglée dans `pyproject.toml`) | 2026-10-14 |
 | pytest | 9.1.1 — extra `[test]`, venv de développement `~/lepton-tools-dev/venv-lepton-tools` (Python 3.11.5, `pip install -e '.[test]'`) | 2026-10-14 |
 | Extensions VSCodium (essai ENV-1, Open VSX) | clangd 0.6.0 ; CMake Tools 1.24.42 ; Cortex-Debug 1.13.0-pre6 (pré-version) + mcu-debug rtos-views 0.0.16, peripheral-viewer 1.6.4, memory-view 0.0.29, debug-tracker 0.0.15 | 2026-10-12 |
@@ -151,6 +151,9 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-14 | — (ENV-9) | Rootstock de validation durable `~/lepton-tools-dev/essais/env-9` (`lepton seed new`, greffons clonés depuis `~/lepton` en `file://`) ; sessions S1 (`lepton generate`, tests, essais CLI) et S2 (validation VSCodium, `rapports/env-9-validation.md`). |
 | 2026-10-14 | — (ENV-9) | Débogage carte : `configFiles` = champ `openocd` du BSP tel quel ; cfg OpenOCD du BSP `nucleo-wl55jc1` rendue autonome (`interface/stlink.cfg`), enveloppe générée réduite à `adapter serial` (branche `devenv/env-9` du clone, 9489e7d ; sans carte : `openocd -c shutdown` ; sections et symboles identiques à l'oracle `env-6-lot-wl`). Flash réel en ENV-11. |
 | 2026-10-14 | — (ENV-9) | Propositions appliquées, à confirmer en S2 : `rapports/env-9-generation.md` §4 (P1 table cœur → ISA, P2 cœur QEMU, P3 choix de clangd, P4 `build/.active` pour clangd, P5 clones en dossiers, P6 noms, P7 pas de `--no-cmake`, P8 greffon projet hors verrou, P9 chemins absolus). |
+| 2026-10-14 | — (ENV-9 S2) | P1-P4 et P6-P9 de `rapports/env-9-generation.md` §4 validées telles qu'appliquées. |
+| 2026-10-14 | — (ENV-9 S2) | P5 : fichiers greffés masqués dans les dossiers `git · …` de l'espace (`files.exclude` `scion/[!.]*`, `project/scion`) ; P10 : diagnostics include-cleaner de clangd laissés ; R1 (fichiers ouverts gardant l'ancienne commande après changement de preset) documentée, solution intégrée en ENV-12 (`rapports/env-9-validation.md` §3-§4). |
+| 2026-10-14 | — (ENV-9) | ENV-9 terminée ; fusions locales de `devenv/env-9` (lepton-tools, BSP `nucleo-wl55jc1`) au début de la session suivante. Aucun push. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -175,3 +178,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-14 | ENV-8 | Session 3 : jalon 4 (`scions.py` : `scion new` application, bibliothèque, BSP `--from` ; `scion remove`) ; jalon 5 (`files.py` : `file add/remove/mv`, `dir add/remove`, `graft`) ; rôle « non utilisé » dans `seed status` ; 98 tests pytest verts ; essai réel : BSP dérivé d'an386 construit (freertos) et `smoke.lsh` passé ; jalon 6 reste. |
 | 2026-10-14 | ENV-8 | Session 4 : jalon 6 (`check` sans argument : schémas, contrôles non exprimables, GRA-2, GRF-5, CFG-5 ; `seed lock [--verify \| --restore]`) ; 106 tests pytest verts ; `scripts/bout-en-bout.sh` (seed new an386 → check → lock → cmake → `smoke.lsh` passé, `~/lepton` inchangé) ; lepton installé par pipx ; étape terminée. |
 | 2026-10-14 | ENV-9 | Session S1 : fusion locale de `devenv/env-8` ; emplacements décidés ; `lepton generate` (presets greffés depuis la graine, `.code-workspace` avec launch/tasks) ; 116 tests verts, bout en bout vert ; rootstock d'essai `essais/env-9` : `--list-presets`, idempotence, BLD-5 (binaires identiques à `SOURCE_DATE_EPOCH` égal), fumée, KAL 18/18, arrêt sur `main` en GDB ; cfg OpenOCD WL autonome ; rapport `rapports/env-9-generation.md` ; S2 (VSCodium) reste. |
+| 2026-10-14 | ENV-9 | Session S2 : validation VSCodium (`rapports/env-9-validation.md`) — IDE-2 à IDE-5, DBG-1, DBG-2, TST-1 validés (réserves R1-R3, R3 = écart PA-1) ; P1-P10 tranchées ; P5 intégrée (`files.exclude`), 116 tests et bout en bout verts ; étape terminée. |
