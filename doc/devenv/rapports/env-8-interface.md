@@ -234,3 +234,32 @@ US. Messages et documentation : français. Restent hors de cette règle, faute d
   anglais US ; messages et documentation en français.
 - Q1 à Q11 : propositions du §6 retenues telles quelles (Q8 dans sa version révisée : fichiers
   système ignorés par `lepton`).
+
+## 8. Amendements de la session S2 (2026-10-14)
+
+Décisions de l'utilisateur :
+
+| # | Décision | Amende |
+| --- | --- | --- |
+| S2-1 | `--origin` : le noyau est désigné par le nom de son manifeste, `lepton-noyau` (règle unique « SCION = nom du manifeste ») ; clé `lepton@original::tree` inchangée | §3.2 |
+| S2-2 | `templates/bsp/` = manifeste squelette à jetons ; champs matériels repris du BSP `--from` (jalon 4) | §5, Q6 |
+| S2-3 | Clés scion des greffons créés par lepton : `<kind>-<nom>` sans suffixe (`lepton@bsp-<nom>`, `application-`, `library-`), car scion clone une origine distante dans `depots/<shelf>/<préfixe>/<version>` : avec `bsp::<nom>`, deux BSP distants de même version partageraient un clone | Q10 |
+| S2-4 | URL sans `@VERSION` (et `seed add` sans `--version`) : version `master` ; chemin local : version `*`, `@VERSION` refusé | §3.2, §3.4 |
+
+Propositions appliquées, à confirmer :
+
+- Préfixe de clé de la famille : `family-` (règle anglaise des noms créés par lepton, comme
+  `library-` pour `bibliotheque`).
+- Configuration initiale de `seed new` : `debug-qemu` / `debug-board` (noms du §3.2).
+- `seed new` écrit `lepton-graine.json` et commite la graine **après** la greffe et les contrôles
+  (configuration déduite du BSP) ; en cas d'échec, rien n'est supprimé : rootstock greffé et
+  graine non commitée, signalés dans le message.
+- `seed replace` : `graft-remove` (avec `--purge` si l'ancienne origine est distante) avant
+  `seed-scion-add --replace` et `seed-clone` ; sinon une origine distante de même clé et de même
+  version réutiliserait l'ancien clone. Échec : origine précédente restaurée.
+- `seed add` en échec : retrait du trunk et de la graine ; le clone éventuel est conservé.
+- `-v` et `-C` acceptés avant ou après la sous-commande ; `seed new -C DIR` désigne le répertoire
+  à créer (défaut : répertoire courant).
+- Modèles application et bibliothèque sans `CMakeLists.txt` : le lecteur CMake du noyau n'inclut
+  ce fichier que pour un BSP (`cmake/lepton_greffons.cmake`) ; sources découvertes par `sources: [""]`.
+- Chemin local d'origine rendu relatif au rootstock s'il s'y trouve, absolu sinon.
