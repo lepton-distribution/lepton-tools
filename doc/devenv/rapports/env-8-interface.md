@@ -167,6 +167,13 @@ isolé (`lepton-greffon.json`, `lepton-graine.json`, XML mklepton), type reconnu
 Sortie : une ligne par anomalie `fichier: chemin JSON: message` ; code 1 s'il y en a.
 Méthode de CFG-5 et détail des contrôles : §10 (S4-2).
 
+### 3.10 `lepton generate [--clangd PATH]` (ENV-9 : CFG-6, BLD-5, IDE-2 à IDE-5, DBG-1 à DBG-4, TST-1)
+Ajoutée en ENV-9. `CMakeUserPresets.json` dans le dépôt de la graine (`project/scion/`), greffé à
+la racine du trunk par le greffon local `lepton@project-<projet>` ; `<ROOTSTOCK>/<projet>.code-workspace`
+(dossiers, réglages, `launch`, `tasks`). Contenu, règles et propositions :
+`rapports/env-9-generation.md`. Codes : 1 si la graine et le BSP sont incohérents (configuration
+`qemu` sans `qemu`, `carte` sans `openocd`), 2 si un outil de l'hôte manque.
+
 ## 4. Correspondance exigences → commandes → tests
 
 | Exigence | Commande | Test (pytest, rootstock temporaire, dépôts git locaux) |

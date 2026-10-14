@@ -14,7 +14,8 @@ from urllib.parse import urlparse
 
 from lepton import __version__, cmake
 from lepton.errors import EXIT_OK, EXIT_USER, LeptonError
-from lepton.rootstock import (KERNEL_KEY, Manifest, Rootstock, find_manifest, is_system_file, scion_key)
+from lepton.rootstock import (KERNEL_KEY, Manifest, Rootstock, find_manifest, is_system_file, project_key,
+                              scion_key)
 from lepton.scion_runner import git, run, scion
 from lepton.templates import render_text, render_tree, templates_dir
 from lepton.validation import SEED_MANIFEST, validate_data
@@ -256,8 +257,7 @@ def seed_new(args) -> int:
     for label, key, o in (("noyau", KERNEL_KEY, kernel), ("famille", scion_key("famille", family_name), family),
                           ("bsp", scion_key("bsp", bsp_name), bsp)):
         _info(f"  {label:8} {key:32} {o.version:8} {o.location}{(':' + o.subpath) if o.subpath else ''}")
-    _info(f"construction : cmake -S {rs.trunk} -B {root / 'build' / '<preset>'} "
-          "(presets générés par l'outil en ENV-9)")
+    _info(f"presets et espace de travail VSCodium : lepton generate -C {root}")
     return EXIT_OK
 
 
@@ -287,6 +287,7 @@ def seed_status(args) -> int:
     sources = {s.key: s for s in rs.sources()}
     manifests = rs.manifests()
     roles = {}
+    project = project_key(graine["projet"]["nom"]) if graine else None
     if graine:
         roles[graine["noyau"]] = "noyau"
         roles[graine["bsp"]] = "bsp"
@@ -301,7 +302,7 @@ def seed_status(args) -> int:
         m = manifests.get(e.key)
         name = m.name if m else e.name
         src = sources.get(e.key)
-        role = roles.get(name) if m else "sans manifeste"
+        role = roles.get(name) if m else ("projet" if e.key == project else "sans manifeste")
         if role is None:
             # déclaré dans .scion.sources.list sans rôle dans lepton-graine.json (ex. ancien BSP)
             role = ("non utilisé" if src else "hors graine") if graine else (m.kind or "?")
@@ -516,7 +517,11 @@ def _locked_entries(rs: Rootstock) -> list[dict]:
     grafted = {e.key: e for e in rs.grafted()}
     names = {key: m.name for key, m in rs.manifests().items()}
     entries, refused = [], []
+    graine = rs.seed_manifest_path()
+    project = project_key(load_graine(graine)["projet"]["nom"]) if graine.exists() else None
     for s in rs.sources():
+        if s.key == project:
+            continue                       # greffon du projet = dépôt de la graine elle-même (ENV-9)
         e = grafted.get(s.key)
         if e is None:
             refused.append(f"  {s.key} : déclaré dans la graine, non greffé")
@@ -541,7 +546,9 @@ def _locked_entries(rs: Rootstock) -> list[dict]:
 def _lock_gaps(rs: Rootstock, locked: list[dict]) -> list[str]:
     """Écarts entre les clones et le verrou (`--verify`)."""
     grafted = {e.key: e for e in rs.grafted()}
-    declared = {s.key for s in rs.sources()}
+    graine = rs.seed_manifest_path()
+    project = project_key(load_graine(graine)["projet"]["nom"]) if graine.exists() else None
+    declared = {s.key for s in rs.sources()} - {project}
     gaps = []
     for entry in locked:
         e = grafted.get(entry["key"])

@@ -14,6 +14,7 @@ Usage :
     lepton file add PATH [--scion NAME] | file remove PATH | file mv SOURCE DESTINATION
     lepton dir add PATH [--scion NAME] | dir remove PATH [--scion NAME]
     lepton graft [--scion NAME]... [--force] [--no-cmake]
+    lepton generate [--clangd PATH]
 
 Codes de retour : 0 succès ; 1 utilisation, refus ou anomalie ; 2 échec ou absence d'un outil
 appelé ; 130 interruption.
@@ -24,7 +25,7 @@ import json
 import sys
 from pathlib import Path
 
-from lepton import __version__, checks, files, scion_runner, scions, seed
+from lepton import __version__, checks, files, generate, scion_runner, scions, seed
 from lepton.errors import EXIT_INTERRUPT, EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
 from lepton.rootstock import Rootstock
 from lepton.scion_runner import scion_status_line
@@ -217,6 +218,11 @@ def build_parser() -> argparse.ArgumentParser:
     _add_seed_parser(sub, common)
     _add_scion_parser(sub, common)
     _add_files_parsers(sub, common)
+
+    p = sub.add_parser("generate", parents=[common],
+                       help="presets CMake (graine) et espace de travail VSCodium (CFG-6, IDE, DBG)")
+    p.add_argument("--clangd", metavar="PATH", help="clangd à utiliser (défaut : clangd LLVM le plus récent du PATH)")
+    p.set_defaults(func=generate.generate)
 
     p = sub.add_parser("check", parents=[common],
                        help="valide les manifestes ; sans FILE : graine, greffons greffés, XML (GRA-2, GRF-5, CFG-5)")

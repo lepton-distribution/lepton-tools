@@ -25,6 +25,9 @@ KERNEL_KEY = f"{SHELF}@original::tree"
 # Type de greffon (enum des schémas) → préfixe de clé scion créée par lepton (décision S2 d'ENV-8)
 KEY_PREFIX = {"famille": "family", "bsp": "bsp", "application": "application", "bibliotheque": "library"}
 
+# Greffon local du projet (ENV-9) : fichiers générés versionnés dans la graine, sous project/scion/
+PROJECT_SUBPATH = "project"
+
 _WHITESPACE = re.compile(r"[ \t\n]+")
 
 
@@ -36,6 +39,11 @@ def is_system_file(name: str) -> bool:
 def scion_key(kind: str, name: str) -> str:
     """Clé scion d'un greffon créé par lepton : un préfixe par greffon, donc un clone distinct."""
     return f"{SHELF}@{KEY_PREFIX[kind]}-{name}"
+
+
+def project_key(project: str) -> str:
+    """Clé scion du greffon local du projet (presets générés par lepton generate)."""
+    return f"{SHELF}@{PROJECT_SUBPATH}-{project}"
 
 
 def _fields(line: str) -> list[str]:
