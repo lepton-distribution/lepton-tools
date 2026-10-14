@@ -1,7 +1,8 @@
-"""Graine : seed new, status, add, remove, replace (GRA-1 à GRA-4, GRA-6 ; interface §3.2-§3.4).
+"""Graine : seed new, status, add, remove, replace, lock (GRA-1 à GRA-6 ; interface §3.2-§3.5).
 
-Toute écriture des listes `.scion.*` et du trunk passe par scion ; lepton écrit seulement le
-manifeste `lepton-graine.json` et, à la création, les fichiers du modèle de graine.
+Toute écriture des listes `.scion.*` et du trunk passe par scion ; lepton écrit seulement les
+manifestes `lepton-graine.json`, `lepton-graine.lock.json` et, à la création, les fichiers du
+modèle de graine.
 """
 
 import json
@@ -11,7 +12,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlparse
 
-from lepton import cmake
+from lepton import __version__, cmake
 from lepton.errors import EXIT_OK, EXIT_USER, LeptonError
 from lepton.rootstock import (KERNEL_KEY, Manifest, Rootstock, find_manifest, is_system_file, scion_key)
 from lepton.scion_runner import git, run, scion
@@ -502,3 +503,136 @@ def seed_replace(args) -> int:
 def _attach(rs: Rootstock, seed_root: Path, key: str, origin: Origin) -> None:
     scion("seed-scion-add", "--replace", "--seed", str(seed_root), key, *origin.scion_args(), cwd=rs.path)
     scion("seed-clone", "--seed", str(seed_root), cwd=rs.path)
+
+
+# --------------------------------------------------------------------------
+# seed lock (GRA-5, P2 ; interface §3.5, décision S4-1)
+# --------------------------------------------------------------------------
+LOCK_FILE = "lepton-graine.lock.json"
+
+
+def _locked_entries(rs: Rootstock) -> list[dict]:
+    """Greffons de la graine : origine, version demandée, commit exact ; refus si clone modifié."""
+    grafted = {e.key: e for e in rs.grafted()}
+    names = {key: m.name for key, m in rs.manifests().items()}
+    entries, refused = [], []
+    for s in rs.sources():
+        e = grafted.get(s.key)
+        if e is None:
+            refused.append(f"  {s.key} : déclaré dans la graine, non greffé")
+            continue
+        state = _git_state(rs.clone(e))
+        entry = {"key": s.key, "name": names.get(s.key, s.name), "location": s.location,
+                 "version": s.version, "path": s.subpath, "commit": None}
+        if state["commit"] is None and not Origin(s.location, s.version).remote:
+            entries.append(entry)          # répertoire local hors git (ex. building) : rien à figer
+        elif state["commit"] is None:
+            refused.append(f"  {s.key} : {rs.clone(e)} n'est pas un dépôt git")
+        elif state["dirty"]:
+            refused.append(f"  {s.key} : {state['dirty']} fichier(s) modifié(s) non commité(s) dans {rs.clone(e)}")
+        else:
+            entries.append(dict(entry, commit=git(rs.clone(e), "rev-parse", "HEAD").stdout.strip()))
+    if refused:
+        raise LeptonError("graine non figeable :\n" + "\n".join(refused),
+                          "commiter dans chaque clone (lepton seed status -v), puis lepton seed lock")
+    return entries
+
+
+def _lock_gaps(rs: Rootstock, locked: list[dict]) -> list[str]:
+    """Écarts entre les clones et le verrou (`--verify`)."""
+    grafted = {e.key: e for e in rs.grafted()}
+    declared = {s.key for s in rs.sources()}
+    gaps = []
+    for entry in locked:
+        e = grafted.get(entry["key"])
+        if e is None:
+            gaps.append(f"{entry['name']} ({entry['key']}) : figé, non greffé")
+            continue
+        if entry["commit"] is None:
+            continue
+        state = _git_state(rs.clone(e))
+        head = git(rs.clone(e), "rev-parse", "HEAD").stdout.strip() if state["commit"] else None
+        if head != entry["commit"]:
+            gaps.append(f"{entry['name']} : commit {head[:12] if head else '(hors git)'}, figé {entry['commit'][:12]}")
+        if state["dirty"]:
+            gaps.append(f"{entry['name']} : {state['dirty']} fichier(s) modifié(s) non commité(s)")
+    for key in sorted(declared - {entry["key"] for entry in locked}):
+        gaps.append(f"{key} : déclaré dans la graine, absent du verrou")
+    return gaps
+
+
+def _load_lock(path: Path) -> list[dict]:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return list(data["scions"])
+    except FileNotFoundError:
+        raise LeptonError(f"{path} absent", "lepton seed lock") from None
+    except (ValueError, KeyError, TypeError) as e:
+        raise LeptonError(f"{path} : verrou illisible ({e})", "lepton seed lock pour le réécrire") from e
+
+
+def seed_lock(args) -> int:
+    rs = Rootstock.discover(args.rootstock)
+    lock_path = rs.seed_dot() / LOCK_FILE
+    if args.verify:
+        gaps = _lock_gaps(rs, _load_lock(lock_path))
+        for g in gaps:
+            _info(f"écart : {g}")
+        if not gaps:
+            _info(f"clones conformes au verrou {lock_path}")
+        return EXIT_USER if gaps else EXIT_OK
+    if args.restore:
+        return _restore(rs, _load_lock(lock_path), args.no_cmake)
+
+    entries = _locked_entries(rs)
+    lock_path.write_text(json.dumps({"lepton": __version__, "scions": entries}, ensure_ascii=False, indent=2)
+                         + "\n", encoding="utf-8")
+    for entry in entries:
+        commit = entry["commit"][:12] if entry["commit"] else "(hors git)"
+        _info(f"  {entry['name']:24} {commit:12}  {entry['version']:8} {entry['location']}")
+    _info(f"verrou écrit : {lock_path}")
+    _remind_commit(rs.seed_root())
+    return EXIT_OK
+
+
+def _restore(rs: Rootstock, locked: list[dict], no_cmake: bool) -> int:
+    """Clones d'origine distante remis au commit figé ; origine locale (`*`) signalée, jamais modifiée."""
+    grafted = {e.key: e for e in rs.grafted()}
+    moved, local_gaps, refused = [], [], []
+    for entry in locked:
+        e = grafted.get(entry["key"])
+        if e is None:
+            refused.append(f"  {entry['name']} : non greffé (lepton seed status)")
+            continue
+        clone = rs.clone(e)
+        if entry["commit"] is None:
+            continue
+        head = git(clone, "rev-parse", "HEAD").stdout.strip()
+        if head == entry["commit"]:
+            continue
+        if not Origin(entry["location"], entry["version"]).remote:
+            local_gaps.append(f"  {entry['name']} : origine locale {clone} au commit {head[:12]}, "
+                              f"figé {entry['commit'][:12]} (non modifiée)")
+            continue
+        if _git_state(clone)["dirty"]:
+            refused.append(f"  {entry['name']} : modifications non commitées dans {clone}")
+            continue
+        if run(["git", "-C", str(clone), "cat-file", "-e", f"{entry['commit']}^{{commit}}"], check=False).returncode:
+            refused.append(f"  {entry['name']} : commit {entry['commit'][:12]} absent de {clone} "
+                           f"(git -C {clone} fetch)")
+            continue
+        moved.append((entry, clone))
+    if refused:
+        raise LeptonError("restauration refusée, aucun clone modifié :\n" + "\n".join(refused),
+                          "corriger chaque greffon, puis lepton seed lock --restore")
+    for entry, clone in moved:
+        git(clone, "checkout", "-q", entry["commit"])
+        _info(f"{entry['name']} : {entry['commit'][:12]} (HEAD détachée)")
+    if moved:
+        scion("graft", cwd=rs.path)
+        finish(rs, no_cmake)
+    for g in local_gaps:
+        _warn(g.strip())
+    if not moved and not local_gaps:
+        _info("clones déjà au commit du verrou")
+    return EXIT_USER if local_gaps else EXIT_OK

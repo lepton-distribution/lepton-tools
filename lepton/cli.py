@@ -2,9 +2,10 @@
 
 Usage :
     lepton --version
-    lepton check [--json] FILE...
+    lepton check [--json] [FILE...]
     lepton seed new NAME --bsp BSP --mkconf PATH [--backend B] [--seed-repo DIR] [--origin S=L]...
     lepton seed status [--json]
+    lepton seed lock [--verify | --restore] [--no-cmake]
     lepton seed add SCION LOCATION --type T [--version V] [--path P] [--no-cmake]
     lepton seed remove SCION [--purge] [--no-cmake]
     lepton seed replace SCION LOCATION [--version V] [--path P] [--no-cmake]
@@ -23,8 +24,9 @@ import json
 import sys
 from pathlib import Path
 
-from lepton import __version__, files, scion_runner, scions, seed
+from lepton import __version__, checks, files, scion_runner, scions, seed
 from lepton.errors import EXIT_INTERRUPT, EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
+from lepton.rootstock import Rootstock
 from lepton.scion_runner import scion_status_line
 from lepton.validation import validate_file
 
@@ -54,7 +56,10 @@ def _warn(message: str) -> None:
 
 
 def cmd_check(args) -> int:
+    """FILE... : manifestes isolés (jalon 1) ; sans argument : rootstock entier (jalon 6, §3.9)."""
     anomalies, checked = [], []
+    if not args.files:
+        checked, anomalies = checks.check_rootstock(Rootstock.discover(args.rootstock), _warn)
     for name in args.files:
         path = Path(name)
         try:
@@ -115,6 +120,14 @@ def _add_seed_parser(sub, common) -> None:
     p = seed_sub.add_parser("status", parents=[common], help="état des greffons de la graine (GRA-6)")
     p.add_argument("--json", action="store_true", help="sortie JSON")
     p.set_defaults(func=seed.seed_status)
+
+    p = seed_sub.add_parser("lock", parents=[common], help="fige le commit de chaque greffon (GRA-5)")
+    mode = p.add_mutually_exclusive_group()
+    mode.add_argument("--verify", action="store_true", help="compare les clones au verrou (code 1 si écart)")
+    mode.add_argument("--restore", action="store_true",
+                      help="remet les clones d'origine distante au commit du verrou, puis regreffe")
+    _no_cmake(p)
+    p.set_defaults(func=seed.seed_lock)
 
     p = seed_sub.add_parser("add", parents=[common], help="ajoute un greffon à la graine (GRA-4)")
     p.add_argument("scion", metavar="SCION", help="nom du greffon (champ nom de son manifeste)")
@@ -205,9 +218,10 @@ def build_parser() -> argparse.ArgumentParser:
     _add_scion_parser(sub, common)
     _add_files_parsers(sub, common)
 
-    p = sub.add_parser("check", help="valide des manifestes (JSON Schema, XSD mklepton)")
+    p = sub.add_parser("check", parents=[common],
+                       help="valide les manifestes ; sans FILE : graine, greffons greffés, XML (GRA-2, GRF-5, CFG-5)")
     p.add_argument("--json", action="store_true", help="sortie JSON")
-    p.add_argument("files", nargs="+", metavar="FILE",
+    p.add_argument("files", nargs="*", metavar="FILE",
                    help="lepton-greffon.json, lepton-graine.json (ou $schema renseigné), XML mklepton")
     p.set_defaults(func=cmd_check)
     return parser
