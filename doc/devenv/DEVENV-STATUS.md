@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-13 — ENV-7 terminée (scion 0.5.1.0).
+Dernière mise à jour : 2026-10-14 — ENV-8 en cours (session 1 : PA-9, jalon 1).
 
 ## Prochaine action
 
-Démarrer ENV-8 (outil `lepton`) d'après `handoff/env-7.md` : d'abord fusionner localement `devenv/env-7` de lepton-tools dans `main` (seed.scions déjà fusionné et taggé 0.5.1.0), puis créer `devenv/env-8` dans lepton-tools ; PA-9 (interface) avant toute implémentation.
+Reprendre ENV-8, session S2 (PA-9 Q9), d'après `handoff/env-8.md` : sur `devenv/env-8` de lepton-tools, jalons 2 (modèles `lepton/templates/{seed,bsp,application,library}/` conformes aux schémas) et 3 (`seed new`, `seed status`, `seed add/remove/replace` par appel de scion), interface figée par `rapports/env-8-interface.md`.
 
 ## Étapes
 
@@ -19,7 +19,7 @@ Démarrer ENV-8 (outil `lepton`) d'après `handoff/env-7.md` : d'abord fusionner
 | ENV-5 | Restructuration CMake | terminée (2026-10-13) | lepton-tools `devenv/env-5` ; clone noyau `devenv/env-5` | `handoff/env-5.md` |
 | ENV-6 | Greffons BSP de référence | terminée (2026-10-13) | `devenv/env-6` : lepton-tools, clone noyau, graine de travail, greffons `qemu-mps2`, `qemu-mps2-an386`, `qemu-mps2-an500`, `stm32f4xx`, `nucleo-f429zi`, `stm32wlxx`, `nucleo-wl55jc1` | `handoff/env-6.md` |
 | ENV-7 | Évolutions de scion | terminée (2026-10-13) | lepton-tools `devenv/env-7` ; seed.scions `devenv/env-7` (fusionnée dans `master`, tag 0.5.1.0) | `handoff/env-7.md` |
-| ENV-8 | Outil `lepton` | en cours | lepton-tools `devenv/env-8` | — |
+| ENV-8 | Outil `lepton` | en cours (jalon 1/6) | lepton-tools `devenv/env-8` | `handoff/env-8.md` |
 | ENV-9 | Fichiers de l'éditeur | à faire | — | — |
 | ENV-10 | Script d'installation VSCodium | à faire | — | — |
 | ENV-11 | Validation de bout en bout | à faire | — | — |
@@ -58,6 +58,9 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | clangd | 21.1.8 — `/opt/local/bin/clangd-mp-21`, MacPorts `clang-21 @21.1.8_3` | 2026-10-12 |
 | check-jsonschema | 0.38.2 — pipx (`~/.local/bin`), Python 3.11.5 | 2026-10-13 |
 | xmllint (libxml2) | 2.15.4 (21504) — `/opt/local/bin` (MacPorts) | 2026-10-13 |
+| lepton | 0.1.0 (jalon 1) — `lepton-tools/pyproject.toml`, build hatchling 1.32.4 ; installable par `pipx install <LEPTON_TOOLS>` (essai dans un PIPX_HOME isolé, non installé pour l'utilisateur) | 2026-10-14 |
+| jsonschema (dépendance de lepton) | 4.26.0 (épinglée dans `pyproject.toml`) | 2026-10-14 |
+| pytest | 9.1.1 — extra `[test]`, venv de développement `~/lepton-tools-dev/venv-lepton-tools` (Python 3.11.5, `pip install -e '.[test]'`) | 2026-10-14 |
 | Extensions VSCodium (essai ENV-1, Open VSX) | clangd 0.6.0 ; CMake Tools 1.24.42 ; Cortex-Debug 1.13.0-pre6 (pré-version) + mcu-debug rtos-views 0.0.16, peripheral-viewer 1.6.4, memory-view 0.0.29, debug-tracker 0.0.15 | 2026-10-12 |
 
 ## Décisions
@@ -155,3 +158,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-13 | ENV-6 | Session 2 : Q7 tranché (BSP F439ZI reporté) ; lot F4 (famille `stm32f4xx`, BSP `nucleo-f429zi`, presets `nucleo-f429zi-*`, `gdbinit-lepton`, `openocd` lu par le lecteur) ; non-régression `env-6-validation.md` §Lot F4, `oracles/env-6-lot-f4/` ; skill `lepton-cibles` mise à jour ; lot WL reste. |
 | 2026-10-13 | ENV-6 | Session 3 : PA-7 lot WL tranché ; lot WL (famille `stm32wlxx`, BSP `nucleo-wl55jc1`, vecteurs dans la famille, cfg OpenOCD générée par le BSP) ; non-régression `env-6-validation.md` §Lot WL, `oracles/env-6-lot-wl/` (`.data` WL : remplissage, démontré sur copie d'essai) ; skill `lepton-cibles` ; étape terminée. |
 | 2026-10-13 | ENV-7 | Fusions locales de `devenv/env-6` ; PA-8 tranché (E1-E6, `--bare`, 0.5.1.0) ; scion 0.5.1.0 : `seed-scion-add/remove`, `graft --scion`, `graft-remove [--purge]`, `rootstock-install --bare`, sortie de `scion git`, conflits fichier / répertoire (écriture dans un clone corrigée) ; 104 tests ; tag et installation ; skill `lepton-rootstock` ; étape terminée. |
+| 2026-10-14 | ENV-8 | Session 1 : fusion locale de `devenv/env-7` ; PA-9 tranché (`rapports/env-8-interface.md`, nommage anglais US des options et répertoires, `.DS_Store` ignorés) ; jalon 1 : paquet `lepton` 0.1.0, `--version`, `check FILE` (JSON Schema, XSD par xmllint), 56 tests pytest verts, pipx vérifié ; jalons 2-6 restent. |
