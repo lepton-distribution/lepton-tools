@@ -1,0 +1,34 @@
+# Outil lepton (ENV-8) : client de scion, propre à Lepton (NF-1, NF-2).
+# Installation : pipx install <LEPTON_TOOLS> ; développement : pip install -e .[test]
+[build-system]
+requires = ["hatchling==1.32.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lepton"
+dynamic = ["version"]
+description = "Outil de l'environnement de développement Lepton (graine, greffons, fichiers, vérification), client de scion"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["jsonschema==4.26.0"]
+
+[project.optional-dependencies]
+test = ["pytest==9.1.1"]
+
+[project.scripts]
+lepton = "lepton.cli:main"
+
+[tool.hatch.version]
+path = "lepton/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["lepton"]
+
+# Schémas d'ENV-3 copiés dans le paquet (source unique : schemas/, PA-9 Q2)
+[tool.hatch.build.targets.wheel.force-include]
+"schemas/greffon.schema.json" = "lepton/schemas/greffon.schema.json"
+"schemas/graine.schema.json" = "lepton/schemas/graine.schema.json"
+"schemas/mklepton.xsd" = "lepton/schemas/mklepton.xsd"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

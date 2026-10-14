@@ -4,10 +4,16 @@ Outillage de l'environnement de développement Lepton : outil en ligne de comman
 (graine, greffons, configuration, génération des fichiers de l'éditeur), schémas, modèles et
 script d'installation de VSCodium.
 
-État : plan de réalisation uniquement. Voir `doc/devenv/`.
+État : outil `lepton` 0.1.0 en cours de réalisation (ENV-8). Voir `doc/devenv/`.
+
+Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée par pipx ; scion ≥ 0.5.1.0
+requis). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`, puis
+`pip install -e '.[test]'` et `python -m pytest`.
 
 | Fichier | Rôle |
 | --- | --- |
+| `pyproject.toml`, `lepton/`, `tests/` | Outil `lepton` (interface : `doc/devenv/rapports/env-8-interface.md`) et ses tests `pytest` |
+| `schemas/` | Schémas des manifestes (copiés dans le paquet `lepton`) et exemples |
 | `CLAUDE.md` | Consignes permanentes pour Claude Code |
 | `.claude/skills/` | Skills : session, rootstock, oracle, cibles |
 | `.claude/hooks/proteger-trunk.py`, `.claude/settings.json` | Hook refusant les écritures dans le trunk |
