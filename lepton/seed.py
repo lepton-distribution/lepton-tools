@@ -302,7 +302,8 @@ def seed_status(args) -> int:
         src = sources.get(e.key)
         role = roles.get(name) if m else "sans manifeste"
         if role is None:
-            role = "hors graine" if graine else (m.kind or "?")
+            # déclaré dans .scion.sources.list sans rôle dans lepton-graine.json (ex. ancien BSP)
+            role = ("non utilisé" if src else "hors graine") if graine else (m.kind or "?")
         scions.append({"name": name, "role": role, "key": e.key,
                        "version": src.version if src else e.version,
                        "location": src.location if src else None,

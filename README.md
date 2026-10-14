@@ -10,13 +10,18 @@ Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée 
 requis). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`, puis
 `pip install -e '.[test]'` et `python -m pytest`.
 
-Commandes disponibles (0.1.0, jalons 1 à 3) : `lepton --version`, `lepton check FILE...`,
-`lepton seed new | status | add | remove | replace` (`lepton seed <action> --help`). Exemple :
+Commandes disponibles (0.1.0, jalons 1 à 5) : `lepton --version`, `lepton check FILE...`,
+`lepton seed new | status | add | remove | replace`, `lepton scion new | remove`,
+`lepton file add | remove | mv`, `lepton dir add | remove`, `lepton graft`
+(`lepton <commande> [<action>] --help`). Exemple :
 
 ```
 lepton seed new demo -C ~/demo --bsp qemu-mps2-an386 \
     --mkconf sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml \
     --origin qemu-mps2=<dépôt de la famille> --origin qemu-mps2-an386=<dépôt du BSP>
+cd ~/demo/trunk
+lepton scion new ma-carte --type bsp --from qemu-mps2-an386   # dépôt depots/lepton-bsp/ma-carte
+lepton file add sys/root/src/kernel/dev/bsp/ma-carte/gpio.c    # créé dans le clone, regreffé
 ```
 
 | Fichier | Rôle |

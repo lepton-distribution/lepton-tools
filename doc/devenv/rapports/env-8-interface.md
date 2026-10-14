@@ -73,7 +73,7 @@ Une ligne par greffon de la liste greffée, plus la graine elle-même :
 
 | Colonne | Source |
 | --- | --- |
-| greffon, rôle | manifeste (`nom`, `type`) ; rôle dans la graine (noyau, bsp, famille, application, bibliothèque, hors graine) |
+| greffon, rôle | manifeste (`nom`, `type`) ; rôle dans la graine (noyau, bsp, famille, application, bibliothèque, non utilisé — déclaré dans `.scion.sources.list` sans rôle dans `lepton-graine.json` (S3) —, hors graine) |
 | clé, version demandée, origine | `.scion.sources.list` du seed |
 | branche, commit | `git -C <clone> rev-parse --abbrev-ref HEAD`, `--short HEAD` |
 | modifications | `git -C <clone> status --porcelain` (nombre, fichiers avec `-v`) |
@@ -263,3 +263,33 @@ Propositions appliquées, à confirmer :
 - Modèles application et bibliothèque sans `CMakeLists.txt` : le lecteur CMake du noyau n'inclut
   ce fichier que pour un BSP (`cmake/lepton_greffons.cmake`) ; sources découvertes par `sources: [""]`.
 - Chemin local d'origine rendu relatif au rootstock s'il s'y trouve, absolu sinon.
+
+## 9. Amendements de la session S3 (2026-10-14)
+
+Décisions de l'utilisateur :
+
+| # | Décision | Amende |
+| --- | --- | --- |
+| S3-1 | `scion new --type bsp --from SRC` : dans les fichiers texte copiés, la destination source (`kernel/dev/bsp/<SRC>`, comme chemin entier) est remplacée par la destination neuve ; noms de fichiers et identifiants C conservés (règle R3 d'ENV-6) ; fichiers binaires copiés tels quels | §3.6 |
+| S3-2 | Fichiers copiés : ceux suivis par git (`git ls-files`) du répertoire du manifeste du BSP source greffé, état de l'arbre de travail ; non suivis, manifeste et fichiers système exclus | §3.6 |
+
+Propositions appliquées, à confirmer :
+
+- Manifeste du BSP neuf : rendu depuis `templates/bsp/` avec les champs matériels du BSP source
+  (même remplacement de destination dans leurs chaînes, ex. `compilation.*.inclusions`) ;
+  `nom`, `destination`, `version` 0.1.0, description « BSP <NAME>, dérivé de <SRC>. ».
+- `scion new` : nom et manifeste contrôlés avant toute écriture ; dépôt `git init -b master`,
+  commit initial « Greffon <NAME> créé par lepton scion new » ; échec de l'ajout à la graine :
+  dépôt conservé, commande `lepton seed add` rappelée ; `--from` refusé hors type `bsp`.
+- `scion new --type bsp` ajoute le BSP à la graine, qui en fait son BSP (comportement de
+  `seed add --type bsp`) ; l'ancien BSP reste greffé et déclaré, rôle « non utilisé » dans
+  `seed status`.
+- `file mv` : la destination doit être un chemin du clone source, ou un chemin du trunk dont le
+  plus proche répertoire existant contient des feuilles du greffon source ; sinon refus.
+- `dir remove` : fichiers suivis par `git rm -r`, puis suppression du reste du répertoire dans le
+  clone (fichiers non suivis du greffon compris).
+- Commandes `file` et `dir` sans `--no-cmake` : reconfiguration seulement si `CMakeLists.txt` ou
+  `lepton-greffon.json` est concerné.
+- `lepton graft --scion` désigne le greffon par son nom de manifeste (comme `--scion` de `file`).
+- Essai réel (scratchpad) : BSP `essai-an386` dérivé de `qemu-mps2-an386`, preset
+  `qemu-mps2-an386-freertos` avec `-DLEPTON_BOARD=essai-an386` : construit, `smoke.lsh` passé.

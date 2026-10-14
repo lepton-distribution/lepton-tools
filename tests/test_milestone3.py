@@ -179,6 +179,7 @@ def test_gra4_add_bsp_switches_seed_bsp(project, repos, capsys):
                  "--no-cmake"]) == 0
     assert _graine(project)["bsp"] == "board-c"
     assert "reste greffé" in capsys.readouterr().err
+    assert _by_name(_status(project, capsys)[1])["board-q"]["role"] == "non utilisé"
     assert main(["seed", "remove", "board-q", "-C", str(project), "--no-cmake"]) == 0
     assert_trunk_clean(project)
 
