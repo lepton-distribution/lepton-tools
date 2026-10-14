@@ -1,0 +1,3 @@
+# Graine {{name}} — créée par lepton seed new ; gérée par scion (seed-scion-add / seed-scion-remove).
+#shelf	scion	version	emplacement	[chemin dans le dépôt]
+{{sources}}

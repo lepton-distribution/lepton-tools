@@ -1,0 +1,14 @@
+{
+  "nom": {{name}},
+  "type": "bibliotheque",
+  "version": "0.1.0",
+  "description": {{description}},
+  "destination": {{destination}},
+  "bibliotheque": "lib",
+  "sources": [
+    ""
+  ],
+  "dependances": [
+    {{kernel}}
+  ]
+}
