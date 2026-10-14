@@ -8,6 +8,8 @@ Usage :
     lepton seed add SCION LOCATION --type T [--version V] [--path P] [--no-cmake]
     lepton seed remove SCION [--purge] [--no-cmake]
     lepton seed replace SCION LOCATION [--version V] [--path P] [--no-cmake]
+    lepton scion new NAME --type T [--from BSP] [--repo DIR] [--destination D] [--no-seed] [--no-cmake]
+    lepton scion remove NAME [--no-cmake]
 
 Codes de retour : 0 succès ; 1 utilisation, refus ou anomalie ; 2 échec ou absence d'un outil
 appelé ; 130 interruption.
@@ -18,7 +20,7 @@ import json
 import sys
 from pathlib import Path
 
-from lepton import __version__, scion_runner, seed
+from lepton import __version__, scion_runner, scions, seed
 from lepton.errors import EXIT_INTERRUPT, EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
 from lepton.scion_runner import scion_status_line
 from lepton.validation import validate_file
@@ -133,6 +135,27 @@ def _add_seed_parser(sub, common) -> None:
     p.set_defaults(func=seed.seed_replace)
 
 
+def _add_scion_parser(sub, common) -> None:
+    scion_p = sub.add_parser("scion", help="greffons du projet (GRF)", parents=[common])
+    scion_sub = scion_p.add_subparsers(dest="scion_command", metavar="ACTION", parser_class=_Parser, required=True)
+
+    p = scion_sub.add_parser("new", parents=[common], help="crée un greffon et l'ajoute à la graine (GRF-1)")
+    p.add_argument("name", metavar="NAME", help="nom du greffon")
+    p.add_argument("--type", required=True, choices=["bsp", "application", "bibliotheque"])
+    p.add_argument("--from", dest="from_bsp", metavar="BSP", help="BSP greffé à copier (obligatoire pour un BSP)")
+    p.add_argument("--repo", metavar="DIR", help="dépôt git à créer (défaut : depots/lepton-<kind>/NAME)")
+    p.add_argument("--destination", metavar="D",
+                   help="chemin sous sys/root/src (défaut : kernel/dev/bsp/NAME, bin/NAME, lib/NAME)")
+    p.add_argument("--no-seed", action="store_true", help="créer le dépôt sans l'ajouter à la graine")
+    _no_cmake(p)
+    p.set_defaults(func=scions.scion_new)
+
+    p = scion_sub.add_parser("remove", parents=[common], help="retire un greffon, dépôt conservé (GRF-4)")
+    p.add_argument("scion", metavar="NAME")
+    _no_cmake(p)
+    p.set_defaults(func=scions.scion_remove)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = _Parser(prog="lepton",
                      description="Environnement de développement Lepton : graine, greffons, fichiers, vérification.")
@@ -142,6 +165,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub = parser.add_subparsers(dest="command", metavar="COMMAND", parser_class=_Parser)
     common = _common_options()
     _add_seed_parser(sub, common)
+    _add_scion_parser(sub, common)
 
     p = sub.add_parser("check", help="valide des manifestes (JSON Schema, XSD mklepton)")
     p.add_argument("--json", action="store_true", help="sortie JSON")

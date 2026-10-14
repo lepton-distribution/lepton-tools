@@ -375,9 +375,8 @@ def _remind_commit(seed_root: Path) -> None:
     _info(f"graine modifiée, non commitée : git -C {seed_root} commit -am \"…\"")
 
 
-def seed_add(args) -> int:
-    rs, seed_root, graine_path, graine = _seed_context(args)
-    name, kind = args.scion, args.type
+def check_new_scion(rs: Rootstock, name: str, kind: str) -> str:
+    """Nom valide, ni greffé ni déclaré dans la graine ; rend la clé scion."""
     if not _IDENT.match(name):
         raise LeptonError(f"SCION « {name} » invalide", "minuscules, chiffres, « . », « _ », « - »")
     if rs.key_of(name) is not None:
@@ -385,8 +384,21 @@ def seed_add(args) -> int:
     key = scion_key(kind, name)
     if key in {s.key for s in rs.sources()}:
         raise LeptonError(f"{key} déjà déclaré dans la graine sans être greffé",
-                          f"lepton seed remove {name}, ou scion seed-scion-remove --seed {seed_root} {key}")
+                          f"lepton seed remove {name}, ou scion seed-scion-remove --seed {rs.seed_root()} {key}")
+    return key
+
+
+def seed_add(args) -> int:
+    rs = Rootstock.discover(args.rootstock)
     origin = parse_location(args.location, args.version, args.path, rootstock=rs.path)
+    return add_scion(rs, args.scion, args.type, origin, args.no_cmake)
+
+
+def add_scion(rs: Rootstock, name: str, kind: str, origin: Origin, no_cmake: bool) -> int:
+    """Ajout d'un greffon à la graine (GRA-4) : `seed-scion-add` → `seed-clone` → `graft --scion`."""
+    seed_root, graine_path = rs.seed_root(), rs.seed_manifest_path()
+    graine = load_graine(graine_path)
+    key = check_new_scion(rs, name, kind)
 
     scion("seed-scion-add", "--seed", str(seed_root), key, *origin.scion_args(), cwd=rs.path)
     try:
@@ -407,7 +419,7 @@ def seed_add(args) -> int:
         graine["bsp"] = name
     save_graine(graine_path, graine)
     _info(f"{name} ajouté ({key}, {origin.version}, {origin.location})")
-    finish(rs, args.no_cmake)
+    finish(rs, no_cmake)
     _remind_commit(seed_root)
     return EXIT_OK
 
