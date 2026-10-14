@@ -10,6 +10,9 @@ Usage :
     lepton seed replace SCION LOCATION [--version V] [--path P] [--no-cmake]
     lepton scion new NAME --type T [--from BSP] [--repo DIR] [--destination D] [--no-seed] [--no-cmake]
     lepton scion remove NAME [--no-cmake]
+    lepton file add PATH [--scion NAME] | file remove PATH | file mv SOURCE DESTINATION
+    lepton dir add PATH [--scion NAME] | dir remove PATH [--scion NAME]
+    lepton graft [--scion NAME]... [--force] [--no-cmake]
 
 Codes de retour : 0 succès ; 1 utilisation, refus ou anomalie ; 2 échec ou absence d'un outil
 appelé ; 130 interruption.
@@ -20,7 +23,7 @@ import json
 import sys
 from pathlib import Path
 
-from lepton import __version__, scion_runner, scions, seed
+from lepton import __version__, files, scion_runner, scions, seed
 from lepton.errors import EXIT_INTERRUPT, EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
 from lepton.scion_runner import scion_status_line
 from lepton.validation import validate_file
@@ -156,6 +159,40 @@ def _add_scion_parser(sub, common) -> None:
     p.set_defaults(func=scions.scion_remove)
 
 
+def _add_files_parsers(sub, common) -> None:
+    owner_help = "greffon propriétaire (défaut : celui des feuilles du répertoire)"
+    file_p = sub.add_parser("file", help="fichiers des greffons (FIC)", parents=[common])
+    file_sub = file_p.add_subparsers(dest="file_command", metavar="ACTION", parser_class=_Parser, required=True)
+    p = file_sub.add_parser("add", parents=[common], help="crée un fichier vide dans le clone propriétaire (FIC-1)")
+    p.add_argument("path", metavar="PATH", help="chemin du trunk ou d'un clone")
+    p.add_argument("--scion", metavar="NAME", help=owner_help)
+    p.set_defaults(func=files.file_add)
+    p = file_sub.add_parser("remove", parents=[common], help="retire un fichier de son clone (FIC-1)")
+    p.add_argument("path", metavar="PATH")
+    p.set_defaults(func=files.file_remove)
+    p = file_sub.add_parser("mv", parents=[common], help="déplace un fichier dans son clone (FIC-6)")
+    p.add_argument("source", metavar="SOURCE")
+    p.add_argument("destination", metavar="DESTINATION")
+    p.set_defaults(func=files.file_mv)
+
+    dir_p = sub.add_parser("dir", help="répertoires des greffons (FIC)", parents=[common])
+    dir_sub = dir_p.add_subparsers(dest="dir_command", metavar="ACTION", parser_class=_Parser, required=True)
+    p = dir_sub.add_parser("add", parents=[common], help="crée un répertoire (avec .gitkeep) dans le clone (FIC-2)")
+    p.add_argument("path", metavar="PATH")
+    p.add_argument("--scion", metavar="NAME", help=owner_help)
+    p.set_defaults(func=files.dir_add)
+    p = dir_sub.add_parser("remove", parents=[common], help="retire la part d'un greffon dans un répertoire (FIC-2)")
+    p.add_argument("path", metavar="PATH")
+    p.add_argument("--scion", metavar="NAME", help="greffon dont la part est retirée (si plusieurs)")
+    p.set_defaults(func=files.dir_remove)
+
+    p = sub.add_parser("graft", parents=[common], help="regreffe (fichiers système du trunk supprimés)")
+    p.add_argument("--scion", action="append", metavar="NAME", help="ne regreffer que ce greffon (répétable)")
+    p.add_argument("--force", action="store_true", help="transmis à scion : conserve les autres fichiers réguliers")
+    _no_cmake(p)
+    p.set_defaults(func=files.graft)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = _Parser(prog="lepton",
                      description="Environnement de développement Lepton : graine, greffons, fichiers, vérification.")
@@ -166,6 +203,7 @@ def build_parser() -> argparse.ArgumentParser:
     common = _common_options()
     _add_seed_parser(sub, common)
     _add_scion_parser(sub, common)
+    _add_files_parsers(sub, common)
 
     p = sub.add_parser("check", help="valide des manifestes (JSON Schema, XSD mklepton)")
     p.add_argument("--json", action="store_true", help="sortie JSON")

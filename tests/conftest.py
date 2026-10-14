@@ -101,6 +101,24 @@ def project(tmp_path, repos):
     return root
 
 
+@pytest.fixture
+def fake_build(project, tmp_path, monkeypatch):
+    """Répertoire build/ factice dont le cache désigne le trunk ; cmake remplacé par un traceur."""
+    build = project / "build" / "demo-debug"
+    build.mkdir(parents=True)
+    (build / "CMakeCache.txt").write_text(f"CMAKE_HOME_DIRECTORY:INTERNAL={project / 'trunk'}\n")
+    other = project / "build" / "other"
+    other.mkdir()
+    (other / "CMakeCache.txt").write_text("CMAKE_HOME_DIRECTORY:INTERNAL=/elsewhere\n")
+    log = tmp_path / "cmake.log"
+    bindir = tmp_path / "bin"
+    bindir.mkdir()
+    (bindir / "cmake").write_text(f'#!/bin/sh\necho "$@" >> {log}\n')
+    (bindir / "cmake").chmod(0o755)
+    monkeypatch.setenv("PATH", f"{bindir}:{__import__('os').environ['PATH']}")
+    return log
+
+
 def assert_trunk_clean(root: Path) -> None:
     """Critère ENV-8 / FIC-3 : aucun fichier régulier (hors liste greffée), aucun lien cassé."""
     trunk = root / "trunk"
