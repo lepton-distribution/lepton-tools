@@ -98,12 +98,12 @@ lepton seed replace SCION LOCATION [--version V] [--path P] [--no-cmake]
 Puis reconfiguration CMake. `--type` est requis pour `add` car la clé scion en dépend avant le
 clonage. La graine est laissée modifiée et non commitée ; le message rappelle de la commiter.
 
-### 3.5 `lepton seed lock [--verify]` (GRA-5, P2, jalon 6)
+### 3.5 `lepton seed lock [--verify | --restore]` (GRA-5, P2, jalon 6)
 Écrit `lepton-graine.lock.json` à côté de `lepton-graine.json` : pour chaque greffon, clé,
 origine, version demandée, commit exact (`git rev-parse HEAD`) et état propre exigé (refus si
 modifications non commitées). `--verify` compare l'état des clones au fichier (code 1 si écart).
 La reconstruction depuis le verrou (forme exacte de la commande) est arrêtée au jalon 6, selon ce
-que scion accepte comme version (commit ou tag).
+que scion accepte comme version (commit ou tag). Arrêtée en S4 : `--restore` (§10, S4-1).
 
 ### 3.6 `lepton scion new / remove` (GRF-1, GRF-4) — nom de la sous-commande : Q1
 ```
@@ -165,6 +165,7 @@ isolé (`lepton-greffon.json`, `lepton-graine.json`, XML mklepton), type reconnu
 | CFG-5 (P2) : pilote ou binaire du XML fourni par aucun greffon | 6 |
 
 Sortie : une ligne par anomalie `fichier: chemin JSON: message` ; code 1 s'il y en a.
+Méthode de CFG-5 et détail des contrôles : §10 (S4-2).
 
 ## 4. Correspondance exigences → commandes → tests
 
@@ -182,10 +183,16 @@ Sortie : une ligne par anomalie `fichier: chemin JSON: message` ; code 1 s'il y 
 | FIC-1, FIC-2 | `file`, `dir` | `test_fic1_file_add_remove`, `test_fic2_dir_add_remove` |
 | FIC-3 | `file add` | `test_fic3_refus_sans_proprietaire`, contrôle « aucun fichier régulier » après chaque test |
 | FIC-6 (P2) | `file mv` | `test_fic6_git_log_follow` |
-| GRA-5, GRF-5, CFG-5 (P2) | `seed lock`, `check` | jalon 6 |
+| GRA-5 (P2) | `seed lock [--verify \| --restore]` | `test_gra5_seed_lock_verify_restore`, `test_gra5_seed_lock_refuse_clone_modifie` |
+| GRA-2 | `check` | `test_gra2_check_noyau_bsp_famille` |
+| GRF-5 (P2) | `check` | `test_grf5_check_coeur_backend_dependances` |
+| CFG-5 (P2) | `check` | `test_cfg5_check_pilote_binaire_non_fournis` |
+| (contrôles non exprimables) | `check` | `test_check_non_exprimable_json_schema`, `test_check_rootstock_conforme` |
 
-Bout en bout (script, hors pytest) : `seed new` (noyau + BSP `qemu-mps2-an386`, dépôts locaux du
-rootstock réel en origine) → `cmake` (presets host puis an386) → test de fumée QEMU.
+Bout en bout (script, hors pytest) : `scripts/bout-en-bout.sh REPERTOIRE` — `seed new` (noyau,
+famille `qemu-mps2`, BSP `qemu-mps2-an386`, clonés depuis `~/lepton` en `file://localhost`) →
+`check` → `seed lock` / `--verify` → `cmake` (presets host puis `qemu-mps2-an386-freertos`) →
+`ctest -L smoke` → `seed status` ; état git de `~/lepton` comparé avant et après.
 
 ## 5. Organisation du dépôt
 
@@ -293,3 +300,36 @@ Propositions appliquées, à confirmer :
 - `lepton graft --scion` désigne le greffon par son nom de manifeste (comme `--scion` de `file`).
 - Essai réel (scratchpad) : BSP `essai-an386` dérivé de `qemu-mps2-an386`, preset
   `qemu-mps2-an386-freertos` avec `-DLEPTON_BOARD=essai-an386` : construit, `smoke.lsh` passé.
+
+## 10. Amendements de la session S4 (2026-10-14)
+
+Décisions de l'utilisateur :
+
+| # | Décision | Amende |
+| --- | --- | --- |
+| S4-1 | `seed lock` écrit `lepton-graine.lock.json` à côté de `lepton-graine.json` ; `--verify` compare les clones au verrou (code 1 si écart) ; `--restore` fait `git checkout <commit>` dans chaque clone propre d'origine distante, puis regreffe ; une origine locale (`*`) est vérifiée seulement, jamais modifiée, et signalée (code 1 si elle diffère) | §3.5 |
+| S4-2 | CFG-5 : recherche textuelle des définitions `dev_map_t dev_X_map =` (pilote, `use="on"` seulement) et `int X_main(` (binaire) dans les `.c` des greffons greffés, sans construction ni champ de manifeste | §3.9 |
+| S4-3 | Bout en bout : `scripts/bout-en-bout.sh REPERTOIRE`, hors pytest | §4 |
+| S4-4 | `pipx install` de lepton-tools pour l'utilisateur en fin de S4 | — |
+
+Propositions appliquées, à confirmer :
+
+- Verrou : `{"lepton": <version>, "scions": [{key, name, location, version, path, commit}]}`,
+  sans schéma ; greffons de `.scion.sources.list` seulement ; refus si un greffon déclaré n'est
+  pas greffé ou si un clone a des modifications non commitées (fichiers système exclus) ;
+  répertoire local hors git (`building` de scion) consigné avec `commit` nul, jamais contrôlé.
+- `--restore` : tous les contrôles avant toute écriture (clone propre, commit présent localement,
+  sinon `git fetch` conseillé, pas de réseau implicite, NF-8) ; HEAD détachée au commit figé ;
+  `scion graft` puis contrôle du trunk et reconfiguration (`--no-cmake` accepté).
+- CFG-5, fichiers d'un greffon : `.c` de ses `sources` (répertoire non récursif, comme le lecteur
+  CMake ; fichier tel quel) et de ses fichiers objets (`demarrage`, `vecteurs`,
+  `remplacants_forts`) ; sans `sources` (noyau, compilé par ses composants) ou avec un
+  `CMakeLists.txt` à sa destination : tout l'arbre de sa destination. Une définition dans une
+  macro à collage de lexèmes (`dev_cmsdk_uart_##n##_map`, BSP an386) vaut motif, les paramètres
+  de la macro valant `\w+`. Heuristique : un fichier présent mais non compilé compte comme
+  fournisseur.
+- `check` sans argument : fichiers déclarés contrôlés dans le clone (`sources`, `vecteurs`,
+  `remplacants_forts`, `demarrage`, `openocd`, `script_liens`, `entete_config_noyau`, `svd`) ;
+  unicité des noms d'options d'un greffon, des noms de greffons greffés et des configurations de
+  la graine ; bornes `min` ≤ `max` ; greffon sans manifeste signalé seulement s'il porte
+  `scion/sys/root/src` ; XSD par `xmllint` (absent : avertissement, comme `check FILE`).
