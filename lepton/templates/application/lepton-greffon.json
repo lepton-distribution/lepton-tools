@@ -1,0 +1,14 @@
+{
+  "nom": {{name}},
+  "type": "application",
+  "version": "0.1.0",
+  "description": {{description}},
+  "destination": {{destination}},
+  "bibliotheque": "bin",
+  "sources": [
+    ""
+  ],
+  "dependances": [
+    {{kernel}}
+  ]
+}

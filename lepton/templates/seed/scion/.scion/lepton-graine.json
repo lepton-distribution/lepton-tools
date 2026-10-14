@@ -1,0 +1,14 @@
+{
+  "projet": {
+    "nom": {{name}},
+    "version": {{version}},
+    "description": {{description}}
+  },
+  "noyau": {{kernel}},
+  "bsp": {{bsp}},
+  "applications": [],
+  "bibliotheques": [],
+  "backend": {{backend}},
+  "configurations": {{configurations}},
+  "mklepton_xml": {{mkconf}}
+}
