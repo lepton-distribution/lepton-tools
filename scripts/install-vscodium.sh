@@ -167,7 +167,9 @@ installer_scion() {
 # --- VSCodium (INS-1) -----------------------------------------------------------------
 version_vscodium() {
   if [ "$OS" = macos ]; then
-    [ -f "$APP/Contents/Info.plist" ] && /usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist" 2>/dev/null || true
+    if [ -f "$APP/Contents/Info.plist" ]; then
+      /usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist" 2>/dev/null || true
+    fi
   else
     dpkg-query -W -f='${Version}' codium 2>/dev/null || true
   fi
@@ -412,7 +414,8 @@ bilan() {
 # --- Principal -----------------------------------------------------------------------------
 if [ -n "$SEED_SCIONS_DIR" ]; then
   [ -d "$SEED_SCIONS_DIR/.git" ] || die "$SEED_SCIONS_DIR n'est pas un clone git de seed.scions."
-  SCION_SPEC="git+file://$(cd "$SEED_SCIONS_DIR" && pwd)@$SCION_REF"
+  # Forme nommée (PEP 508) : pipx 1.7.1 (Debian 13) refuse une URL git+file:// sans nom.
+  SCION_SPEC="scion @ git+file://$(cd "$SEED_SCIONS_DIR" && pwd)@$SCION_REF"
 else
   SCION_SPEC="git+https://github.com/lepton-distribution/seed.scions.git@$SCION_REF"
 fi
