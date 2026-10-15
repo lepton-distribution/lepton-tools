@@ -27,7 +27,10 @@ def test_grf1_scion_new_application(project, capsys):
     manifest = repo / "scion/sys/root/src/bin/hello/lepton-greffon.json"
     assert validate_file(manifest) == []
     assert json.loads(manifest.read_text())["nom"] == "hello"
-    assert "int hello_main(" in (repo / "scion/sys/root/src/bin/hello/hello.c").read_text()
+    source = (repo / "scion/sys/root/src/bin/hello/hello.c").read_text()
+    assert "int hello_main(" in source
+    # inclusions relatives à sys/root/src, comme les binaires du noyau (défaut N3 d'ENV-11)
+    assert '#include "kernel/core/libstd.h"' in source and '#include "lib/libc/stdio/stdio.h"' in source
     assert _git(repo, "status", "--porcelain") == "" and _git(repo, "rev-parse", "--abbrev-ref", "HEAD").strip() == "master"
     assert (project / "trunk/sys/root/src/bin/hello/hello.c").is_symlink()
     assert _graine(project)["applications"] == ["hello"]

@@ -3,8 +3,8 @@
  * Point d'entrée : {{c_name}}_main, à déclarer dans le XML mklepton du projet
  * (<binaries> : <bin name="{{c_name}}" … />).
  */
-#include "kernel/libstd.h"
-#include "stdio/stdio.h"
+#include "kernel/core/libstd.h"
+#include "lib/libc/stdio/stdio.h"
 
 int {{c_name}}_main(int argc, char* argv[])
 {
