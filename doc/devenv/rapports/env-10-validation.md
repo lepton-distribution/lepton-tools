@@ -1,0 +1,131 @@
+# ENV-10 — Script d'installation de VSCodium : relevés et validation
+
+Session du 2026-10-15, Mac mini Intel (macOS 15.8.1, x86_64). Script :
+`scripts/install-vscodium.sh` ; liste : `scripts/extensions.lst` (lepton-tools `devenv/env-10`,
+d78afcf). Scripts de la chaîne : `scripts/install-{macos,debian}.sh` du clone noyau
+(`devenv/env-10`, 1b2f7b6).
+
+## 1. Relevé Open VSX (PA-10)
+
+| Extension | Retenue | Dernière publiée | Plateformes | Observations |
+| --- | --- | --- | --- | --- |
+| `llvm-vs-code-extensions.vscode-clangd` | 0.6.0 | 0.6.0 | universelle | clangd pris sur l'hôte (PA-1) ; sans `clangd.path` valide, l'extension propose de télécharger clangd |
+| `ms-vscode.cmake-tools` | 1.24.42 | 1.24.42 | universelle | pack déclarant `ms-vscode.cpp-devtools`, absent d'Open VSX : ignoré par `codium` |
+| `mcu-debug.debug-tracker-vscode` | 0.0.15 | 0.0.15 | universelle | dépendance de Cortex-Debug |
+| `mcu-debug.memory-view` | 0.0.29 | 0.0.29 | universelle | idem |
+| `mcu-debug.rtos-views` | 0.0.16 | 0.0.16 | universelle | idem |
+| `mcu-debug.peripheral-viewer` | 1.6.4 | 1.6.5 (2026-10-15, VSCodium ≥ 1.107) | universelle | version validée en ENV-1 / ENV-9 |
+| `marus25.cortex-debug` | 1.13.0-pre6 | 1.13.0-pre6 | universelle | servie comme `latest` sans marque de pré-version ; stable précédente 1.12.1 |
+| `vadimcn.vscode-lldb` | 1.12.3 | 1.12.3 | Open VSX : amorce seule | l'amorce (10 fichiers, sans adaptateur) télécharge `codelldb-<plateforme>.vsix` depuis GitHub au premier lancement ; le script installe ce paquet lui-même (release v1.12.3, SHA-256 épinglé) |
+| `redhat.vscode-xml` | 0.29.3 | 0.29.2026101508 (pré-version quotidienne) | darwin-x64, darwin-arm64, linux-x64 | chaque VSIX de plateforme embarque lemminx natif (`lemminx-osx-x86_64`, `lemminx-osx-aarch_64`, `lemminx-linux-x86_64`) et sa somme ; Mach-O x86_64 vérifié, somme conforme : fonctionne sans Java |
+| `anthropic.claude-code` | 2.1.300 | 2.1.300 | darwin-x64, darwin-arm64, linux-x64 | une version paraît presque chaque jour |
+
+VSCodium : releases GitHub `VSCodium/vscodium` ; 1.135.06055 retenue (validée en ENV-1 / ENV-9),
+dernière 1.140.06880 (2026-10-13). Sommes publiées (`.sha256`) reprises dans le script :
+`.dmg` x64 et arm64, `.deb` amd64. Le dépôt APT `download.vscodium.com/debs` ne sert que la dernière
+version (épinglage impossible) ; le cask Homebrew non plus ; pas de port MacPorts `vscodium`.
+
+## 2. Exécution sur Mac Intel
+
+État de départ : VSCodium 1.135.06055 installé par Homebrew cask, 7 extensions (ENV-1),
+réglages utilisateur sans les clés PA-10.
+
+1. `shellcheck` 0.11.0 (MacPorts) : `install-vscodium.sh`, `install-macos.sh`,
+   `install-debian.sh` sans remarque.
+2. `--dry-run` : contrôles d'état seuls, 5 actions annoncées ; `--bogus` → code 2 et usage ;
+   sans `--lepton-clone` ni `$LEPTON_CLONE` → arrêt avec la marche à suivre.
+3. `brew uninstall --cask vscodium` (accord de l'utilisateur, D3). **Effet de bord** : Homebrew a
+   enchaîné son nettoyage automatique et retiré des formules jugées inutilisées, au moins
+   `imath` 3.1.12 (3.1.4 reste) et `libdeflate` 1.22 (absente depuis) ; liste complète non
+   conservée. Sans effet sur la chaîne (MacPorts). Le lien `codium` du cask a disparu.
+4. Exécution n° 1 (`--lepton-clone ~/lepton/depots/lepton/original/master --seed-scions
+   ~/lepton-tools-dev/seed.scions`) : code 0, **5 changements** — `.dmg` téléchargé, somme
+   vérifiée, `VSCodium.app` copiée (signature `com.vscodium`, équipe VC39D2VNQ7) ; CodeLLDB
+   `codelldb-darwin-x64.vsix` (adaptateur présent) ; vscode-xml et Claude Code (VSIX darwin-x64) ;
+   réglages fusionnés (`settings.json.bak` créé). `install-macos.sh --with-debug-tools` : tout
+   « déjà installé », aucun `port install`, scion laissé en 0.5.1.0 (`SCION_REF`/`SCION_SPEC`).
+5. Exécution n° 2 : code 0, **0 changement**, aucune commande `sudo`.
+
+## 3. Critères d'ENV-10
+
+| Critère | Résultat |
+| --- | --- |
+| PA-10 tranché ; `extensions.lst` épinglé | oui (`DEVENV-STATUS.md` §Décisions, 2026-10-15) |
+| `codium --list-extensions --show-versions` = `extensions.lst` | Mac : identique (`diff` vide), aussi depuis un état vierge (§6) ; Debian : identique (`env-10-debian.md` §3, passage n° 3) |
+| Deux exécutions successives sans erreur ni changement (INS-4) | Mac : oui (5 puis 0 ; état vierge 12 puis 0, §6) ; Debian : oui depuis un hôte vierge (13 puis 0, passage n° 3) |
+| `grep -n '/usr/local\|/opt/homebrew\|/opt/local'` vide (INS-5) | oui |
+| Gestionnaire = celui d'`install-macos.sh` | oui : le script n'appelle aucun gestionnaire sur macOS ; `install-macos.sh` choisit MacPorts sur Intel |
+| Aucune commande d'installation de la chaîne (INS-3) | oui : seul `apt-get install` du `.deb` de VSCodium (Debian) |
+| `shellcheck` sans erreur | oui : 0.11.0 (Mac), 0.10.0 (Debian, après 1b43b0b) |
+| INS-6 : `scion version`, `lepton --version` | 0.5.1.0 ; lepton 0.1.0 (Mac et Debian) |
+
+`pytest -q` (lepton-tools) : 116 passed.
+
+## 4. Points ouverts et non testés
+
+- **`codium` hors du PATH** après installation par `.dmg` : signalé par le script, aucun lien créé.
+  Le cask en créait un dans le préfixe Homebrew. Choix à faire par l'utilisateur : PATH (ligne
+  affichée) ou commande « Install 'codium' command in PATH » de VSCodium.
+- **lemminx natif** : binaire présent, `xml.server.preferBinary` réglé ; Java (JDK 25) présent sur
+  ce Mac, le choix effectif du binaire à l'exécution reste à constater dans l'éditeur (ENV-11,
+  CFG-7).
+- **scion 0.5.1.0 hors réseau local** : le tag n'est pas sur GitHub. Sans `--seed-scions`, la source
+  par défaut (`github.com/lepton-distribution/seed.scions@0.5.1.0`) échoue tant qu'il n'est pas
+  poussé (PA-P). Lancé seul, `install-macos.sh` / `install-debian.sh` gardent leur défaut 0.5.0.1 et
+  rétrogradent scion : défaut à relever après le push.
+- **Binaires téléchargés au premier lancement** (contournement de l'épinglage) : aucun pour
+  CodeLLDB (paquet complet), vscode-xml (lemminx embarqué), Claude Code (VSIX de plateforme) ;
+  clangd seulement si `clangd.path` est invalide.
+- **Apple Silicon** (revue seule, pas de machine) : `.dmg` arm64 et `codelldb-darwin-arm64.vsix`
+  (sommes relevées, non téléchargés) ; garde Rosetta ; `install-macos.sh` choisit Homebrew et
+  `brew --prefix` ; `PlistBuddy` et `hdiutil` identiques ; extensions de plateforme darwin-arm64
+  publiées pour vscode-xml et Claude Code.
+- **Debian** (session VM distincte) : version renvoyée par `dpkg-query` pour le `.deb` GitHub à
+  confirmer égale à `1.135.06055` ; `install-debian.sh` relancé à chaque exécution
+  (`apt-get update`, `apt-get install` sans effet si à jour) ; rapport attendu
+  `rapports/env-10-debian.md`.
+
+## 5. Correction après la validation Debian n° 1 (S2, 2026-10-15)
+
+- Défaut constaté sur la VM (`rapports/env-10-debian.md` §6.1), commun à tous les hôtes :
+  `installer_extensions` sortait en code 1 sans message quand aucune extension n'était installée
+  (`grep -v '^$'` sans ligne, `pipefail`). Non vu sur le Mac, parti de 7 extensions (§2).
+- Reproduit sur le Mac : `--dry-run --skip-toolchain` avec `HOME` vide (scratchpad) → code 1 après
+  la dernière extension.
+- Correction (9321eed, accord de l'utilisateur) : `{ grep -v '^$' || true; }`, comme
+  `lire_extensions`.
+- Après correction : même essai `HOME` vide → code 0, réglages, lepton et bilan atteints
+  (12 actions annoncées) ; `shellcheck` sans remarque ; exécution réelle Mac
+  (`--lepton-clone`, `--seed-scions`) → code 0, **0 changement**, aucun `sudo`.
+- Protocole de validation complété : tout hôte est aussi essayé depuis un état sans extension
+  (dry-run avec `HOME` vide sur le Mac ; hôte vierge sur la VM).
+- Point ouvert §4 levé par la VM : la version dpkg du `.deb` est `1.135.06055` exactement.
+
+## 6. Corrections après la validation Debian n° 2 (S2, 2026-10-15)
+
+- Défaut commun (`rapports/env-10-debian.md` §6.2) : avec `--seed-scions`, `SCION_SPEC` valait
+  `git+file://…/seed.scions@0.5.1.0`, refusé par pipx 1.7.1 (Debian 13, « Unable to parse package
+  spec ») ; accepté par pipx 1.17.12 (Mac), où scion était de plus déjà à jour (pipx non appelé).
+- Reproduit sur le Mac avec pipx 1.7.1 dans un venv jetable et des `PIPX_HOME` / `PIPX_BIN_DIR`
+  temporaires : forme nue → code 1 ; `scion @ git+file://…@0.5.1.0` → scion 0.5.1.0 ;
+  `git+https://github.com/…/seed.scions.git@0.5.1.0` → scion 0.5.1.0.
+- Corrections (commit « spécification pipx nommée… », accord de l'utilisateur) : forme PEP 508 nommée ;
+  `version_vscodium` en `if … fi` (SC2015 signalée par shellcheck 0.10.0, §6.3 du rapport Debian).
+- Essai « hôte vierge » réel sur le Mac (protocole complété) : `HOME` vide, pipx 1.7.1 en tête du
+  `PATH`, `PIPX_HOME` / `PIPX_BIN_DIR` temporaires, `~/.local/bin` hors `PATH`, `--skip-toolchain
+  --no-lepton --seed-scions` : n° 1 code 0, **12 changements** (scion par pipx 1.7.1, 10 extensions,
+  réglages) ; n° 2 code 0, **0 changement** ; `diff` installées / `extensions.lst` vide ; CodeLLDB
+  `adapter/codelldb` présent. `shellcheck` 0.11.0 sans remarque.
+
+## 7. Clôture (S2, 2026-10-15)
+
+- Validation Debian n° 3 conforme (`rapports/env-10-debian.md`) : Debian 13.7, pipx 1.7.1, hôte
+  vierge, 96264cf ; INS-1 à INS-6, binaires natifs, réglages, shellcheck 0.10.0.
+- Suite du §6.4 du rapport Debian (accord de l'utilisateur, e9b5518) : `telecharger` distingue
+  l'échec d'écriture de curl (code 23, message citant le fichier et `TMPDIR`) des autres échecs
+  (code curl cité) ; en-tête : répertoire temporaire et place à prévoir (≈ 300 Mo : `.dmg` 241 Mo,
+  `.deb` 168 Mo, `.vsix` CodeLLDB ≤ 56 Mo). Essais : écriture dans un répertoire en lecture seule →
+  code 23 et nouveau message ; URL absente → code 22 ; `shellcheck` 0.11.0 sans remarque ;
+  exécution réelle Mac → 0 changement ; `pytest -q` 116 passed. Chemin d'erreur seul : pas de
+  nouveau passage VM. Pas de contrôle de place préalable (`df`).
+- Hôtes : Mac Intel validé ; Debian 13 validée ; Apple Silicon : revue seule (§4).

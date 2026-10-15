@@ -1,0 +1,17 @@
+# Extensions VSCodium épinglées (PA-10, 2026-10-15), lues par install-vscodium.sh.
+# Une ligne `éditeur.nom@version` ; `#` commence un commentaire.
+# Ordre significatif : une dépendance précède l'extension qui la déclare, sinon
+# `codium --install-extension` installerait sa dernière version depuis Open VSX.
+# vadimcn.vscode-lldb : paquet de la plateforme pris sur la release GitHub (somme dans
+# install-vscodium.sh), l'amorce d'Open VSX téléchargeant ce paquet au premier lancement.
+
+llvm-vs-code-extensions.vscode-clangd@0.6.0
+ms-vscode.cmake-tools@1.24.42
+mcu-debug.debug-tracker-vscode@0.0.15
+mcu-debug.memory-view@0.0.29
+mcu-debug.rtos-views@0.0.16
+mcu-debug.peripheral-viewer@1.6.4
+marus25.cortex-debug@1.13.0-pre6
+vadimcn.vscode-lldb@1.12.3
+redhat.vscode-xml@0.29.3
+anthropic.claude-code@2.1.300
