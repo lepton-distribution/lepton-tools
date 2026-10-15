@@ -13,6 +13,20 @@ développe pas : elle exécute, constate et rapporte (ORCHESTRATION §2).
 
 Référence Mac Intel (même script) : `doc/devenv/rapports/env-10-validation.md` §2-§4.
 
+### Passage n° 2 (après la correction 9321eed)
+
+Le passage n° 1 (`rapports/env-10-debian.md`) s'est arrêté sur un défaut du script, corrigé sur
+`devenv/env-10` (`env-10-validation.md` §5). Pour ce passage :
+- mettre à jour les clones en place : `git -C ~/lepton-tools-dev/lepton-tools fetch origin`, puis
+  `git switch devenv/env-10 && git pull --ff-only` ; conserver la branche locale
+  `devenv/env-10-debian` du passage n° 1 ou la recréer depuis `origin/devenv/env-10` (elle y est
+  fusionnée) ; clone noyau et seed.scions inchangés (1b2f7b6, 0.5.1.0) ;
+- accords déjà donnés par l'utilisateur : remplacement de scion 0.5.0.1 par 0.5.1.0 (par le
+  script) ; installation de `shellcheck` (`sudo apt-get install shellcheck`, par l'utilisateur) ;
+- la VM part d'un état sans VSCodium ni extension : c'est l'essai « hôte vierge » attendu ;
+- compléter `doc/devenv/rapports/env-10-debian.md` (ne pas créer d'autre fichier) : titre
+  « passage n° 2 », §2 et §3 renseignés, §6.1 marqué corrigé ; garder le passage n° 1 en historique.
+
 ## 2. Ce que la session VM peut faire, et ne fait pas
 
 | Autorisé | Interdit |

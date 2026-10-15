@@ -84,3 +84,19 @@ réglages utilisateur sans les clés PA-10.
   confirmer égale à `1.135.06055` ; `install-debian.sh` relancé à chaque exécution
   (`apt-get update`, `apt-get install` sans effet si à jour) ; rapport attendu
   `rapports/env-10-debian.md`.
+
+## 5. Correction après la validation Debian n° 1 (S2, 2026-10-15)
+
+- Défaut constaté sur la VM (`rapports/env-10-debian.md` §6.1), commun à tous les hôtes :
+  `installer_extensions` sortait en code 1 sans message quand aucune extension n'était installée
+  (`grep -v '^$'` sans ligne, `pipefail`). Non vu sur le Mac, parti de 7 extensions (§2).
+- Reproduit sur le Mac : `--dry-run --skip-toolchain` avec `HOME` vide (scratchpad) → code 1 après
+  la dernière extension.
+- Correction (9321eed, accord de l'utilisateur) : `{ grep -v '^$' || true; }`, comme
+  `lire_extensions`.
+- Après correction : même essai `HOME` vide → code 0, réglages, lepton et bilan atteints
+  (12 actions annoncées) ; `shellcheck` sans remarque ; exécution réelle Mac
+  (`--lepton-clone`, `--seed-scions`) → code 0, **0 changement**, aucun `sudo`.
+- Protocole de validation complété : tout hôte est aussi essayé depuis un état sans extension
+  (dry-run avec `HOME` vide sur le Mac ; hôte vierge sur la VM).
+- Point ouvert §4 levé par la VM : la version dpkg du `.deb` est `1.135.06055` exactement.
