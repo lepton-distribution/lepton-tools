@@ -20,7 +20,7 @@ from pathlib import Path
 from lepton.errors import EXIT_OK, EXIT_TOOL, LeptonError
 from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, project_key
 from lepton.scion_runner import run, scion
-from lepton.seed import LOCAL_VERSION, _info, _remind_commit, _warn, finish, load_graine
+from lepton.seed import LOCAL_VERSION, _info, _remind_commit, _warn, finish, load_graine, scion_on_trunk
 
 PRESETS_FILE = "CMakeUserPresets.json"
 KERNEL_PRESETS = "CMakePresets.json"
@@ -41,11 +41,14 @@ _CLANGD_VERSION = re.compile(r"clangd version (\d+)\.")
 # --------------------------------------------------------------------------
 # outils de l'hôte (NF-3 : résolus par le PATH, aucun préfixe codé en dur)
 # --------------------------------------------------------------------------
-def require_tool(name: str, why: str) -> str:
-    path = shutil.which(name)
-    if path is None:
-        raise LeptonError(f"{name} absent du PATH ({why})", f"installer {name} et vérifier le PATH", EXIT_TOOL)
-    return path
+def require_tool(name: str, why: str, *fallbacks: str) -> str:
+    """Premier de `name`, `fallbacks` trouvé dans le PATH ; sinon code 2 (EXIT_TOOL)."""
+    for candidate in (name, *fallbacks):
+        path = shutil.which(candidate)
+        if path is not None:
+            return path
+    names = " ou ".join((name, *fallbacks))
+    raise LeptonError(f"{name} absent du PATH ({why})", f"installer {names} et vérifier le PATH", EXIT_TOOL)
 
 
 def find_clangd(explicit: str | None) -> str | None:
@@ -296,7 +299,7 @@ def host_tools(ctx: Context, clangd: str | None) -> dict:
     executions = {c["execution"] for c in ctx.configurations}
     tools = {"cmake": require_tool("cmake", "presets"), "ctest": require_tool("ctest", "tests"),
              "gcc": require_tool("arm-none-eabi-gcc", "clangd --query-driver"),
-             "gdb": require_tool("arm-none-eabi-gdb", "débogage"),
+             "gdb": require_tool("arm-none-eabi-gdb", "débogage", "gdb-multiarch"),   # Debian : gdb-multiarch
              "lepton": shutil.which("lepton") or "lepton",
              "clangd": find_clangd(clangd)}
     if "qemu" in executions:
@@ -334,10 +337,7 @@ def _graft_project(ctx: Context, presets: Path) -> bool:
         scion("seed-clone", "--seed", str(ctx.seed_root), cwd=rs.path)   # inscrit la clé dans la liste greffée
         changed = True
     if not (link.is_symlink() and link.resolve() == presets.resolve()):
-        for p in rs.system_files_in_trunk():   # PA-9 Q8 (comme lepton graft) : fichiers du Finder, jamais un lien
-            p.unlink()
-            _info(f"fichier système supprimé du trunk : {p}")
-        scion("graft", "--scion", key, cwd=rs.path)
+        scion_on_trunk(rs, "graft", "--scion", key)
         changed = True
     return changed
 

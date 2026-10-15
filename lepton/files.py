@@ -13,7 +13,7 @@ from pathlib import Path
 from lepton.errors import EXIT_OK, LeptonError
 from lepton.rootstock import STEM_DIR, Rootstock, find_manifest
 from lepton.scion_runner import git, scion
-from lepton.seed import _info, finish
+from lepton.seed import _info, finish, scion_on_trunk
 
 # Fichiers dont l'ajout, le retrait ou le déplacement impose une reconfiguration CMake (§3.7)
 CMAKE_FILES = {"CMakeLists.txt", "lepton-greffon.json"}
@@ -134,7 +134,7 @@ def _tracked(repo_dir: Path, path: Path) -> bool:
 
 
 def _regraft(rs: Rootstock, owner: Owner, cmake: bool) -> int:
-    scion("graft", "--scion", owner.key, cwd=rs.path)
+    scion_on_trunk(rs, "graft", "--scion", owner.key)
     return finish(rs, no_cmake=not cmake)
 
 
@@ -262,9 +262,6 @@ def graft(args) -> int:
     rs = Rootstock.discover(args.rootstock)
     owners = _owners(rs)
     keys = [_by_name(rs, owners, n).key for n in args.scion or []]
-    for p in rs.system_files_in_trunk():       # PA-9 Q8 : fichiers du Finder, jamais un lien
-        p.unlink()
-        _info(f"fichier système supprimé du trunk : {p}")
-    scion("graft", *(["--force"] if args.force else []), *(a for k in keys for a in ("--scion", k)), cwd=rs.path)
+    scion_on_trunk(rs, "graft", *(["--force"] if args.force else []), *(a for k in keys for a in ("--scion", k)))
     _info("regreffe " + (f"de {', '.join(args.scion)}" if keys else "complète") + " faite")
     return finish(rs, args.no_cmake)

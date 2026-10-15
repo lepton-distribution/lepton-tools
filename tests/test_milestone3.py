@@ -147,6 +147,21 @@ def test_gra4_remove(project, repos, fake_build, capsys):
     assert_trunk_clean(project)
 
 
+def test_gra4_add_remove_with_finder_files(project, repos, capsys):
+    # PA-9 Q8 (défaut N2 d'ENV-11) : fichiers du Finder dans le trunk supprimés avant graft et graft-remove
+    finder = [project / "trunk/.DS_Store", project / "trunk/sys/root/src/._x"]
+    for p in finder:
+        p.write_bytes(b"\0")
+    assert main(["seed", "add", "my-app", str(repos["app"]), "--type", "application", "-C", str(project),
+                 "--no-cmake"]) == 0
+    assert not any(p.exists() for p in finder)
+    assert "fichier système supprimé du trunk" in capsys.readouterr().out
+    finder[0].write_bytes(b"\0")
+    assert main(["seed", "remove", "my-app", "-C", str(project), "--no-cmake"]) == 0
+    assert not finder[0].exists() and not (project / "trunk/sys/root/src/bin/my-app").exists()
+    assert_trunk_clean(project)
+
+
 def test_gra4_replace(project, repos, tmp_path, capsys):
     # BSP local → forme git du même dépôt avec un fichier en plus
     repo = repos["bsp"]
