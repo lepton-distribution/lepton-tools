@@ -162,8 +162,10 @@ jamais par le trunk :
 
 Puis déclarer le binaire dans le XML **du clone noyau d'essai** (PA-9 Q5) :
 `$R/depots/lepton/original/master/scion/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml`
-(chemin réel à vérifier par `realpath` du lien du trunk), ligne après `<bin name="pwd" …/>` :
-`<bin name="salut" stack="2048" priority="100" timeslice="1" />`.
+(chemin réel à vérifier par `realpath` du lien du trunk), dans un bloc de binaires de `bin/`
+(et non après `<bin name="pwd" …/>`, qui est dans le bloc `src_path="sbin"` : défaut D2 du
+rapport Debian, corrigé après le passage), après le bloc de `bin/net` :
+`<binaries src_path="bin" dest_path="bin"> <bin name="salut" stack="2048" priority="100" timeslice="1" /> </binaries>`.
 
 ```bash
 lepton check -C "$R"

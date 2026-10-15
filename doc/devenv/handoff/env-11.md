@@ -1,73 +1,66 @@
-# Passation ENV-11 — Validation de bout en bout — session du 2026-10-15 (S2)
+# Passation ENV-11 — Validation de bout en bout — session du 2026-10-15 (S3)
 
 ## Statut
-en cours — S1 (scénario Mac en ligne de commande) et S2 (cartes réelles, VSCodium) faites ; S3 (VM
-Debian, bilan) reste.
+terminée — scénarios Mac (S1, S2) et Debian (S3) conformes, écarts P1 acceptés et renvoyés
+(`rapports/env-11-bilan.md`).
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/env-11` (non poussée) | `devenv(env-11): état et passation (S2)` ; avant : 3bd37f6 skill lepton-cibles (ports série, `adapter serial`), 9145805 passation S1, 7d191aa, 338ff5b ; `main` = 657c395 (non poussée) | oui |
-| clone noyau `~/lepton/depots/lepton/original/master` | `devenv/env-11` (extraite, non poussée) | a572f00 défaut `SCION_REF` 0.5.1.0 ; `master` = 1dde0af (non poussée) | oui |
+| lepton-tools | `devenv/env-11` | `devenv(env-11): état et passation (S3)` ; avant : 49ff3bd fusion de `devenv/env-11-debian` (55a55bc D1, 4725f32 rapport), 53ca625 projet de bilan, 8cca1c0 consigne VM. Distant : `devenv/env-11` = 8cca1c0, `devenv/env-11-debian` = 4725f32, `main` = 657c395 | oui |
+| clone noyau `~/lepton/depots/lepton/original/master` | `devenv/env-11` (extraite) | a572f00 `SCION_REF` 0.5.1.0 ; `master` 1dde0af ; tous deux poussés | oui |
+| famille `qemu-mps2`, BSP `qemu-mps2-an386` (`~/lepton/depots/`) | `master` | 3954357, 046779e ; poussés par URL SSH vers `lepton-distribution/lepton-famille-qemu-mps2` et `lepton-bsp-qemu-mps2-an386` (aucun distant configuré localement) | oui |
 | seed.scions | `master` 79f4f96, tag 0.5.1.0 | inchangé | oui |
-| BSP, familles, graine de travail de `~/lepton` | `master` / `original-tree` | inchangés (identiques à `essais/env-11/ref-avant.txt`, contrôle de fin de S2) | oui |
-| Rootstocks d'essai (hors git) | `~/lepton-tools-dev/essais/env-11/{qemu,f429zi,wl55jc1}` ; `qemu` a en plus `build/qemu-mps2-an386-freertos` (essai IDE-5) | clones d'essai propres ; trunks : seul fichier régulier `.scion.grafted.list` | — |
-| Cartes | NUCLEO-F429ZI : `env11f4-debug-board` (embOS) ; NUCLEO-WL55JC1 carte A : `env11wl-debug-board` (FreeRTOS) | flashées, vérifiées | — |
+| Rootstocks d'essai | Mac `~/lepton-tools-dev/essais/env-11/{qemu,f429zi,wl55jc1}` ; VM `~/lepton-tools-dev/essais/env-11/qemu` | conservés, hors git | — |
 
 ## Fait pendant la session
-- §2.5-2.6 en ligne de commande, avec `adapter serial` : identification des deux sondes, flash
-  « Verified OK » (WL : RDP 0, octets d'option et M0+ non touchés), `lsh` sur la console série
-  (`smoke_lsh.py --transport serial`), arrêt sur `main` en GDB.
-- §2.7 et §2.9 dans VSCodium (manipulé par l'utilisateur) : DBG-3 (flash, `main`, point d'arrêt) sur
-  les deux cartes, une branchée à la fois ; DBG-1, DBG-2, TST-1 18/18, IDE-1 à IDE-5 ; BLD-5 :
-  `lepton.bin` 25d50f61… et `lepton.hex` 7e29c21c… identiques à la ligne de commande.
-- Constats : N4 (CFG-7 non conforme), O6 tranchée, O8-O11 (`rapports/env-11-mac.md` §2bis, §3, §4).
-- Skill `lepton-cibles` : ports série relevés (F429 `usbmodem145103`, WL A `usbmodem1454303`),
-  `adapter serial` obligatoire avec deux sondes, commande de fumée série (3bd37f6).
+- Décisions de début de S3 (dépôts GitHub des greffons QEMU, réinstallation explicite de lepton sur
+  la VM) ; PA-P accordé et push fait (six références, contrôlées par `git ls-remote`).
+- Consigne VM `consignes/env-11-debian.md`, transmise par SendMessage à la session VM (Remote
+  Control) à la demande de l'utilisateur.
+- Rapport Debian `rapports/env-11-debian.md` intégré : scénario CLI conforme après D1 (correction
+  lepton faite par la VM avec accord de l'utilisateur) ; fusion `--no-ff`, `pytest` 118 verts au Mac.
+- D2 (erreur de la consigne : `<bin name="salut">` dans le bloc `sbin`) corrigé dans la consigne.
+- Bilan `rapports/env-11-bilan.md` : exigences P1 × Mac / Debian, nouveau défaut N5 (CFG-4 : valeurs
+  d'options non fixables dans la graine), classement N1, N4, N5, O1-O13, D1-D4.
 
 ## Reste à faire dans l'étape
-- [ ] S3 §3 : push soumis à PA-P (lepton-tools `main` + `devenv/env-11` ; clone noyau `master` +
-      `devenv/env-11`), consigne VM `consignes/env-11-debian.md` (étapes 2.1-2.4 et 2.9 CLI), rapport
-      `rapports/env-11-debian.md` intégré.
-- [ ] S3 §4 : bilan exigences P1 × résultat (conforme, non conforme, non testé) ; classement de N1,
-      N4, O1-O11 (étape à reprendre) avec l'utilisateur.
-- Reliquats hors étape : Apple Silicon (revue seule) ; ligne « openocd » vide du récapitulatif
-  d'`install-debian.sh`.
+- Rien. Fusions locales de `devenv/env-11` (lepton-tools → `main`, clone noyau → `master`) au début
+  de la session suivante.
+- Reprises acceptées (bilan §3), hors étape : ENV-7 N1 ; ENV-9 N4, O8, O10, O11 ; ENV-3/5/8 N5 ;
+  ENV-8 O3, O4 ; ENV-6 O1 ; ENV-10 D3, D4, O6, O12 ; noyau O9 ; ENV-12 O2, O5. Elles ne figurent
+  pas au graphe d'ORCHESTRATION §6 : à planifier (skill `lepton-portage-instructions`) ou à ouvrir
+  comme lots bornés des étapes citées.
+- Reliquats antérieurs : Apple Silicon (revue seule) ; ligne « openocd » vide du récapitulatif
+  d'`install-debian.sh` ; BSP `nucleo-f439zi` reporté.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
 | --- | --- | --- |
-| O6 démontré par lecture du code (`cmake/kal/embos.cmake:13-15`), `~/.zshrc` non modifié | utilisateur | oui |
-| L'utilisateur réalise seul la partie VSCodium (pas de pilotage de l'interface ; pas de computer use dans cette session) | utilisateur | non (méthode) |
-| Essais éditeur sur carte une carte branchée à la fois | proposition appliquée | oui |
-| N4 classé défaut (CFG-7 P2 non conforme) ; renvoi proposé ENV-9 | proposition non validée | oui (à classer en S3) |
-| Renvois proposés d'O6, O8-O11 | propositions non validées | oui (rapport §4, à classer en S3) |
+| Greffons QEMU publiés sur deux dépôts GitHub, poussés par URL SSH | utilisateur | oui |
+| lepton réinstallé explicitement sur la VM ; O12 | utilisateur | oui |
+| Push PA-P de S3 (six références) | utilisateur | oui |
+| D1 corrigé dans lepton (`gdb-multiarch` en repli) | utilisateur (session VM) | oui |
+| Renvois du bilan §3 tels que proposés | utilisateur | oui |
+| Écarts CFG-1, CFG-4, réserves IDE-3, IDE-5 acceptés ; ENV-11 terminée | utilisateur | oui |
+| Reprises avant PA-12 | utilisateur | oui |
+| lepton du Mac (pipx) non réinstallé après D1 (sans effet sur macOS) | proposition non validée | oui (§Versions) |
 
 ## Pièges rencontrés
-- Le hook `proteger-trunk.py` refuse toute commande shell qui mentionne `trunk/` et contient une
-  redirection, même vers `logs/` : passer par le chemin réel dans le clone (`realpath`) ou l'outil Edit.
-- Deux ST-Link branchés : sans `adapter serial`, la cfg F4 prend la sonde V3 du WL55 (échec sur
-  l'IDCODE, sans écriture).
-- VSCodium lancé par le Finder lit l'environnement du shell de connexion (`~/.zshrc`) ; pour une
-  variable propre à un essai (`SOURCE_DATE_EPOCH`), le quitter complètement (⌘Q) puis le lancer par
-  `codium` depuis un terminal qui l'exporte.
-- clangd démarré avant que CMake Tools ait configuré : aucune base ; « clangd: Restart language
-  server » après la première configuration par CMake Tools (O10).
-- Sélecteur de preset absent de la barre d'état (CMake Tools 1.24.42) : panneau CMake › Project
-  Status ou « CMake: Select Configure Preset » (O11).
-- `arm-none-eabi-gdb` macOS sans Python : message à la fin du chargement de `gdbinit-lepton` (O9),
-  sans effet sur le débogage.
+- `lepton` ne reconnaît une origine distante que si l'URL a un hôte : `ssh://git@github.com/…`,
+  jamais `git@github.com:…` (pris pour un chemin local).
+- Debian : pas d'`arm-none-eabi-gdb` (D1, corrigé), ni clangd LLVM (D4), ni xmllint (D3) par défaut.
+- `/tmp` de la VM (747 Mo) saturé par les venv de test : `TMPDIR` dans `/home` (O13).
+- Le commit local 53ca625 n'était pas poussé : la VM a travaillé depuis 8cca1c0 (sans effet).
 
 ## Critères de validation
 - [x] PA-11 tranché.
-- [ ] Toutes les exigences P1 conformes sur Mac, ou écart accepté par l'utilisateur : scénario Mac
-      complet, P1 testées conformes (réserves O8, O10, O11) ; acceptation des écarts au bilan S3.
-- [ ] Scénario Debian conforme, ou report consigné (S3).
-- [x] Aucun fichier régulier dans le trunk à la fin du scénario (trois rootstocks d'essai, hors
-      `.scion.grafted.list` de scion et `.DS_Store` ignorés par Q8).
+- [x] Toutes les exigences P1 conformes sur Mac, ou écart accepté par l'utilisateur.
+- [x] Scénario Debian conforme (après D1).
+- [x] Aucun fichier régulier dans le trunk à la fin du scénario.
 
 ## Reprise
 ```
 cd /Users/cle_d_anton/lepton-tools-dev/lepton-tools && claude
-# « Démarre la session sur l'étape indiquée dans DEVENV-STATUS » (ENV-11 S3 : VM Debian, bilan)
+# « Démarre la session sur l'étape indiquée dans DEVENV-STATUS » (fusions d'ENV-11, choix de la première reprise)
 ```
