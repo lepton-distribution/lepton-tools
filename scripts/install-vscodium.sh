@@ -30,6 +30,9 @@
 # fin. Ce que le script ne fait pas : installer MacPorts, Homebrew, pipx hors scripts du noyau,
 # remplacer un VSCodium d'une autre version (il s'arrête), désinstaller une extension, créer un
 # lien de `codium` dans un répertoire système.
+# Téléchargements dans un répertoire temporaire (mktemp -d, sous $TMPDIR, défaut /tmp), supprimé
+# à la sortie : prévoir environ 300 Mo libres (.dmg 241 Mo ou .deb 168 Mo de VSCodium, puis
+# .vsix de CodeLLDB jusqu'à 56 Mo).
 # Code de retour : 0 succès, 1 échec (message avec l'action corrective), 2 usage.
 # Compatible bash 3.2.
 
@@ -102,7 +105,13 @@ sha256() {
 
 # telecharger URL FICHIER SHA256 : téléchargement puis contrôle de la somme épinglée.
 telecharger() {
-  curl -fsSL --retry 3 -o "$2" "$1" || die "téléchargement de $1 impossible : vérifier le réseau, puis rejouer."
+  local rc=0
+  curl -fsSL --retry 3 -o "$2" "$1" || rc=$?
+  if [ "$rc" -eq 23 ]; then
+    die "écriture de $2 impossible (curl code 23) : place libre ou droits du répertoire temporaire ; libérer de la place ou relancer avec TMPDIR=<répertoire>, puis rejouer."
+  elif [ "$rc" -ne 0 ]; then
+    die "téléchargement de $1 impossible (curl code $rc) : vérifier le réseau, puis rejouer."
+  fi
   local got
   got="$(sha256 "$2")"
   [ "$got" = "$3" ] || die "SHA-256 de $(basename "$2") inattendu ($got, attendu $3) : rien n'a été installé ; vérifier la version épinglée dans $0."
