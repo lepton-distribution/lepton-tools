@@ -6,7 +6,7 @@ script d'installation de VSCodium.
 
 État : outil `lepton` 0.1.0 (ENV-8, jalons 1 à 6 ; `lepton generate` ajouté en ENV-9). Voir `doc/devenv/`.
 
-Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée par pipx ; scion ≥ 0.5.1.0
+Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée par pipx ; scion ≥ 0.5.1.1
 requis). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`, puis
 `pip install -e '.[test]'` et `python -m pytest`.
 
