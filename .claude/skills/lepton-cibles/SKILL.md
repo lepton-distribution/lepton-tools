@@ -58,8 +58,8 @@ openocd -f <cfg> -c "init; targets; shutdown"
 
 | Carte | Fichiers OpenOCD | Console série |
 | --- | --- | --- |
-| NUCLEO-F429ZI | `-f <BSP>/debug/openocd-nucleo-f439zi.cfg` (→ `board/st_nucleo_f4.cfg`, ST-LINK/V2-1) | `/dev/cu.usbmodem1454303`, 115200 8N1 |
-| NUCLEO-WL55JC1 | `-f <ROOTSTOCK>/build/<preset>/openocd-nucleo-wl55jc1.cfg` (généré par le `CMakeLists.txt` du BSP : `<BSP-WL>/debug/openocd-nucleo-wl55jc1.cfg` — autonome depuis ENV-9 : `interface/stlink.cfg` + `target/stm32wlx.cfg`, STLINK-V3 — puis `adapter serial` si `LEPTON_BOARD_STLINK_SERIAL`) (cœur M4 uniquement) | carte A `/dev/cu.usbmodem1454303`, carte B `/dev/cu.usbmodem1454403`, 115200 8N1 |
+| NUCLEO-F429ZI | `-f <BSP>/debug/openocd-nucleo-f439zi.cfg` (→ `board/st_nucleo_f4.cfg`, ST-LINK/V2-1) | `/dev/cu.usbmodem145103` (relevé ENV-11 S2, deux cartes branchées), 115200 8N1 |
+| NUCLEO-WL55JC1 | `-f <ROOTSTOCK>/build/<preset>/openocd-nucleo-wl55jc1.cfg` (généré par le `CMakeLists.txt` du BSP : `<BSP-WL>/debug/openocd-nucleo-wl55jc1.cfg` — autonome depuis ENV-9 : `interface/stlink.cfg` + `target/stm32wlx.cfg`, STLINK-V3 — puis `adapter serial` si `LEPTON_BOARD_STLINK_SERIAL`) (cœur M4 uniquement) | carte A `/dev/cu.usbmodem1454303` (relevé ENV-11 S2), carte B `/dev/cu.usbmodem1454403`, 115200 8N1 |
 
 <!-- <BSP> = sys/root/src/kernel/dev/bsp/nucleo-f429zi, <BSP-WL> = sys/root/src/kernel/dev/bsp/nucleo-wl55jc1,
      relatifs au trunk (champ openocd du manifeste, ENV-6). Sources : debug/openocd-nucleo-f439zi.cfg du BSP F429 ;
@@ -69,6 +69,10 @@ openocd -f <cfg> -c "init; targets; shutdown"
      n° 0672FF495252717267243842 ; WL55 A 002700253431510837393937, B 004F003E3431510937393937
      (doc/migration/validation-nucleo-wl55jc1.md:7-10). Cible CMake équivalente : `cmake --build <build> --target flash`
      (cmake/components/firmware.cmake:90-95). -->
+
+Deux cartes ST-Link branchées : `interface/stlink.cfg` prend la première sonde trouvée ; toujours
+ajouter `-c "adapter serial <n°>"` après `-f <cfg>` (ENV-11 S2, O8). Console série en test :
+`tests/smoke_lsh.py --transport serial --port <port> --reset-command "openocd -f <cfg> -c 'adapter serial <n°>' -c 'init; reset run; shutdown'" --expect-machine <machine>`.
 
 Flash puis vérification :
 ```bash
