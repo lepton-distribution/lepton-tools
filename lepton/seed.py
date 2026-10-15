@@ -36,6 +36,14 @@ def _info(message: str) -> None:
     print(message)
 
 
+def scion_on_trunk(rs: Rootstock, *args: str):
+    """scion graft / graft-remove sur le rootstock, après suppression des fichiers système réguliers du
+    trunk (PA-9 Q8) : le Finder en recrée à tout moment, et scion refuse un trunk qui en contient."""
+    for p in rs.purge_system_files():
+        _info(f"fichier système supprimé du trunk : {p}")
+    return scion(*args, cwd=rs.path)
+
+
 def _warn(message: str) -> None:
     print(f"lepton: attention: {message}", file=sys.stderr)
 
@@ -407,7 +415,7 @@ def add_scion(rs: Rootstock, name: str, kind: str, origin: Origin, no_cmake: boo
     try:
         scion("seed-clone", "--seed", str(seed_root), cwd=rs.path)
         _expect(rs, key, name, kind)
-        scion("graft", "--scion", key, cwd=rs.path)
+        scion_on_trunk(rs, "graft", "--scion", key)
     except LeptonError:
         _undo_add(rs, seed_root, key)
         raise
@@ -431,7 +439,7 @@ def _undo_add(rs: Rootstock, seed_root: Path, key: str) -> None:
     """Annulation d'un ajout : retrait de la graine et du trunk (le clone éventuel est conservé)."""
     try:
         if key in {e.key for e in rs.grafted()}:
-            scion("graft-remove", key, cwd=rs.path)
+            scion_on_trunk(rs, "graft-remove", key)
         scion("seed-scion-remove", "--seed", str(seed_root), key, cwd=rs.path)
         _warn(f"ajout de {key} annulé (graine et trunk restaurés)")
     except LeptonError as e:
@@ -456,7 +464,7 @@ def seed_remove(args) -> int:
         scion("seed-scion-remove", "--seed", str(seed_root), key, cwd=rs.path)
     else:
         _warn(f"{key} greffé hors de la graine : retiré du trunk seulement")
-    scion("graft-remove", key, *(["--purge"] if args.purge else []), cwd=rs.path)
+    scion_on_trunk(rs, "graft-remove", key, *(["--purge"] if args.purge else []))
 
     for field in ("applications", "bibliotheques"):
         if name in graine.get(field, []):
@@ -480,17 +488,17 @@ def seed_replace(args) -> int:
     old_origin = Origin(old.location, old.version, old.subpath)
 
     # retrait d'abord (clone distant supprimé : la nouvelle origine est reclonée au même endroit)
-    scion("graft-remove", key, *(["--purge"] if old_origin.remote else []), cwd=rs.path)
+    scion_on_trunk(rs, "graft-remove", key, *(["--purge"] if old_origin.remote else []))
     try:
         _attach(rs, seed_root, key, origin)
         _expect(rs, key, name, kind)
-        scion("graft", "--scion", key, cwd=rs.path)
+        scion_on_trunk(rs, "graft", "--scion", key)
     except LeptonError:
         try:
             if key in {e.key for e in rs.grafted()}:
-                scion("graft-remove", key, *(["--purge"] if origin.remote else []), cwd=rs.path)
+                scion_on_trunk(rs, "graft-remove", key, *(["--purge"] if origin.remote else []))
             _attach(rs, seed_root, key, old_origin)
-            scion("graft", "--scion", key, cwd=rs.path)
+            scion_on_trunk(rs, "graft", "--scion", key)
             _warn(f"remplacement de {name} annulé : origine précédente restaurée")
         except LeptonError as e:
             _warn(f"restauration de {name} incomplète : {e.message}")
@@ -636,7 +644,7 @@ def _restore(rs: Rootstock, locked: list[dict], no_cmake: bool) -> int:
         git(clone, "checkout", "-q", entry["commit"])
         _info(f"{entry['name']} : {entry['commit'][:12]} (HEAD détachée)")
     if moved:
-        scion("graft", cwd=rs.path)
+        scion_on_trunk(rs, "graft")
         finish(rs, no_cmake)
     for g in local_gaps:
         _warn(g.strip())

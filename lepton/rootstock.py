@@ -228,3 +228,10 @@ class Rootstock:
     def system_files_in_trunk(self) -> list[Path]:
         """Fichiers système réguliers du trunk (supprimés par lepton graft, Q8)."""
         return [p for p in self.trunk.rglob("*") if is_system_file(p.name) and p.is_file() and not p.is_symlink()]
+
+    def purge_system_files(self) -> list[Path]:
+        """Supprime les fichiers système réguliers du trunk (Q8) : scion graft et graft-remove les refusent."""
+        found = self.system_files_in_trunk()
+        for p in found:
+            p.unlink()
+        return found

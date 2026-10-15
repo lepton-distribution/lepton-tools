@@ -20,7 +20,7 @@ from pathlib import Path
 from lepton.errors import EXIT_OK, EXIT_TOOL, LeptonError
 from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, project_key
 from lepton.scion_runner import run, scion
-from lepton.seed import LOCAL_VERSION, _info, _remind_commit, _warn, finish, load_graine
+from lepton.seed import LOCAL_VERSION, _info, _remind_commit, _warn, finish, load_graine, scion_on_trunk
 
 PRESETS_FILE = "CMakeUserPresets.json"
 KERNEL_PRESETS = "CMakePresets.json"
@@ -334,10 +334,7 @@ def _graft_project(ctx: Context, presets: Path) -> bool:
         scion("seed-clone", "--seed", str(ctx.seed_root), cwd=rs.path)   # inscrit la clé dans la liste greffée
         changed = True
     if not (link.is_symlink() and link.resolve() == presets.resolve()):
-        for p in rs.system_files_in_trunk():   # PA-9 Q8 (comme lepton graft) : fichiers du Finder, jamais un lien
-            p.unlink()
-            _info(f"fichier système supprimé du trunk : {p}")
-        scion("graft", "--scion", key, cwd=rs.path)
+        scion_on_trunk(rs, "graft", "--scion", key)
         changed = True
     return changed
 
