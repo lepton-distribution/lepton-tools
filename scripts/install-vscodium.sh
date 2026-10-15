@@ -319,7 +319,8 @@ installer_extensions() {
   # Extensions présentes hors liste : signalées, jamais retirées.
   local liste
   liste="$(lire_extensions | sed 's/@.*//' | tr '[:upper:]' '[:lower:]')"
-  printf '%s\n' "$installees" | sed 's/@.*//' | grep -v '^$' | while read -r id; do
+  # grep toléré : liste vide (hôte sans extension) → code 1, fatal avec pipefail.
+  printf '%s\n' "$installees" | sed 's/@.*//' | { grep -v '^$' || true; } | while read -r id; do
     printf '%s\n' "$liste" | grep -qx "$id" || info "hors liste (conservée) : $id"
   done
 }
