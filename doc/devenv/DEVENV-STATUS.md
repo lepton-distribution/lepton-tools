@@ -22,7 +22,7 @@ ENV-11 S3 (`handoff/env-11.md`, `rapports/env-11-mac.md` §5) : demander le push
 | ENV-8 | Outil `lepton` | terminée (2026-10-14) | lepton-tools `devenv/env-8` | `handoff/env-8.md` |
 | ENV-9 | Fichiers de l'éditeur | terminée (2026-10-14) | lepton-tools `devenv/env-9` ; BSP `nucleo-wl55jc1` `devenv/env-9` | `handoff/env-9.md` |
 | ENV-10 | Script d'installation VSCodium | terminée (2026-10-15) | lepton-tools `devenv/env-10` (poussée), `devenv/env-10-debian` (VM, fusionnée) ; clone noyau `devenv/env-10` (poussée) | `handoff/env-10.md` |
-| ENV-11 | Validation de bout en bout | en cours (S1, S2 faites ; S3 Debian et bilan) | lepton-tools `devenv/env-11` ; clone noyau `devenv/env-11` | `handoff/env-11.md` |
+| ENV-11 | Validation de bout en bout | en cours (S1, S2 faites ; S3 en cours : Debian et bilan) | lepton-tools `devenv/env-11` ; clone noyau `devenv/env-11` | `handoff/env-11.md` |
 | ENV-12 | Extension VSCodium | à faire | — | — |
 
 Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), abandonnée (décision).
@@ -188,6 +188,8 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-15 | — (ENV-11 S2) | O6 : reconfiguration embOS depuis VSCodium lancé par le Finder réussie (variable héritée de `~/.zshrc:15`, ligne manuelle, environnement du shell de connexion lu par VSCodium) ; cas sans variable démontré par lecture du code (`cmake/kal/embos.cmake:13-15`), sans retrait de la ligne. Décision de l'utilisateur. |
 | 2026-10-15 | — (ENV-11 S2) | Essais VSCodium sur carte faits une carte branchée à la fois (O8 : espace généré sans numéro de série de sonde) ; ligne de commande avec `adapter serial`. Proposition appliquée. |
 | 2026-10-15 | — (ENV-11 S2) | CFG-7 (P2) non conforme : défaut N4 (aucune association de schéma dans l'éditeur) ; observations O8-O11 ; renvois proposés non validés, à classer au bilan S3 (`rapports/env-11-mac.md` §3-§4). |
+| 2026-10-15 | — (ENV-11 S3) | Greffons famille `qemu-mps2` et BSP `qemu-mps2-an386` (dépôts locaux sans distant) publiés sur deux dépôts GitHub créés par l'utilisateur, poussés par URL SSH (configuration des dépôts de `~/lepton` inchangée) ; la VM les clone par `lepton seed new`. Décision de l'utilisateur. |
+| 2026-10-15 | — (ENV-11 S3) | VM Debian : lepton 0.1.0 d'ENV-10 non réinstallé par `install-vscodium.sh` (même version) ; `pipx install --force` explicite depuis `devenv/env-11` après l'étape 2.1 ; écart consigné en O12. Décision de l'utilisateur. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
