@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-15 — ENV-11 terminée (S3 : scénario Debian, bilan) ; reprises des renvois avant PA-12.
+Dernière mise à jour : 2026-10-15 — fusions d'ENV-11 ; reprise R1 d'ENV-7 (N1, scion 0.5.1.1) terminée ; reprises suivantes avant PA-12.
 
 ## Prochaine action
 
-Fusionner localement `devenv/env-11` (`--no-ff`) dans lepton-tools `main` et dans `master` du clone noyau, puis choisir avec l'utilisateur l'ordre des reprises de `rapports/env-11-bilan.md` §3 (ENV-7 N1 ; ENV-9 N4, O8, O10, O11 ; ENV-3/5/8 N5 ; ENV-8 O3, O4 ; ENV-6 O1 ; ENV-10 D3, D4, O6, O12 ; noyau O9) et ouvrir la première ; PA-12 (ENV-12) après les reprises.
+Fusionner localement `devenv/env-7-r1` (`--no-ff`) dans lepton-tools `main` et dans `master` du clone noyau (puis l'extraire dans `~/lepton`), réinstaller lepton par pipx depuis `main`, puis ouvrir la reprise 2 : N5 (CFG-4, valeurs d'options fixables dans la graine : schéma de graine ENV-3, lepton ENV-8, lecteur CMake ENV-5) en lot borné — nom de branche et répartition entre dépôts à présenter au plan ; push de seed.scions `master` + tag 0.5.1.1 à proposer (PA-P) avant tout usage du défaut GitHub d'`install-*.sh`.
 
 ## Étapes
 
@@ -18,7 +18,7 @@ Fusionner localement `devenv/env-11` (`--no-ff`) dans lepton-tools `main` et dan
 | ENV-4 | Format XML de mklepton | terminée (2026-10-13) | lepton-tools `devenv/env-4` ; clone noyau `devenv/env-4` | `handoff/env-4.md` |
 | ENV-5 | Restructuration CMake | terminée (2026-10-13) | lepton-tools `devenv/env-5` ; clone noyau `devenv/env-5` | `handoff/env-5.md` |
 | ENV-6 | Greffons BSP de référence | terminée (2026-10-13) | `devenv/env-6` : lepton-tools, clone noyau, graine de travail, greffons `qemu-mps2`, `qemu-mps2-an386`, `qemu-mps2-an500`, `stm32f4xx`, `nucleo-f429zi`, `stm32wlxx`, `nucleo-wl55jc1` | `handoff/env-6.md` |
-| ENV-7 | Évolutions de scion | terminée (2026-10-13) | lepton-tools `devenv/env-7` ; seed.scions `devenv/env-7` (fusionnée dans `master`, tag 0.5.1.0) | `handoff/env-7.md` |
+| ENV-7 | Évolutions de scion | terminée (2026-10-13) ; reprise R1 (N1) terminée (2026-10-15) | lepton-tools `devenv/env-7`, `devenv/env-7-r1` ; seed.scions `devenv/env-7` (tag 0.5.1.0), `devenv/env-7-r1` (fusionnées dans `master`, tag 0.5.1.1) ; clone noyau `devenv/env-7-r1` | `handoff/env-7.md` |
 | ENV-8 | Outil `lepton` | terminée (2026-10-14) | lepton-tools `devenv/env-8` | `handoff/env-8.md` |
 | ENV-9 | Fichiers de l'éditeur | terminée (2026-10-14) | lepton-tools `devenv/env-9` ; BSP `nucleo-wl55jc1` `devenv/env-9` | `handoff/env-9.md` |
 | ENV-10 | Script d'installation VSCodium | terminée (2026-10-15) | lepton-tools `devenv/env-10` (poussée), `devenv/env-10-debian` (VM, fusionnée) ; clone noyau `devenv/env-10` (poussée) | `handoff/env-10.md` |
@@ -44,7 +44,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 
 | Outil | Version | Relevé le |
 | --- | --- | --- |
-| scion | 0.5.1.0 (tag annoté sur 79f4f96, `master` de `<SEED_SCIONS>`, non poussé) — `~/.local/bin/scion` (pipx `git+file://<SEED_SCIONS>@0.5.1.0`), modules identiques au tag ; 0.5.0.1 (54dc319) auparavant | 2026-10-13 |
+| scion | 0.5.1.1 (tag annoté sur f1d1f3c, `master` de `<SEED_SCIONS>`, non poussé) — `~/.local/bin/scion` (pipx `scion @ git+file://<SEED_SCIONS>@0.5.1.1`), modules identiques au tag ; requis par lepton (`SCION_MIN_VERSION`) et défaut `SCION_REF` des scripts ; 0.5.1.0 (79f4f96, poussé) auparavant | 2026-10-15 |
 | CMake (minimum requis) | 3.24 | décision 2026-10-13 (PA-2 Q6 ; 3.19 le 2026-10-12) |
 | CMake (hôte Mac) | 3.31.12 — `/opt/local/bin/cmake` (MacPorts) | 2026-10-12 |
 | arm-none-eabi-gcc | 14.2.Rel1 (14.2.1 20241119) — Arm GNU Toolchain, `~/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi` (hors MacPorts) | 2026-10-12 |
@@ -60,7 +60,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | clangd | 21.1.8 — `/opt/local/bin/clangd-mp-21`, MacPorts `clang-21 @21.1.8_3` | 2026-10-12 |
 | check-jsonschema | 0.38.2 — pipx (`~/.local/bin`), Python 3.11.5 | 2026-10-13 |
 | xmllint (libxml2) | 2.15.4 (21504) — `/opt/local/bin` (MacPorts) | 2026-10-13 |
-| lepton | 0.1.0 (jalons 1-6 + `generate` d'ENV-9, corrections N2, N3 et D1 d'ENV-11 ; D1 sans effet sur le Mac, pipx du Mac non réinstallé) — `lepton-tools/pyproject.toml`, build hatchling 1.32.4 ; installé pour l'utilisateur par `pipx install --force <LEPTON_TOOLS>` (`~/.local/bin/lepton`, Python 3.11.5, depuis `devenv/env-11` 7d191aa) | 2026-10-15 |
+| lepton | 0.1.0 (jalons 1-6 + `generate` d'ENV-9, corrections N2, N3 et D1 d'ENV-11 ; D1 sans effet sur le Mac, pipx du Mac non réinstallé) — `lepton-tools/pyproject.toml`, build hatchling 1.32.4 ; installé pour l'utilisateur par `pipx install --force <LEPTON_TOOLS>` (`~/.local/bin/lepton`, Python 3.11.5, depuis `devenv/env-11` 7d191aa ; exige scion ≥ 0.5.1.0 — `devenv/env-7-r1` exige ≥ 0.5.1.1, réinstallation à la fusion) | 2026-10-15 |
 | jsonschema (dépendance de lepton) | 4.26.0 (épinglée dans `pyproject.toml`) | 2026-10-14 |
 | pytest | 9.1.1 — extra `[test]`, venv de développement `~/lepton-tools-dev/venv-lepton-tools` (Python 3.11.5, `pip install -e '.[test]'`) | 2026-10-14 |
 | Extensions VSCodium | `scripts/extensions.lst` (PA-10) : clangd 0.6.0 ; CMake Tools 1.24.42 ; Cortex-Debug 1.13.0-pre6 + mcu-debug debug-tracker 0.0.15, memory-view 0.0.29, rtos-views 0.0.16, peripheral-viewer 1.6.4 ; CodeLLDB 1.12.3 (paquet de plateforme GitHub) ; vscode-xml 0.29.3 (lemminx natif) ; Claude Code 2.1.300 — Mac Intel et Debian 13 conformes | 2026-10-15 |
@@ -194,6 +194,12 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-15 | — (ENV-11 S3) | Défaut D1 (`lepton generate` exigeait `arm-none-eabi-gdb`, absent de Debian) corrigé par la session VM (55a55bc, `gdb-multiarch` en repli), accord de l'utilisateur ; `devenv/env-11-debian` fusionnée (`--no-ff`, 49ff3bd) dans `devenv/env-11`, 118 tests verts sur le Mac. D2 (erreur de la consigne VM, bloc `sbin`) corrigé dans la consigne. |
 | 2026-10-15 | — (ENV-11 bilan) | Renvois acceptés tels quels (`rapports/env-11-bilan.md` §3) : ENV-7 N1 (scion 0.5.1.1) ; ENV-9 N4, O8, O10, O11 ; ENV-3/5/8 N5 (valeurs d'options de la graine) ; ENV-8 O3, O4 ; ENV-6 O1 ; ENV-10 / scripts du noyau D3 (xmllint), D4 (clangd Debian), O6, O12 ; noyau O9 ; ENV-12 / conception O2, O5 ; O7, O13, D1, D2 clos. Décision de l'utilisateur. |
 | 2026-10-15 | — (ENV-11 bilan) | Écarts P1 acceptés : CFG-1 (O5), CFG-4 (N5) ; réserves IDE-3 (O10), IDE-5 (O11). ENV-11 terminée. Suite : reprises des renvois avant PA-12. Décision de l'utilisateur. |
+| 2026-10-15 | — (reprises) | `devenv/env-11` fusionnée localement (`--no-ff`) : lepton-tools `main` 469a744, clone noyau `master` 35bde95 (extrait dans `~/lepton`, trunk 4 037 feuilles, propre, sans regreffe). |
+| 2026-10-15 | — (reprises) | Ordre des reprises du bilan ENV-11 §3 : (1) ENV-7 N1 ; (2) N5 (ENV-3/5/8) ; (3) ENV-8 O3, O4 + ENV-6 O1 ; (4) ENV-9 N4, O8, O10, O11 ; (5) ENV-10 D3, D4, O6, O12 + noyau O9, un seul passage VM à la fin. Chaque reprise = lot borné de l'étape citée, branche `devenv/env-<N>-r<k>`, sans nouveau fichier d'étape. Décision de l'utilisateur. |
+| 2026-10-15 | — (ENV-7 R1) | `devenv/env-7-r1` créée depuis `main` 469a744 (lepton-tools) et `master` 79f4f96 (seed.scions). |
+| 2026-10-15 | PA-8 (R1) | Correctif N1 : `gitops.clone` fait toujours `git checkout <version>` après un clone complet (cas `master` compris) ; version absente de l'origine = erreur (code 2) ; `--single-branch` et `pull` inchangés ; version 0.5.1.1. Décision de l'utilisateur. |
+| 2026-10-15 | PA-8 (R1) | Épinglage propagé : `SCION_MIN_VERSION` (0, 5, 1, 1) de lepton, `SCION_REF` d'`install-vscodium.sh` et README (lepton-tools 4ad1cb0) ; défaut `SCION_REF` d'`install-{macos,debian}.sh`, `BUILDING.md`, `README-PAQUET.md` (clone noyau 1ffb617). Décision de l'utilisateur. |
+| 2026-10-15 | PA-8 (R1, tag) | `devenv/env-7-r1` de seed.scions fusionnée localement dans `master` (f1d1f3c, `--no-ff`), tag annoté `0.5.1.1`, installation pipx depuis le tag ; aucun push. Décision de l'utilisateur. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -227,3 +233,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-15 | ENV-11 | S1 : fusions locales de `devenv/env-10` ; PA-11 accordé ; SCION_REF 0.5.1.0 (clone noyau a572f00) ; scénario Mac CLI (`rapports/env-11-mac.md`) : install sans effet, graine sans application, fumée, KAL 18/18, application + `file add` sans CMake, `scion remove`, BLD-5 CLI ; défauts N1 (scion, renvoyé ENV-7), N2 et N3 (lepton, corrigés) ; graines F429ZI et WL55JC1 construites ; S2 et S3 restent. |
 | 2026-10-15 | ENV-11 | S2 : cartes NUCLEO-F429ZI et WL55JC1 flashées (CLI et VSCodium), `lsh` série, arrêt sur `main` ; VSCodium : DBG-1/2, TST-1 18/18, IDE-1 à IDE-5, BLD-5 (empreintes identiques CLI/éditeur) conformes ; CFG-7 non conforme (N4) ; O6 tranchée, O8-O11 (`rapports/env-11-mac.md` §2bis) ; skill `lepton-cibles` (ports, `adapter serial`) ; S3 reste. |
 | 2026-10-15 | ENV-11 | S3 : PA-P (dépôts GitHub famille `qemu-mps2` et BSP an386, push lepton-tools, clone noyau) ; consigne VM ; scénario Debian conforme après D1 (`rapports/env-11-debian.md`), fusionné ; bilan `rapports/env-11-bilan.md` (N5, D1-D4, O12, O13) ; renvois acceptés ; étape terminée. |
+| 2026-10-15 | ENV-7 R1 | Fusions locales de `devenv/env-11` ; ordre des reprises décidé ; N1 corrigé (scion 0.5.1.1 : 255964b, tag sur f1d1f3c, 106 tests), épinglage propagé (lepton-tools, clone noyau) ; `pytest` 118 verts ; bout en bout vert avec origine noyau hors `master` (clone d'essai sur `master`) ; reprise terminée. |

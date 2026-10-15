@@ -1,85 +1,76 @@
-# Passation ENV-7 — Évolutions génériques de scion — session du 2026-10-13
+# Passation ENV-7 — Évolutions de scion — reprise R1 (N1) — session du 2026-10-15
+
+ENV-7 elle-même est terminée depuis le 2026-10-13 (scion 0.5.1.0, `rapports/env-7-evolutions.md`).
+Cette passation remplace la précédente et porte sur la reprise R1 : défaut N1 du bilan ENV-11
+(`rapports/env-11-bilan.md` §3).
 
 ## Statut
-terminée (2026-10-13) — scion 0.5.1.0 réalisé, taggé localement, installé par pipx et validé sur le
-rootstock réel ; aucun push.
+terminée — N1 corrigé dans scion 0.5.1.1 (tag local), épinglage propagé ; fusions de
+`devenv/env-7-r1` (lepton-tools, clone noyau) au début de la session suivante.
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/env-7` (depuis `main` = f4a8088, fusion de `devenv/env-6`) | `devenv(env-7): état et passation` | oui |
-| seed.scions `<SEED_SCIONS>` | `master` (extraite) ; `devenv/env-7` = b2b2014 | 79f4f96 `Fusion de devenv/env-7 (scion 0.5.1.0)`, tag annoté `0.5.1.0` | oui |
-| clone noyau `depots/lepton/original/master` | `master` (extraite) | 42733ce `Fusion de devenv/env-6 (…)` | oui |
-| graine de travail `depots/lepton-seed.scions/original-tree` | `original-tree` (extraite) | 43d12e6 `Fusion de devenv/env-6 (…)` | oui |
-| 7 greffons `depots/lepton-famille/*`, `depots/lepton-bsp/*` | `master` (extraite) | fusion de `devenv/env-6` (ex. stm32f4xx 01b5528, nucleo-wl55jc1 4a4fb30) | oui |
+| lepton-tools | `devenv/env-7-r1` (depuis `main` 469a744, fusion `--no-ff` de `devenv/env-11`) | `devenv(env-7-r1): état et passation` ; avant : 4ad1cb0 scion 0.5.1.1 requis | oui |
+| clone noyau `~/lepton/depots/lepton/original/master` | `devenv/env-7-r1` (extraite ; depuis `master` 35bde95, fusion `--no-ff` de `devenv/env-11`) | 1ffb617 défaut `SCION_REF` relevé à 0.5.1.1 | oui |
+| seed.scions | `master` f1d1f3c (fusion `--no-ff` de `devenv/env-7-r1` : 255964b correctif, ed66103 version) ; tag annoté `0.5.1.1` | non poussés (distant : `master` 79f4f96, tag 0.5.1.0) | oui |
+| `~/lepton` trunk | — | 4 037 feuilles, aucun fichier régulier, aucun lien cassé, sans regreffe | oui |
 
-Branches `devenv/env-6` conservées dans tous les dépôts. Aucun push (aucun distant modifié). Trunk
-regreffé par scion 0.5.1.0 : 4 037 feuilles, `.scion.grafted.list` à 9 lignes inchangé, aucun
-fichier régulier, aucun lien cassé. `~/lepton/build/` non touché.
+Aucun push dans cette session.
 
 ## Fait pendant la session
-- Ouverture : fusions locales `--no-ff` de `devenv/env-6` (lepton-tools `main` f4a8088, clone noyau
-  42733ce, graine 43d12e6, 7 greffons) ; arbres identiques à `devenv/env-6`, trunk intact.
-- PA-8 : rapport `rapports/env-7-evolutions.md` (§1 conflits fichier / répertoire reproduits : trace
-  Python, et **écriture dans le clone d'un autre scion avec code 0** via un lien versionné) ;
-  décisions de l'utilisateur §5.
-- scion 0.5.1.0 (`<SEED_SCIONS>`, 7 commits, détail `env-7-evolutions.md` §6) :
-  `seed-scion-add [--seed] [--replace] CLÉ VERSION EMPLACEMENT [CHEMIN]`, `seed-scion-remove`,
-  `graft --scion CLÉ` (répétable), `graft-remove [--purge] [--force] CLÉ`,
-  `rootstock-install --bare`, sortie de `scion git`, conflits fichier / répertoire. Clé :
-  `shelf@prefix::suffix` (comme `scion git --key`).
-- Tests : 104 (1 ignoré), verts ; contre-épreuve E6 faite ; `grep -ri lepton scion/` = métadonnées.
-- Essai sur copie du rootstock (scratchpad, supprimée) puis `scion graft` sur `~/lepton` : identique.
-- Fusion `devenv/env-7` → `master` de seed.scions, tag `0.5.1.0`, `pipx install --force
-  "git+file:///Users/cle_d_anton/lepton-tools-dev/seed.scions@0.5.1.0"`.
-- lepton-tools fb6520c : skill `lepton-rootstock` (graft --scion, nouvelles commandes soumises à
-  accord, sortie de `scion git`).
+- Fusions locales de `devenv/env-11` : lepton-tools `main` 469a744, clone noyau `master` 35bde95.
+- Ordre des reprises et forme (lots bornés, branche `devenv/env-<N>-r<k>`) décidés : `DEVENV-STATUS.md` §Décisions.
+- N1 reproduit avec scion 0.5.1.0 (origine dont `HEAD` ≠ `master` → clone sur l'autre branche).
+- Correctif `scion/gitops.py` `clone()` : `git checkout <version>` toujours fait (255964b) ; deux
+  tests `tests/test_seed.py::TestCloneVersion` (échouent sans le correctif, vérifié) ;
+  `python3 -m unittest discover -s tests` : 106 tests, OK (1 sauté, réseau).
+- 0.5.1.1 : `scion/__init__.py`, `CHANGELOG.md`, `tests/test_cli.py` (ed66103) ; fusion, tag, `pipx
+  install --force "scion @ git+file://<SEED_SCIONS>@0.5.1.1"` ; modules installés identiques au tag.
+- Propagation : lepton-tools `SCION_MIN_VERSION`, `install-vscodium.sh` `SCION_REF`, README
+  (4ad1cb0) ; clone noyau `install-{macos,debian}.sh`, `BUILDING.md`, `README-PAQUET.md` (1ffb617) ;
+  shellcheck propre.
+- `pytest` lepton-tools (venv) : 118 verts avec scion 0.5.1.1.
+- `scripts/bout-en-bout.sh` (lepton de la branche, venv) vert, origine noyau `~/lepton` sur
+  `devenv/env-7-r1` : clone d'essai du noyau sur `master` 35bde95 sans contournement ; `seed lock
+  --verify` code 0 ; rootstock de référence inchangé. Rootstock jetable dans le scratchpad de session.
 
-## Reste à faire dans l'étape
-- [ ] Rien dans ENV-7. Début de la session suivante : fusion locale de `devenv/env-7` de
-      lepton-tools dans `main`, après accord.
-- [ ] Hors ENV-7, à planifier : push de seed.scions (`master` + tag `0.5.1.0`) vers
-      `lepton-distribution/seed.scions` (PA-P) ; `ORCHESTRATION.md` §5 (« `scion git` : sortie non
-      affichée en 0.5.0.1 ») à actualiser lors d'une révision du plan ; `.DS_Store` du Finder greffés
-      (26 liens, ignorés par git dans les clones, comportement préexistant) — filtre éventuel à
-      décider (générique : fichiers ignorés par git ?) ; reliquats d'ENV-6 inchangés (voir
-      `handoff/env-6.md` §Reste à faire, hors fusions).
+## Reste à faire
+- [ ] Fusion `--no-ff` de `devenv/env-7-r1` : lepton-tools → `main` ; clone noyau → `master` (puis
+  `master` extraite dans `~/lepton`, contrôle du trunk ; seuls scripts et doc changent).
+- [ ] Réinstaller lepton par pipx depuis `main` (l'installé exige encore scion ≥ 0.5.1.0).
+- [ ] PA-P à proposer : push de seed.scions `master` + tag `0.5.1.1`. Tant que le tag n'est pas
+  publié, `install-vscodium.sh` sans `--seed-scions` et les `install-*.sh` du noyau (source GitHub
+  par défaut) échouent à installer scion. Push de lepton-tools et du clone noyau à proposer aussi.
+- [ ] Reprise suivante : N5 (ENV-3/5/8).
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
 | --- | --- | --- |
-| Fusions locales de `devenv/env-6` en ouverture (plan accepté) | utilisateur | oui |
-| PA-8 : E1-E6 telles que proposées ; E7 option B (`--bare`) ; 0.5.1.0 depuis `master` ; critère de test `unittest` | utilisateur | oui |
-| PA-8 / PA-P : fusion locale dans `master` de seed.scions puis tag `0.5.1.0`, installation pipx ; aucun push | utilisateur | oui |
-| E3 `--force` : fichiers réguliers du trunk tolérés et conservés (règle d'`ungraft`) | proposition, appliquée | non (rapport §6) |
-| E3 et E4 dans un même commit (code de retrait commun) | proposition, appliquée | non (rapport §6) |
-| `--purge` : refus si le chemin du scion n'est pas sous `depots/<shelf>/<prefix>/<version>` (tous les greffons famille/BSP locaux actuels sont donc non purgeables par scion) | proposition (rapport §2 validé) | oui (via PA-8) |
-| ENV-7 terminée ; prochaine étape ENV-8 (ordre conseillé) | proposition, à confirmer au début de la session suivante | oui (prochaine action) |
+| Ordre des reprises (N1 ; N5 ; O3/O4 + O1 ; N4/O8/O10/O11 ; D3/D4/O6/O12 + O9) | utilisateur | oui |
+| Reprises en lots bornés des étapes, branche `devenv/env-<N>-r<k>` | utilisateur | oui |
+| Correctif N1, erreur si version absente, 0.5.1.1 (PA-8 R1) | utilisateur | oui |
+| Propagation de l'épinglage 0.5.1.1 (lepton, scripts) | utilisateur | oui |
+| Fusion, tag 0.5.1.1, installation pipx (PA-8 R1 tag) | utilisateur | oui |
+| Vérification de bout en bout par l'origine `~/lepton` hors `master` au lieu d'un clone nu | proposition appliquée (même condition que N1) | non (détail d'exécution) |
 
 ## Pièges rencontrés
-- Hook `proteger-trunk.py` : faux positif sur toute commande dont le texte contient `trunk`, même
-  hors rootstock (édition de `seed.scions`) → script écrit dans le scratchpad (Write) puis exécuté.
-- pipx : les environnements sont sous `~/Library/Application Support/pipx/venvs` (et non
-  `~/.local/pipx`) → `pipx environment --value PIPX_LOCAL_VENVS`.
-- Message de git dépendant de la langue : le test de `scion git` en échec vérifie la présence de la
-  commande dans le stderr transmis, pas le libellé.
-- Remplacement d'un scion : `graft-remove` **avant** `seed-clone` ; sinon l'entrée pointe sur le
-  nouveau clone et les anciens liens, non reconnus, entrent en conflit (`README.md` de scion,
-  « Faire évoluer un seed »).
-- `sync` ne retire jamais une clé de la liste greffée : un retrait demande `seed-scion-remove` **et**
-  `graft-remove`, sinon `seed-update` / `graft-update` réinscrivent le scion.
-- Sauvegarde de `~/.claude` (plan de session écrit dans `~/.claude/plans/`) : non vérifiable depuis
-  le bac à sable (lecture du dossier iCloud refusée) ; assurée par le hook `PostToolUse` global.
+- `cmd | tail -2 && git commit` : le `&&` teste `tail`, pas la suite ; un commit est passé avec
+  `test_cli` rouge (version attendue 0.5.1.0), corrigé par `--amend` avant toute fusion. Parade :
+  rediriger dans un journal et tester `$?` de la suite.
+- Python de scion pipx : `~/Library/Application Support/pipx/venvs/scion/bin/python` (chemin avec
+  espace), pas `~/.local/pipx`.
+- Relever `SCION_MIN_VERSION` rend tous les tests d'intégration de lepton rouges tant que scion
+  n'est pas réinstallé (message explicite « requis ≥ 0.5.1.1 »).
 
-## Critères de validation
-- [x] PA-8 tranché.
-- [x] Tests verts (`unittest`, décision PA-8) ; `grep -ri lepton scion/` limité aux métadonnées
-      (PA-2 Q7).
-- [x] Commandes 0.5.0.1 existantes inchangées (tests existants verts).
-- [x] Nouvelle version installée et relevée par `scion version` (0.5.1.0).
+## Critères de validation (ENV-7, appliqués à R1)
+- [x] PA-8 tranché (liste, version, puis tag).
+- [x] Tests scion verts (`unittest`) ; `grep -ri lepton scion/` = métadonnées seules (PA-2 Q7).
+- [x] Commandes existantes inchangées (tests existants verts).
+- [x] Nouvelle version installée et relevée par `scion version` (0.5.1.1).
 
 ## Reprise
 ```
 cd /Users/cle_d_anton/lepton-tools-dev/lepton-tools && claude
-# « Démarre la session sur l'étape indiquée dans DEVENV-STATUS » (ENV-8, après fusion locale de devenv/env-7)
+# « Démarre la session sur l'étape indiquée dans DEVENV-STATUS » (fusions de devenv/env-7-r1, puis reprise N5)
 ```
