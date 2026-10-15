@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-15 — ENV-10 en cours (S2 : validation Debian n° 1 interrompue, défaut corrigé, passage n° 2 attendu).
+Dernière mise à jour : 2026-10-15 — ENV-10 en cours (S2 : validations Debian n° 1 et n° 2 interrompues, défauts corrigés, passage n° 3 attendu).
 
 ## Prochaine action
 
-ENV-10, session VM Debian, passage n° 2 (ORCHESTRATION §2) : suivre `doc/devenv/consignes/env-10-debian.md` (§1 « Passage n° 2 ») depuis `origin/devenv/env-10` (correction 9321eed) ; compléter `rapports/env-10-debian.md` sur `devenv/env-10-debian`, push après accord. Ne pas modifier `DEVENV-STATUS.md` : la session Mac intègre le rapport et clôt ENV-10.
+ENV-10, session VM Debian, passage n° 3 (ORCHESTRATION §2) : suivre `doc/devenv/consignes/env-10-debian.md` (§1 « Passage n° 3 ») depuis `origin/devenv/env-10` ; compléter `rapports/env-10-debian.md` sur `devenv/env-10-debian`, push après accord. Ne pas modifier `DEVENV-STATUS.md` : la session Mac intègre le rapport et clôt ENV-10.
 
 ## Étapes
 
@@ -21,7 +21,7 @@ ENV-10, session VM Debian, passage n° 2 (ORCHESTRATION §2) : suivre `doc/deven
 | ENV-7 | Évolutions de scion | terminée (2026-10-13) | lepton-tools `devenv/env-7` ; seed.scions `devenv/env-7` (fusionnée dans `master`, tag 0.5.1.0) | `handoff/env-7.md` |
 | ENV-8 | Outil `lepton` | terminée (2026-10-14) | lepton-tools `devenv/env-8` | `handoff/env-8.md` |
 | ENV-9 | Fichiers de l'éditeur | terminée (2026-10-14) | lepton-tools `devenv/env-9` ; BSP `nucleo-wl55jc1` `devenv/env-9` | `handoff/env-9.md` |
-| ENV-10 | Script d'installation VSCodium | en cours (Mac Intel validé ; Debian : passage n° 2 attendu) | lepton-tools `devenv/env-10` ; clone noyau `devenv/env-10` | `handoff/env-10.md` |
+| ENV-10 | Script d'installation VSCodium | en cours (Mac Intel validé ; Debian : passage n° 3 attendu) | lepton-tools `devenv/env-10` ; clone noyau `devenv/env-10` | `handoff/env-10.md` |
 | ENV-11 | Validation de bout en bout | à faire | — | — |
 | ENV-12 | Extension VSCodium | à faire | — | — |
 
@@ -170,6 +170,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-15 | PA-P (ENV-10 S2) | Dépôt GitHub `lepton-distribution/lepton-tools` créé par l'utilisateur, distant `origin` en SSH. Push accordé : lepton-tools `main` + `devenv/env-10` ; clone noyau `master` (42733ce, avance rapide depuis 6b62af5) + `devenv/env-10` ; seed.scions `master` (79f4f96) + tag `0.5.1.0`, poussés par l'URL SSH (`origin` HTTPS inchangé). La session Mac attend le rapport Debian, l'intègre et clôt ENV-10. |
 | 2026-10-15 | PA-P (ENV-10 S2) | Push de `devenv/env-10` (0e287ea, consigne VM) accordé et fait. |
 | 2026-10-15 | — (ENV-10 S2) | Validation Debian n° 1 (`rapports/env-10-debian.md`, Debian 13.7) arrêtée en dry-run : défaut commun `installer_extensions` (hôte sans extension → code 1 sans message). Correction `{ grep -v '^$' || true; }` (9321eed) et essai depuis un état sans extension ajouté au protocole (`env-10-validation.md` §5) : décision de l'utilisateur. `devenv/env-10-debian` fusionnée (`--no-ff`) dans `devenv/env-10` ; passage VM n° 2 après push. |
+| 2026-10-15 | — (ENV-10 S2) | Validation Debian n° 2 arrêtée à l'exécution n° 1 : `--seed-scions` produisait `git+file://…@REF`, refusé par pipx 1.7.1. Corrections (accord de l'utilisateur) : forme PEP 508 `scion @ git+file://…@REF`, `version_vscodium` en `if … fi` (SC2015) ; essai hôte vierge réel sur le Mac avec pipx 1.7.1 (`env-10-validation.md` §6). Rapport n° 2 fusionné ; push de `devenv/env-10` et consigne transmise à la session VM (Remote Control) accordés. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -198,3 +199,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-15 | ENV-10 | Session S1 : fusions locales de `devenv/env-9` ; PA-10 tranché ; `SCION_REF`/`SCION_SPEC` dans les scripts du noyau ; `scripts/install-vscodium.sh` + `extensions.lst` ; Mac Intel : 5 changements puis 0, critères conformes (`rapports/env-10-validation.md`) ; Debian reste. |
 | 2026-10-15 | ENV-10 | Session S2 : PA-P accordé (dépôt GitHub lepton-tools, push lepton-tools, clone noyau, seed.scions + tag 0.5.1.0) ; consigne de la session VM Debian (`consignes/env-10-debian.md`). |
 | 2026-10-15 | ENV-10 | S2 (suite) : rapport Debian n° 1 fusionné (arrêt sur défaut commun) ; correction 9321eed, essai HOME vide et exécution Mac (0 changement) ; consigne VM passage n° 2. |
+| 2026-10-15 | ENV-10 | S2 (suite) : rapport Debian n° 2 fusionné (pipx 1.7.1 refuse `git+file://` sans nom) ; spécification nommée et SC2015 corrigées ; essai hôte vierge Mac (12 puis 0) ; consigne passage n° 3. |

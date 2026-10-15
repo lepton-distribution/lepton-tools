@@ -100,3 +100,19 @@ réglages utilisateur sans les clés PA-10.
 - Protocole de validation complété : tout hôte est aussi essayé depuis un état sans extension
   (dry-run avec `HOME` vide sur le Mac ; hôte vierge sur la VM).
 - Point ouvert §4 levé par la VM : la version dpkg du `.deb` est `1.135.06055` exactement.
+
+## 6. Corrections après la validation Debian n° 2 (S2, 2026-10-15)
+
+- Défaut commun (`rapports/env-10-debian.md` §6.2) : avec `--seed-scions`, `SCION_SPEC` valait
+  `git+file://…/seed.scions@0.5.1.0`, refusé par pipx 1.7.1 (Debian 13, « Unable to parse package
+  spec ») ; accepté par pipx 1.17.12 (Mac), où scion était de plus déjà à jour (pipx non appelé).
+- Reproduit sur le Mac avec pipx 1.7.1 dans un venv jetable et des `PIPX_HOME` / `PIPX_BIN_DIR`
+  temporaires : forme nue → code 1 ; `scion @ git+file://…@0.5.1.0` → scion 0.5.1.0 ;
+  `git+https://github.com/…/seed.scions.git@0.5.1.0` → scion 0.5.1.0.
+- Corrections (commit « spécification pipx nommée… », accord de l'utilisateur) : forme PEP 508 nommée ;
+  `version_vscodium` en `if … fi` (SC2015 signalée par shellcheck 0.10.0, §6.3 du rapport Debian).
+- Essai « hôte vierge » réel sur le Mac (protocole complété) : `HOME` vide, pipx 1.7.1 en tête du
+  `PATH`, `PIPX_HOME` / `PIPX_BIN_DIR` temporaires, `~/.local/bin` hors `PATH`, `--skip-toolchain
+  --no-lepton --seed-scions` : n° 1 code 0, **12 changements** (scion par pipx 1.7.1, 10 extensions,
+  réglages) ; n° 2 code 0, **0 changement** ; `diff` installées / `extensions.lst` vide ; CodeLLDB
+  `adapter/codelldb` présent. `shellcheck` 0.11.0 sans remarque.

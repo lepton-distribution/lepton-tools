@@ -13,6 +13,17 @@ développe pas : elle exécute, constate et rapporte (ORCHESTRATION §2).
 
 Référence Mac Intel (même script) : `doc/devenv/rapports/env-10-validation.md` §2-§4.
 
+### Passage n° 3 (après les corrections du passage n° 2)
+
+Le passage n° 2 s'est arrêté dans `installer_scion` (spécification pipx refusée), défaut corrigé
+sur `devenv/env-10` avec la remarque SC2015 (`env-10-validation.md` §6). Pour ce passage :
+- mettre à jour `lepton-tools` : `git fetch origin && git switch devenv/env-10 && git pull --ff-only` ;
+  recréer `devenv/env-10-debian` depuis `origin/devenv/env-10` (les rapports n° 1 et n° 2 y sont
+  fusionnés) ; clone noyau et seed.scions inchangés ;
+- mêmes accords, même état de départ (hôte vierge, scion 0.5.0.1 à remplacer) ;
+- compléter `doc/devenv/rapports/env-10-debian.md` : titre « passage n° 3 », §1 à §6 pour ce
+  passage, §6.1-§6.3 marqués corrigés si constaté ; passages n° 1 et n° 2 résumés en historique.
+
 ### Passage n° 2 (après la correction 9321eed)
 
 Le passage n° 1 (`rapports/env-10-debian.md`) s'est arrêté sur un défaut du script, corrigé sur
