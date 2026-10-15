@@ -190,6 +190,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-15 | — (ENV-11 S2) | CFG-7 (P2) non conforme : défaut N4 (aucune association de schéma dans l'éditeur) ; observations O8-O11 ; renvois proposés non validés, à classer au bilan S3 (`rapports/env-11-mac.md` §3-§4). |
 | 2026-10-15 | — (ENV-11 S3) | Greffons famille `qemu-mps2` et BSP `qemu-mps2-an386` (dépôts locaux sans distant) publiés sur deux dépôts GitHub créés par l'utilisateur, poussés par URL SSH (configuration des dépôts de `~/lepton` inchangée) ; la VM les clone par `lepton seed new`. Décision de l'utilisateur. |
 | 2026-10-15 | — (ENV-11 S3) | VM Debian : lepton 0.1.0 d'ENV-10 non réinstallé par `install-vscodium.sh` (même version) ; `pipx install --force` explicite depuis `devenv/env-11` après l'étape 2.1 ; écart consigné en O12. Décision de l'utilisateur. |
+| 2026-10-15 | PA-P (ENV-11 S3) | Dépôts GitHub `lepton-distribution/lepton-famille-qemu-mps2` et `lepton-bsp-qemu-mps2-an386` créés par l'utilisateur. Push accordé et fait : lepton-tools `main` 657c395 + `devenv/env-11` 8cca1c0 ; clone noyau `master` 1dde0af (avance rapide depuis 42733ce) + `devenv/env-11` a572f00 ; famille `master` 3954357 ; BSP `master` 046779e (par URL SSH, sans distant ajouté). Consigne VM : `consignes/env-11-debian.md`. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
