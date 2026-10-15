@@ -51,13 +51,13 @@ réglages utilisateur sans les clés PA-10.
 | Critère | Résultat |
 | --- | --- |
 | PA-10 tranché ; `extensions.lst` épinglé | oui (`DEVENV-STATUS.md` §Décisions, 2026-10-15) |
-| `codium --list-extensions --show-versions` = `extensions.lst` | Mac : identique (`diff` vide) ; Debian : à faire |
-| Deux exécutions successives sans erreur ni changement (INS-4) | Mac : oui (5 puis 0) ; Debian : à faire |
+| `codium --list-extensions --show-versions` = `extensions.lst` | Mac : identique (`diff` vide), aussi depuis un état vierge (§6) ; Debian : identique (`env-10-debian.md` §3, passage n° 3) |
+| Deux exécutions successives sans erreur ni changement (INS-4) | Mac : oui (5 puis 0 ; état vierge 12 puis 0, §6) ; Debian : oui depuis un hôte vierge (13 puis 0, passage n° 3) |
 | `grep -n '/usr/local\|/opt/homebrew\|/opt/local'` vide (INS-5) | oui |
 | Gestionnaire = celui d'`install-macos.sh` | oui : le script n'appelle aucun gestionnaire sur macOS ; `install-macos.sh` choisit MacPorts sur Intel |
 | Aucune commande d'installation de la chaîne (INS-3) | oui : seul `apt-get install` du `.deb` de VSCodium (Debian) |
-| `shellcheck` sans erreur | oui |
-| INS-6 : `scion version`, `lepton --version` | 0.5.1.0 ; lepton 0.1.0 |
+| `shellcheck` sans erreur | oui : 0.11.0 (Mac), 0.10.0 (Debian, après 1b43b0b) |
+| INS-6 : `scion version`, `lepton --version` | 0.5.1.0 ; lepton 0.1.0 (Mac et Debian) |
 
 `pytest -q` (lepton-tools) : 116 passed.
 
@@ -116,3 +116,16 @@ réglages utilisateur sans les clés PA-10.
   --no-lepton --seed-scions` : n° 1 code 0, **12 changements** (scion par pipx 1.7.1, 10 extensions,
   réglages) ; n° 2 code 0, **0 changement** ; `diff` installées / `extensions.lst` vide ; CodeLLDB
   `adapter/codelldb` présent. `shellcheck` 0.11.0 sans remarque.
+
+## 7. Clôture (S2, 2026-10-15)
+
+- Validation Debian n° 3 conforme (`rapports/env-10-debian.md`) : Debian 13.7, pipx 1.7.1, hôte
+  vierge, 96264cf ; INS-1 à INS-6, binaires natifs, réglages, shellcheck 0.10.0.
+- Suite du §6.4 du rapport Debian (accord de l'utilisateur, e9b5518) : `telecharger` distingue
+  l'échec d'écriture de curl (code 23, message citant le fichier et `TMPDIR`) des autres échecs
+  (code curl cité) ; en-tête : répertoire temporaire et place à prévoir (≈ 300 Mo : `.dmg` 241 Mo,
+  `.deb` 168 Mo, `.vsix` CodeLLDB ≤ 56 Mo). Essais : écriture dans un répertoire en lecture seule →
+  code 23 et nouveau message ; URL absente → code 22 ; `shellcheck` 0.11.0 sans remarque ;
+  exécution réelle Mac → 0 changement ; `pytest -q` 116 passed. Chemin d'erreur seul : pas de
+  nouveau passage VM. Pas de contrôle de place préalable (`df`).
+- Hôtes : Mac Intel validé ; Debian 13 validée ; Apple Silicon : revue seule (§4).

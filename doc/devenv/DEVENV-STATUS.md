@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-15 — ENV-10 en cours (S2 : validations Debian n° 1 et n° 2 interrompues, défauts corrigés, passage n° 3 attendu).
+Dernière mise à jour : 2026-10-15 — ENV-10 terminée (S2 : validation Debian conforme au passage n° 3, trois corrections du script).
 
 ## Prochaine action
 
-ENV-10, session VM Debian, passage n° 3 (ORCHESTRATION §2) : suivre `doc/devenv/consignes/env-10-debian.md` (§1 « Passage n° 3 ») depuis `origin/devenv/env-10` ; compléter `rapports/env-10-debian.md` sur `devenv/env-10-debian`, push après accord. Ne pas modifier `DEVENV-STATUS.md` : la session Mac intègre le rapport et clôt ENV-10.
+ENV-11 (`etapes/ENV-11-validation.md`) : au début de la session, fusionner localement (`--no-ff`) `devenv/env-10` dans `main` (lepton-tools) et `devenv/env-10` (1b2f7b6) dans `master` (clone noyau, regreffe si nécessaire), puis créer `devenv/env-11` ; reliquats ENV-10 à reprendre : choix effectif de lemminx natif (CFG-7), défaut `SCION_REF` 0.5.0.1 des scripts du noyau à relever (0.5.1.0 est sur GitHub).
 
 ## Étapes
 
@@ -21,7 +21,7 @@ ENV-10, session VM Debian, passage n° 3 (ORCHESTRATION §2) : suivre `doc/deven
 | ENV-7 | Évolutions de scion | terminée (2026-10-13) | lepton-tools `devenv/env-7` ; seed.scions `devenv/env-7` (fusionnée dans `master`, tag 0.5.1.0) | `handoff/env-7.md` |
 | ENV-8 | Outil `lepton` | terminée (2026-10-14) | lepton-tools `devenv/env-8` | `handoff/env-8.md` |
 | ENV-9 | Fichiers de l'éditeur | terminée (2026-10-14) | lepton-tools `devenv/env-9` ; BSP `nucleo-wl55jc1` `devenv/env-9` | `handoff/env-9.md` |
-| ENV-10 | Script d'installation VSCodium | en cours (Mac Intel validé ; Debian : passage n° 3 attendu) | lepton-tools `devenv/env-10` ; clone noyau `devenv/env-10` | `handoff/env-10.md` |
+| ENV-10 | Script d'installation VSCodium | terminée (2026-10-15) | lepton-tools `devenv/env-10` (poussée), `devenv/env-10-debian` (VM, fusionnée) ; clone noyau `devenv/env-10` (poussée) | `handoff/env-10.md` |
 | ENV-11 | Validation de bout en bout | à faire | — | — |
 | ENV-12 | Extension VSCodium | à faire | — | — |
 
@@ -54,7 +54,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | ninja | 1.13.2 — `/opt/local/bin` (MacPorts) | 2026-10-12 |
 | MacPorts | 2.12.6 | 2026-10-12 |
 | embOS (paquet Segger, hors git) | 5.20.0.0 — `~/lepton/third_party/embos/cortexm-gcc/5.20.0.0`, via `LEPTON_EMBOS_ROOT` (`scripts/lepton-env.sh` du clone noyau) | 2026-10-12 |
-| VSCodium | 1.135.06055 (commit 1a46a584) épinglé (PA-10) — `/Applications/VSCodium.app` par `.dmg` vérifié SHA-256 (`scripts/install-vscodium.sh`) ; cask Homebrew retiré ; `codium` = lien `~/.local/bin/codium` | 2026-10-15 |
+| VSCodium | 1.135.06055 (commit 1a46a584) épinglé (PA-10) — `/Applications/VSCodium.app` par `.dmg` vérifié SHA-256 (`scripts/install-vscodium.sh`) ; cask Homebrew retiré ; `codium` = lien `~/.local/bin/codium` ; Debian 13 : `.deb` amd64, `dpkg-query` = `1.135.06055` | 2026-10-15 |
 | Manifeste de greffon | `lepton-greffon.json` dans `sys/root/src/<destination>/` (noyau : `sys/root/src/`), lu par `cmake/lepton_greffons.cmake` du clone noyau ; schéma amendé en ENV-6 (`compilation.<portée>.inclusions`, fichier dans `sources`) ; BSP choisi par `LEPTON_BOARD` = `nom`, XML par `LEPTON_MKCONF` ; champ `openocd` lu (un fichier) | 2026-10-13 |
 | Format XML mklepton | 2 (`<mklepton version="2">`, `schemas/mklepton.xsd`) ; format 1 refusé | 2026-10-13 |
 | clangd | 21.1.8 — `/opt/local/bin/clangd-mp-21`, MacPorts `clang-21 @21.1.8_3` | 2026-10-12 |
@@ -63,8 +63,9 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | lepton | 0.1.0 (jalons 1-6 + `generate` d'ENV-9) — `lepton-tools/pyproject.toml`, build hatchling 1.32.4 ; installé pour l'utilisateur par `pipx install --force <LEPTON_TOOLS>` (`~/.local/bin/lepton`, Python 3.11.5, depuis `devenv/env-9` ffd618c) | 2026-10-14 |
 | jsonschema (dépendance de lepton) | 4.26.0 (épinglée dans `pyproject.toml`) | 2026-10-14 |
 | pytest | 9.1.1 — extra `[test]`, venv de développement `~/lepton-tools-dev/venv-lepton-tools` (Python 3.11.5, `pip install -e '.[test]'`) | 2026-10-14 |
-| Extensions VSCodium | `scripts/extensions.lst` (PA-10) : clangd 0.6.0 ; CMake Tools 1.24.42 ; Cortex-Debug 1.13.0-pre6 + mcu-debug debug-tracker 0.0.15, memory-view 0.0.29, rtos-views 0.0.16, peripheral-viewer 1.6.4 ; CodeLLDB 1.12.3 (paquet de plateforme GitHub) ; vscode-xml 0.29.3 (lemminx natif) ; Claude Code 2.1.300 — Mac Intel conforme | 2026-10-15 |
+| Extensions VSCodium | `scripts/extensions.lst` (PA-10) : clangd 0.6.0 ; CMake Tools 1.24.42 ; Cortex-Debug 1.13.0-pre6 + mcu-debug debug-tracker 0.0.15, memory-view 0.0.29, rtos-views 0.0.16, peripheral-viewer 1.6.4 ; CodeLLDB 1.12.3 (paquet de plateforme GitHub) ; vscode-xml 0.29.3 (lemminx natif) ; Claude Code 2.1.300 — Mac Intel et Debian 13 conformes | 2026-10-15 |
 | shellcheck | 0.11.0 — MacPorts | 2026-10-15 |
+| VM Debian (validation) | Debian 13.7 (trixie) x86_64, pipx 1.7.1, Python 3.13.5, shellcheck 0.10.0 ; chaîne APT : arm-none-eabi-gcc 14.2.1, cmake 3.31.6, ninja 1.12.1, QEMU 10.0.13, OpenOCD 0.12.0, gdb-multiarch 16.3 (`rapports/env-10-debian.md` §1, §4) | 2026-10-15 |
 
 ## Décisions
 
@@ -171,6 +172,10 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-15 | PA-P (ENV-10 S2) | Push de `devenv/env-10` (0e287ea, consigne VM) accordé et fait. |
 | 2026-10-15 | — (ENV-10 S2) | Validation Debian n° 1 (`rapports/env-10-debian.md`, Debian 13.7) arrêtée en dry-run : défaut commun `installer_extensions` (hôte sans extension → code 1 sans message). Correction `{ grep -v '^$' || true; }` (9321eed) et essai depuis un état sans extension ajouté au protocole (`env-10-validation.md` §5) : décision de l'utilisateur. `devenv/env-10-debian` fusionnée (`--no-ff`) dans `devenv/env-10` ; passage VM n° 2 après push. |
 | 2026-10-15 | — (ENV-10 S2) | Validation Debian n° 2 arrêtée à l'exécution n° 1 : `--seed-scions` produisait `git+file://…@REF`, refusé par pipx 1.7.1. Corrections (accord de l'utilisateur) : forme PEP 508 `scion @ git+file://…@REF`, `version_vscodium` en `if … fi` (SC2015) ; essai hôte vierge réel sur le Mac avec pipx 1.7.1 (`env-10-validation.md` §6). Rapport n° 2 fusionné ; push de `devenv/env-10` et consigne transmise à la session VM (Remote Control) accordés. |
+| 2026-10-15 | — (ENV-10 S2) | Validation Debian n° 3 conforme (`rapports/env-10-debian.md`, VM vierge, 13 puis 0 changement) ; rapport fusionné. |
+| 2026-10-15 | — (ENV-10 S2) | `--with-debug-tools` toujours passé aux scripts du noyau : validé par l'utilisateur (proposition du 2026-10-15). |
+| 2026-10-15 | — (ENV-10 S2) | Rapport Debian §6.4 : message d'échec d'écriture de curl (code 23) et place temporaire documentée (e9b5518), sans contrôle `df` ni nouveau passage VM : décision de l'utilisateur. |
+| 2026-10-15 | PA-P (ENV-10 S2) | Push de `devenv/env-10` après le commit de clôture accordé. ENV-10 terminée ; fusion locale de `devenv/env-10` au début d'ENV-11. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -200,3 +205,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-15 | ENV-10 | Session S2 : PA-P accordé (dépôt GitHub lepton-tools, push lepton-tools, clone noyau, seed.scions + tag 0.5.1.0) ; consigne de la session VM Debian (`consignes/env-10-debian.md`). |
 | 2026-10-15 | ENV-10 | S2 (suite) : rapport Debian n° 1 fusionné (arrêt sur défaut commun) ; correction 9321eed, essai HOME vide et exécution Mac (0 changement) ; consigne VM passage n° 2. |
 | 2026-10-15 | ENV-10 | S2 (suite) : rapport Debian n° 2 fusionné (pipx 1.7.1 refuse `git+file://` sans nom) ; spécification nommée et SC2015 corrigées ; essai hôte vierge Mac (12 puis 0) ; consigne passage n° 3. |
+| 2026-10-15 | ENV-10 | S2 (fin) : validation Debian n° 3 conforme ; `--with-debug-tools` validé ; message curl 23 (e9b5518) ; hôtes Mac Intel et Debian validés, Apple Silicon en revue ; étape terminée. |
