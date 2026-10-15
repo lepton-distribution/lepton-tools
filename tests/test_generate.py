@@ -212,10 +212,25 @@ def test_qemu_configuration_needs_qemu_bsp(project, repos, tools, capsys):
 def test_missing_tool_is_exit_2(project, tools, monkeypatch, capsys):
     """NF-3 : outil introuvable dans le PATH → code 2, rien d'écrit."""
     which = gen.shutil.which
-    monkeypatch.setattr(gen.shutil, "which", lambda n, *a, **k: None if n == "arm-none-eabi-gdb" else which(n, *a, **k))
+    absent = {"arm-none-eabi-gdb", "gdb-multiarch"}
+    monkeypatch.setattr(gen.shutil, "which", lambda n, *a, **k: None if n in absent else which(n, *a, **k))
     assert main(["generate", "-C", str(project)]) == 2
-    assert "arm-none-eabi-gdb absent" in capsys.readouterr().err
+    err = capsys.readouterr().err
+    assert "arm-none-eabi-gdb absent" in err and "arm-none-eabi-gdb ou gdb-multiarch" in err
     assert not (project / "demo.code-workspace").exists()
+
+
+def test_gdb_multiarch_when_no_arm_gdb(project, tools, monkeypatch):
+    """Debian : pas d'arm-none-eabi-gdb, gdb-multiarch retenu pour le débogage."""
+    (tools / "gdb-multiarch").write_text("#!/bin/sh\n")
+    (tools / "gdb-multiarch").chmod(0o755)
+    which = gen.shutil.which
+    monkeypatch.setattr(gen.shutil, "which", lambda n, *a, **k: None if n == "arm-none-eabi-gdb" else which(n, *a, **k))
+    assert main(["generate", "-C", str(project)]) == 0
+    ws = _workspace(project)
+    [launch] = ws["launch"]["configurations"]
+    assert launch["gdbPath"] == str(tools / "gdb-multiarch")
+    assert ws["settings"]["cortex-debug.gdbPath"] == str(tools / "gdb-multiarch")
 
 
 def test_find_clangd(tools, monkeypatch):

@@ -41,11 +41,14 @@ _CLANGD_VERSION = re.compile(r"clangd version (\d+)\.")
 # --------------------------------------------------------------------------
 # outils de l'hôte (NF-3 : résolus par le PATH, aucun préfixe codé en dur)
 # --------------------------------------------------------------------------
-def require_tool(name: str, why: str) -> str:
-    path = shutil.which(name)
-    if path is None:
-        raise LeptonError(f"{name} absent du PATH ({why})", f"installer {name} et vérifier le PATH", EXIT_TOOL)
-    return path
+def require_tool(name: str, why: str, *fallbacks: str) -> str:
+    """Premier de `name`, `fallbacks` trouvé dans le PATH ; sinon code 2 (EXIT_TOOL)."""
+    for candidate in (name, *fallbacks):
+        path = shutil.which(candidate)
+        if path is not None:
+            return path
+    names = " ou ".join((name, *fallbacks))
+    raise LeptonError(f"{name} absent du PATH ({why})", f"installer {names} et vérifier le PATH", EXIT_TOOL)
 
 
 def find_clangd(explicit: str | None) -> str | None:
@@ -296,7 +299,7 @@ def host_tools(ctx: Context, clangd: str | None) -> dict:
     executions = {c["execution"] for c in ctx.configurations}
     tools = {"cmake": require_tool("cmake", "presets"), "ctest": require_tool("ctest", "tests"),
              "gcc": require_tool("arm-none-eabi-gcc", "clangd --query-driver"),
-             "gdb": require_tool("arm-none-eabi-gdb", "débogage"),
+             "gdb": require_tool("arm-none-eabi-gdb", "débogage", "gdb-multiarch"),   # Debian : gdb-multiarch
              "lepton": shutil.which("lepton") or "lepton",
              "clangd": find_clangd(clangd)}
     if "qemu" in executions:
