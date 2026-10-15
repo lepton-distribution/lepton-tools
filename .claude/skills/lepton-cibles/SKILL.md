@@ -59,7 +59,7 @@ openocd -f <cfg> -c "init; targets; shutdown"
 | Carte | Fichiers OpenOCD | Console série |
 | --- | --- | --- |
 | NUCLEO-F429ZI | `-f <BSP>/debug/openocd-nucleo-f439zi.cfg` (→ `board/st_nucleo_f4.cfg`, ST-LINK/V2-1) | `/dev/cu.usbmodem1454303`, 115200 8N1 |
-| NUCLEO-WL55JC1 | `-f <ROOTSTOCK>/build/<preset>/openocd-nucleo-wl55jc1.cfg` (généré par le `CMakeLists.txt` du BSP : `interface/stlink.cfg` + `adapter serial` + `<BSP-WL>/debug/openocd-nucleo-wl55jc1.cfg` → `target/stm32wlx.cfg`, STLINK-V3) (cœur M4 uniquement) | carte A `/dev/cu.usbmodem1454303`, carte B `/dev/cu.usbmodem1454403`, 115200 8N1 |
+| NUCLEO-WL55JC1 | `-f <ROOTSTOCK>/build/<preset>/openocd-nucleo-wl55jc1.cfg` (généré par le `CMakeLists.txt` du BSP : `<BSP-WL>/debug/openocd-nucleo-wl55jc1.cfg` — autonome depuis ENV-9 : `interface/stlink.cfg` + `target/stm32wlx.cfg`, STLINK-V3 — puis `adapter serial` si `LEPTON_BOARD_STLINK_SERIAL`) (cœur M4 uniquement) | carte A `/dev/cu.usbmodem1454303`, carte B `/dev/cu.usbmodem1454403`, 115200 8N1 |
 
 <!-- <BSP> = sys/root/src/kernel/dev/bsp/nucleo-f429zi, <BSP-WL> = sys/root/src/kernel/dev/bsp/nucleo-wl55jc1,
      relatifs au trunk (champ openocd du manifeste, ENV-6). Sources : debug/openocd-nucleo-f439zi.cfg du BSP F429 ;

@@ -4,7 +4,7 @@ Outillage de l'environnement de développement Lepton : outil en ligne de comman
 (graine, greffons, configuration, génération des fichiers de l'éditeur), schémas, modèles et
 script d'installation de VSCodium.
 
-État : outil `lepton` 0.1.0 (ENV-8, jalons 1 à 6). Voir `doc/devenv/`.
+État : outil `lepton` 0.1.0 (ENV-8, jalons 1 à 6 ; `lepton generate` ajouté en ENV-9). Voir `doc/devenv/`.
 
 Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée par pipx ; scion ≥ 0.5.1.0
 requis). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`, puis
@@ -13,7 +13,7 @@ requis). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`
 Commandes disponibles (0.1.0) : `lepton --version`, `lepton check [FILE...]` (sans argument :
 graine, greffons greffés et XML du rootstock), `lepton seed new | status | add | remove | replace |
 lock`, `lepton scion new | remove`,
-`lepton file add | remove | mv`, `lepton dir add | remove`, `lepton graft`
+`lepton file add | remove | mv`, `lepton dir add | remove`, `lepton graft`, `lepton generate`
 (`lepton <commande> [<action>] --help`). Exemple :
 
 ```
@@ -25,7 +25,15 @@ lepton scion new ma-carte --type bsp --from qemu-mps2-an386   # dépôt depots/l
 lepton file add sys/root/src/kernel/dev/bsp/ma-carte/gpio.c    # créé dans le clone, regreffé
 lepton check                                                   # GRA-2, GRF-5, CFG-5
 lepton seed lock                                               # lepton-graine.lock.json (GRA-5)
+lepton generate        # CMakeUserPresets.json (graine, greffé) et ~/demo/demo.code-workspace
+codium ~/demo/demo.code-workspace
 ```
+
+Dans VSCodium, ouvrir les fichiers par le dossier `trunk` (les fichiers greffés sont masqués dans les
+dossiers `git · …`). Après un changement de preset, rouvrir les fichiers déjà ouverts (ou
+*clangd: Restart language server*) pour qu'ils prennent la nouvelle configuration. À l'arrêt du
+débogueur, le source s'affiche sous le chemin du clone (écart accepté en PA-1). Validation :
+`doc/devenv/rapports/env-9-validation.md`.
 
 Bout en bout (construction et fumée QEMU, chaîne Arm et QEMU requis) :
 `scripts/bout-en-bout.sh <répertoire jetable>`.
