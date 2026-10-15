@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-15 — ENV-10 en cours (S1 : PA-10, script, validation Mac Intel, `rapports/env-10-validation.md`).
+Dernière mise à jour : 2026-10-15 — ENV-10 en cours (S2 : PA-P accordé, push pour la VM Debian ; validation Debian en attente).
 
 ## Prochaine action
 
-ENV-10, validation Debian (ENV-10 §3, ORCHESTRATION §2) : demander l'accord PA-P pour pousser sur GitHub lepton-tools `devenv/env-10`, clone noyau `devenv/env-10` et seed.scions `master` + tag `0.5.1.0` ; puis, dans une session Claude Code sur la VM Debian, branche `devenv/env-10-debian`, exécuter deux fois `scripts/install-vscodium.sh --lepton-clone <clone noyau> --seed-scions <clone seed.scions>` et écrire `rapports/env-10-debian.md` (critères de `rapports/env-10-validation.md` §3-§4) ; la session Mac l'intègre et clôt l'étape.
+ENV-10, session VM Debian (ORCHESTRATION §2) : cloner depuis GitHub `lepton-distribution/lepton-tools` (branche `devenv/env-10`), `lepton-distribution/lepton-original-tree.scions` (branche `devenv/env-10`) et `lepton-distribution/seed.scions` (tag `0.5.1.0`) ; dans lepton-tools, créer `devenv/env-10-debian` ; lancer deux fois `scripts/install-vscodium.sh --lepton-clone <clone noyau> --seed-scions <clone seed.scions>` ; vérifier les critères de `rapports/env-10-validation.md` §3-§4 (`codium --list-extensions --show-versions` = `scripts/extensions.lst`, seconde exécution sans changement, `dpkg-query -W codium` = `1.135.06055`, `codium --version`, `scion version`, `lepton --version`, `shellcheck`) ; écrire `doc/devenv/rapports/env-10-debian.md` (et seulement des corrections propres à Debian), commiter, demander l'accord PA-P puis pousser `devenv/env-10-debian`. Ne pas modifier `DEVENV-STATUS.md` : la session Mac intègre le rapport et clôt ENV-10.
 
 ## Étapes
 
@@ -167,6 +167,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-15 | — (ENV-10) | Effet de bord de `brew uninstall --cask vscodium` : nettoyage automatique de Homebrew (au moins `imath` 3.1.12, `libdeflate` 1.22 retirées ; chaîne MacPorts non concernée). `codium` lié dans `~/.local/bin` (décision utilisateur). |
 | 2026-10-15 | PA-P | Pas de push en fin de S1 ; push pour la VM Debian décidé au début de la session suivante. |
 | 2026-10-15 | — (ENV-10) | `install-vscodium.sh` passe `--with-debug-tools` aux scripts du noyau (OpenOCD et gdb font partie de la chaîne d'INS-3). Proposition appliquée, à confirmer. |
+| 2026-10-15 | PA-P (ENV-10 S2) | Dépôt GitHub `lepton-distribution/lepton-tools` créé par l'utilisateur, distant `origin` en SSH. Push accordé : lepton-tools `main` + `devenv/env-10` ; clone noyau `master` (42733ce, avance rapide depuis 6b62af5) + `devenv/env-10` ; seed.scions `master` (79f4f96) + tag `0.5.1.0`, poussés par l'URL SSH (`origin` HTTPS inchangé). La session Mac attend le rapport Debian, l'intègre et clôt ENV-10. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -193,3 +194,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-14 | ENV-9 | Session S1 : fusion locale de `devenv/env-8` ; emplacements décidés ; `lepton generate` (presets greffés depuis la graine, `.code-workspace` avec launch/tasks) ; 116 tests verts, bout en bout vert ; rootstock d'essai `essais/env-9` : `--list-presets`, idempotence, BLD-5 (binaires identiques à `SOURCE_DATE_EPOCH` égal), fumée, KAL 18/18, arrêt sur `main` en GDB ; cfg OpenOCD WL autonome ; rapport `rapports/env-9-generation.md` ; S2 (VSCodium) reste. |
 | 2026-10-14 | ENV-9 | Session S2 : validation VSCodium (`rapports/env-9-validation.md`) — IDE-2 à IDE-5, DBG-1, DBG-2, TST-1 validés (réserves R1-R3, R3 = écart PA-1) ; P1-P10 tranchées ; P5 intégrée (`files.exclude`), 116 tests et bout en bout verts ; étape terminée. |
 | 2026-10-15 | ENV-10 | Session S1 : fusions locales de `devenv/env-9` ; PA-10 tranché ; `SCION_REF`/`SCION_SPEC` dans les scripts du noyau ; `scripts/install-vscodium.sh` + `extensions.lst` ; Mac Intel : 5 changements puis 0, critères conformes (`rapports/env-10-validation.md`) ; Debian reste. |
+| 2026-10-15 | ENV-10 | Session S2 : PA-P accordé (dépôt GitHub lepton-tools, push lepton-tools, clone noyau, seed.scions + tag 0.5.1.0) ; consigne de la session VM Debian. |
