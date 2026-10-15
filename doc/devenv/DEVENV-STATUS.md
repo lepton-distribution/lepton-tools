@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-15 — ENV-11 en cours (S1 faite : scénario Mac en ligne de commande ; défauts N2, N3 corrigés).
+Dernière mise à jour : 2026-10-15 — ENV-11 en cours (S1 et S2 faites : scénario Mac complet ; S3 Debian et bilan restent).
 
 ## Prochaine action
 
-ENV-11 S2 (`handoff/env-11.md`, `rapports/env-11-mac.md` §5) : brancher NUCLEO-F429ZI et NUCLEO-WL55JC1, exporter `LEPTON_EMBOS_ROOT=~/lepton/third_party/embos/cortexm-gcc/5.20.0.0`, puis scénario §2.5-2.6 (flash, arrêt sur `main`, console série) dans `~/lepton-tools-dev/essais/env-11/{f429zi,wl55jc1}`, §2.7 dans VSCodium (mode mixte, lemminx natif, O6) et §2.9 partie éditeur (empreinte attendue `lepton.bin` 25d50f61…, `SOURCE_DATE_EPOCH=1760536800`).
+ENV-11 S3 (`handoff/env-11.md`, `rapports/env-11-mac.md` §5) : demander le push (PA-P) de lepton-tools `main` + `devenv/env-11` et du clone noyau `master` + `devenv/env-11`, écrire la consigne VM Debian (scénario §2.1-2.4 et 2.9 CLI), intégrer `rapports/env-11-debian.md`, puis bilan exigences P1 × résultat et classement de N1, N4, O1-O11 avec l'utilisateur.
 
 ## Étapes
 
@@ -22,7 +22,7 @@ ENV-11 S2 (`handoff/env-11.md`, `rapports/env-11-mac.md` §5) : brancher NUCLEO-
 | ENV-8 | Outil `lepton` | terminée (2026-10-14) | lepton-tools `devenv/env-8` | `handoff/env-8.md` |
 | ENV-9 | Fichiers de l'éditeur | terminée (2026-10-14) | lepton-tools `devenv/env-9` ; BSP `nucleo-wl55jc1` `devenv/env-9` | `handoff/env-9.md` |
 | ENV-10 | Script d'installation VSCodium | terminée (2026-10-15) | lepton-tools `devenv/env-10` (poussée), `devenv/env-10-debian` (VM, fusionnée) ; clone noyau `devenv/env-10` (poussée) | `handoff/env-10.md` |
-| ENV-11 | Validation de bout en bout | en cours (S1 faite ; S2 cartes et VSCodium, S3 Debian et bilan) | lepton-tools `devenv/env-11` ; clone noyau `devenv/env-11` | `handoff/env-11.md` |
+| ENV-11 | Validation de bout en bout | en cours (S1, S2 faites ; S3 Debian et bilan) | lepton-tools `devenv/env-11` ; clone noyau `devenv/env-11` | `handoff/env-11.md` |
 | ENV-12 | Extension VSCodium | à faire | — | — |
 
 Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), abandonnée (décision).
@@ -185,6 +185,9 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-15 | — (ENV-11) | Défaut N2 (lepton, PA-9 Q8 incomplet : `.DS_Store` non purgés avant `scion graft`/`graft-remove` hors `graft` et `generate`) corrigé dans ENV-11 : 338ff5b, `pytest` 117 verts. Décision de l'utilisateur. |
 | 2026-10-15 | — (ENV-11) | Défaut N3 (modèle d'application de lepton : inclusions introuvables, application non compilable) corrigé dans ENV-11 : 7d191aa ; lepton réinstallé par pipx. Décision de l'utilisateur. |
 | 2026-10-15 | — (ENV-11) | Observations O1-O7 de `rapports/env-11-mac.md` §4 : renvois proposés, non validés, à classer au bilan (S3). |
+| 2026-10-15 | — (ENV-11 S2) | O6 : reconfiguration embOS depuis VSCodium lancé par le Finder réussie (variable héritée de `~/.zshrc:15`, ligne manuelle, environnement du shell de connexion lu par VSCodium) ; cas sans variable démontré par lecture du code (`cmake/kal/embos.cmake:13-15`), sans retrait de la ligne. Décision de l'utilisateur. |
+| 2026-10-15 | — (ENV-11 S2) | Essais VSCodium sur carte faits une carte branchée à la fois (O8 : espace généré sans numéro de série de sonde) ; ligne de commande avec `adapter serial`. Proposition appliquée. |
+| 2026-10-15 | — (ENV-11 S2) | CFG-7 (P2) non conforme : défaut N4 (aucune association de schéma dans l'éditeur) ; observations O8-O11 ; renvois proposés non validés, à classer au bilan S3 (`rapports/env-11-mac.md` §3-§4). |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -216,3 +219,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-15 | ENV-10 | S2 (suite) : rapport Debian n° 2 fusionné (pipx 1.7.1 refuse `git+file://` sans nom) ; spécification nommée et SC2015 corrigées ; essai hôte vierge Mac (12 puis 0) ; consigne passage n° 3. |
 | 2026-10-15 | ENV-10 | S2 (fin) : validation Debian n° 3 conforme ; `--with-debug-tools` validé ; message curl 23 (e9b5518) ; hôtes Mac Intel et Debian validés, Apple Silicon en revue ; étape terminée. |
 | 2026-10-15 | ENV-11 | S1 : fusions locales de `devenv/env-10` ; PA-11 accordé ; SCION_REF 0.5.1.0 (clone noyau a572f00) ; scénario Mac CLI (`rapports/env-11-mac.md`) : install sans effet, graine sans application, fumée, KAL 18/18, application + `file add` sans CMake, `scion remove`, BLD-5 CLI ; défauts N1 (scion, renvoyé ENV-7), N2 et N3 (lepton, corrigés) ; graines F429ZI et WL55JC1 construites ; S2 et S3 restent. |
+| 2026-10-15 | ENV-11 | S2 : cartes NUCLEO-F429ZI et WL55JC1 flashées (CLI et VSCodium), `lsh` série, arrêt sur `main` ; VSCodium : DBG-1/2, TST-1 18/18, IDE-1 à IDE-5, BLD-5 (empreintes identiques CLI/éditeur) conformes ; CFG-7 non conforme (N4) ; O6 tranchée, O8-O11 (`rapports/env-11-mac.md` §2bis) ; skill `lepton-cibles` (ports, `adapter serial`) ; S3 reste. |
