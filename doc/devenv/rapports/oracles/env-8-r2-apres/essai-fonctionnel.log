@@ -1,0 +1,81 @@
+/Users/cle_d_anton/lepton-tools-dev/venv-lepton-tools/bin/lepton
+
+== 1. copie du noyau sur une branche sans « / » (lepton refuse « / » dans @VERSION)
+$ git clone -q --branch devenv/env-8-r2 /Users/cle_d_anton/lepton/depots/lepton/original/master <S>/essai-r2/noyau-r2
+[code 0, attendu 0]
+$ git -C <S>/essai-r2/noyau-r2 checkout -q -b essai-r2
+[code 0, attendu 0]
+82a6700 devenv(env-8-r2): lecteur des manifestes, valeurs d'options de la graine (N5, CFG-4)
+
+== 2. seed new (noyau : essai-r2 = devenv/env-8-r2)
+$ lepton seed new essai -C <R> --bsp qemu-mps2-an386 --backend freertos --mkconf sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml --origin lepton-noyau=file://localhost<S>/essai-r2/noyau-r2@essai-r2 --origin qemu-mps2=file://localhost/Users/cle_d_anton/lepton/depots/lepton-famille/qemu-mps2@master --origin qemu-mps2-an386=file://localhost/Users/cle_d_anton/lepton/depots/lepton-bsp/qemu-mps2-an386@master
+rootstock : <R>
+graine    : <R>/depots/lepton-seed/essai
+  noyau    lepton@original::tree            essai-r2 file://localhost<S>/essai-r2/noyau-r2
+  famille  lepton@family-qemu-mps2          master   file://localhost/Users/cle_d_anton/lepton/depots/lepton-famille/qemu-mps2
+  bsp      lepton@bsp-qemu-mps2-an386       master   file://localhost/Users/cle_d_anton/lepton/depots/lepton-bsp/qemu-mps2-an386
+presets et espace de travail VSCodium : lepton generate -C <R>
+[code 0, attendu 0]
+82a6700 devenv(env-8-r2): lecteur des manifestes, valeurs d'options de la graine (N5, CFG-4)
+3954357 Fusion de devenv/env-6 (ENV-6 greffons BSP de référence)
+046779e Fusion de devenv/env-6 (ENV-6 greffons BSP de référence)
+
+== 3. application demoopt avec une option de chaque type
+$ lepton scion new --type application demoopt -C <R> --no-cmake
+dépôt créé : <R>/depots/lepton-application/demoopt (bin/demoopt)
+demoopt ajouté (lepton@application-demoopt, *, depots/lepton-application/demoopt)
+graine modifiée, non commitée : git -C <R>/depots/lepton-seed/essai commit -am "…"
+[code 0, attendu 0]
+manifeste : <R>/depots/lepton-application/demoopt/scion/sys/root/src/bin/demoopt/lepton-greffon.json
+graine : <R>/depots/lepton-seed/essai/scion/.scion/lepton-graine.json
+
+== 4. check et generate
+$ lepton check -C <R>
+6 fichier(s) conforme(s).
+[code 0, attendu 0]
+$ lepton generate -C <R>
+écrit     <R>/depots/lepton-seed/essai/project/scion/CMakeUserPresets.json (greffé : <R>/trunk/CMakeUserPresets.json)
+écrit     <R>/essai.code-workspace
+presets : essai-debug-qemu (cmake --list-presets dans <R>/trunk)
+graine modifiée, non commitée : git -C <R>/depots/lepton-seed/essai commit -am "…"
+[code 0, attendu 0]
+essai-debug-qemu {'LEPTON_OPTION_demoopt_OPT_BOOL': '1', 'LEPTON_OPTION_demoopt_OPT_INT': '42', 'LEPTON_OPTION_demoopt_OPT_ENUM': 'b', 'LEPTON_OPTION_demoopt_OPT_STR': 'bonjour'}
+
+== 5. cmake host, essai-debug-qemu, construction
+
+== 6. compile_commands.json : définitions par portée
+sources de demoopt : 1
+   bin/demoopt/demoopt.c ['OPT_BOOL=1', 'OPT_ENUM=b', 'OPT_INT=42', 'OPT_STR=\\"bonjour\\"']
+autres sources portant OPT_* : 0 []
+CONFORME
+
+== 7. fumée QEMU
+
+Total Test time (real) =   3.36 sec
+[code 0, attendu 0]
+
+== 8. valeur hors bornes dans la graine : check et generate refusent
+$ lepton check -C <R>
+depots/lepton-seed/essai/scion/.scion/lepton-graine.json: /options/demoopt/OPT_INT: valeur refusée : 101 hors des bornes [1, 100]
+depots/lepton-seed/essai/scion/.scion/lepton-graine.json: /options/demoopt/OPT_ENUM: valeur refusée : « c » absent des valeurs (a, b)
+[code 1, attendu 1]
+$ lepton generate -C <R>
+lepton: erreur: valeurs d'options de la graine refusées (CFG-4) :
+<R>/depots/lepton-seed/essai/scion/.scion/lepton-graine.json: /options/demoopt/OPT_INT: valeur refusée : 101 hors des bornes [1, 100]
+<R>/depots/lepton-seed/essai/scion/.scion/lepton-graine.json: /options/demoopt/OPT_ENUM: valeur refusée : « c » absent des valeurs (a, b)
+  → corriger « options », puis lepton check
+[code 1, attendu 1]
+
+== 9. valeur hors bornes passée à CMake par -D : configuration refusée
+CMake Error at cmake/lepton_greffons.cmake:43 (message):
+  manifeste
+  <S>/essai-r2/rootstock/trunk/sys/root/src/bin/demoopt/lepton-greffon.json
+CMake Error at cmake/lepton_greffons.cmake:43 (message):
+  manifeste
+  <S>/essai-r2/rootstock/trunk/sys/root/src/bin/demoopt/lepton-greffon.json
+CMake Error at cmake/lepton_greffons.cmake:43 (message):
+  manifeste
+  <S>/essai-r2/rootstock/trunk/sys/root/src/bin/demoopt/lepton-greffon.json
+
+== 10. trunk sans fichier régulier ni lien cassé
+essai : succès
