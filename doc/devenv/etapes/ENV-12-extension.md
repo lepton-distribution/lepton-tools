@@ -28,6 +28,16 @@ Présenter, à partir du bilan d'ENV-11, les fonctions manquantes et leur coût.
   clone ; s'il n'y en a pas, refuser avec un message.
 - Commandes de palette pour les opérations de `lepton` déjà existantes.
 
+### 2bis. Renvois des reprises (décidés)
+- CFG-7 (reprise 4, décision du 2026-10-16) : diagnostics de l'extension, à la saisie et en
+  **erreur**, pour `lepton-greffon.json`, `lepton-graine.json` (JSON Schema) et le XML mklepton
+  (XSD), à partir des schémas du paquet lepton ; le service JSON intégré ne signale qu'en
+  avertissement (niveau non réglable, `rapports/env-9-r4.md` §5) ; la tâche « lepton : vérifier »
+  reste le contrôle complet à la demande.
+- O10 (reprise 4) : relance de clangd quand `build/.active/compile_commands.json` apparaît ou
+  change (cas sans preset configuré avant `lepton generate`).
+- Autres renvois : R1 (`rapports/env-9-validation.md` §4), O2, O5 (`rapports/env-11-bilan.md` §3).
+
 ### 3. Distribution
 Paquet `.vsix` local ; publication sur Open VSX soumise à accord (PA-P).
 

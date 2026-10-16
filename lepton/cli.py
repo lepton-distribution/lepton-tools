@@ -14,7 +14,7 @@ Usage :
     lepton file add PATH [--scion NAME] | file remove PATH | file mv SOURCE DESTINATION
     lepton dir add PATH [--scion NAME] | dir remove PATH [--scion NAME]
     lepton graft [--scion NAME]... [--force] [--no-cmake]
-    lepton generate [--clangd PATH]
+    lepton generate [--clangd PATH] [--probe-serial SERIAL]
 
 Codes de retour : 0 succès ; 1 utilisation, refus ou anomalie ; 2 échec ou absence d'un outil
 appelé ; 130 interruption.
@@ -222,6 +222,9 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("generate", parents=[common],
                        help="presets CMake (graine) et espace de travail VSCodium (CFG-6, IDE, DBG)")
     p.add_argument("--clangd", metavar="PATH", help="clangd à utiliser (défaut : clangd LLVM le plus récent du PATH)")
+    p.add_argument("--probe-serial", metavar="SERIAL",
+                   help="numéro de série de la sonde (adapter serial d'OpenOCD), conservé dans l'espace ; "
+                        "\"\" le retire")
     p.set_defaults(func=generate.generate)
 
     p = sub.add_parser("check", parents=[common],

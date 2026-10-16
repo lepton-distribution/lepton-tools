@@ -40,6 +40,18 @@ dossiers `git · …`). Après un changement de preset, rouvrir les fichiers dé
 débogueur, le source s'affiche sous le chemin du clone (écart accepté en PA-1). Validation :
 `doc/devenv/rapports/env-9-validation.md`.
 
+L'espace généré associe `lepton-greffon.json`, `lepton-graine.json` et les XML `mkconf_*.xml` (et
+celui de la graine) aux schémas installés avec lepton : fautes signalées à la saisie (CFG-7) ;
+relancer `lepton generate` après une réinstallation de lepton. Le sélecteur de preset est affiché
+dans la barre d'état. La tâche « lepton : vérifier » lance `lepton check` et inscrit ses anomalies en
+erreur dans le panneau *Problems* (manifestes désignés par le trunk). clangd lit `build/.active/compile_commands.json`, que `lepton generate`
+amorce depuis le premier preset déjà configuré : configurer un preset (tâche « lepton :
+configurer … ») avant la première génération, sinon *clangd: Restart language server* après la
+première configuration. Plusieurs sondes branchées : `lepton generate --probe-serial SERIE`
+(numéro de la sonde de la carte, `adapter serial` d'OpenOCD ; macOS : `system_profiler
+SPUSBDataType`, Debian : `lsusb -v`), conservé dans l'espace aux générations suivantes,
+`--probe-serial ""` le retire (`doc/devenv/rapports/env-9-r4.md`).
+
 Valeurs d'options (CFG-4) : les options déclarées par un greffon (`options` de son
 `lepton-greffon.json`) se fixent pour tout le projet dans le champ `options` de
 `lepton-graine.json`, par greffon : `"options": {"mesure": {"MESURE_PERIODE_MS": 500}}` ; option

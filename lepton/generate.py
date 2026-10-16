@@ -22,6 +22,7 @@ from lepton.errors import EXIT_OK, EXIT_TOOL, LeptonError
 from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, project_key
 from lepton.scion_runner import run, scion
 from lepton.seed import LOCAL_VERSION, _info, _remind_commit, _warn, finish, load_graine, scion_on_trunk
+from lepton.validation import SCHEMA_FILES, SCION_MANIFEST, SEED_MANIFEST, schemas_dir
 
 PRESETS_FILE = "CMakeUserPresets.json"
 KERNEL_PRESETS = "CMakePresets.json"
@@ -30,6 +31,15 @@ HOST_PRESET = "host"               # preset du noyau qui construit mklepton (LEP
 NOTE = "généré par lepton generate, ne pas éditer"
 ACTIVE_DIR = ".active"             # build/.active : compile_commands.json du preset actif (clangd)
 OPTION_PREFIX = "LEPTON_OPTION_"   # + <greffon>_<NOM> : valeur d'option de la graine (CFG-4)
+COMPILE_COMMANDS = "compile_commands.json"
+PROBE_SERIAL_SETTING = "lepton.probeSerial"   # réglage de l'espace : série de sonde conservée (O8)
+MKCONF_PATTERN = "**/mkconf_*.xml"            # XML mklepton du noyau (xml.fileAssociations, CFG-7)
+# Sortie de `lepton check` (« <fichier>: [<ligne xmllint>: ]<emplacement et message> ») → panneau Problems,
+# en erreur (CFG-7 : le service JSON intégré signale les fautes de schéma en avertissement seulement)
+CHECK_MATCHER = {"owner": "lepton", "source": "lepton check", "severity": "error",
+                 "pattern": {"regexp": r"^(\S[^:]*\.(?:json|xml)): (?:(\d+): )?(.*)$",
+                             "file": 1, "line": 2, "message": 3}}
+_PROBE_SERIAL = re.compile(r"""^[^\s"'\\]+$""")
 
 # Cœur (enum du schéma) → famille d'ISA du noyau (cmake/isa/) et cœur QEMU (-cpu)
 ISA_OF_CORE = {"cortex-m0plus": "armv6m", "cortex-m3": "armv7m", "cortex-m4f": "armv7m", "cortex-m7": "armv7m"}
@@ -214,7 +224,23 @@ def workspace_folders(ctx: Context) -> list[dict]:
     return folders
 
 
-def workspace_settings(ctx: Context, tools: dict) -> dict:
+def schema_settings(ctx: Context) -> dict:
+    """CFG-7 (N4) : manifestes JSON et XML mklepton associés aux schémas du paquet lepton (chemin
+    absolu résolu à la génération) ; validation et complétion à la saisie (JSON intégré, lemminx)."""
+    schemas = schemas_dir()
+    patterns = [MKCONF_PATTERN]
+    seed_xml = f"**/{ctx.graine['mklepton_xml']}"
+    if not Path(ctx.graine["mklepton_xml"]).match(MKCONF_PATTERN.removeprefix("**/")):
+        patterns.append(seed_xml)
+    return {
+        "json.schemas": [{"fileMatch": [f"**/{name}"], "url": (schemas / SCHEMA_FILES[kind]).as_uri()}
+                         for name, kind in ((SCION_MANIFEST, "scion"), (SEED_MANIFEST, "seed"))],
+        "xml.fileAssociations": [{"pattern": p, "systemId": str(schemas / SCHEMA_FILES["mklepton"])}
+                                 for p in patterns],
+    }
+
+
+def workspace_settings(ctx: Context, tools: dict, probe_serial: str | None = None) -> dict:
     active = ctx.rs.build / ACTIVE_DIR
     settings = {
         # Dossiers « git · … » : fichiers greffés masqués (ouverts par le trunk seul, IDE-4) ; restent
@@ -225,7 +251,8 @@ def workspace_settings(ctx: Context, tools: dict) -> dict:
         "cmake.useCMakePresets": "always",
         "cmake.configureOnOpen": False,
         "cmake.ignoreCMakeListsMissing": True,
-        "cmake.copyCompileCommands": str(active / "compile_commands.json"),
+        "cmake.options.statusBarVisibility": "visible",   # sélecteur de preset (IDE-5, O11)
+        "cmake.copyCompileCommands": str(active / COMPILE_COMMANDS),
         "clangd.arguments": [f"--compile-commands-dir={active}", "--background-index",
                              f"--query-driver={tools['gcc']}"],
         "cortex-debug.armToolchainPath": str(Path(tools["gdb"]).parent),
@@ -235,6 +262,9 @@ def workspace_settings(ctx: Context, tools: dict) -> dict:
         settings["clangd.path"] = tools["clangd"]
     if tools.get("openocd"):
         settings["cortex-debug.openocdPath"] = tools["openocd"]
+    if probe_serial:
+        settings[PROBE_SERIAL_SETTING] = probe_serial
+    settings.update(schema_settings(ctx))
     return settings
 
 
@@ -242,7 +272,7 @@ def _elf(ctx: Context, c: dict) -> str:
     return str(ctx.build_dir(c) / "lepton.elf")
 
 
-def launch_configurations(ctx: Context, tools: dict) -> list[dict]:
+def launch_configurations(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[dict]:
     configs = []
     for c in ctx.configurations:
         preset = ctx.preset(c)
@@ -256,9 +286,12 @@ def launch_configurations(ctx: Context, tools: dict) -> list[dict]:
                             "servertype": "qemu", "serverpath": tools["qemu"],
                             "cpu": QEMU_CPU_OF_CORE[ctx.core], "machine": ctx.bsp["qemu"]["machine"]})
         else:
-            configs.append({"name": f"Déboguer {preset} (carte, OpenOCD)", **common,
-                            "servertype": "openocd", "serverpath": tools["openocd"],
-                            "configFiles": [str(ctx.bsp_file(f)) for f in ctx.bsp["openocd"]]})
+            board = {"name": f"Déboguer {preset} (carte, OpenOCD)", **common,
+                     "servertype": "openocd", "serverpath": tools["openocd"],
+                     "configFiles": [str(ctx.bsp_file(f)) for f in ctx.bsp["openocd"]]}
+            if probe_serial:   # O8 : Cortex-Debug n'applique pas serialNumber à OpenOCD
+                board["openOCDLaunchCommands"] = [f"adapter serial {probe_serial}"]
+            configs.append(board)
     return configs
 
 
@@ -269,12 +302,14 @@ def _task(label: str, command: str, args: list[str], cwd: Path, **extra) -> dict
     return task
 
 
-def tasks(ctx: Context, tools: dict) -> list[dict]:
+def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[dict]:
     trunk = ctx.rs.trunk
     cmake = tools["cmake"]
     mk = "lepton : mklepton (preset host)"
     result = [
         _task("lepton : regreffer", tools["lepton"], ["graft", "-C", str(ctx.rs.path)], ctx.rs.path),
+        _task("lepton : vérifier", tools["lepton"], ["check", "-C", str(ctx.rs.path)], ctx.rs.path,
+              problemMatcher={**CHECK_MATCHER, "fileLocation": ["autoDetect", str(ctx.rs.path)]}),
         _task("lepton : configurer host", cmake, ["--preset", HOST_PRESET], trunk),
         _task(mk, cmake, ["--build", "--preset", HOST_PRESET, "--target", "mklepton"], trunk,
               dependsOn=["lepton : configurer host"], dependsOrder="sequence", problemMatcher=["$gcc"]),
@@ -298,17 +333,19 @@ def tasks(ctx: Context, tools: dict) -> list[dict]:
                                     dependsOn=[build], group="test", options={"cwd": str(trunk), **env}))
         else:
             cfgs = [a for f in ctx.bsp["openocd"] for a in ("-f", str(ctx.bsp_file(f)))]
+            if probe_serial:
+                cfgs += ["-c", f"adapter serial {probe_serial}"]
             result.append(_task(f"lepton : flasher {preset}", tools["openocd"],
                                 [*cfgs, "-c", f"program {_elf(ctx, c)} verify reset exit"], trunk,
                                 dependsOn=[build]))
     return result
 
 
-def render_workspace(ctx: Context, tools: dict) -> str:
+def render_workspace(ctx: Context, tools: dict, probe_serial: str | None = None) -> str:
     data = {"folders": workspace_folders(ctx),
-            "settings": workspace_settings(ctx, tools),
-            "launch": {"version": "0.2.0", "configurations": launch_configurations(ctx, tools)},
-            "tasks": {"version": "2.0.0", "tasks": tasks(ctx, tools)},
+            "settings": workspace_settings(ctx, tools, probe_serial),
+            "launch": {"version": "0.2.0", "configurations": launch_configurations(ctx, tools, probe_serial)},
+            "tasks": {"version": "2.0.0", "tasks": tasks(ctx, tools, probe_serial)},
             "extensions": {"recommendations": ["llvm-vs-code-extensions.vscode-clangd",
                                                "ms-vscode.cmake-tools", "marus25.cortex-debug"]}}
     return f"// {NOTE}\n" + json.dumps(data, ensure_ascii=False, indent=2) + "\n"
@@ -337,6 +374,44 @@ def _write_if_changed(path: Path, text: str) -> bool:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
     return True
+
+
+def probe_serial(ctx: Context, workspace: Path, option: str | None) -> str | None:
+    """O8 : série de sonde de l'option ; sans option, celle de l'espace existant ; "" la retire."""
+    if option is not None:
+        if option and not _PROBE_SERIAL.match(option):
+            raise LeptonError(f"--probe-serial « {option} » : ni espace, ni guillemet, ni barre oblique inverse",
+                              "donner le numéro de série de la sonde tel qu'OpenOCD l'affiche")
+        return option or None
+    try:
+        text = workspace.read_text(encoding="utf-8")
+        previous = json.loads(text.split("\n", 1)[1] if text.startswith("//") else text)
+        return previous.get("settings", {}).get(PROBE_SERIAL_SETTING) or None
+    except FileNotFoundError:
+        return None
+    except (OSError, ValueError, IndexError, AttributeError) as e:
+        _warn(f"{workspace} illisible ({e}) : série de sonde précédente ignorée")
+        return None
+
+
+def prime_active(ctx: Context) -> None:
+    """O10 : clangd démarre avec l'espace et ne relit pas une base apparue ensuite pour les fichiers
+    ouverts ; build/.active est amorcé avec la base du premier preset de la graine déjà configuré
+    (CMake Tools la remplace ensuite, cmake.copyCompileCommands)."""
+    active = ctx.rs.build / ACTIVE_DIR / COMPILE_COMMANDS
+    if active.exists():
+        return
+    for c in ctx.configurations:
+        source = ctx.build_dir(c) / COMPILE_COMMANDS
+        if source.is_file():
+            active.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, active)
+            _info(f"amorcé    {active} (preset {ctx.preset(c)})")
+            return
+    first = ctx.preset(ctx.configurations[0])
+    _warn(f"{active} absent, aucun preset configuré : clangd sans base à l'ouverture de l'espace ; "
+          f"configurer {first} (tâche « lepton : configurer {first} » ou CMake Tools), "
+          "puis « clangd: Restart language server », ou relancer lepton generate avant l'ouverture")
 
 
 def _graft_project(ctx: Context, presets: Path) -> bool:
@@ -370,12 +445,20 @@ def generate(args) -> int:
     seed_changed = _write_if_changed(presets, json.dumps(render_presets(ctx), ensure_ascii=False, indent=2) + "\n")
     seed_changed |= _graft_project(ctx, presets)
     workspace = rs.path / f"{ctx.project}.code-workspace"
-    ws_changed = _write_if_changed(workspace, render_workspace(ctx, tools))
+    serial = probe_serial(ctx, workspace, args.probe_serial)
+    ws_changed = _write_if_changed(workspace, render_workspace(ctx, tools, serial))
+    prime_active(ctx)
     finish(rs, no_cmake=True)
 
     _info(f"{'écrit    ' if seed_changed else 'inchangé '} {presets} (greffé : {rs.trunk / PRESETS_FILE})")
     _info(f"{'écrit    ' if ws_changed else 'inchangé '} {workspace}")
     _info(f"presets : {', '.join(ctx.preset(c) for c in ctx.configurations)} (cmake --list-presets dans {rs.trunk})")
+    if any(c["execution"] == "carte" for c in ctx.configurations):
+        if serial:
+            _info(f"sonde : adapter serial {serial} (lancement et tâche « flasher »)")
+        else:
+            _warn("configuration carte sans --probe-serial : OpenOCD prend la première sonde, "
+                  "une seule carte branchée à la fois")
     if seed_changed:
         _remind_commit(ctx.seed_root)
     return EXIT_OK
