@@ -41,6 +41,9 @@ Exécuter dans cet ordre, sans en sauter :
 - Toute écriture dans l'arbre Lepton : appliquer la skill `lepton-rootstock`.
 - Tout état de référence ou toute comparaison : skill `lepton-oracle`.
 - Toute construction, exécution QEMU, flash ou débogage : skill `lepton-cibles`.
+- Tout message vers ou depuis une autre session Claude Code (VM, Remote Control) : protocole
+  d'`ORCHESTRATION.md` §2bis (`ORDRE` → `ACCUSÉ` → `AVANCEMENT` → `FIN-SUCCÈS` / `FIN-ÉCHEC`) ;
+  rien n'est tenu pour reçu sans accusé.
 
 ## Fin de session (même interrompue, même en cas d'échec)
 

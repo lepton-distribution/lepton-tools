@@ -45,6 +45,39 @@ Règles de parallélisme Mac / VM :
 - `DEVENV-STATUS.md` n'est modifié que par la session Mac ; la session VM y reporte via son
   rapport, que la session Mac intègre.
 
+### 2bis. Protocole entre sessions Claude Code (messages)
+
+S'applique à tout message entre deux sessions (Mac ↔ VM par Remote Control, ou autre). Décision de
+l'utilisateur du 2026-10-16 : chaque ordre est accusé, chaque fin est annoncée avec ce qu'il faut
+pour agir. Un envoi réussi ne prouve pas la lecture : seul l'accusé compte.
+
+Forme de chaque message :
+- Première ligne autonome : `[<TYPE> <ID>] <étape> — <objet en une phrase>`. `ID` = `<étape>-<n>`
+  (ex. `R5-1`), repris tel quel par toutes les réponses au même ordre.
+- Puis : émetteur (nom de session), destinataire, références vérifiables (branche, commit, fichier
+  de consigne), et le contenu lui-même (pas de `@chemin` : le texte est envoyé tel quel).
+
+| Type | Émis par | Quand | Contenu obligatoire |
+| --- | --- | --- | --- |
+| `ORDRE` | session principale | demande d'exécution | consigne (chemin, branche, commit), périmètre, ce qui exige l'utilisateur (sudo, PA-P), forme de fin attendue |
+| `ACCUSÉ` | destinataire | dès réception, avant toute action | ordre reformulé en une phrase, références constatées (têtes de branche réelles), étapes prévues, écarts déjà visibles ; ou `REFUS` + raison |
+| `AVANCEMENT` | destinataire | à chaque point d'arrêt, action de l'utilisateur demandée, ou étape longue franchie | étape, état, ce qui est attendu et de qui |
+| `QUESTION` | l'une ou l'autre | décision nécessaire | question, options, conséquence ; l'émetteur attend la réponse |
+| `FIN-SUCCÈS` | destinataire | travail terminé | résultat par critère de la consigne, commits et branches (poussés ou non), rapport (chemin), versions relevées, écarts et observations, ce qui n'a pas été fait |
+| `FIN-ÉCHEC` | destinataire | arrêt sur erreur | étape, commande exacte, code de retour, extrait du message, journal (chemin), composant en cause, état laissé (fichiers modifiés, paquets installés), correction proposée, ce qui est attendu de l'utilisateur |
+
+Règles :
+- L'émetteur d'un `ORDRE` n'agit pas sur la suite tant que l'`ACCUSÉ` n'est pas reçu. Sans accusé :
+  pas de supposition ; demander à l'utilisateur de vérifier la session destinataire, puis renvoyer
+  une fois avec le même `ID`.
+- Le destinataire n'exécute rien avant d'avoir envoyé l'`ACCUSÉ`, et termine toujours par
+  `FIN-SUCCÈS` ou `FIN-ÉCHEC`, même interrompu.
+- Réponse : à l'adresse `from` du message reçu.
+- La session principale consigne chaque `ORDRE`, `ACCUSÉ` et `FIN-*` (ID, date, résumé) dans le
+  rapport de l'étape, et la fin dans `DEVENV-STATUS.md` §Journal.
+- Chaque consigne VM (`consignes/*.md`) contient un paragraphe « Communication » qui renvoie à ce
+  paragraphe et fixe les `ID` et le nom de la session principale.
+
 ## 3. Cycle d'une session
 
 ### Début de session (obligatoire, dans cet ordre)
