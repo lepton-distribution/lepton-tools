@@ -7,8 +7,12 @@
   },
   "noyau": "lepton-noyau",
   "bsp": "nucleo-f429zi",
-  "applications": [],
-  "bibliotheques": [],
+  "applications": [
+    "mesure"
+  ],
+  "bibliotheques": [
+    "capteurs"
+  ],
   "backend": "embos",
   "configurations": [
     {
@@ -22,5 +26,16 @@
       "execution": "carte"
     }
   ],
-  "mklepton_xml": "sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_f429zi.xml"
+  "mklepton_xml": "sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_f429zi.xml",
+  "options": {
+    "lepton-noyau": {
+      "LEPTON_KAL_TRACE": true
+    },
+    "mesure": {
+      "MESURE_PERIODE_MS": 500
+    },
+    "capteurs": {
+      "CAPTEURS_UNITE": "brut"
+    }
+  }
 }
