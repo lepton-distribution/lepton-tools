@@ -18,7 +18,7 @@ terminée — O1, O3, O4, O14, O17 corrigés ; non-régression d'O1 validée ; f
 | seed.scions | `master` f1d1f3c, tag 0.5.1.1 | **poussés** le 2026-10-16 (SSH, `origin` HTTPS inchangé) | oui |
 | `~/lepton` trunk | — | 4 037 feuilles, aucun fichier régulier, aucun lien cassé ; sans regreffe (seul `scion/CMakeLists.txt` du clone change) | oui |
 
-lepton-tools et clone noyau : aucun push (`main`, `master` et les branches R2/R3 locaux). lepton
+Poussés le 2026-10-16 (PA-P) : lepton-tools `main` b9dd0e8 et `devenv/env-8-r3` ; clone noyau `master` 50a67c0 et `devenv/env-6-r3` aee4618. La fusion de R3 reste locale à faire, puis à pousser sur accord. lepton
 pipx = `main` b9dd0e8 (R2 compris, sans R3) ; R3 se teste par le venv
 `~/lepton-tools-dev/venv-lepton-tools` (installation éditable). Rootstocks d'essai (`o14`,
 `bout-en-bout`) et copie du rootstock (`copie-r3`) dans le scratchpad de session (jetables).
@@ -50,7 +50,7 @@ pipx = `main` b9dd0e8 (R2 compris, sans R3) ; R3 se teste par le venv
 - [ ] `pipx install --force <LEPTON_TOOLS>` depuis `main`.
 - [ ] Reprise 4 : ENV-9 N4, O8, O10, O11 ; puis reprise 5 (ENV-10 D3, D4, O6, O12 + noyau O9, un
   passage VM) ; puis PA-12.
-- [ ] Push de lepton-tools et du clone noyau : à proposer (PA-P) avant le passage VM de la reprise 5.
+- [ ] Push des fusions de R3 (`main`, `master`) : à proposer (PA-P), au plus tard avant le passage VM de la reprise 5.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
@@ -58,7 +58,7 @@ pipx = `main` b9dd0e8 (R2 compris, sans R3) ; R3 se teste par le venv
 | Reprise 3 = O3, O4, O14 + O1 ; branches `devenv/env-8-r3`, `devenv/env-6-r3` | utilisateur | oui |
 | O4 : avertir et continuer (code 0) | utilisateur | oui |
 | Non-régression O1 sur `env-8-r2-apres-final` ; validée | utilisateur | oui |
-| PA-P : push de seed.scions `master` + tag 0.5.1.1 seulement | utilisateur | oui |
+| PA-P : push de seed.scions `master` + tag 0.5.1.1 ; puis lepton-tools (`main`, `devenv/env-8-r3`) et clone noyau (`master`, `devenv/env-6-r3`) | utilisateur | oui |
 | O17 corrigé dans R3 | utilisateur | oui |
 | O14 sans évolution de scion (vérification de 0.5.1.1) | constat, présenté au plan comme condition | oui |
 | O3 : cas « ajout fait, échec ensuite » → « corriger la cause, puis lepton graft » | proposition appliquée | non (rapport §2) |

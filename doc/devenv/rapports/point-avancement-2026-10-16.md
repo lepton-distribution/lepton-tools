@@ -81,23 +81,23 @@ Ces sujets sont consignés dans l'état du chantier mais n'ont aucune échéance
 
 ## Dépôts et publication
 
-Seul seed.scions est à jour sur GitHub ; lepton-tools et le greffon noyau ont quatre séries de fusions locales non poussées depuis ENV-11.
+Les trois dépôts du chantier sont à jour sur GitHub depuis le 16/10, reprise 3 comprise sur ses branches ; seule la fusion de la reprise 3 dans `main` et `master` reste locale à faire.
 
-| Dépôt | Sur GitHub | En local, non poussé |
+| Dépôt | Sur GitHub | Reste local |
 | --- | --- | --- |
 | seed.scions (scion) | `master` f1d1f3c + tag 0.5.1.1, poussés le 16/10 | — |
-| lepton-tools | `main` 657c395 (ENV-10) | fusions ENV-11, reprises 1 et 2 ; reprise 3 à fusionner |
-| greffon noyau (lepton-original-tree.scions) | `master` 1dde0af (ENV-10) | fusions ENV-11, reprises 1 et 2 ; reprise 3 à fusionner |
+| lepton-tools | `main` b9dd0e8 (reprise 2 comprise) + `devenv/env-8-r3`, poussés le 16/10 | fusion de la reprise 3 dans `main` |
+| greffon noyau (lepton-original-tree.scions) | `master` 50a67c0 (reprise 2 comprise) + `devenv/env-6-r3`, poussés le 16/10 | fusion de la reprise 3 dans `master` |
 | famille `qemu-mps2`, BSP `qemu-mps2-an386` | `master`, poussés le 15/10 | — |
 
-Un push de lepton-tools et du greffon noyau sera nécessaire avant le passage VM de la reprise 5 ; chaque push reste soumis à accord (PA-P).
+Les fusions de la reprise 3 seront à pousser avant le passage VM de la reprise 5 ; chaque push reste soumis à accord (PA-P).
 
 ## Chemin restant
 
 Quatre temps mènent à la décision PA-12, chacun en session distincte.
 
 1. **Fusions de la reprise 3** puis **reprise 4** (ENV-9) : probablement deux sessions, l'une en ligne de commande, l'autre de validation VSCodium et cartes avec l'utilisateur.
-2. **Push** de lepton-tools et du greffon noyau, sur accord (PA-P).
+2. **Push** des fusions de la reprise 3, sur accord (PA-P).
 3. **Reprise 5** (ENV-10 et noyau) : une session sur le Mac, puis une session sur la VM Debian.
 4. **PA-12** : bilan des fonctions encore manquantes et de leur coût, avec les sujets en attente ci-dessus ; décision de lancer ENV-12 ou de clore à la phase 1.
 
