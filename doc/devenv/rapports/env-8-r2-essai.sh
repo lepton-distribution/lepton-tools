@@ -46,6 +46,14 @@ d["options"] = [
     {"nom": "OPT_STR", "type": "chaine", "defaut": "defaut", "portee": "privee", "description": "Chaîne."}]
 json.dump(d, open(p, "w"), ensure_ascii=False, indent=2)
 EOF
+source=$(dirname "$manifeste")/demoopt.c
+cat >> "$source" <<'EOF'
+
+/* essai O16 : chaîne C identique à la chaîne JSON (« " » et « \ » échappés) */
+const char demoopt_str[] = OPT_STR;
+_Static_assert(sizeof(OPT_STR) == sizeof("dit \"bonjour\" C:\\temp"), "OPT_STR : chaîne C différente");
+EOF
+tail -3 "$source"
 graine=$(find "$root/depots/lepton-seed" -name lepton-graine.json | head -1)
 echo "graine : $graine"
 fixer() {   # fixer <json des options>
@@ -57,7 +65,7 @@ d["options"] = json.loads(sys.argv[2])
 json.dump(d, open(p, "w"), ensure_ascii=False, indent=2)
 EOF
 }
-fixer '{"demoopt": {"OPT_BOOL": true, "OPT_INT": 42, "OPT_ENUM": "b", "OPT_STR": "bonjour"}}'
+fixer '{"demoopt": {"OPT_BOOL": true, "OPT_INT": 42, "OPT_ENUM": "b", "OPT_STR": "dit \"bonjour\" C:\\temp"}}'
 
 etape "check et generate"
 attendu 0 lepton check -C "$root"
@@ -88,7 +96,21 @@ for e in app:
     print("  ", e["file"].split("/sys/root/src/")[-1], defs(e))
 fuites = [e["file"] for e in autres if defs(e)]
 print("autres sources portant OPT_* :", len(fuites), fuites[:3])
-ok = app and all(set(defs(e)) == {'OPT_BOOL=1', 'OPT_INT=42', 'OPT_ENUM=b', 'OPT_STR=\\"bonjour\\"'} for e in app) and not fuites
+ok = bool(app) and not fuites and all(
+    {d.split("=")[0] for d in defs(e)} == {"OPT_BOOL", "OPT_INT", "OPT_ENUM", "OPT_STR"}
+    and {"OPT_BOOL=1", "OPT_INT=42", "OPT_ENUM=b"} <= set(defs(e)) for e in app)
+# chaîne : sortie du préprocesseur de demoopt.c (commande de compile_commands.json, -c → -E)
+import shlex, subprocess
+e = app[0]
+args = shlex.split(e["command"])
+i = args.index("-o"); del args[i:i + 2]
+args[args.index("-c")] = "-E"
+out = subprocess.run(args, cwd=e["directory"], capture_output=True, text=True).stdout
+ligne = next(l for l in out.splitlines() if "demoopt_str[] =" in l).strip()
+attendue = r'const char demoopt_str[] = "dit \"bonjour\" C:\\temp";'
+print("préprocesseur :", ligne)
+print("attendue      :", attendue)
+ok = ok and ligne == attendue
 print("CONFORME" if ok else "NON CONFORME")
 sys.exit(0 if ok else 1)
 EOF
@@ -102,15 +124,19 @@ etape "valeur hors bornes dans la graine : check et generate refusent"
 fixer '{"demoopt": {"OPT_INT": 101, "OPT_ENUM": "c"}}'
 attendu 1 lepton check -C "$root"
 attendu 1 lepton generate -C "$root"
+fixer '{"demoopt": {"OPT_STR": "a;b#c"}}'
+attendu 1 lepton check -C "$root"
 
 etape "valeur hors bornes passée à CMake par -D : configuration refusée"
-fixer '{"demoopt": {"OPT_BOOL": true, "OPT_INT": 42, "OPT_ENUM": "b", "OPT_STR": "bonjour"}}'
+fixer '{"demoopt": {"OPT_BOOL": true, "OPT_INT": 42, "OPT_ENUM": "b", "OPT_STR": "dit \"bonjour\" C:\\temp"}}'
 attendu 1 cmake --preset "$preset" "-DLEPTON_OPTION_demoopt_OPT_INT=101" > "$dir/hors-bornes.log" 2>&1
 grep -A2 "CMake Error" "$dir/hors-bornes.log" | head -6
 attendu 1 cmake --preset "$preset" "-DLEPTON_OPTION_demoopt_OPT_ENUM=c" > "$dir/hors-valeurs.log" 2>&1
 grep -A2 "CMake Error" "$dir/hors-valeurs.log" | head -6
 attendu 1 cmake --preset "$preset" "-DLEPTON_OPTION_demoopt_OPT_BOOL=peut-etre" > "$dir/non-booleen.log" 2>&1
 grep -A2 "CMake Error" "$dir/non-booleen.log" | head -6
+attendu 1 cmake --preset "$preset" "-DLEPTON_OPTION_demoopt_OPT_STR=a#b" > "$dir/chaine-diese.log" 2>&1
+grep -A3 "CMake Error" "$dir/chaine-diese.log" | head -6
 attendu 0 cmake --preset "$preset" "-DLEPTON_OPTION_demoopt_OPT_INT=42" > "$dir/retour.log" 2>&1
 
 etape "trunk sans fichier régulier ni lien cassé"
