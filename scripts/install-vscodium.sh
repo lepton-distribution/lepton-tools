@@ -24,7 +24,8 @@
 #   CodeLLDB depuis le paquet de la plateforme de sa release GitHub (somme épinglée ci-dessous).
 # - Réglages utilisateur de VSCodium : mises à jour automatiques et télémétrie Red Hat coupées,
 #   lemminx natif (PA-10) ; fusion dans settings.json, copie .bak avant écriture.
-# - scion (pipx, version SCION_REF) et lepton (pipx install de ce dépôt).
+# - scion (pipx, version SCION_REF) et lepton (pipx install de ce dépôt ; réinstallé si le paquet
+#   installé diffère des sources, même à version égale).
 #
 # Rejouable : chaque étape teste l'état avant d'agir ; le compte des changements est affiché à la
 # fin. Ce que le script ne fait pas : installer MacPorts, Homebrew, pipx hors scripts du noyau,
@@ -391,6 +392,23 @@ regler_vscodium() {
 }
 
 # --- lepton (INS-6) ----------------------------------------------------------------------
+# Paquet lepton du venv pipx identique aux sources (code et schémas copiés dans le paquet) ? Le
+# numéro de version ne change pas à chaque correction (O12) : le contenu est comparé.
+lepton_identique() {
+  local venvs site f
+  have pipx || return 1
+  venvs="$(pipx environment --value PIPX_LOCAL_VENVS 2>/dev/null)" || return 1
+  for site in "$venvs"/lepton/lib/python*/site-packages/lepton; do
+    [ -d "$site" ] || return 1
+    diff -rq -x __pycache__ -x .DS_Store -x schemas "$LEPTON_TOOLS/lepton" "$site" >/dev/null || return 1
+    for f in greffon.schema.json graine.schema.json mklepton.xsd; do
+      cmp -s "$LEPTON_TOOLS/schemas/$f" "$site/schemas/$f" || return 1
+    done
+    return 0
+  done
+  return 1
+}
+
 installer_lepton() {
   log "lepton ($LEPTON_TOOLS)"
   if [ "$NO_LEPTON" = 1 ]; then info "sauté (--no-lepton)"; return; fi
@@ -398,7 +416,10 @@ installer_lepton() {
   attendue="$(sed -n 's/^__version__ *= *"\(.*\)"/\1/p' "$LEPTON_TOOLS/lepton/__init__.py" | head -1)"
   [ -n "$attendue" ] || die "version introuvable dans $LEPTON_TOOLS/lepton/__init__.py."
   if have lepton && [ "$(lepton --version 2>/dev/null | head -1)" = "lepton $attendue" ]; then
-    info "lepton $attendue : déjà installé ($(command -v lepton))"; return
+    if lepton_identique; then
+      info "lepton $attendue : déjà installé, identique aux sources ($(command -v lepton))"; return
+    fi
+    info "lepton $attendue : paquet installé différent des sources (ou hors pipx) : réinstallation"
   fi
   have pipx || die "pipx absent : lancer sans --skip-toolchain (le script de la chaîne l'installe), ou installer pipx, puis rejouer."
   run pipx install --force "$LEPTON_TOOLS"
