@@ -64,7 +64,7 @@ Renvois acceptés tels quels par l'utilisateur le 2026-10-15 (`DEVENV-STATUS.md`
 
 | ID | Objet | Renvoi proposé | Décision |
 | --- | --- | --- | --- |
-| N1 | scion `gitops.clone` sans `checkout` de la version | ENV-7 (correctif, scion 0.5.1.1) | renvoyé |
+| N1 | scion `gitops.clone` sans `checkout` de la version | ENV-7 (correctif, scion 0.5.1.1) | renvoyé ; corrigé le 2026-10-15 (reprise R1, scion 0.5.1.1, `handoff/env-7.md`) |
 | N4 | CFG-7 : aucune association de schéma | ENV-9 (`xml.fileAssociations`, `json.schemas` générés) | renvoyé |
 | N5 | CFG-4 : valeurs d'options non fixables dans la graine | ENV-3 (schéma de graine) + ENV-8 (lepton) + ENV-5 (lecteur CMake) | renvoyé |
 | O1 | message CMake indirect si BSP absent | ENV-6 (lecteur) | renvoyé |

@@ -3,4 +3,4 @@
 __version__ = "0.1.0"
 
 # Version minimale de scion (ENV-7 : seed-scion-add/remove, graft --scion, graft-remove)
-SCION_MIN_VERSION = (0, 5, 1, 0)
+SCION_MIN_VERSION = (0, 5, 1, 1)
