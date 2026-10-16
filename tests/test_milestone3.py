@@ -102,10 +102,36 @@ def test_gra3_parse_location(tmp_path, repos):
     assert (o.location, o.version, o.subpath) == ("https://example.org/a/b.git", "master", "")
     o = parse_location(str(repos["app"]))
     assert (o.location, o.version, o.remote) == (str(repos["app"]), "*", False)
+    # O14 : « / » admis dans la version ; « @ » de l'autorité d'une URL laissé à LOCATION
+    o = parse_location("https://user@example.org/a/b.git@devenv/env-8:sub")
+    assert (o.location, o.version, o.subpath) == ("https://user@example.org/a/b.git", "devenv/env-8", "sub")
+    o = parse_location("ssh://git@example.org/a/b.git")
+    assert (o.location, o.version) == ("ssh://git@example.org/a/b.git", "master")
+    for bad in ("../x", "a//b", "/a", "a/", "a/./b"):
+        with pytest.raises(LeptonError, match="invalide"):
+            parse_location(f"https://example.org/a/b.git@{bad}")
     with pytest.raises(LeptonError, match="sans effet"):
         parse_location(f"{repos['app']}@master")
     with pytest.raises(LeptonError, match="absent"):
         parse_location(str(tmp_path))
+
+
+def test_gra3_version_with_slash(project, repos, capsys):
+    """O14 : branche `devenv/x` ; scion range le clone sous depots/<étagère>/<préfixe>/devenv/x."""
+    subprocess.run(["git", "-C", str(repos["app"]), "branch", "devenv/x"], check=True)
+    assert main(["seed", "add", "my-app", f"{url(repos['app'])}@devenv/x", "--type", "application",
+                 "-C", str(project), "--no-cmake"]) == 0
+    clone = project / "depots/lepton/application-my-app/devenv/x"
+    branch = subprocess.run(["git", "-C", str(clone), "branch", "--show-current"], check=True,
+                            capture_output=True, text=True).stdout.strip()
+    assert branch == "devenv/x"
+    assert (project / "trunk/sys/root/src/bin/my-app/my-app.c").is_symlink()
+    assert _by_name(_status(project, capsys)[1])["my-app"]["version"] == "devenv/x"
+    assert main(["seed", "lock", "-C", str(project), "--no-cmake"]) == 0
+    assert main(["seed", "lock", "--verify", "-C", str(project), "--no-cmake"]) == 0
+    assert main(["seed", "remove", "my-app", "--purge", "-C", str(project), "--no-cmake"]) == 0
+    assert not (project / "depots/lepton/application-my-app").exists()     # parents vides purgés
+    assert_trunk_clean(project)
 
 
 # --- GRA-4 ---------------------------------------------------------------------------------------

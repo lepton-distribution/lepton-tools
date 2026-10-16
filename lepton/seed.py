@@ -28,8 +28,11 @@ LOCAL_VERSION = "*"
 SEED_DOT = Path("scion/.scion")
 GRAINE_REL = SEED_DOT / SEED_MANIFEST
 
-# LOCATION[@VERSION][:PATH] ; VERSION sans « / », « : », « @ » ; PATH ne commence pas par « / »
-_ORIGIN = re.compile(r"^(?P<loc>.+?)(?:@(?P<ver>[^@:/]+))?(?::(?P<path>[^:@/][^:@]*))?$")
+# LOCATION[@VERSION][:PATH] ; VERSION sans « : » ni « @ », « / » admis (branche `devenv/x`, O14) ;
+# PATH ne commence pas par « / ». L'autorité d'une URL (`scheme://[user@]hôte`) appartient à
+# LOCATION : son « @ » ne sépare pas de version.
+_ORIGIN = re.compile(r"^(?P<loc>(?:[A-Za-z][A-Za-z0-9+.-]*://[^/]*)?.+?)(?:@(?P<ver>[^@:]+))?"
+                     r"(?::(?P<path>[^:@/][^:@]*))?$")
 _IDENT = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 
 
@@ -78,6 +81,9 @@ def parse_location(text: str, version: str | None = None, subpath: str | None = 
     if m is None:
         raise LeptonError(f"origine « {text} » illisible", "forme attendue : LOCATION[@VERSION][:PATH]")
     loc, ver, path = m.group("loc"), m.group("ver") or version, m.group("path") or subpath or ""
+    if ver and any(part in ("", ".", "..") for part in ver.split("/")):
+        # scion range le clone sous depots/<étagère>/<préfixe>/<version> : chemin imbriqué, jamais remontant
+        raise LeptonError(f"version « {ver} » invalide", "branche ou tag git : segments non vides, ni « . » ni « .. »")
     if urlparse(loc).netloc:
         return Origin(loc, ver or DEFAULT_VERSION, path)
     if ver and ver != LOCAL_VERSION:
