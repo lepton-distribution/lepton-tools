@@ -160,6 +160,8 @@ def test_workspace_folders_settings_launch_tasks(project, tools):
     assert s["files.exclude"] == {"**/.DS_Store": True, "**/._*": True,       # fichiers greffés masqués
                                   "scion/[!.]*": True, "project/scion": True}  # dans les clones (P5)
     assert s["cmake.useCMakePresets"] == "always" and s["cmake.configureOnOpen"] is False
+    assert s["cmake.options.statusBarVisibility"] == "visible"                 # IDE-5 (O11)
+    assert gen.PROBE_SERIAL_SETTING not in s
     assert s["cmake.copyCompileCommands"] == str(active / "compile_commands.json")
     assert s["clangd.path"] == str(tools / "clangd-mp-21")
     assert s["clangd.arguments"] == [f"--compile-commands-dir={active}", "--background-index",
@@ -199,6 +201,92 @@ def test_board_configuration_uses_bsp_openocd(project, repos, tools):
     assert flash["args"][:2] == ["-f", str(cfg)] and "verify reset exit" in flash["args"][-1]
     presets = json.loads((project / "trunk" / gen.PRESETS_FILE).read_text(encoding="utf-8"))
     assert presets["configurePresets"][0]["cacheVariables"]["LEPTON_BOARD"] == "board-c"
+
+
+def _board_project(project, repos) -> None:
+    assert main(["seed", "add", "board-c", str(repos["bsp2"]), "--type", "bsp", "-C", str(project),
+                 "--no-cmake"]) == 0
+    _set_graine(project, configurations=[{"nom": "debug-board", "construction": "Debug", "execution": "carte"}])
+
+
+def test_probe_serial_kept_in_workspace(project, repos, tools, capsys):
+    """DBG-3 (O8) : --probe-serial → adapter serial (lancement, tâche « flasher ») ; conservé sans
+    l'option ; "" le retire ; sans série : avertissement (une carte à la fois)."""
+    _board_project(project, repos)
+    assert main(["generate", "-C", str(project)]) == 0
+    assert "sans --probe-serial" in capsys.readouterr().err
+    [launch] = _workspace(project)["launch"]["configurations"]
+    assert "openOCDLaunchCommands" not in launch
+
+    assert main(["generate", "-C", str(project), "--probe-serial", "066DFF3A"]) == 0
+    capsys.readouterr()
+    assert main(["generate", "-C", str(project)]) == 0                  # reprise sans l'option
+    assert "sans --probe-serial" not in capsys.readouterr().err
+    ws = _workspace(project)
+    assert ws["settings"][gen.PROBE_SERIAL_SETTING] == "066DFF3A"
+    [launch] = ws["launch"]["configurations"]
+    assert launch["openOCDLaunchCommands"] == ["adapter serial 066DFF3A"]
+    flash = {t["label"]: t for t in ws["tasks"]["tasks"]}["lepton : flasher demo-debug-board"]
+    cfg = project / "trunk" / "sys/root/src/kernel/dev/bsp/board-c/openocd/board-c.cfg"
+    assert flash["args"][:4] == ["-f", str(cfg), "-c", "adapter serial 066DFF3A"]
+    assert flash["args"][-2] == "-c" and flash["args"][-1].startswith("program ")
+
+    assert main(["generate", "-C", str(project), "--probe-serial", ""]) == 0
+    ws = _workspace(project)
+    assert gen.PROBE_SERIAL_SETTING not in ws["settings"]
+    assert "openOCDLaunchCommands" not in ws["launch"]["configurations"][0]
+
+    before = _snapshot(project)
+    capsys.readouterr()
+    assert main(["generate", "-C", str(project), "--probe-serial", "a b"]) == 1
+    assert "--probe-serial « a b »" in capsys.readouterr().err
+    assert _snapshot(project) == before
+
+
+def test_schema_associations(project, tools):
+    """CFG-7 (N4) : manifestes JSON et XML mklepton associés aux schémas du paquet lepton."""
+    assert main(["generate", "-C", str(project)]) == 0
+    s = _workspace(project)["settings"]
+    schemas = gen.schemas_dir()
+    assert s["json.schemas"] == [
+        {"fileMatch": ["**/lepton-greffon.json"], "url": (schemas / "greffon.schema.json").as_uri()},
+        {"fileMatch": ["**/lepton-graine.json"], "url": (schemas / "graine.schema.json").as_uri()}]
+    xsd = schemas / "mklepton.xsd"
+    assert xsd.is_file() and all(Path(e["url"][len("file://"):]).is_file() for e in s["json.schemas"])
+    patterns = [e["pattern"] for e in s["xml.fileAssociations"]]
+    assert {e["systemId"] for e in s["xml.fileAssociations"]} == {str(xsd)}
+    assert patterns == ["**/mkconf_*.xml"]                               # XML de la graine compris
+    _set_graine(project, mklepton_xml="sys/user/demo/etc/projet.xml")
+    assert main(["generate", "-C", str(project)]) == 0
+    patterns = [e["pattern"] for e in _workspace(project)["settings"]["xml.fileAssociations"]]
+    assert patterns == ["**/mkconf_*.xml", "**/sys/user/demo/etc/projet.xml"]
+
+
+def test_active_compile_commands_primed(project, tools, capsys):
+    """IDE-3 (O10) : build/.active amorcé depuis le premier preset configuré, jamais écrasé ;
+    aucun preset configuré → avertissement."""
+    _set_graine(project, configurations=[
+        {"nom": "debug-qemu", "construction": "Debug", "execution": "qemu"},
+        {"nom": "release-qemu", "construction": "Release", "execution": "qemu"}])
+    active = project / "build" / gen.ACTIVE_DIR / gen.COMPILE_COMMANDS
+    assert main(["generate", "-C", str(project)]) == 0
+    assert not active.exists() and "aucun preset configuré" in capsys.readouterr().err
+
+    release = project / "build" / "demo-release-qemu" / gen.COMPILE_COMMANDS
+    release.parent.mkdir(parents=True)
+    release.write_text("[]\n")
+    assert main(["generate", "-C", str(project)]) == 0
+    assert active.read_text() == "[]\n" and "aucun preset configuré" not in capsys.readouterr().err
+
+    debug = project / "build" / "demo-debug-qemu" / gen.COMPILE_COMMANDS
+    debug.parent.mkdir(parents=True)
+    debug.write_text('[{"file": "x.c"}]\n')
+    assert main(["generate", "-C", str(project)]) == 0
+    assert active.read_text() == "[]\n"                                 # base de CMake Tools gardée
+    active.unlink()
+    assert main(["generate", "-C", str(project)]) == 0
+    assert active.read_text() == debug.read_text()                      # premier preset de la graine
+    assert_trunk_clean(project)
 
 
 def test_qemu_configuration_needs_qemu_bsp(project, repos, tools, capsys):
