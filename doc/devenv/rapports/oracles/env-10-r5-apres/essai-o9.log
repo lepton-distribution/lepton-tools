@@ -1,0 +1,24 @@
+===== arm-14.2 (/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/arm-none-eabi-gdb) code 0
+OS_Idle () at /Users/cle_d_anton/lepton-tools-dev/essais/env-11/f429zi/trunk/sys/root/src/kernel/core/core-segger/arch/armv7m/embos_init_hw.c:69
+69	   for(;;) {
+gdbinit-lepton : gdb sans Python, lepton-stacks indisponible (lepton-load, lepton-fault : présentes).
+lepton-stacks indisponible : ce gdb est construit sans Python (gdb-multiarch, doc/BUILDING.md).
+[Inferior 1 (Remote target) detached]
+
+--- stderr
+
+===== macports-17.2 (/opt/local/bin/arm-none-eabi-gdb) code 0
+OS_Idle () at /Users/cle_d_anton/lepton-tools-dev/essais/env-11/f429zi/trunk/sys/root/src/kernel/core/core-segger/arch/armv7m/embos_init_hw.c:69
+69	   for(;;) {
+tcb        nom                       taille    tas    pile   marge     %
+0x20018530 kernel_thread               4096      8     812    3276  20.0
+0x20018648 lwip_core                   4096      8    1796    2292  44.0
+0x20020fb8 bin/net/ftpd                8192    588     576    7028  14.2
+0x2001fa68 /usr/sbin/lsh               2048    588     784     676  67.0
+0x2001a130 initd                       2048    588     616     844  58.8
+0x2001edf0 tcpip_thread               16384      8     272   16104   1.7
+MSP        pile principale             8192      0     960    7232  11.7
+[Inferior 1 (Remote target) detached]
+
+--- stderr
+
