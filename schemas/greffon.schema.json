@@ -348,7 +348,8 @@
         },
         {
           "if": { "properties": { "type": { "const": "chaine" } } },
-          "then": { "properties": { "defaut": { "type": "string" }, "min": false, "max": false, "valeurs": false } }
+          "$comment": "O16 (ENV-8 R2) : « ; » (séparateur de liste) et « # » (définition retirée par CMake) ne sont pas transmissibles par une définition de compilation ; « \" » et « \\ » sont échappés par le lecteur CMake.",
+          "then": { "properties": { "defaut": { "type": "string", "pattern": "^[^;#\\n\\r]*$" }, "min": false, "max": false, "valeurs": false } }
         }
       ]
     },

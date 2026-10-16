@@ -159,6 +159,14 @@ def test_cfg4_check_valeurs_options_graine(project, capsys):
     assert "/options/fam-test/BAUDS: option « BAUDS » non déclarée par fam-test" in out
     assert "/options/board-q/BAUDS: valeur refusée : entier attendu" in out
 
+    _edit_json(graine, options={"board-q": {"NOM_CARTE": 'dit "q" C:\\temp'}})
+    code, out = _check(project, capsys)           # « " » et « \ » : échappés par le lecteur (O16)
+    assert code == 0, out
+    _edit_json(graine, options={"board-q": {"NOM_CARTE": "q#1;2"}})
+    code, out = _check(project, capsys)           # « # », « ; » : non transmissibles (O16)
+    assert code == 1
+    assert "/options/board-q/NOM_CARTE: valeur refusée : caractère(s) '#' ';' non transmissible(s)" in out
+
     _edit_json(graine, options={"board-q": {"bauds": 9600}})
     code, out = _check(project, capsys)           # forme : schéma de graine
     assert code == 1 and "/options/board-q" in out

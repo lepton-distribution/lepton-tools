@@ -24,6 +24,9 @@ from lepton.validation import Anomaly, validate_data, validate_json, validate_xm
 FILE_FIELDS = ("vecteurs", "remplacants_forts", "demarrage", "openocd")
 SINGLE_FILE_FIELDS = ("script_liens", "entete_config_noyau", "svd")
 OBJECT_FIELDS = ("demarrage", "vecteurs", "remplacants_forts")
+# Caractères qu'une définition de compilation ne transmet pas (O16) : séparateur de liste CMake,
+# « # » (définition retirée par CMake), fin de ligne ; « " » et « \ » sont échappés par le lecteur
+UNSENDABLE = ";#\n\r"
 
 _DEV_DEF = re.compile(r"^[ \t]*(?:static[ \t]+)?(?:const[ \t]+)?dev_map_t[ \t]+(dev_[\w#]+_map)[ \t]*=", re.M)
 _BIN_DEF = re.compile(r"^[ \t]*int[ \t]+(\w+)_main[ \t]*\([^;{)]*\)[ \t]*(?:\{|$)", re.M)
@@ -166,7 +169,11 @@ def _option_value_error(opt: dict, value) -> str | None:
         allowed = opt.get("valeurs", [])
         return None if value in allowed else f"« {value} » absent des valeurs ({', '.join(allowed)})"
     if kind == "chaine":
-        return None if isinstance(value, str) else "chaîne attendue"
+        if not isinstance(value, str):
+            return "chaîne attendue"
+        bad = sorted({c for c in value if c in UNSENDABLE})
+        return (f"caractère(s) {' '.join(repr(c) for c in bad)} non transmissible(s) par une définition de "
+                "compilation (« ; », « # », saut de ligne)") if bad else None
     return None                     # type inconnu : signalé par le schéma du greffon
 
 
