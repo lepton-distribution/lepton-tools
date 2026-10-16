@@ -65,7 +65,7 @@ Renvois acceptés tels quels par l'utilisateur le 2026-10-15 (`DEVENV-STATUS.md`
 | ID | Objet | Renvoi proposé | Décision |
 | --- | --- | --- | --- |
 | N1 | scion `gitops.clone` sans `checkout` de la version | ENV-7 (correctif, scion 0.5.1.1) | renvoyé ; corrigé le 2026-10-15 (reprise R1, scion 0.5.1.1, `handoff/env-7.md`) |
-| N4 | CFG-7 : aucune association de schéma | ENV-9 (`xml.fileAssociations`, `json.schemas` générés) | renvoyé |
+| N4 | CFG-7 : aucune association de schéma | ENV-9 (`xml.fileAssociations`, `json.schemas` générés) | renvoyé ; corrigé le 2026-10-16 (reprise 4, 0ede3ee, `env-9-r4.md`) |
 | N5 | CFG-4 : valeurs d'options non fixables dans la graine | ENV-3 (schéma de graine) + ENV-8 (lepton) + ENV-5 (lecteur CMake) | renvoyé ; corrigé le 2026-10-16 (reprise R2, `env-8-r2-options.md`) |
 | O1 | message CMake indirect si BSP absent | ENV-6 (lecteur) | renvoyé ; corrigé le 2026-10-16 (reprise 3, clone noyau aee4618, `env-8-r3.md`) |
 | O2 | une configuration par `seed new` | ENV-8 / ENV-12 | renvoyé |
@@ -74,10 +74,10 @@ Renvois acceptés tels quels par l'utilisateur le 2026-10-15 (`DEVENV-STATUS.md`
 | O5 | XML mklepton dans le greffon noyau (CFG-1) | décision de conception (ENV-8 / ENV-12) | renvoyé |
 | O6 | `LEPTON_EMBOS_ROOT` non transmis | ENV-10 ou ENV-9 | renvoyé |
 | O7 | `.DS_Store` recréés | traité par N2 | clos |
-| O8 | espace sans série de sonde | ENV-9 | renvoyé |
+| O8 | espace sans série de sonde | ENV-9 | renvoyé ; corrigé le 2026-10-16 (reprise 4, `--probe-serial`, 0ede3ee, `env-9-r4.md`) |
 | O9 | `gdbinit-lepton` : bloc Python | noyau | renvoyé |
-| O10 | clangd avant configuration | ENV-9 / ENV-12 | renvoyé |
-| O11 | sélecteur de preset masqué | ENV-9 | renvoyé |
+| O10 | clangd avant configuration | ENV-9 / ENV-12 | renvoyé ; corrigé le 2026-10-16 si un preset est configuré avant `lepton generate` (reprise 4, 0ede3ee, `env-9-r4.md`) ; relance automatique : ENV-12 |
+| O11 | sélecteur de preset masqué | ENV-9 | renvoyé ; corrigé le 2026-10-16 (reprise 4, 0ede3ee, `env-9-r4.md`) |
 | O12 | lepton non réinstallé à version égale (constaté sur Debian) | ENV-10 (comparaison du commit ou numéro de version) | renvoyé |
 | D1 | `lepton generate` exigeait `arm-none-eabi-gdb` (absent de Debian) | corrigé dans ENV-11 (55a55bc, VM, accord de l'utilisateur ; 118 tests verts sur le Mac) | clos |
 | D2 | consigne VM : `<bin name="salut">` placé dans le bloc `sbin` | erreur de la consigne, corrigée dans `consignes/env-11-debian.md` | clos |

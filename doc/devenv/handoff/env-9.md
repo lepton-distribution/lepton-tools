@@ -1,71 +1,75 @@
-# Passation ENV-9 — Génération des fichiers de l'éditeur — session du 2026-10-14 (S2)
+# Passation ENV-9 — Fichiers de l'éditeur — reprise 4 (N4, O8, O10, O11) — session du 2026-10-16
+
+ENV-9 est terminée depuis le 2026-10-14 (`rapports/env-9-generation.md`, `env-9-validation.md`).
+Cette passation remplace celle de S2 et porte sur la reprise 4 du bilan ENV-11
+(`rapports/env-11-bilan.md` §3). Rapport : `rapports/env-9-r4.md`.
 
 ## Statut
-terminée (2026-10-14) — `lepton generate` validé dans VSCodium (IDE-2 à IDE-5, DBG-1, DBG-2, TST-1),
-réserves documentées ; fusions locales de `devenv/env-9` à faire au début de la session suivante.
+terminée — N4, O8, O10, O11 corrigés et validés dans VSCodium avec deux cartes branchées ; fusion
+de `devenv/env-9-r4` au début de la session suivante.
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/env-9` | `devenv(env-9): état et passation` (S2), précédé de ffd618c (P5 `files.exclude`), 44b2821 (passation S1), 4604b26, e91bd8a ; `main` = ba13caa | oui |
-| clone noyau `~/lepton/depots/lepton/original/master` | `master` | 42733ce (non touché en ENV-9) | oui |
-| BSP `~/lepton/depots/lepton-bsp/nucleo-wl55jc1` | `devenv/env-9` (extraite dans `~/lepton`) | 9489e7d cfg OpenOCD autonome | oui |
-| graine de travail, 6 autres greffons ENV-6, seed.scions | inchangés | — | oui |
-| rootstock d'essai `~/lepton-tools-dev/essais/env-9` | graine `env9` `main` | 9e93cdc presets générés | oui |
+| lepton-tools | `devenv/env-9-r4` (depuis `main` 4c93b8e = fusion `--no-ff` de `devenv/env-8-r3`) | `devenv(env-9-r4): état et passation` ; avant : 0ede3ee (N4, O8, O10, O11) | oui |
+| clone noyau `~/lepton/depots/lepton/original/master` | `master` 9ea1b2a (fusion `--no-ff` de `devenv/env-6-r3`, extraite) | non touché par R4 | oui |
+| seed.scions | `master` f1d1f3c, tag 0.5.1.1 (poussés) | — | oui |
+| `~/lepton` trunk | — | 4 037 feuilles, aucun fichier régulier, aucun lien cassé, sans regreffe | oui |
+| rootstocks d'essai `essais/env-11/{qemu,f429zi,wl55jc1}` | graines inchangées (presets « inchangé ») | espaces régénérés par le lepton de la branche ; F4 et WL avec `--probe-serial` ; `build/.active` amorcé (qemu, wl55jc1) | — |
 
-Aucun push. `lepton` réinstallé par pipx depuis ffd618c. Rootstock d'essai : construits
-`build/env9-debug-qemu`, `build/env9-release-qemu`, `build/host`, `build/qemu-mps2-an386-freertos` ;
-`build/.active/` (copie du preset actif, index clangd) ; espace régénéré (avec P5).
+Non poussés : lepton-tools `main` 4c93b8e et clone noyau `master` 9ea1b2a (fusions de R3),
+`devenv/env-9-r4`. lepton pipx = `main` 4c93b8e (R3 compris, sans R4) ; R4 se teste par le venv
+`~/lepton-tools-dev/venv-lepton-tools` (éditable : les espaces régénérés pointent vers
+`lepton-tools/schemas/`, à régénérer après la réinstallation pipx).
 
 ## Fait pendant la session
-- Validation GUI en mode mixte (utilisateur dans VSCodium, contrôles CLI) : `rapports/env-9-validation.md`
-  §2 (procédure et résultats) et §5 (bilan par exigence).
-- Décisions P1-P10 et R1 (§4 du rapport) ; P5 intégrée dans `lepton/generate.py` (`files.exclude`
-  `scion/[!.]*`, `project/scion`), test mis à jour, README (usage VSCodium) ; commit ffd618c.
-- Preuves : `pytest -q` → 116 passed ; `lepton generate` ×2 sur l'essai → « inchangé » (identique à
-  l'essai manuel validé) ; `scripts/bout-en-bout.sh` → succès.
-- `rapports/env-9-generation.md` : §3.2 et §4 mis à jour (propositions validées).
+- Fusions locales `--no-ff` de la reprise 3 : lepton-tools `main` 4c93b8e, clone noyau `master`
+  9ea1b2a (extrait, trunk contrôlé) ; `pipx install --force` depuis `main`.
+- Essai clangd (`rapports/env-9-r4-essai-clangd.py`, rapport §3) : pas de relecture spontanée.
+- 0ede3ee : O11 (`cmake.options.statusBarVisibility`), N4 (`json.schemas`, `xml.fileAssociations`
+  vers `schemas_dir()`), O8 (`--probe-serial`, `lepton.probeSerial`, `openOCDLaunchCommands`,
+  `-c adapter serial`), O10 (`prime_active`) ; README ; 3 tests ; `pytest` 136 verts.
+- Preuves CLI (rapport §4) : O8 reproduit sans série, résolu avec ; idempotence ; amorce ;
+  `scripts/bout-en-bout.sh` succès, `~/lepton` inchangé.
+- Validation VSCodium (rapport §5) : A1-A3, C1-C2 (F429ZI), D1-D3 (WL55JC1), deux cartes branchées.
+- `env-11-bilan.md` §3 : N4, O8, O10, O11 marqués corrigés.
 
-## Reste à faire dans l'étape
-- [ ] Début de la session suivante : fusion locale `--no-ff` de `devenv/env-9` dans `main`
-      (lepton-tools) et dans `master` du BSP `nucleo-wl55jc1`, extraction de `master` dans
-      `~/lepton` et regreffe.
-- Hors ENV-9 : flash et débogage carte F429 / WL depuis l'éditeur (ENV-11, PA-11) ; DBG-4 (aucun
-  `svd` dans les BSP) ; R1, R2, R3 → ENV-12 ; preset debug compilé en `-g -Os` (hérité du noyau),
-  passage éventuel à `-Og` à examiner ; reliquats d'ENV-8.
+## Reste à faire
+- [ ] Fusion `--no-ff` de `devenv/env-9-r4` dans `main` ; `pipx install --force <LEPTON_TOOLS>` ;
+  `lepton generate` dans `essais/env-11/{qemu,f429zi,wl55jc1}` (schémas du paquet installé).
+- [ ] Reprise 5 : ENV-10 D3, D4, O6, O12 + noyau O9, un passage VM ; puis PA-12.
+- [ ] PA-P : push de `main` (R3, R4), `master` du clone noyau (R3) et des branches de reprise, à
+  proposer au plus tard avant le passage VM de la reprise 5.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
 | --- | --- | --- |
-| Plan de session S2 | utilisateur | — |
-| P1-P4, P6-P9 validées telles qu'appliquées | utilisateur | oui |
-| P5 intégrée (`files.exclude` des fichiers greffés) | utilisateur | oui |
-| P10 : diagnostics include-cleaner laissés | utilisateur | oui |
-| R1 documentée, solution en ENV-12 | utilisateur | oui |
-| Cible `bsp` absente pour an386 = justifiée (BSP sans sources hors démarrage → `bsp_demarrage`) | constat (rapport §2, 1bis) | non (renvoi au rapport) |
-| Preset debug en `-Og` | proposition non validée | non |
+| Reprise 4 = N4, O8, O10, O11 ; branche `devenv/env-9-r4` (lepton-tools seul) | utilisateur | oui |
+| N4 : schémas du paquet lepton ; O8 : `--probe-serial` conservé dans l'espace ; O10 : amorce de `.active` | utilisateur | oui |
+| Validation éditeur et deux cartes dans la session | utilisateur | oui |
+| Gravité « avertissement » des fautes de schéma JSON acceptée | proposition non validée | oui (à confirmer) |
+| Motif XML `**/mkconf_*.xml` + XML de la graine s'il sort du motif | proposition appliquée | non (rapport §2) |
+| Série de sonde refusée si espace, guillemet ou `\` ; `-c adapter serial` après les `-f` (comme l'enveloppe WL) | proposition appliquée | non (rapport §2) |
+| `build/.active` jamais écrasé par `generate` (CMake Tools le tient à jour) | proposition appliquée | non (rapport §2) |
 
 ## Pièges rencontrés
-- Après changement de preset, un fichier déjà ouvert garde l'ancienne commande clangd → l'extension
-  clangd ne surveille pas `build/.active` (hors dossiers de l'espace) → rouvrir le fichier (R1).
-- Quick Open propose encore le chemin du clone malgré `files.exclude` → historique *recently opened*
-  (diff de Source Control) → *Clear Editor History* (R2).
-- Arrêt sur `main` affiché à `portmacro.h:217` → `portDISABLE_INTERRUPTS()` inliné (`-Os`), première
-  instruction après le prologue ; trame `main` correcte.
-- À l'arrêt, second onglet sous le chemin du clone, sans point rouge → `fullname` GDB résolu (écart
-  PA-1, R3).
-- 1er lancement du débogage : arrêt inattendu à `kernel_printk.c:625`, non reproduit au 2ᵉ ; si
-  récidive, relever la raison de pause (Call Stack) et la Debug Console.
+- Cortex-Debug 1.13.0-pre6 : `serialNumber` ignoré pour `servertype: openocd` → `openOCDLaunchCommands`.
+- Essai clangd : une base laissée par un essai précédent fausse le résultat ; sous zsh, un glob
+  sans correspondance (`rm -rf cdb/*`) annule toute la commande.
+- Renommer une clé obligatoire d'un JSON produit `Missing property` sur l'objet racine : tout le
+  document est souligné ; l'erreur localisée est à côté (`Property … is not allowed`).
+- `lepton generate` dans un espace où `.active` existe déjà n'amorce rien (attendu) : pour rejouer
+  O10, supprimer `build/.active`.
 
-## Critères de validation
+## Critères de validation (appliqués à R4)
 - [x] `lepton generate` deux fois de suite : aucun diff.
-- [x] `cmake --list-presets` liste toutes les configurations de la graine.
-- [x] DBG-1, DBG-2 vérifiés sous QEMU ; IDE-2 à IDE-5 vérifiés (procédure et résultat dans
-      `doc/devenv/rapports/env-9-validation.md`).
-- [x] Aucune donnée lue dans le XML mklepton par `lepton generate`.
+- [x] CFG-7 : faute de schéma signalée à la saisie (XML, deux JSON).
+- [x] IDE-3 sans relance de clangd (preset configuré avant la génération) ; IDE-5 depuis la barre d'état.
+- [x] DBG-3 : flash et arrêt sur `main` sur F429ZI et WL55JC1 branchées ensemble.
+- [x] `pytest` 136 verts ; bout en bout vert ; rootstock de référence inchangé.
 
 ## Reprise
 ```
 cd /Users/cle_d_anton/lepton-tools-dev/lepton-tools && claude
-# « Démarre la session sur l'étape indiquée dans DEVENV-STATUS » (ENV-10, après fusions de devenv/env-9)
+# « Démarre la session sur l'étape indiquée dans DEVENV-STATUS » (fusion de la reprise 4, puis reprise 5)
 ```
