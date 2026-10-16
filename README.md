@@ -50,7 +50,9 @@ configurer … ») avant la première génération, sinon *clangd: Restart langu
 première configuration. Plusieurs sondes branchées : `lepton generate --probe-serial SERIE`
 (numéro de la sonde de la carte, `adapter serial` d'OpenOCD ; macOS : `system_profiler
 SPUSBDataType`, Debian : `lsusb -v`), conservé dans l'espace aux générations suivantes,
-`--probe-serial ""` le retire (`doc/devenv/rapports/env-9-r4.md`).
+`--probe-serial ""` le retire (`doc/devenv/rapports/env-9-r4.md`). gdb : le premier
+`arm-none-eabi-gdb` ou `gdb-multiarch` du PATH construit avec Python (commande `lepton-stacks` de
+`debug/gdbinit-lepton`), sinon le premier trouvé, avec un avertissement.
 
 Valeurs d'options (CFG-4) : les options déclarées par un greffon (`options` de son
 `lepton-greffon.json`) se fixent pour tout le projet dans le champ `options` de
