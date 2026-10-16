@@ -2,7 +2,6 @@
 
 import json
 import shutil
-import subprocess
 from dataclasses import asdict, dataclass
 from functools import cache
 from importlib import resources
@@ -11,6 +10,7 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 from jsonschema.exceptions import ValidationError
 
+from lepton import scion_runner
 from lepton.errors import EXIT_TOOL, LeptonError
 
 SCION_MANIFEST = "lepton-greffon.json"
@@ -134,8 +134,9 @@ def validate_xml(path: Path) -> list[Anomaly]:
                           EXIT_TOOL)
     if not path.is_file():
         return [Anomaly(str(path), "", "fichier introuvable")]
-    res = subprocess.run([exe, "--noout", "--schema", str(schemas_dir() / SCHEMA_FILES["mklepton"]), str(path)],
-                         capture_output=True, text=True, check=False)
+    # par scion_runner.run : commande affichée sous -v
+    res = scion_runner.run(["xmllint", "--noout", "--schema", str(schemas_dir() / SCHEMA_FILES["mklepton"]), str(path)],
+                           check=False)
     if res.returncode == 0:
         return []
     lignes = [l for l in res.stderr.splitlines() if l.strip() and not l.endswith("fails to validate")]
