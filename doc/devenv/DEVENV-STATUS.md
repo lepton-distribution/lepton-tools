@@ -5,7 +5,7 @@ Dernière mise à jour : 2026-10-16 — fusions de `devenv/env-8-r3` ; reprise 4
 
 ## Prochaine action
 
-Fusionner localement (`--no-ff`) `devenv/env-9-r4` dans lepton-tools `main`, réinstaller lepton par pipx depuis `main` et relancer `lepton generate` dans `essais/env-11/{qemu,f429zi,wl55jc1}` (schémas du paquet installé), puis ouvrir la reprise 5 : ENV-10 D3, D4, O6, O12 + noyau O9, un seul passage VM (`rapports/env-11-bilan.md` §3), branches `devenv/env-10-r5` à présenter au plan ; push des fusions (PA-P) à proposer avant le passage VM.
+Fusionner localement (`--no-ff`) `devenv/env-9-r4` dans lepton-tools `main`, réinstaller lepton par pipx depuis `main` et relancer `lepton generate` dans `essais/env-11/{qemu,f429zi,wl55jc1}` (schémas du paquet installé), puis ouvrir la reprise 5 : ENV-10 D3, D4, O6, O12 + noyau O9, un seul passage VM (`rapports/env-11-bilan.md` §3), branches `devenv/env-10-r5` à présenter au plan ; push de la fusion de R4 (PA-P) à proposer avant le passage VM.
 
 ## Étapes
 
@@ -220,6 +220,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-16 | — (reprise 4) | Essai O10 : clangd 21.1.8 ne relit pas une base apparue après son démarrage avant une modification du fichier ouvert (`rapports/env-9-r4.md` §3) : amorce de `build/.active` maintenue. |
 | 2026-10-16 | — (reprise 4) | N4, O8, O10, O11 corrigés (0ede3ee) et validés dans VSCodium, deux cartes branchées (`rapports/env-9-r4.md` §5) : CFG-7 conforme ; réserves IDE-3 (O10, hors cas sans preset configuré) et IDE-5 (O11) levées ; DBG-3 sans restriction « une carte à la fois ». Gravité « avertissement » des fautes de schéma JSON (service intégré) : voir ligne suivante. |
 | 2026-10-16 | — (reprise 4) | Fautes de schéma JSON en avertissement (niveau non réglable dans VSCodium 1.135) : accepté (1) ; tâche générée « lepton : vérifier » (`lepton check` en erreur dans *Problems*), avec manifestes greffés désignés par le trunk dans `lepton check` (IDE-4) : f4e9bb8 (2) ; diagnostics en erreur à la saisie inscrits pour ENV-12 (`etapes/ENV-12-extension.md` §2bis) (3). Décision de l'utilisateur. |
+| 2026-10-16 | PA-P (reprise 4) | Push accordé et fait : lepton-tools `main` b9dd0e8 → 4c93b8e (avance rapide, fusion de R3) + `devenv/env-9-r4` ; clone noyau `master` 50a67c0 → 9ea1b2a (avance rapide, fusion de R3). La fusion de R4 dans `main` reste locale à faire (session suivante), puis à pousser sur accord. Décision de l'utilisateur. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal

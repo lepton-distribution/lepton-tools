@@ -17,8 +17,9 @@ de `devenv/env-9-r4` au début de la session suivante.
 | `~/lepton` trunk | — | 4 037 feuilles, aucun fichier régulier, aucun lien cassé, sans regreffe | oui |
 | rootstocks d'essai `essais/env-11/{qemu,f429zi,wl55jc1}` | graines et clones inchangés (presets « inchangé », fautes de l'essai E retirées) | espaces régénérés par le lepton de la branche ; F4 et WL avec `--probe-serial` ; `build/.active` amorcé (qemu, wl55jc1) ; `qemu` : tâches pointant vers `venv-lepton-tools/bin/lepton` (essai E) | — |
 
-Non poussés : lepton-tools `main` 4c93b8e et clone noyau `master` 9ea1b2a (fusions de R3),
-`devenv/env-9-r4`. lepton pipx = `main` 4c93b8e (R3 compris, sans R4) ; R4 se teste par le venv
+Poussés le 2026-10-16 (PA-P) : lepton-tools `main` 4c93b8e (fusion de R3) et `devenv/env-9-r4` ;
+clone noyau `master` 9ea1b2a (fusion de R3). La fusion de R4 dans `main` reste à faire, puis à pousser
+sur accord. lepton pipx = `main` 4c93b8e (R3 compris, sans R4) ; R4 se teste par le venv
 `~/lepton-tools-dev/venv-lepton-tools` (éditable : les espaces régénérés pointent vers
 `lepton-tools/schemas/`, à régénérer après la réinstallation pipx).
 
@@ -44,8 +45,8 @@ Non poussés : lepton-tools `main` 4c93b8e et clone noyau `master` 9ea1b2a (fusi
   `lepton generate` dans `essais/env-11/{qemu,f429zi,wl55jc1}` (schémas du paquet installé ; tâches
   de `qemu` rendues à `~/.local/bin/lepton`).
 - [ ] Reprise 5 : ENV-10 D3, D4, O6, O12 + noyau O9, un passage VM ; puis PA-12.
-- [ ] PA-P : push de `main` (R3, R4), `master` du clone noyau (R3) et des branches de reprise, à
-  proposer au plus tard avant le passage VM de la reprise 5.
+- [ ] PA-P : push de `main` après la fusion de R4, à proposer au plus tard avant le passage VM de
+  la reprise 5.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
@@ -54,6 +55,7 @@ Non poussés : lepton-tools `main` 4c93b8e et clone noyau `master` 9ea1b2a (fusi
 | N4 : schémas du paquet lepton ; O8 : `--probe-serial` conservé dans l'espace ; O10 : amorce de `.active` | utilisateur | oui |
 | Validation éditeur et deux cartes dans la session | utilisateur | oui |
 | Fautes JSON : avertissement accepté (1), tâche « lepton : vérifier » (2), erreur à la saisie en ENV-12 (3) | utilisateur | oui |
+| PA-P : push de `main` (R3), `master` du clone noyau (R3), `devenv/env-9-r4` | utilisateur | oui |
 | `lepton check` : manifeste greffé désigné par le trunk (sortie CLI modifiée) | proposition appliquée, validée par l'essai E2 | oui (ligne de décision 1-2-3) |
 | Motif XML `**/mkconf_*.xml` + XML de la graine s'il sort du motif | proposition appliquée | non (rapport §2) |
 | Série de sonde refusée si espace, guillemet ou `\` ; `-c adapter serial` après les `-f` (comme l'enveloppe WL) | proposition appliquée | non (rapport §2) |
