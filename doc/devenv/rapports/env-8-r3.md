@@ -78,10 +78,16 @@ partout.
 | O14 : `lepton seed new o14` (rootstock jetable du scratchpad), `--origin lepton-noyau=file://localhost~/lepton/depots/lepton/original/master@devenv/env-6-r3`, famille et BSP `@master` | code 0 ; clone `depots/lepton/original/devenv/env-6-r3` sur la branche `devenv/env-6-r3` ; `seed status` (version et branche `devenv/env-6-r3`) ; `check` : 5 fichiers conformes ; `seed lock` puis `--verify` conformes ; trunk sans fichier régulier ni lien cassé |
 | O1 : même rootstock, noyau mis à aee4618, `scion graft-remove lepton@bsp-qemu-mps2-an386`, `cmake --preset qemu-mps2-an386-freertos` | code 1 ; première erreur : `CMakeLists.txt:49` « LEPTON_BOARD=qemu-mps2-an386 : aucun greffon BSP de ce nom greffé (manifeste lepton-greffon.json de nom « qemu-mps2-an386 »), ni carte transitoire cmake/boards/qemu-mps2-an386.cmake. Greffer le BSP de la graine (lepton check). » (journal `oracles/env-8-r3-apres/essai-o1.log`) ; `lepton check` code 1 (GRA-2, CFG-5) |
 | O3, O4 | `test_o3_*` (3, `tests/test_milestone4.py`), `test_cfg5_scion_remove_*` (2, `tests/test_milestone6.py`) |
-| Ensemble | `pytest` 131 verts (125 + 6) ; `scripts/valider-schemas.sh` conforme ; `scripts/bout-en-bout.sh` (lepton de la branche) succès, `~/lepton` inchangé ; trunk de `~/lepton` : 4 037 feuilles, aucun fichier régulier ni lien cassé |
+| Ensemble | `pytest` 131 verts (125 + 6), 132 avec O17 ; `scripts/valider-schemas.sh` conforme ; `scripts/bout-en-bout.sh` (lepton de la branche) succès, `~/lepton` inchangé ; trunk de `~/lepton` : 4 037 feuilles, aucun fichier régulier ni lien cassé |
 
-## 5. Observations
+## 5. Observation relevée pendant la reprise
 
-| ID | Constat | Renvoi proposé |
+| ID | Constat | Décision |
 | --- | --- | --- |
-| O17 | `lepton seed status` (texte) : colonne version de largeur fixe 8, décalée par une version longue (`devenv/env-6-r3`) ; `--json` non concerné | ENV-8 (cosmétique) |
+| O17 | `lepton seed status` (texte) : colonnes version (8) et branche (16) de largeur fixe, décalées par une version ou une branche longue (`devenv/env-6-r3`) ; `--json` non concerné | corrigé dans R3 (décision de l'utilisateur) : 9d2cc85, largeurs calculées d'après le contenu (minimums inchangés) ; `test_gra6_status_columns_fit_long_version` (échoue sans la correction) ; essai réel aligné |
+
+## 6. Conclusion
+
+Non-régression d'O1 validée par l'utilisateur (2026-10-16). O1, O3, O4, O14, O17 corrigés ;
+`pytest` 132 verts. Reprise 3 terminée ; fusions de `devenv/env-8-r3` (lepton-tools) et
+`devenv/env-6-r3` (clone noyau) au début de la session suivante.

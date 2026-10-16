@@ -66,11 +66,11 @@ Renvois acceptés tels quels par l'utilisateur le 2026-10-15 (`DEVENV-STATUS.md`
 | --- | --- | --- | --- |
 | N1 | scion `gitops.clone` sans `checkout` de la version | ENV-7 (correctif, scion 0.5.1.1) | renvoyé ; corrigé le 2026-10-15 (reprise R1, scion 0.5.1.1, `handoff/env-7.md`) |
 | N4 | CFG-7 : aucune association de schéma | ENV-9 (`xml.fileAssociations`, `json.schemas` générés) | renvoyé |
-| N5 | CFG-4 : valeurs d'options non fixables dans la graine | ENV-3 (schéma de graine) + ENV-8 (lepton) + ENV-5 (lecteur CMake) | renvoyé |
-| O1 | message CMake indirect si BSP absent | ENV-6 (lecteur) | renvoyé |
+| N5 | CFG-4 : valeurs d'options non fixables dans la graine | ENV-3 (schéma de graine) + ENV-8 (lepton) + ENV-5 (lecteur CMake) | renvoyé ; corrigé le 2026-10-16 (reprise R2, `env-8-r2-options.md`) |
+| O1 | message CMake indirect si BSP absent | ENV-6 (lecteur) | renvoyé ; corrigé le 2026-10-16 (reprise 3, clone noyau aee4618, `env-8-r3.md`) |
 | O2 | une configuration par `seed new` | ENV-8 / ENV-12 | renvoyé |
-| O3 | message de reprise de `scion new` | ENV-8 | renvoyé |
-| O4 | `scion remove` sans avertissement CFG-5 | ENV-8 | renvoyé |
+| O3 | message de reprise de `scion new` | ENV-8 | renvoyé ; corrigé le 2026-10-16 (reprise 3, bfa6ec5, `env-8-r3.md`) |
+| O4 | `scion remove` sans avertissement CFG-5 | ENV-8 | renvoyé ; corrigé le 2026-10-16 (reprise 3, 9d851b3, `env-8-r3.md`) |
 | O5 | XML mklepton dans le greffon noyau (CFG-1) | décision de conception (ENV-8 / ENV-12) | renvoyé |
 | O6 | `LEPTON_EMBOS_ROOT` non transmis | ENV-10 ou ENV-9 | renvoyé |
 | O7 | `.DS_Store` recréés | traité par N2 | clos |
