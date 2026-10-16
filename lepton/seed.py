@@ -350,10 +350,13 @@ def seed_status(args) -> int:
     else:
         _info(f"            projet {graine['projet']['nom']} {graine['projet']['version']}, "
               f"backend {graine['backend']}, XML {graine['mklepton_xml']}")
+    # largeurs d'après le contenu (O17 : version ou branche longue, `devenv/env-6-r3`)
     width = max([len(s["name"]) for s in scions] + [7])
-    _info(f"{'greffon':{width}}  {'rôle':14} {'version':8} {'branche':16} {'commit':9} modif.  origine")
+    vwidth = max([len(s["version"]) for s in scions] + [8])
+    bwidth = max([len(s["branch"] or "") for s in scions] + [16])
+    _info(f"{'greffon':{width}}  {'rôle':14} {'version':{vwidth}} {'branche':{bwidth}} {'commit':9} modif.  origine")
     for s in scions:
-        _info(f"{s['name']:{width}}  {s['role']:14} {s['version']:8} {_fmt_git(s)}  "
+        _info(f"{s['name']:{width}}  {s['role']:14} {s['version']:{vwidth}} {_fmt_git(s, bwidth)}  "
               f"{s['location'] or '(hors graine)'}")
         if args.verbose:
             for f in s["dirty_files"]:
@@ -370,13 +373,13 @@ def seed_status(args) -> int:
     return EXIT_OK if coherent else EXIT_USER
 
 
-def _fmt_git(s: dict) -> str:
+def _fmt_git(s: dict, bwidth: int = 16) -> str:
     if s["commit"] is None:
-        return f"{'(hors git)':16} {'':9} {'':6}"
+        return f"{'(hors git)':{bwidth}} {'':9} {'':6}"
     sync = ""
     if s["ahead"] or s["behind"]:
         sync = f" +{s['ahead']}/-{s['behind']}"
-    return f"{s['branch']:16} {s['commit']:9} {s['dirty']:<6}{sync}"
+    return f"{s['branch']:{bwidth}} {s['commit']:9} {s['dirty']:<6}{sync}"
 
 
 # --------------------------------------------------------------------------

@@ -134,6 +134,24 @@ def test_gra3_version_with_slash(project, repos, capsys):
     assert_trunk_clean(project)
 
 
+def test_gra6_status_columns_fit_long_version(project, repos, capsys):
+    """O17 : colonnes version et branche élargies à leur contenu (texte de seed status)."""
+    long = "devenv/env-8-r3-essai-long"                 # plus large que les minimums (8 et 16)
+    subprocess.run(["git", "-C", str(repos["app"]), "branch", long], check=True)
+    assert main(["seed", "add", "my-app", f"{url(repos['app'])}@{long}", "--type", "application",
+                 "-C", str(project), "--no-cmake"]) == 0
+    capsys.readouterr()
+    main(["seed", "status", "-C", str(project)])
+    lines = capsys.readouterr().out.splitlines()
+    header = next(line for line in lines if line.startswith("greffon"))
+    rows = [line for line in lines if line.split()[:1] and line.split()[0] in ("my-app", "board-q")]
+    assert len(rows) == 2
+    for column in ("branche", "commit", "origine"):
+        start = header.index(column)
+        assert all(row[start - 1] == " " and row[start] != " " for row in rows), (column, rows)
+    assert_trunk_clean(project)
+
+
 # --- GRA-4 ---------------------------------------------------------------------------------------
 def test_gra4_add(project, repos, fake_build, capsys):
     assert main(["seed", "add", "my-app", str(repos["app"]), "--type", "application", "-C", str(project)]) == 0
