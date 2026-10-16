@@ -346,7 +346,8 @@ import json, os, shutil, sys
 mode, chemin = sys.argv[1], sys.argv[2]
 voulus = {
     "update.mode": "none",
-    "extensions.autoUpdate": False,
+    # VSCodium 1.135 réécrit false en "off" à son lancement : "off" écrit, false accepté.
+    "extensions.autoUpdate": "off",
     "extensions.autoCheckUpdates": False,
     "redhat.telemetry.enabled": False,
     "xml.server.preferBinary": True,
@@ -362,7 +363,9 @@ if os.path.exists(chemin):
         sys.exit(11)
     if not isinstance(actuels, dict):
         sys.exit(11)
-diff = {k: v for k, v in voulus.items() if actuels.get(k, object()) != v}
+equivalents = {"extensions.autoUpdate": [False]}
+diff = {k: v for k, v in voulus.items()
+        if actuels.get(k, object()) != v and actuels.get(k, object()) not in equivalents.get(k, [])}
 for k, v in diff.items() if mode == "verifier" else ():
     print(f"  {k} : {json.dumps(actuels.get(k)) if k in actuels else '(absent)'} → {json.dumps(v)}")
 if not diff:
@@ -386,7 +389,7 @@ regler_vscodium() {
   case "$rc" in
     0)  info "déjà conformes" ;;
     10) run fusion_reglages ecrire "$SETTINGS" ;;
-    11) warn "réglages non modifiés : ajouter à la main dans $SETTINGS : update.mode \"none\", extensions.autoUpdate false, extensions.autoCheckUpdates false, redhat.telemetry.enabled false, xml.server.preferBinary true." ;;
+    11) warn "réglages non modifiés : ajouter à la main dans $SETTINGS : update.mode \"none\", extensions.autoUpdate \"off\", extensions.autoCheckUpdates false, redhat.telemetry.enabled false, xml.server.preferBinary true." ;;
     *)  die "fusion des réglages en échec (code $rc) : python3 est-il installé ?" ;;
   esac
 }
