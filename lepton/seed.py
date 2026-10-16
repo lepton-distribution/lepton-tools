@@ -13,6 +13,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from lepton import __version__, cmake
+from lepton.checks import removal_unprovided
 from lepton.errors import EXIT_OK, EXIT_USER, LeptonError
 from lepton.rootstock import (KERNEL_KEY, Manifest, Rootstock, find_manifest, is_system_file, project_key,
                               scion_key)
@@ -27,8 +28,11 @@ LOCAL_VERSION = "*"
 SEED_DOT = Path("scion/.scion")
 GRAINE_REL = SEED_DOT / SEED_MANIFEST
 
-# LOCATION[@VERSION][:PATH] ; VERSION sans « / », « : », « @ » ; PATH ne commence pas par « / »
-_ORIGIN = re.compile(r"^(?P<loc>.+?)(?:@(?P<ver>[^@:/]+))?(?::(?P<path>[^:@/][^:@]*))?$")
+# LOCATION[@VERSION][:PATH] ; VERSION sans « : » ni « @ », « / » admis (branche `devenv/x`, O14) ;
+# PATH ne commence pas par « / ». L'autorité d'une URL (`scheme://[user@]hôte`) appartient à
+# LOCATION : son « @ » ne sépare pas de version.
+_ORIGIN = re.compile(r"^(?P<loc>(?:[A-Za-z][A-Za-z0-9+.-]*://[^/]*)?.+?)(?:@(?P<ver>[^@:]+))?"
+                     r"(?::(?P<path>[^:@/][^:@]*))?$")
 _IDENT = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 
 
@@ -77,6 +81,9 @@ def parse_location(text: str, version: str | None = None, subpath: str | None = 
     if m is None:
         raise LeptonError(f"origine « {text} » illisible", "forme attendue : LOCATION[@VERSION][:PATH]")
     loc, ver, path = m.group("loc"), m.group("ver") or version, m.group("path") or subpath or ""
+    if ver and any(part in ("", ".", "..") for part in ver.split("/")):
+        # scion range le clone sous depots/<étagère>/<préfixe>/<version> : chemin imbriqué, jamais remontant
+        raise LeptonError(f"version « {ver} » invalide", "branche ou tag git : segments non vides, ni « . » ni « .. »")
     if urlparse(loc).netloc:
         return Origin(loc, ver or DEFAULT_VERSION, path)
     if ver and ver != LOCAL_VERSION:
@@ -343,10 +350,13 @@ def seed_status(args) -> int:
     else:
         _info(f"            projet {graine['projet']['nom']} {graine['projet']['version']}, "
               f"backend {graine['backend']}, XML {graine['mklepton_xml']}")
+    # largeurs d'après le contenu (O17 : version ou branche longue, `devenv/env-6-r3`)
     width = max([len(s["name"]) for s in scions] + [7])
-    _info(f"{'greffon':{width}}  {'rôle':14} {'version':8} {'branche':16} {'commit':9} modif.  origine")
+    vwidth = max([len(s["version"]) for s in scions] + [8])
+    bwidth = max([len(s["branch"] or "") for s in scions] + [16])
+    _info(f"{'greffon':{width}}  {'rôle':14} {'version':{vwidth}} {'branche':{bwidth}} {'commit':9} modif.  origine")
     for s in scions:
-        _info(f"{s['name']:{width}}  {s['role']:14} {s['version']:8} {_fmt_git(s)}  "
+        _info(f"{s['name']:{width}}  {s['role']:14} {s['version']:{vwidth}} {_fmt_git(s, bwidth)}  "
               f"{s['location'] or '(hors graine)'}")
         if args.verbose:
             for f in s["dirty_files"]:
@@ -363,13 +373,13 @@ def seed_status(args) -> int:
     return EXIT_OK if coherent else EXIT_USER
 
 
-def _fmt_git(s: dict) -> str:
+def _fmt_git(s: dict, bwidth: int = 16) -> str:
     if s["commit"] is None:
-        return f"{'(hors git)':16} {'':9} {'':6}"
+        return f"{'(hors git)':{bwidth}} {'':9} {'':6}"
     sync = ""
     if s["ahead"] or s["behind"]:
         sync = f" +{s['ahead']}/-{s['behind']}"
-    return f"{s['branch']:16} {s['commit']:9} {s['dirty']:<6}{sync}"
+    return f"{s['branch']:{bwidth}} {s['commit']:9} {s['dirty']:<6}{sync}"
 
 
 # --------------------------------------------------------------------------
@@ -460,6 +470,7 @@ def seed_remove(args) -> int:
     if bsp_m is not None and bsp_m.data.get("famille") == name:
         raise LeptonError(f"« {name} » est la famille du BSP {graine['bsp']}", "changer de BSP avant de la retirer")
 
+    unprovided = removal_unprovided(rs, graine, key)    # avant retrait : fichiers encore greffés
     if key in {s.key for s in rs.sources()}:
         scion("seed-scion-remove", "--seed", str(seed_root), key, cwd=rs.path)
     else:
@@ -471,6 +482,9 @@ def seed_remove(args) -> int:
             graine[field].remove(name)
     save_graine(graine_path, graine)
     _info(f"{name} retiré ({key})")
+    for a in unprovided:
+        _warn(f"{a.file}: {a.location} : fourni seulement par {name}, sans fournisseur désormais (CFG-5) ; "
+              "retirer la déclaration du XML avant de construire (lepton check)")
     finish(rs, args.no_cmake)
     _remind_commit(seed_root)
     return EXIT_OK

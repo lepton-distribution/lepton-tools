@@ -5,7 +5,9 @@ import subprocess
 from pathlib import Path
 
 from conftest import assert_trunk_clean
+from lepton import seed
 from lepton.cli import main
+from lepton.errors import LeptonError
 from lepton.rootstock import Rootstock, scion_key
 from lepton.validation import validate_file
 
@@ -124,6 +126,42 @@ def test_grf1_scion_new_refusals(project, tmp_path, capsys):
         assert message in capsys.readouterr().err, argv
     assert not (project / "depots/lepton-bsp").exists() and not (project / "depots/lepton-application").exists()
     assert_trunk_clean(project)
+
+
+def _fail(*_args, **_kwargs):
+    raise LeptonError("échec simulé")
+
+
+def test_o3_scion_new_undone_left_out_of_seed(project, monkeypatch, capsys):
+    monkeypatch.setattr(seed, "_expect", _fail)          # échec après seed-clone, annulation complète
+    assert main(["scion", "new", "hello", "--type", "application", "-C", str(project), "--no-cmake"]) == 1
+    err = capsys.readouterr().err
+    assert "hors graine (lepton seed add hello" in err and "annulation incomplète" not in err
+    assert scion_key("application", "hello") not in {s.key for s in Rootstock(project).sources()}
+    assert_trunk_clean(project)
+
+
+def test_o3_scion_new_incomplete_undo_reports_state(project, monkeypatch, capsys):
+    monkeypatch.setattr(seed, "_expect", _fail)
+    monkeypatch.setattr(seed, "_undo_add", lambda *_a: None)   # annulation sans effet
+    assert main(["scion", "new", "hello", "--type", "application", "-C", str(project), "--no-cmake"]) == 1
+    err = capsys.readouterr().err
+    key = scion_key("application", "hello")
+    assert "hors graine" not in err
+    assert "greffon déclaré dans .scion.sources.list, greffé (annulation incomplète : lepton seed remove hello" in err
+    assert key in {s.key for s in Rootstock(project).sources()}
+    # la reprise annoncée aboutit
+    assert main(["seed", "remove", "hello", "-C", str(project), "--no-cmake"]) == 0
+    assert key not in {s.key for s in Rootstock(project).sources()}
+    assert_trunk_clean(project)
+
+
+def test_o3_scion_new_failure_after_add(project, monkeypatch, capsys):
+    monkeypatch.setattr(seed, "finish", _fail)           # ajout fait, échec au contrôle final
+    assert main(["scion", "new", "hello", "--type", "application", "-C", str(project), "--no-cmake"]) == 1
+    err = capsys.readouterr().err
+    assert "greffon ajouté à la graine (corriger la cause, puis lepton graft)" in err and "hors graine" not in err
+    assert _graine(project)["applications"] == ["hello"]
 
 
 # --- GRF-4 ---------------------------------------------------------------------------------------

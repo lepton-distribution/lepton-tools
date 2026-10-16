@@ -1,0 +1,23 @@
+Internal ctest changing into directory: /Users/cle_d_anton/lepton/build/host
+Test project /Users/cle_d_anton/lepton/build/host
+    Start 1: host.vfs_ufs
+1/7 Test #1: host.vfs_ufs .....................   Passed    0.42 sec
+    Start 2: host.ufs_format_host
+2/7 Test #2: host.ufs_format_host .............   Passed    0.16 sec
+    Start 3: host.ufs_format_arm
+3/7 Test #3: host.ufs_format_arm ..............   Passed    0.03 sec
+    Start 4: host.kernel_stub
+4/7 Test #4: host.kernel_stub .................   Passed    0.20 sec
+    Start 5: host.mklepton
+5/7 Test #5: host.mklepton ....................   Passed    1.65 sec
+    Start 6: host.mklepton_format
+6/7 Test #6: host.mklepton_format .............   Passed    0.65 sec
+    Start 7: host.mklepton_empreintes
+7/7 Test #7: host.mklepton_empreintes .........   Passed    2.47 sec
+
+100% tests passed, 0 tests failed out of 7
+
+Label Time Summary:
+host    =   5.59 sec*proc (7 tests)
+
+Total Test time (real) =   5.60 sec

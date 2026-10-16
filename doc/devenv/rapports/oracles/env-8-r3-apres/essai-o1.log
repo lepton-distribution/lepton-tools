@@ -1,0 +1,29 @@
+Preset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a9cf9c75-0593-41de-9795-f8c56ded195e/scratchpad/o14/trunk/cmake/toolchains/arm-none-eabi.cmake"
+  LEPTON_BOARD="qemu-mps2-an386"
+  LEPTON_CPU="cortex-m4f"
+  LEPTON_EMBOS_ROOT="/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0"
+  LEPTON_FLOAT_ABI="hard"
+  LEPTON_ISA="armv7m"
+  LEPTON_KAL_BACKEND="freertos"
+  LEPTON_MKCONF="sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml"
+  LEPTON_MKLEPTON="/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a9cf9c75-0593-41de-9795-f8c56ded195e/scratchpad/o14/trunk/../build/host/mklepton"
+
+-- The C compiler identification is GNU 14.2.1
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- greffons : qemu-mps2;lepton-noyau
+CMake Error at CMakeLists.txt:49 (message):
+  LEPTON_BOARD=qemu-mps2-an386 : aucun greffon BSP de ce nom greffé
+  (manifeste lepton-greffon.json de nom « qemu-mps2-an386 »), ni carte
+  transitoire cmake/boards/qemu-mps2-an386.cmake.  Greffer le BSP de la
+  graine (lepton check).
+
+
+-- Configuring incomplete, errors occurred!

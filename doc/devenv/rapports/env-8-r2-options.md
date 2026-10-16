@@ -113,6 +113,6 @@ valeur hors bornes refusée par `lepton check`, `lepton generate` et la configur
 
 | ID | Constat | Suite (décision de l'utilisateur, 2026-10-16) |
 | --- | --- | --- |
-| O14 | `--origin LOC@VERSION` : `_ORIGIN` (`lepton/seed.py:31`) refuse `/` dans la version ; `@devenv/env-8-r2` reste collé à l'URL et `git clone` échoue (une branche à `/` ne peut pas servir d'origine ; scion range le clone sous `depots/<…>/<version>`) | renvoyé : ENV-8 (lepton) avec ENV-7 (scion) |
+| O14 | `--origin LOC@VERSION` : `_ORIGIN` (`lepton/seed.py:31`) refuse `/` dans la version ; `@devenv/env-8-r2` reste collé à l'URL et `git clone` échoue (une branche à `/` ne peut pas servir d'origine ; scion range le clone sous `depots/<…>/<version>`) | renvoyé : ENV-8 (lepton) avec ENV-7 (scion) ; corrigé le 2026-10-16 dans lepton seul (reprise 3, 40ea155, `env-8-r3.md`) |
 | O15 | Message CMake « (valeur de la graine) » aussi pour une valeur passée par `-D` | corrigé dans R2 (53ceb58) |
 | O16 | Option `chaine` contenant `"` ou `\` : définition mal citée (défaut comme valeur de la graine, comportement antérieur pour le défaut) ; `;` et `#` non transmissibles | corrigé dans R2 : `"` `\` échappés, `;` `#` saut de ligne refusés (53ceb58, e7d695b) |

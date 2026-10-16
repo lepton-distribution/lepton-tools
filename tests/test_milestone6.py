@@ -213,6 +213,28 @@ def test_cfg5_check_pilote_binaire_non_fournis(project, capsys):
     assert "dev_fam_uart_map" not in out and "dev_fam_spi_0_map" not in out and "lsh" not in out
 
 
+def test_cfg5_scion_remove_avertit(project, capsys):
+    """O4 : retrait d'une application que le XML déclare : avertissement CFG-5, retrait fait."""
+    assert main(["scion", "new", "salut", "--type", "application", "-C", str(project), "--no-cmake"]) == 0
+    xml = (project / "trunk" / MKCONF).resolve()
+    xml.write_text(XML.format(extra_dev='<dev name="dev_ghost_map" use="on"/>',
+                              extra_bin='<bin name="salut" stack="2048" priority="100" timeslice="1" />'))
+    capsys.readouterr()
+    assert main(["scion", "remove", "salut", "-C", str(project), "--no-cmake"]) == 0
+    err = capsys.readouterr().err
+    assert "binaries/bin[@name='salut'] : fourni seulement par salut, sans fournisseur désormais (CFG-5)" in err
+    assert "dev_ghost_map" not in err and "lsh" not in err   # anomalie antérieure, binaire du noyau
+    assert not (project / "trunk/sys/root/src/bin/salut").exists()
+    assert_trunk_clean(project)
+
+
+def test_cfg5_scion_remove_sans_declaration(project, capsys):
+    assert main(["scion", "new", "salut", "--type", "application", "-C", str(project), "--no-cmake"]) == 0
+    capsys.readouterr()
+    assert main(["scion", "remove", "salut", "-C", str(project), "--no-cmake"]) == 0
+    assert "CFG-5" not in capsys.readouterr().err
+
+
 def test_check_fichiers_isoles_inchanges(project, capsys):
     code, out = _check(project, capsys, str(_graine_path(project)))
     assert code == 0 and "1 fichier(s) conforme(s)." in out
