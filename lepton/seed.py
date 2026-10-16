@@ -13,6 +13,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from lepton import __version__, cmake
+from lepton.checks import removal_unprovided
 from lepton.errors import EXIT_OK, EXIT_USER, LeptonError
 from lepton.rootstock import (KERNEL_KEY, Manifest, Rootstock, find_manifest, is_system_file, project_key,
                               scion_key)
@@ -460,6 +461,7 @@ def seed_remove(args) -> int:
     if bsp_m is not None and bsp_m.data.get("famille") == name:
         raise LeptonError(f"« {name} » est la famille du BSP {graine['bsp']}", "changer de BSP avant de la retirer")
 
+    unprovided = removal_unprovided(rs, graine, key)    # avant retrait : fichiers encore greffés
     if key in {s.key for s in rs.sources()}:
         scion("seed-scion-remove", "--seed", str(seed_root), key, cwd=rs.path)
     else:
@@ -471,6 +473,9 @@ def seed_remove(args) -> int:
             graine[field].remove(name)
     save_graine(graine_path, graine)
     _info(f"{name} retiré ({key})")
+    for a in unprovided:
+        _warn(f"{a.file}: {a.location} : fourni seulement par {name}, sans fournisseur désormais (CFG-5) ; "
+              "retirer la déclaration du XML avant de construire (lepton check)")
     finish(rs, args.no_cmake)
     _remind_commit(seed_root)
     return EXIT_OK

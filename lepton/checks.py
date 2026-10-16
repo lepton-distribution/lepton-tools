@@ -289,6 +289,20 @@ def check_mkconf_provided(xml: Path, label: str, manifests: list[Manifest]) -> l
     return found
 
 
+def removal_unprovided(rs: Rootstock, graine: dict, key: str) -> list[Anomaly]:
+    """CFG-5 avant `seed remove` / `scion remove` (O4) : déclarations du XML de la graine que seul
+    le greffon `key` fournit, donc sans fournisseur après son retrait."""
+    rel = graine.get("mklepton_xml")
+    xml = rs.trunk / rel if rel else None
+    if xml is None or not xml.is_file():
+        return []
+    manifests = rs.manifests()
+    label = _rel(rs, xml)
+    before = {a.location for a in check_mkconf_provided(xml, label, list(manifests.values()))}
+    after = check_mkconf_provided(xml, label, [m for k, m in manifests.items() if k != key])
+    return [a for a in after if a.location not in before]
+
+
 # --------------------------------------------------------------------------
 # lepton check sans argument
 # --------------------------------------------------------------------------
