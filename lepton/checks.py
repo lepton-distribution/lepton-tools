@@ -17,7 +17,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from lepton.errors import EXIT_TOOL, LeptonError
-from lepton.rootstock import Manifest, Rootstock
+from lepton.rootstock import SOURCE_ROOT, STEM_DIR, Manifest, Rootstock
 from lepton.validation import Anomaly, validate_data, validate_json, validate_xml
 
 # Champs de manifeste qui désignent des fichiers relatifs à la destination
@@ -303,6 +303,19 @@ def removal_unprovided(rs: Rootstock, graine: dict, key: str) -> list[Anomaly]:
     return [a for a in after if a.location not in before]
 
 
+def _manifest_label(rs: Rootstock, m: Manifest) -> str:
+    """Manifeste de greffon désigné par le trunk (seul chemin d'ouverture, PA-1, IDE-4 : la tâche
+    « lepton : vérifier » de l'éditeur ouvre ce chemin) quand le lien y mène ; sinon par le clone."""
+    parts, src = m.path.parts, (STEM_DIR, *Path(SOURCE_ROOT).parts)
+    for i in range(len(parts) - len(src), -1, -1):
+        if parts[i:i + len(src)] == src:
+            in_trunk = rs.trunk.joinpath(*parts[i + 1:])
+            if in_trunk.is_symlink() and in_trunk.resolve() == m.path.resolve():
+                return _rel(rs, in_trunk)
+            break
+    return _rel(rs, m.path)
+
+
 # --------------------------------------------------------------------------
 # lepton check sans argument
 # --------------------------------------------------------------------------
@@ -311,7 +324,7 @@ def check_rootstock(rs: Rootstock, warn) -> tuple[list[str], list[Anomaly]]:
     checked, anomalies = [], []
     manifests = {}
     for key, m in rs.manifests().items():
-        label = _rel(rs, m.path)
+        label = _manifest_label(rs, m)
         checked.append(label)
         anomalies.extend(validate_data(m.data, "scion", label))
         anomalies.extend(check_options(m, label))

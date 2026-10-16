@@ -7,6 +7,7 @@ d'ouverture, clangd), DBG-1 à DBG-3 (launch, tasks), NF-3 (outils résolus par 
 
 import json
 import os
+import re
 import subprocess
 from pathlib import Path
 
@@ -260,6 +261,34 @@ def test_schema_associations(project, tools):
     assert main(["generate", "-C", str(project)]) == 0
     patterns = [e["pattern"] for e in _workspace(project)["settings"]["xml.fileAssociations"]]
     assert patterns == ["**/mkconf_*.xml", "**/sys/user/demo/etc/projet.xml"]
+
+
+def test_check_task_reports_errors(project, tools):
+    """CFG-7 (option 2) : tâche « lepton : vérifier », anomalies de lepton check en erreur (Problems)."""
+    assert main(["generate", "-C", str(project)]) == 0
+    task = {t["label"]: t for t in _workspace(project)["tasks"]["tasks"]}["lepton : vérifier"]
+    assert task["args"] == ["check", "-C", str(project)]
+    matcher = task["problemMatcher"]
+    assert matcher["severity"] == "error" and matcher["fileLocation"] == ["autoDetect", str(project)]
+    regexp = re.compile(matcher["pattern"]["regexp"])
+    group = lambda line, n: regexp.match(line) and regexp.match(line).group(n)
+    json_line = "trunk/sys/root/src/lepton-greffon.json: /type: 'xyz' is not one of ['noyau']"
+    xml_line = "trunk/sys/user/demo/etc/mkconf_demo.xml: 12: element inconnu: Schemas validity error"
+    assert [group(json_line, n) for n in (1, 2, 3)] == [
+        "trunk/sys/root/src/lepton-greffon.json", None, "/type: 'xyz' is not one of ['noyau']"]
+    assert [group(xml_line, n) for n in (1, 2)] == ["trunk/sys/user/demo/etc/mkconf_demo.xml", "12"]
+    assert regexp.match("5 fichier(s) conforme(s).") is None
+    assert regexp.match("lepton: attention: xmllint absent : XML mklepton non validé") is None
+
+
+def test_check_names_grafted_manifests_by_trunk(project, capsys):
+    """IDE-4 : lepton check désigne un manifeste greffé par le trunk (chemin ouvert par la tâche)."""
+    capsys.readouterr()
+    main(["check", "--json", "-C", str(project)])
+    files = json.loads(capsys.readouterr().out)["files"]
+    manifests = [f for f in files if f.endswith("lepton-greffon.json")]
+    assert manifests and all(f.startswith("trunk/sys/root/src/") for f in manifests)
+    assert all((project / f).is_symlink() for f in manifests)
 
 
 def test_active_compile_commands_primed(project, tools, capsys):

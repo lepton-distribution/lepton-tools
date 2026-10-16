@@ -34,6 +34,11 @@ OPTION_PREFIX = "LEPTON_OPTION_"   # + <greffon>_<NOM> : valeur d'option de la g
 COMPILE_COMMANDS = "compile_commands.json"
 PROBE_SERIAL_SETTING = "lepton.probeSerial"   # réglage de l'espace : série de sonde conservée (O8)
 MKCONF_PATTERN = "**/mkconf_*.xml"            # XML mklepton du noyau (xml.fileAssociations, CFG-7)
+# Sortie de `lepton check` (« <fichier>: [<ligne xmllint>: ]<emplacement et message> ») → panneau Problems,
+# en erreur (CFG-7 : le service JSON intégré signale les fautes de schéma en avertissement seulement)
+CHECK_MATCHER = {"owner": "lepton", "source": "lepton check", "severity": "error",
+                 "pattern": {"regexp": r"^(\S[^:]*\.(?:json|xml)): (?:(\d+): )?(.*)$",
+                             "file": 1, "line": 2, "message": 3}}
 _PROBE_SERIAL = re.compile(r"""^[^\s"'\\]+$""")
 
 # Cœur (enum du schéma) → famille d'ISA du noyau (cmake/isa/) et cœur QEMU (-cpu)
@@ -303,6 +308,8 @@ def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[di
     mk = "lepton : mklepton (preset host)"
     result = [
         _task("lepton : regreffer", tools["lepton"], ["graft", "-C", str(ctx.rs.path)], ctx.rs.path),
+        _task("lepton : vérifier", tools["lepton"], ["check", "-C", str(ctx.rs.path)], ctx.rs.path,
+              problemMatcher={**CHECK_MATCHER, "fileLocation": ["autoDetect", str(ctx.rs.path)]}),
         _task("lepton : configurer host", cmake, ["--preset", HOST_PRESET], trunk),
         _task(mk, cmake, ["--build", "--preset", HOST_PRESET, "--target", "mklepton"], trunk,
               dependsOn=["lepton : configurer host"], dependsOrder="sequence", problemMatcher=["$gcc"]),

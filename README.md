@@ -43,7 +43,8 @@ débogueur, le source s'affiche sous le chemin du clone (écart accepté en PA-1
 L'espace généré associe `lepton-greffon.json`, `lepton-graine.json` et les XML `mkconf_*.xml` (et
 celui de la graine) aux schémas installés avec lepton : fautes signalées à la saisie (CFG-7) ;
 relancer `lepton generate` après une réinstallation de lepton. Le sélecteur de preset est affiché
-dans la barre d'état. clangd lit `build/.active/compile_commands.json`, que `lepton generate`
+dans la barre d'état. La tâche « lepton : vérifier » lance `lepton check` et inscrit ses anomalies en
+erreur dans le panneau *Problems* (manifestes désignés par le trunk). clangd lit `build/.active/compile_commands.json`, que `lepton generate`
 amorce depuis le premier preset déjà configuré : configurer un preset (tâche « lepton :
 configurer … ») avant la première génération, sinon *clangd: Restart language server* après la
 première configuration. Plusieurs sondes branchées : `lepton generate --probe-serial SERIE`
