@@ -68,7 +68,14 @@ nucleo-f429zi-embos` puis construction : réussies, cache `LEPTON_EMBOS_ROOT:PAT
 | idem, 2e | **0 changement** ; « lepton 0.1.0 : déjà installé, identique aux sources » ; réglages conformes |
 | D3, D4 sur le Mac | `libxml2 @2.15.4` et `clang-21 @21.1.8_3` déjà actifs (`port installed`) : `pkg_install` sans action ; la section `install-macos.sh` de la sortie n'a pas été recopiée par l'utilisateur, le compte global vaut 0 |
 
-Non validé dans l'éditeur : débogage Cortex-Debug avec gdb 17.2 (MacPorts) au lieu de 14.2 (Arm).
+VSCodium, Cortex-Debug avec gdb 17.2 (MacPorts) au lieu de 14.2 (Arm), espaces régénérés
+(utilisateur, 2026-10-16) :
+
+| Cible | Résultat |
+| --- | --- |
+| QEMU an386 (`essais/env-11/qemu`, FreeRTOS) | conforme : arrêt sur point d'arrêt `_start_kernel` (`…/qemu/trunk/…/core-freertos/kernel.c:1213`), chemin par le trunk |
+| NUCLEO-F429ZI (`essais/env-11/f429zi`, embOS) | conforme : flash, arrêt temporaire sur `main` (`…/f429zi/trunk/…/armv7m/embos_main.c:13`) |
+| NUCLEO-WL55JC1 | non rejoué (facultatif) |
 
 ## 4. Reste
 
