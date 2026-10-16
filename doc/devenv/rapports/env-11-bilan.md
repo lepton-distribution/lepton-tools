@@ -54,7 +54,7 @@ Hôte Apple Silicon : revue seule (NF-3), hors bilan d'exécution.
 | Exigence | Résultat | Écart |
 | --- | --- | --- |
 | CFG-5 `lepton check` | conforme | O4 |
-| CFG-7 validation à la saisie | non conforme | N4 |
+| CFG-7 validation à la saisie | non conforme ; conforme après la reprise 4 (`env-9-r4.md`) | N4 (corrigé) |
 | GRA-5, GRF-5, FIC-6 | conformes (ENV-8, tests, bout en bout) | — |
 | BLD-6, IDE-6, DBG-4, DBG-5, TST-2 | non testées (hors phase 1 ou ENV-12) | — |
 
