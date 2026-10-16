@@ -24,6 +24,9 @@ from lepton.validation import Anomaly, validate_data, validate_json, validate_xm
 FILE_FIELDS = ("vecteurs", "remplacants_forts", "demarrage", "openocd")
 SINGLE_FILE_FIELDS = ("script_liens", "entete_config_noyau", "svd")
 OBJECT_FIELDS = ("demarrage", "vecteurs", "remplacants_forts")
+# Caractères qu'une définition de compilation ne transmet pas (O16) : séparateur de liste CMake,
+# « # » (définition retirée par CMake), fin de ligne ; « " » et « \ » sont échappés par le lecteur
+UNSENDABLE = ";#\n\r"
 
 _DEV_DEF = re.compile(r"^[ \t]*(?:static[ \t]+)?(?:const[ \t]+)?dev_map_t[ \t]+(dev_[\w#]+_map)[ \t]*=", re.M)
 _BIN_DEF = re.compile(r"^[ \t]*int[ \t]+(\w+)_main[ \t]*\([^;{)]*\)[ \t]*(?:\{|$)", re.M)
@@ -134,6 +137,73 @@ def check_seed(graine: dict, by_name: dict[str, Manifest], label: str) -> list[A
     if kernel is not None and graine.get("backend") not in kernel.data.get("backends", []):
         found.append(Anomaly(label, "/backend", f"backend « {graine.get('backend')} » non fourni par "
                              f"{kernel.name} ({', '.join(kernel.data.get('backends', []))}) (GRF-5)"))
+    found.extend(check_seed_options(graine, by_name, label))
+    return found
+
+
+def seed_scions(graine: dict, by_name: dict[str, Manifest]) -> set[str]:
+    """Noms des greffons de la graine : noyau, BSP, famille du BSP, applications, bibliothèques."""
+    names = {graine.get("noyau"), graine.get("bsp"), *graine.get("applications", []),
+             *graine.get("bibliotheques", [])}
+    bsp = by_name.get(graine.get("bsp"))
+    if bsp is not None:
+        names.add(bsp.data.get("famille"))
+    return {n for n in names if isinstance(n, str)}
+
+
+def _option_value_error(opt: dict, value) -> str | None:
+    """Motif du refus d'une valeur de la graine pour l'option déclarée `opt` (CFG-4), sinon None."""
+    kind = opt.get("type")
+    if kind == "booleen":
+        return None if isinstance(value, bool) else "booléen attendu"
+    if kind == "entier":
+        if not isinstance(value, int) or isinstance(value, bool):
+            return "entier attendu"
+        lo, hi = opt.get("min"), opt.get("max")
+        if isinstance(lo, int) and isinstance(hi, int) and not lo <= value <= hi:
+            return f"{value} hors des bornes [{lo}, {hi}]"
+        return None
+    if kind == "enumeration":
+        if not isinstance(value, str):
+            return "chaîne attendue (énumération)"
+        allowed = opt.get("valeurs", [])
+        return None if value in allowed else f"« {value} » absent des valeurs ({', '.join(allowed)})"
+    if kind == "chaine":
+        if not isinstance(value, str):
+            return "chaîne attendue"
+        bad = sorted({c for c in value if c in UNSENDABLE})
+        return (f"caractère(s) {' '.join(repr(c) for c in bad)} non transmissible(s) par une définition de "
+                "compilation (« ; », « # », saut de ligne)") if bad else None
+    return None                     # type inconnu : signalé par le schéma du greffon
+
+
+def check_seed_options(graine: dict, by_name: dict[str, Manifest], label: str) -> list[Anomaly]:
+    """Valeurs d'options fixées par la graine (CFG-4, N5) contre les manifestes de leurs greffons."""
+    options = graine.get("options", {})
+    if not isinstance(options, dict):
+        return [Anomaly(label, "/options", "objet attendu")]
+    found, members = [], seed_scions(graine, by_name)
+    for scion_name, values in options.items():
+        where = f"/options/{scion_name}"
+        if scion_name not in members:
+            found.append(Anomaly(label, where, f"« {scion_name} » n'est pas un greffon de la graine"))
+            continue
+        if not isinstance(values, dict):
+            found.append(Anomaly(label, where, "objet attendu (<NOM> → valeur)"))
+            continue
+        m = by_name.get(scion_name)
+        if m is None:
+            continue                # non greffé : signalé par GRA-2
+        declared = {o.get("nom"): o for o in m.data.get("options", []) if isinstance(o, dict)}
+        for name, value in values.items():
+            opt = declared.get(name)
+            if opt is None:
+                found.append(Anomaly(label, f"{where}/{name}", f"option « {name} » non déclarée par {scion_name}"
+                                     + (f" ({', '.join(declared)})" if declared else " (aucune option)")))
+                continue
+            error = _option_value_error(opt, value)
+            if error:
+                found.append(Anomaly(label, f"{where}/{name}", f"valeur refusée : {error}"))
     return found
 
 

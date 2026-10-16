@@ -17,6 +17,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
+from lepton.checks import check_seed_options
 from lepton.errors import EXIT_OK, EXIT_TOOL, LeptonError
 from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, project_key
 from lepton.scion_runner import run, scion
@@ -28,6 +29,7 @@ BASE_PRESET = "cross"              # preset caché du CMakePresets.json du noyau
 HOST_PRESET = "host"               # preset du noyau qui construit mklepton (LEPTON_MKLEPTON de cross)
 NOTE = "généré par lepton generate, ne pas éditer"
 ACTIVE_DIR = ".active"             # build/.active : compile_commands.json du preset actif (clangd)
+OPTION_PREFIX = "LEPTON_OPTION_"   # + <greffon>_<NOM> : valeur d'option de la graine (CFG-4)
 
 # Cœur (enum du schéma) → famille d'ISA du noyau (cmake/isa/) et cœur QEMU (-cpu)
 ISA_OF_CORE = {"cortex-m0plus": "armv6m", "cortex-m3": "armv7m", "cortex-m4f": "armv7m", "cortex-m7": "armv7m"}
@@ -111,6 +113,10 @@ class Context:
             if c["execution"] == "carte" and not self.bsp.get("openocd"):
                 raise LeptonError(f"configuration {c['nom']} : exécution carte, le BSP {bsp.name} ne déclare pas openocd",
                                   f"corriger « execution » dans {rs.seed_manifest_path()}")
+        anomalies = check_seed_options(self.graine, by_name, str(rs.seed_manifest_path()))
+        if anomalies:
+            raise LeptonError("valeurs d'options de la graine refusées (CFG-4) :\n"
+                              + "\n".join(str(a) for a in anomalies), "corriger « options », puis lepton check")
         self._check_kernel_presets()
 
     def _check_kernel_presets(self) -> None:
@@ -138,6 +144,18 @@ class Context:
 # --------------------------------------------------------------------------
 # CMakeUserPresets.json (CFG-6, BLD-5)
 # --------------------------------------------------------------------------
+def option_cache(graine: dict) -> dict[str, str]:
+    """Valeurs d'options de la graine (CFG-4, N5) : LEPTON_OPTION_<greffon>_<NOM>, lue par le lecteur
+    CMake du noyau à la place du défaut ; booléen : 1 ou 0."""
+    cache = {}
+    for scion_name, values in graine.get("options", {}).items():
+        for name, value in values.items():
+            if isinstance(value, bool):
+                value = 1 if value else 0
+            cache[f"{OPTION_PREFIX}{scion_name}_{name}"] = str(value)
+    return cache
+
+
 def render_presets(ctx: Context) -> dict:
     configure, build, test = [], [], []
     for c in ctx.configurations:
@@ -150,6 +168,7 @@ def render_presets(ctx: Context) -> dict:
                  "LEPTON_MKCONF": ctx.graine["mklepton_xml"]}
         if ctx.bsp.get("abi_flottante"):
             cache["LEPTON_FLOAT_ABI"] = ctx.bsp["abi_flottante"]
+        cache.update(option_cache(ctx.graine))
         where = f"QEMU {ctx.bsp['qemu']['machine']}" if c["execution"] == "qemu" else "carte"
         configure.append({"name": name,
                           "displayName": f"{ctx.project} — {c['nom']} ({ctx.graine['bsp']}, {where}, "

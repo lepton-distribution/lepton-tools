@@ -1,0 +1,40 @@
+Internal ctest changing into directory: /Users/cle_d_anton/lepton/build/qemu-mps2-an386-freertos-soft
+Test project /Users/cle_d_anton/lepton/build/qemu-mps2-an386-freertos-soft
+      Start  1: smoke.lsh
+ 1/14 Test  #1: smoke.lsh ........................   Passed    3.31 sec
+      Start  2: kal.T1
+ 2/14 Test  #2: kal.T1 ...........................   Passed    0.06 sec
+      Start  3: kal.T2
+ 3/14 Test  #3: kal.T2 ...........................   Passed    0.06 sec
+      Start  4: kal.T3
+ 4/14 Test  #4: kal.T3 ...........................   Passed    0.05 sec
+      Start  5: kal.T4
+ 5/14 Test  #5: kal.T4 ...........................   Passed    0.05 sec
+      Start  6: kal.T5
+ 6/14 Test  #6: kal.T5 ...........................   Passed    0.05 sec
+      Start  7: kal.T6
+ 7/14 Test  #7: kal.T6 ...........................   Passed    0.06 sec
+      Start  8: kal.T7
+ 8/14 Test  #8: kal.T7 ...........................   Passed    0.06 sec
+      Start  9: kal.T8
+ 9/14 Test  #9: kal.T8 ...........................   Passed    0.08 sec
+      Start 10: kal.TICI
+10/14 Test #10: kal.TICI .........................   Passed    0.06 sec
+      Start 11: kal.TCLK
+11/14 Test #11: kal.TCLK .........................   Passed    0.69 sec
+      Start 12: kal.TSBRK
+12/14 Test #12: kal.TSBRK ........................   Passed    0.06 sec
+      Start 13: kal.IRQ
+13/14 Test #13: kal.IRQ ..........................   Passed    0.07 sec
+      Start 14: kal.harness_fail
+14/14 Test #14: kal.harness_fail .................   Passed    0.05 sec
+
+100% tests passed, 0 tests failed out of 14
+
+Label Time Summary:
+arch:cortex-m4f     =   4.74 sec*proc (14 tests)
+backend:freertos    =   4.74 sec*proc (14 tests)
+kal                 =   4.74 sec*proc (14 tests)
+smoke               =   3.31 sec*proc (1 test)
+
+Total Test time (real) =   4.81 sec

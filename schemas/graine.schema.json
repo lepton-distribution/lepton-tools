@@ -3,7 +3,7 @@
   "$id": "urn:lepton:schema:graine:1",
   "title": "Manifeste de graine Lepton",
   "description": "Manifeste d'un projet (graine, seed scion) : greffons retenus par rôle, backend micro-noyau, configurations de construction, XML mklepton. Fichier lepton-graine.json à côté de .scion.sources.list. L'origine de chaque greffon (dépôt git et branche ou tag, ou répertoire local) reste dans .scion.sources.list, géré par scion.",
-  "$comment": "GRA-2, CFG-1, CFG-2, CFG-6, décision 9. Aucun champ de configuration logicielle (CFG-1). Origine des greffons non dupliquée : GRA-3 est porté par .scion.sources.list (proposition soumise à PA-3). ENV-3.",
+  "$comment": "GRA-2, CFG-1, CFG-2, CFG-4 (valeurs d'options), CFG-6, décision 9. Aucun champ de configuration logicielle (CFG-1). Origine des greffons non dupliquée : GRA-3 est porté par .scion.sources.list (proposition soumise à PA-3). ENV-3.",
   "type": "object",
   "required": ["projet", "noyau", "bsp", "backend", "configurations", "mklepton_xml"],
   "properties": {
@@ -70,10 +70,24 @@
       "description": "Chemin du XML mklepton du projet, relatif au trunk.",
       "$comment": "CFG-1 (XML mklepton, seconde source de configuration, versionnée dans la graine).",
       "$ref": "#/$defs/chemin_relatif"
+    },
+    "options": {
+      "description": "Valeurs fixées pour des options déclarées par les greffons de la graine, par nom de greffon puis nom d'option ; communes à toutes les configurations. Option absente : défaut du manifeste du greffon. Reportées dans les presets par lepton generate.",
+      "$comment": "CFG-4 (N5, reprise ENV-8 R2) : type, bornes et valeurs admises contrôlés par lepton check contre le manifeste du greffon, puis par le lecteur CMake (non exprimable ici).",
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/identifiant" },
+      "additionalProperties": { "$ref": "#/$defs/valeurs_options" }
     }
   },
   "additionalProperties": false,
   "$defs": {
+    "valeurs_options": {
+      "description": "Valeurs des options d'un greffon : <NOM> → booléen, entier ou chaîne (énumération : chaîne).",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^[A-Z][A-Z0-9_]*$" },
+      "additionalProperties": { "type": ["boolean", "integer", "string"] }
+    },
     "identifiant": {
       "type": "string",
       "pattern": "^[a-z0-9][a-z0-9._-]*$"

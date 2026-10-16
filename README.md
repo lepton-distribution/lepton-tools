@@ -40,6 +40,14 @@ dossiers `git · …`). Après un changement de preset, rouvrir les fichiers dé
 débogueur, le source s'affiche sous le chemin du clone (écart accepté en PA-1). Validation :
 `doc/devenv/rapports/env-9-validation.md`.
 
+Valeurs d'options (CFG-4) : les options déclarées par un greffon (`options` de son
+`lepton-greffon.json`) se fixent pour tout le projet dans le champ `options` de
+`lepton-graine.json`, par greffon : `"options": {"mesure": {"MESURE_PERIODE_MS": 500}}` ; option
+absente : défaut du manifeste. `lepton check` contrôle type, bornes et valeurs admises ;
+`lepton generate` les reporte dans les presets (`LEPTON_OPTION_<greffon>_<NOM>`) : le relancer
+après toute modification. CMake refuse une valeur hors bornes, y compris passée par `-D`
+(`doc/devenv/rapports/env-8-r2-options.md`).
+
 Bout en bout (construction et fumée QEMU, chaîne Arm et QEMU requis) :
 `scripts/bout-en-bout.sh <répertoire jetable>`.
 
