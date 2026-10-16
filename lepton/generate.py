@@ -63,6 +63,37 @@ def require_tool(name: str, why: str, *fallbacks: str) -> str:
     raise LeptonError(f"{name} absent du PATH ({why})", f"installer {names} et vérifier le PATH", EXIT_TOOL)
 
 
+def _gdb_has_python(gdb: str) -> bool:
+    try:
+        out = subprocess.run([gdb, "-nx", "-batch", "-ex", "python print('ok')"],
+                             capture_output=True, text=True, timeout=30).stdout
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return out.strip() == "ok"
+
+
+def find_gdb() -> str:
+    """gdb de débogage (O9) : parmi les `arm-none-eabi-gdb` puis `gdb-multiarch` du PATH, le premier
+    construit avec Python (lepton-stacks de debug/gdbinit-lepton ; le gdb de l'Arm GNU Toolchain n'en a
+    pas) ; à défaut, le premier trouvé (avertissement) ; aucun : code 2."""
+    candidates: list[str] = []
+    seen = set()
+    for name in ("arm-none-eabi-gdb", "gdb-multiarch"):
+        for d in os.environ.get("PATH", "").split(os.pathsep):
+            path = shutil.which(name, path=d) if d else None
+            if path is not None and os.path.realpath(path) not in seen:
+                seen.add(os.path.realpath(path))
+                candidates.append(path)
+    if not candidates:
+        return require_tool("arm-none-eabi-gdb", "débogage", "gdb-multiarch")   # code 2 (EXIT_TOOL)
+    for gdb in candidates:
+        if _gdb_has_python(gdb):
+            return gdb
+    _warn(f"aucun gdb avec Python dans le PATH ; {candidates[0]} retenu (lepton-stacks indisponible ; "
+          "MacPorts arm-none-eabi-gdb +python313, Debian gdb-multiarch)")
+    return candidates[0]
+
+
 def find_clangd(explicit: str | None) -> str | None:
     """clangd LLVM (PA-1) : `--clangd`, sinon le plus récent des `clangd`, `clangd-N`, `clangd-mp-N` du
     PATH dont la version n'est pas celle d'Apple ; à défaut, `clangd` tel quel (avertissement)."""
@@ -255,7 +286,7 @@ def workspace_settings(ctx: Context, tools: dict, probe_serial: str | None = Non
         "cmake.copyCompileCommands": str(active / COMPILE_COMMANDS),
         "clangd.arguments": [f"--compile-commands-dir={active}", "--background-index",
                              f"--query-driver={tools['gcc']}"],
-        "cortex-debug.armToolchainPath": str(Path(tools["gdb"]).parent),
+        "cortex-debug.armToolchainPath": str(Path(tools["gcc"]).parent),   # objdump, nm (gdb : gdbPath)
         "cortex-debug.gdbPath": tools["gdb"],
     }
     if tools.get("clangd"):
@@ -355,7 +386,7 @@ def host_tools(ctx: Context, clangd: str | None) -> dict:
     executions = {c["execution"] for c in ctx.configurations}
     tools = {"cmake": require_tool("cmake", "presets"), "ctest": require_tool("ctest", "tests"),
              "gcc": require_tool("arm-none-eabi-gcc", "clangd --query-driver"),
-             "gdb": require_tool("arm-none-eabi-gdb", "débogage", "gdb-multiarch"),   # Debian : gdb-multiarch
+             "gdb": find_gdb(),
              "lepton": shutil.which("lepton") or "lepton",
              "clangd": find_clangd(clangd)}
     if "qemu" in executions:

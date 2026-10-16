@@ -122,6 +122,16 @@ def test_check_without_xmllint(capsys, monkeypatch):
     assert "xmllint absent" in capsys.readouterr().err
 
 
+@needs_xmllint
+def test_check_verbose_shows_xmllint(capsys):
+    """-v : l'appel à xmllint est affiché comme les autres commandes externes (rapport Debian R5, C)."""
+    assert main(["check", "-v", str(EXAMPLES / "mklepton.xml")]) == 0
+    err = capsys.readouterr().err
+    assert "lepton: exécute : xmllint --noout --schema" in err and "mklepton.xml" in err
+    assert main(["check", str(EXAMPLES / "mklepton.xml")]) == 0
+    assert "exécute" not in capsys.readouterr().err
+
+
 @pytest.mark.parametrize("argv", [["check"], ["inconnue"], ["check", "--option-inconnue", "x"], []])
 def test_usage_error_exit_1(argv, capsys):
     try:

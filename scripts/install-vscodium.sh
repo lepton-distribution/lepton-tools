@@ -24,7 +24,8 @@
 #   CodeLLDB depuis le paquet de la plateforme de sa release GitHub (somme épinglée ci-dessous).
 # - Réglages utilisateur de VSCodium : mises à jour automatiques et télémétrie Red Hat coupées,
 #   lemminx natif (PA-10) ; fusion dans settings.json, copie .bak avant écriture.
-# - scion (pipx, version SCION_REF) et lepton (pipx install de ce dépôt).
+# - scion (pipx, version SCION_REF) et lepton (pipx install de ce dépôt ; réinstallé si le paquet
+#   installé diffère des sources, même à version égale).
 #
 # Rejouable : chaque étape teste l'état avant d'agir ; le compte des changements est affiché à la
 # fin. Ce que le script ne fait pas : installer MacPorts, Homebrew, pipx hors scripts du noyau,
@@ -345,7 +346,8 @@ import json, os, shutil, sys
 mode, chemin = sys.argv[1], sys.argv[2]
 voulus = {
     "update.mode": "none",
-    "extensions.autoUpdate": False,
+    # VSCodium 1.135 réécrit false en "off" à son lancement : "off" écrit, false accepté.
+    "extensions.autoUpdate": "off",
     "extensions.autoCheckUpdates": False,
     "redhat.telemetry.enabled": False,
     "xml.server.preferBinary": True,
@@ -361,7 +363,9 @@ if os.path.exists(chemin):
         sys.exit(11)
     if not isinstance(actuels, dict):
         sys.exit(11)
-diff = {k: v for k, v in voulus.items() if actuels.get(k, object()) != v}
+equivalents = {"extensions.autoUpdate": [False]}
+diff = {k: v for k, v in voulus.items()
+        if actuels.get(k, object()) != v and actuels.get(k, object()) not in equivalents.get(k, [])}
 for k, v in diff.items() if mode == "verifier" else ():
     print(f"  {k} : {json.dumps(actuels.get(k)) if k in actuels else '(absent)'} → {json.dumps(v)}")
 if not diff:
@@ -385,12 +389,29 @@ regler_vscodium() {
   case "$rc" in
     0)  info "déjà conformes" ;;
     10) run fusion_reglages ecrire "$SETTINGS" ;;
-    11) warn "réglages non modifiés : ajouter à la main dans $SETTINGS : update.mode \"none\", extensions.autoUpdate false, extensions.autoCheckUpdates false, redhat.telemetry.enabled false, xml.server.preferBinary true." ;;
+    11) warn "réglages non modifiés : ajouter à la main dans $SETTINGS : update.mode \"none\", extensions.autoUpdate \"off\", extensions.autoCheckUpdates false, redhat.telemetry.enabled false, xml.server.preferBinary true." ;;
     *)  die "fusion des réglages en échec (code $rc) : python3 est-il installé ?" ;;
   esac
 }
 
 # --- lepton (INS-6) ----------------------------------------------------------------------
+# Paquet lepton du venv pipx identique aux sources (code et schémas copiés dans le paquet) ? Le
+# numéro de version ne change pas à chaque correction (O12) : le contenu est comparé.
+lepton_identique() {
+  local venvs site f
+  have pipx || return 1
+  venvs="$(pipx environment --value PIPX_LOCAL_VENVS 2>/dev/null)" || return 1
+  for site in "$venvs"/lepton/lib/python*/site-packages/lepton; do
+    [ -d "$site" ] || return 1
+    diff -rq -x __pycache__ -x .DS_Store -x schemas "$LEPTON_TOOLS/lepton" "$site" >/dev/null || return 1
+    for f in greffon.schema.json graine.schema.json mklepton.xsd; do
+      cmp -s "$LEPTON_TOOLS/schemas/$f" "$site/schemas/$f" || return 1
+    done
+    return 0
+  done
+  return 1
+}
+
 installer_lepton() {
   log "lepton ($LEPTON_TOOLS)"
   if [ "$NO_LEPTON" = 1 ]; then info "sauté (--no-lepton)"; return; fi
@@ -398,7 +419,10 @@ installer_lepton() {
   attendue="$(sed -n 's/^__version__ *= *"\(.*\)"/\1/p' "$LEPTON_TOOLS/lepton/__init__.py" | head -1)"
   [ -n "$attendue" ] || die "version introuvable dans $LEPTON_TOOLS/lepton/__init__.py."
   if have lepton && [ "$(lepton --version 2>/dev/null | head -1)" = "lepton $attendue" ]; then
-    info "lepton $attendue : déjà installé ($(command -v lepton))"; return
+    if lepton_identique; then
+      info "lepton $attendue : déjà installé, identique aux sources ($(command -v lepton))"; return
+    fi
+    info "lepton $attendue : paquet installé différent des sources (ou hors pipx) : réinstallation"
   fi
   have pipx || die "pipx absent : lancer sans --skip-toolchain (le script de la chaîne l'installe), ou installer pipx, puis rejouer."
   run pipx install --force "$LEPTON_TOOLS"

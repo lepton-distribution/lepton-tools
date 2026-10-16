@@ -26,7 +26,8 @@ KERNEL_PRESETS = {
         {"name": "cross", "hidden": True, "inherits": "base"},
     ],
 }
-TOOLS = {"arm-none-eabi-gcc": "", "arm-none-eabi-gdb": "", "qemu-system-arm": "", "openocd": "",
+# arm-none-eabi-gdb : « ok » = réponse d'un gdb avec Python à python print('ok') (find_gdb, O9)
+TOOLS = {"arm-none-eabi-gcc": "", "arm-none-eabi-gdb": "ok", "qemu-system-arm": "", "openocd": "",
          "clangd": "Apple clangd version 17.0.0", "clangd-mp-21": "clangd version 21.1.8",
          "clangd-19": "clangd version 19.1.0"}
 
@@ -368,7 +369,7 @@ def test_missing_tool_is_exit_2(project, tools, monkeypatch, capsys):
 
 def test_gdb_multiarch_when_no_arm_gdb(project, tools, monkeypatch):
     """Debian : pas d'arm-none-eabi-gdb, gdb-multiarch retenu pour le débogage."""
-    (tools / "gdb-multiarch").write_text("#!/bin/sh\n")
+    (tools / "gdb-multiarch").write_text("#!/bin/sh\necho ok\n")
     (tools / "gdb-multiarch").chmod(0o755)
     which = gen.shutil.which
     monkeypatch.setattr(gen.shutil, "which", lambda n, *a, **k: None if n == "arm-none-eabi-gdb" else which(n, *a, **k))
@@ -377,6 +378,41 @@ def test_gdb_multiarch_when_no_arm_gdb(project, tools, monkeypatch):
     [launch] = ws["launch"]["configurations"]
     assert launch["gdbPath"] == str(tools / "gdb-multiarch")
     assert ws["settings"]["cortex-debug.gdbPath"] == str(tools / "gdb-multiarch")
+
+
+def _fake_gdb(d: Path, name: str, python: bool) -> Path:
+    d.mkdir(exist_ok=True)
+    (d / name).write_text("#!/bin/sh\n" + ("echo ok\n" if python else "echo 'Python scripting is not supported' >&2\n"))
+    (d / name).chmod(0o755)
+    return d / name
+
+
+def test_find_gdb_prefers_python(tmp_path, monkeypatch, capsys):
+    """O9 : arm-none-eabi-gdb sans Python (Arm GNU Toolchain) en tête du PATH, gdb avec Python ensuite
+    (MacPorts, lien gdb-multiarch) : le second est retenu, sans avertissement."""
+    arm = _fake_gdb(tmp_path / "arm", "arm-none-eabi-gdb", python=False)
+    ports = _fake_gdb(tmp_path / "ports", "arm-none-eabi-gdb", python=True)
+    local = tmp_path / "local"
+    local.mkdir()
+    (local / "gdb-multiarch").symlink_to(ports)
+    monkeypatch.setenv("PATH", os.pathsep.join(map(str, (arm.parent, local, ports.parent))))
+    assert gen.find_gdb() == str(ports)
+    assert "AVERTISSEMENT" not in capsys.readouterr().err
+    monkeypatch.setenv("PATH", os.pathsep.join(map(str, (arm.parent, local))))
+    assert gen.find_gdb() == str(local / "gdb-multiarch")          # Debian : gdb-multiarch seul avec Python
+
+
+def test_find_gdb_without_python_warns(tmp_path, monkeypatch, capsys):
+    """O9 : aucun gdb avec Python → le premier trouvé, avertissement ; aucun gdb → code 2."""
+    arm = _fake_gdb(tmp_path / "arm", "arm-none-eabi-gdb", python=False)
+    _fake_gdb(tmp_path / "multi", "gdb-multiarch", python=False)
+    monkeypatch.setenv("PATH", os.pathsep.join(map(str, (tmp_path / "multi", arm.parent))))
+    assert gen.find_gdb() == str(arm)
+    assert "aucun gdb avec Python" in capsys.readouterr().err
+    monkeypatch.setenv("PATH", str(tmp_path / "vide"))
+    with pytest.raises(gen.LeptonError) as e:
+        gen.find_gdb()
+    assert e.value.code == 2
 
 
 def test_find_clangd(tools, monkeypatch):
