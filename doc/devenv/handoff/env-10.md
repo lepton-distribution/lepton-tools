@@ -40,10 +40,10 @@ ae10f08 (installé par `install-vscodium.sh`).
 - Bilan ENV-11 §3 : D3, D4, O6, O9, O12 marqués corrigés.
 
 ## Reste à faire
-- [ ] Fusions `--no-ff` de `devenv/env-10-r5` : lepton-tools → `main` ; clone noyau → `master`,
-  extraire `master` dans `~/lepton`, contrôler le trunk. `pipx install --force <LEPTON_TOOLS>`
-  depuis `main` (ou `install-vscodium.sh` : 1 changement attendu).
-- [ ] PA-P : push de `main`, `master` du clone noyau et des deux `devenv/env-10-r5`.
+- [x] Fusions `--no-ff` de `devenv/env-10-r5` (2026-10-16, en clôture) : lepton-tools `main` 89a97a3 ;
+  clone noyau `master` 16a331b, extrait dans `~/lepton` (trunk 4 037 feuilles, propre) ; lepton
+  réinstallé depuis `main` ; `lepton check` / `generate` des rootstocks d'essai : code 0, espaces inchangés.
+- [x] PA-P : push de `main`, `master` du clone noyau et des deux `devenv/env-10-r5` (accord de l'utilisateur).
 - [ ] PA-12 : décision de lancer ENV-12 (renvois O2, O5, O10 relance, R1, §2bis erreurs à la saisie).
 
 ## Décisions
@@ -81,5 +81,5 @@ ae10f08 (installé par `install-vscodium.sh`).
 ## Reprise
 ```
 cd /Users/cle_d_anton/lepton-tools-dev/lepton-tools && claude
-# « Démarre la session sur l'étape indiquée dans DEVENV-STATUS » (fusions de la reprise 5, puis PA-12)
+# « Démarre la session sur l'étape indiquée dans DEVENV-STATUS » (PA-12, ENV-12)
 ```

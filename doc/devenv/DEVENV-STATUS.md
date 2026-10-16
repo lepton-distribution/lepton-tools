@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-16 — fusion de `devenv/env-9-r4` ; reprise 5 (ENV-10 D3, D4, O6, O12 ; noyau O9) terminée, passage VM compris ; fusions de R5 puis PA-12.
+Dernière mise à jour : 2026-10-16 — reprise 5 terminée, fusionnée et poussée ; renvois du bilan ENV-11 traités ; prochaine étape : PA-12.
 
 ## Prochaine action
 
-Fusionner localement (`--no-ff`) `devenv/env-10-r5` : lepton-tools dans `main`, clone noyau dans `master` (extraire `master` dans `~/lepton`, contrôler le trunk : 4 037 feuilles, sans regreffe) ; `pipx install --force` de lepton depuis `main` ; proposer le push (PA-P) de `main`, `master` et `devenv/env-10-r5` ; puis ouvrir PA-12 (ENV-12 : décision de lancer l'extension, `etapes/ENV-12-extension.md`, renvois O2, O5, O10, R1 et §2bis).
+Ouvrir PA-12 : présenter à l'utilisateur la décision de lancer ENV-12 (extension VSCodium, phase 2) d'après `etapes/ENV-12-extension.md` et les renvois O2, O5, O10 (relance automatique de clangd), R1 et §2bis (erreurs à la saisie) ; si oui, créer `devenv/env-12` depuis `main` 89a97a3 ou plus récent (lepton-tools) et `master` 16a331b (clone noyau).
 
 ## Étapes
 
@@ -21,7 +21,7 @@ Fusionner localement (`--no-ff`) `devenv/env-10-r5` : lepton-tools dans `main`, 
 | ENV-7 | Évolutions de scion | terminée (2026-10-13) ; reprise R1 (N1) terminée (2026-10-15) | lepton-tools `devenv/env-7`, `devenv/env-7-r1` ; seed.scions `devenv/env-7` (tag 0.5.1.0), `devenv/env-7-r1` (fusionnées dans `master`, tag 0.5.1.1) ; clone noyau `devenv/env-7-r1` | `handoff/env-7.md` |
 | ENV-8 | Outil `lepton` | terminée (2026-10-14) ; reprise R2 (N5, O15, O16) terminée (2026-10-16) ; reprise R3 (O3, O4, O14, O17 ; O1 d'ENV-6) terminée (2026-10-16) | lepton-tools `devenv/env-8`, `devenv/env-8-r2` (fusionnée), `devenv/env-8-r3` (fusionnée) ; clone noyau `devenv/env-8-r2` (fusionnée), `devenv/env-6-r3` (fusionnée) | `handoff/env-8.md` |
 | ENV-9 | Fichiers de l'éditeur | terminée (2026-10-14) ; reprise R4 (N4, O8, O10, O11) terminée (2026-10-16) | lepton-tools `devenv/env-9`, `devenv/env-9-r4` (fusionnée) ; BSP `nucleo-wl55jc1` `devenv/env-9` | `handoff/env-9.md` |
-| ENV-10 | Script d'installation VSCodium | terminée (2026-10-15) ; reprise R5 (D3, D4, O6, O12 ; noyau O9) terminée (2026-10-16) | lepton-tools `devenv/env-10` (poussée), `devenv/env-10-debian` (VM, fusionnée), `devenv/env-10-r5` (à fusionner ; poussée jusqu'à c5286be), `devenv/env-10-r5-debian` (VM, poussée, fusionnée) ; clone noyau `devenv/env-10` (poussée), `devenv/env-10-r5` (à fusionner ; poussée jusqu'à ed46f71) | `handoff/env-10.md` |
+| ENV-10 | Script d'installation VSCodium | terminée (2026-10-15) ; reprise R5 (D3, D4, O6, O12 ; noyau O9) terminée (2026-10-16) | lepton-tools `devenv/env-10` (poussée), `devenv/env-10-debian` (VM, fusionnée), `devenv/env-10-r5` (fusionnée, poussée), `devenv/env-10-r5-debian` (VM, poussée, fusionnée) ; clone noyau `devenv/env-10` (poussée), `devenv/env-10-r5` (fusionnée, poussée) | `handoff/env-10.md` |
 | ENV-11 | Validation de bout en bout | terminée (2026-10-15) | lepton-tools `devenv/env-11` (poussée jusqu'à 8cca1c0), `devenv/env-11-debian` (VM, poussée, fusionnée) ; clone noyau `devenv/env-11` (poussée) | `handoff/env-11.md` |
 | ENV-12 | Extension VSCodium | à faire | — | — |
 
@@ -60,7 +60,7 @@ Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), aba
 | clangd | 21.1.8 — `/opt/local/bin/clangd-mp-21`, MacPorts `clang-21 @21.1.8_3` | 2026-10-12 |
 | check-jsonschema | 0.38.2 — pipx (`~/.local/bin`), Python 3.11.5 | 2026-10-13 |
 | xmllint (libxml2) | 2.15.4 (21504) — `/opt/local/bin` (MacPorts) | 2026-10-13 |
-| lepton | 0.1.0 (jalons 1-6 + `generate` d'ENV-9, N2, N3, D1 d'ENV-11 ; N5, O15, O16 de R2 ; R3 ; R4 ; R5 : gdb avec Python, `check -v` trace xmllint) — `lepton-tools/pyproject.toml`, build hatchling 1.32.4 ; installé pour l'utilisateur par `pipx install --force <LEPTON_TOOLS>` (`~/.local/bin/lepton`, Python 3.11.5, exige scion ≥ 0.5.1.1), depuis `devenv/env-10-r5` (ae10f08) le 2026-10-16 par `install-vscodium.sh` (réinstallation si le contenu diffère, O12) ; à réinstaller depuis `main` après la fusion de R5 | 2026-10-16 |
+| lepton | 0.1.0 (jalons 1-6 + `generate` d'ENV-9, N2, N3, D1 d'ENV-11 ; N5, O15, O16 de R2 ; R3 ; R4 ; R5 : gdb avec Python, `check -v` trace xmllint) — `lepton-tools/pyproject.toml`, build hatchling 1.32.4 ; installé pour l'utilisateur par `pipx install --force <LEPTON_TOOLS>` (`~/.local/bin/lepton`, Python 3.11.5, exige scion ≥ 0.5.1.1), depuis `main` 89a97a3 le 2026-10-16 (fusion de R5 ; `install-vscodium.sh` réinstalle si le contenu diffère, O12) | 2026-10-16 |
 | jsonschema (dépendance de lepton) | 4.26.0 (épinglée dans `pyproject.toml`) | 2026-10-14 |
 | pytest | 9.1.1 — extra `[test]`, venv de développement `~/lepton-tools-dev/venv-lepton-tools` (Python 3.11.5, `pip install -e '.[test]'`) | 2026-10-14 |
 | Extensions VSCodium | `scripts/extensions.lst` (PA-10) : clangd 0.6.0 ; CMake Tools 1.24.42 ; Cortex-Debug 1.13.0-pre6 + mcu-debug debug-tracker 0.0.15, memory-view 0.0.29, rtos-views 0.0.16, peripheral-viewer 1.6.4 ; CodeLLDB 1.12.3 (paquet de plateforme GitHub) ; vscode-xml 0.29.3 (lemminx natif) ; Claude Code 2.1.300 — Mac Intel et Debian 13 conformes | 2026-10-15 |
@@ -231,6 +231,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-16 | — (reprise 5) | Passage VM (session Remote Control, consigne transmise par SendMessage) : D3, D4, O9, O12 conformes (`rapports/env-10-r5-debian.md`), `devenv/env-10-r5-debian` fusionnée (2b08c09). Défaut commun A (SIGPIPE `head -1` sous `pipefail`) corrigé par `sed -n 1p` (clone noyau 3e9a8e0) ; B (version d'openocd sous Debian) corrigé (3e9a8e0) ; C (`lepton check -v` sans xmllint) corrigé (80e2b27) ; pas de nouveau passage VM. Décision de l'utilisateur. |
 | 2026-10-16 | PA-10 (reprise 5) | `extensions.autoUpdate` : VSCodium 1.135 réécrit `false` en `"off"` à son lancement ; `install-vscodium.sh` écrit `"off"` et accepte `false` (ae10f08). Décision de l'utilisateur. |
 | 2026-10-16 | — (reprise 5) | Reprise 5 terminée : `install-vscodium.sh` sur le Mac 1 puis 0 changement après les corrections. Fusions locales de `devenv/env-10-r5` au début de la session suivante, puis PA-12. |
+| 2026-10-16 | PA-P (reprise 5, clôture) | Fusions locales `--no-ff` de `devenv/env-10-r5` : lepton-tools `main` 89a97a3, clone noyau `master` 16a331b (extrait dans `~/lepton` : trunk 4 037 feuilles, propre, sans regreffe) ; lepton réinstallé depuis `main` (`install-vscodium.sh --dry-run` : 0 changement) ; `lepton check` et `generate` des trois rootstocks d'essai : code 0, espaces inchangés. Push accordé et fait : lepton-tools `main` + `devenv/env-10-r5` ; clone noyau `master` + `devenv/env-10-r5`. Décision de l'utilisateur. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -269,3 +270,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-16 | ENV-8 R3 + ENV-6 R3 | Fusions locales de `devenv/env-8-r2`, lepton réinstallé ; O3 (état réel après échec de `scion new`), O4 (avertissement CFG-5 au retrait), O14 (version à `/`, lepton seul), O17 (colonnes de `seed status`), O1 (message CMake si BSP non greffé, clone noyau) ; oracle après 15 presets, non-régression validée ; push seed.scions 0.5.1.1 ; `pytest` 132 verts, bout en bout vert (`rapports/env-8-r3.md`) ; reprise terminée. |
 | 2026-10-16 | ENV-9 R4 | Fusions locales de `devenv/env-8-r3`, lepton réinstallé ; N4 (schémas associés), O8 (`--probe-serial`), O10 (amorce de `build/.active`, essai clangd), O11 (sélecteur visible) : 0ede3ee ; tâche « lepton : vérifier » et manifestes désignés par le trunk : f4e9bb8 ; `pytest` 137 verts ; bout en bout vert ; validation VSCodium et deux cartes (`rapports/env-9-r4.md`) ; reprise terminée. |
 | 2026-10-16 | ENV-10 R5 | Fusion locale de `devenv/env-9-r4`, lepton réinstallé, espaces d'essai régénérés ; D3, D4 (xmllint, clangd dans les scripts du noyau), O9 (`gdbinit-lepton`, gdb avec Python dans `generate`), O6 (défaut CMake de `LEPTON_EMBOS_ROOT`, oracle embOS), O12 (comparaison du contenu) ; push PA-P ; passage VM conforme ; A, B, C et `autoUpdate` corrigés ; `pytest` 140 verts ; bout en bout vert ; install Mac 1 puis 0 changement (`rapports/env-10-r5.md`) ; reprise terminée. |
+| 2026-10-16 | ENV-10 R5 | Clôture : fusions de `devenv/env-10-r5` (lepton-tools `main` 89a97a3, clone noyau `master` 16a331b), contrôles (trunk, lepton réinstallé, rootstocks d'essai), push ; renvois du bilan ENV-11 tous traités ; prochaine étape PA-12. |
