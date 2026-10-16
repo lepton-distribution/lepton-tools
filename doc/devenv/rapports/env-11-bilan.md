@@ -72,17 +72,17 @@ Renvois acceptés tels quels par l'utilisateur le 2026-10-15 (`DEVENV-STATUS.md`
 | O3 | message de reprise de `scion new` | ENV-8 | renvoyé ; corrigé le 2026-10-16 (reprise 3, bfa6ec5, `env-8-r3.md`) |
 | O4 | `scion remove` sans avertissement CFG-5 | ENV-8 | renvoyé ; corrigé le 2026-10-16 (reprise 3, 9d851b3, `env-8-r3.md`) |
 | O5 | XML mklepton dans le greffon noyau (CFG-1) | décision de conception (ENV-8 / ENV-12) | renvoyé |
-| O6 | `LEPTON_EMBOS_ROOT` non transmis | ENV-10 ou ENV-9 | renvoyé |
+| O6 | `LEPTON_EMBOS_ROOT` non transmis | ENV-10 ou ENV-9 | renvoyé ; corrigé le 2026-10-16 (reprise 5, défaut CMake, clone noyau ed46f71, `env-10-r5.md`) |
 | O7 | `.DS_Store` recréés | traité par N2 | clos |
 | O8 | espace sans série de sonde | ENV-9 | renvoyé ; corrigé le 2026-10-16 (reprise 4, `--probe-serial`, 0ede3ee, `env-9-r4.md`) |
-| O9 | `gdbinit-lepton` : bloc Python | noyau | renvoyé |
+| O9 | `gdbinit-lepton` : bloc Python | noyau | renvoyé ; corrigé le 2026-10-16 (reprise 5 : `gdbinit-lepton` e50479d, `lepton generate` choisit un gdb avec Python ffd98e1, `env-10-r5.md`) |
 | O10 | clangd avant configuration | ENV-9 / ENV-12 | renvoyé ; corrigé le 2026-10-16 si un preset est configuré avant `lepton generate` (reprise 4, 0ede3ee, `env-9-r4.md`) ; relance automatique : ENV-12 |
 | O11 | sélecteur de preset masqué | ENV-9 | renvoyé ; corrigé le 2026-10-16 (reprise 4, 0ede3ee, `env-9-r4.md`) |
-| O12 | lepton non réinstallé à version égale (constaté sur Debian) | ENV-10 (comparaison du commit ou numéro de version) | renvoyé |
+| O12 | lepton non réinstallé à version égale (constaté sur Debian) | ENV-10 (comparaison du commit ou numéro de version) | renvoyé ; corrigé le 2026-10-16 (reprise 5, comparaison du contenu, 8e4ba59, `env-10-r5.md`) |
 | D1 | `lepton generate` exigeait `arm-none-eabi-gdb` (absent de Debian) | corrigé dans ENV-11 (55a55bc, VM, accord de l'utilisateur ; 118 tests verts sur le Mac) | clos |
 | D2 | consigne VM : `<bin name="salut">` placé dans le bloc `sbin` | erreur de la consigne, corrigée dans `consignes/env-11-debian.md` | clos |
-| D3 | `xmllint` installé par aucun script (XML mklepton non validé par `lepton check`) | ENV-10 (`libxml2-utils` / `libxml2` dans les scripts du noyau) | renvoyé |
-| D4 | pas de clangd LLVM sur Debian (`install-debian.sh`) | ENV-10 (script du noyau) | renvoyé |
+| D3 | `xmllint` installé par aucun script (XML mklepton non validé par `lepton check`) | ENV-10 (`libxml2-utils` / `libxml2` dans les scripts du noyau) | renvoyé ; corrigé le 2026-10-16 (reprise 5, b52e656, `env-10-r5.md`, `env-10-r5-debian.md`) |
+| D4 | pas de clangd LLVM sur Debian (`install-debian.sh`) | ENV-10 (script du noyau) | renvoyé ; corrigé le 2026-10-16 (reprise 5, Debian `clangd`, macOS `clang-21`, b52e656, `env-10-r5.md`, `env-10-r5-debian.md`) |
 | O13 | `/tmp` de la VM limité à 747 Mo | information (VM) | clos |
 
 ## 4. Conclusion

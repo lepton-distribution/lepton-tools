@@ -77,8 +77,34 @@ VSCodium, Cortex-Debug avec gdb 17.2 (MacPorts) au lieu de 14.2 (Arm), espaces r
 | NUCLEO-F429ZI (`essais/env-11/f429zi`, embOS) | conforme : flash, arrêt temporaire sur `main` (`…/f429zi/trunk/…/armv7m/embos_main.c:13`) |
 | NUCLEO-WL55JC1 | non rejoué (facultatif) |
 
-## 4. Reste
+## 4. Passage VM Debian et corrections qui en découlent
 
-- Passage VM Debian unique (`consignes/env-10-r5-debian.md`) : D3, D4, O12 (et O9 sous
-  `gdb-multiarch`, O6 sans variable), après push (PA-P).
-- Fusions locales de `devenv/env-10-r5` (lepton-tools, clone noyau), puis PA-12.
+Rapport `env-10-r5-debian.md` (session VM, `devenv/env-10-r5-debian` d7d939b, fusionnée dans
+`devenv/env-10-r5` : 2b08c09) : D3, D4, O9, O12 conformes ; 139 tests verts sans test ignoré ;
+`clangd.path` = `/usr/bin/clangd` (clangd 19.1.7), `gdbPath` = `/usr/bin/gdb-multiarch` (16.3,
+avec Python), xmllint 2.9.14 ; installation n° 2 : 0 changement. Constats et suites (décisions de
+l'utilisateur) :
+
+| ID | Constat | Suite |
+| --- | --- | --- |
+| A | Défaut commun : `"$c" --version … \| head -1` sous `set -euo pipefail` → SIGPIPE intermittent (code 141 ; Debian : 18/300 pour xmllint, 2 exécutions réelles sur 4 arrêtées ; Mac : 0/300) | corrigé, clone noyau 3e9a8e0 : `sed -n 1p` (lit toute la sortie) dans les deux récapitulatifs ; sans nouveau passage VM |
+| B | `install-debian.sh` : version d'openocd vide (stderr vers `/dev/null`) | corrigé, 3e9a8e0 : `2>&1` pour tous les outils, comme macOS |
+| C | `lepton check -v` ne trace pas xmllint | corrigé, lepton-tools 80e2b27 : appel par `scion_runner.run` ; 1 test (140 verts) |
+| D | Consigne §5.4 : `cmake.options.statusBarVisibility` (O11) non énumérée | information (consigne) |
+| E | Installation n° 1 Debian : 1 changement à la relance (paquets posés par l'exécution interrompue) | information |
+
+Constat Mac de la même session : VSCodium 1.135 réécrit `"extensions.autoUpdate": false` en
+`"off"` à son lancement (fichier réécrit pendant l'essai de débogage) ; `install-vscodium.sh` le
+remettait à `false` à chaque exécution (INS-4 non tenu après usage de l'éditeur). Corrigé
+(lepton-tools ae10f08, décision de l'utilisateur) : valeur écrite `"off"`, `false` accepté ; essai
+de la fusion sur `"off"`, `false` (conformes), `true`, absent (→ `"off"`).
+
+Exécution Mac finale (`install-vscodium.sh --lepton-clone … --seed-scions …`, utilisateur) :
+n° 1 code 0, **1 changement** (lepton réinstallé : C), réglages conformes, récapitulatif complet
+(xmllint 21504, clangd-mp-21 21.1.8, openocd 0.12.0) ; n° 2 code 0, **0 changement**.
+
+## 5. Reste
+
+- Fusions locales `--no-ff` de `devenv/env-10-r5` (lepton-tools dans `main`, clone noyau dans
+  `master`, extraction dans `~/lepton`) ; réinstallation pipx depuis `main` ; push sur accord (PA-P).
+- PA-12 (ENV-12).
