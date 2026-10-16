@@ -12,7 +12,7 @@ from pathlib import Path
 
 from lepton import seed
 from lepton.errors import EXIT_OK, LeptonError
-from lepton.rootstock import SOURCE_ROOT, STEM_DIR, Rootstock, find_manifest, is_system_file
+from lepton.rootstock import SOURCE_ROOT, STEM_DIR, Rootstock, find_manifest, is_system_file, scion_key
 from lepton.scion_runner import git, run
 from lepton.templates import SCION_KIND, c_identifier, render_text, render_tree, templates_dir
 from lepton.validation import SCION_MANIFEST, validate_data
@@ -157,8 +157,30 @@ def scion_new(args) -> int:
     try:
         return seed.add_scion(rs, name, kind, origin, args.no_cmake)
     except LeptonError as e:
-        e.action = f"{e.action} ; état laissé : dépôt {repo} créé et commité, hors graine ({add_cmd})"
+        left = f"état laissé : {_left_state(rs, name, kind, repo, add_cmd)}"
+        e.action = f"{e.action} ; {left}" if e.action else left
         raise
+
+
+def _left_state(rs: Rootstock, name: str, kind: str, repo: Path, add_cmd: str) -> str:
+    """État laissé par un ajout en échec, lu sur disque (O3) : l'annulation peut être incomplète,
+    ou l'échec survenir après l'ajout (contrôle du trunk, reconfiguration CMake)."""
+    key = scion_key(kind, name)
+    declared = key in {s.key for s in rs.sources()}
+    grafted = key in {e.key for e in rs.grafted()}
+    graine = seed.load_graine(rs.seed_manifest_path())
+    listed = name in graine.get("applications", []) + graine.get("bibliotheques", []) + [graine.get("bsp")]
+    head = f"dépôt {repo} créé et commité"
+    if declared and grafted and listed:
+        return f"{head}, greffon ajouté à la graine (corriger la cause, puis lepton graft)"
+    if not (declared or grafted or listed):
+        return f"{head}, hors graine ({add_cmd})"
+    where = [w for w, b in (("déclaré dans .scion.sources.list", declared), ("greffé", grafted),
+                            ("cité dans lepton-graine.json", listed)) if b]
+    undo = (f"lepton seed remove {name}" if grafted else
+            f"scion seed-scion-remove --seed {rs.seed_root()} {key}" if declared else
+            f"retirer {name} de {rs.seed_manifest_path()}")
+    return f"{head}, greffon {', '.join(where)} (annulation incomplète : {undo}, puis {add_cmd})"
 
 
 def scion_remove(args) -> int:
