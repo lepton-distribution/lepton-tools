@@ -209,6 +209,35 @@ def test_qemu_configuration_needs_qemu_bsp(project, repos, tools, capsys):
     assert not (project / "demo.code-workspace").exists()
 
 
+def test_cfg4_option_values_in_presets(project, tools, capsys):
+    """CFG-4 (N5) : valeurs de la graine → LEPTON_OPTION_<greffon>_<NOM> ; valeur refusée → code 1."""
+    bsp = next(m.path for m in Rootstock(project).manifests().values() if m.name == "board-q")
+    data = json.loads(bsp.read_text(encoding="utf-8"))
+    data["options"] = [
+        {"nom": "BAUDS", "type": "entier", "defaut": 9600, "min": 1200, "max": 115200,
+         "portee": "privee", "description": "Débit."},
+        {"nom": "TRACE", "type": "booleen", "defaut": False, "portee": "privee", "description": "Traces."},
+        {"nom": "NOM_CARTE", "type": "chaine", "defaut": "q", "portee": "privee", "description": "Nom."}]
+    bsp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    _set_graine(project, options={"board-q": {"BAUDS": 115200, "TRACE": True, "NOM_CARTE": "carte q"}})
+    assert main(["generate", "-C", str(project)]) == 0
+    presets = json.loads((project / "trunk" / gen.PRESETS_FILE).read_text(encoding="utf-8"))
+    cache = presets["configurePresets"][0]["cacheVariables"]
+    assert {k: v for k, v in cache.items() if k.startswith(gen.OPTION_PREFIX)} == {
+        "LEPTON_OPTION_board-q_BAUDS": "115200", "LEPTON_OPTION_board-q_TRACE": "1",
+        "LEPTON_OPTION_board-q_NOM_CARTE": "carte q"}
+
+    before = _snapshot(project)
+    _set_graine(project, options={"board-q": {"BAUDS": 300}})
+    capsys.readouterr()
+    assert main(["generate", "-C", str(project)]) == 1
+    err = capsys.readouterr().err
+    assert "valeurs d'options de la graine refusées (CFG-4)" in err and "300 hors des bornes [1200, 115200]" in err
+    after = _snapshot(project)
+    after.pop(str(_graine(project)), None)
+    assert {k: v for k, v in before.items()} == after          # rien d'écrit
+
+
 def test_missing_tool_is_exit_2(project, tools, monkeypatch, capsys):
     """NF-3 : outil introuvable dans le PATH → code 2, rien d'écrit."""
     which = gen.shutil.which

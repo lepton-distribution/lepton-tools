@@ -122,6 +122,48 @@ def test_check_non_exprimable_json_schema(project, capsys):
     assert "/configurations/1/nom: configuration « debug-qemu » déclarée deux fois" in out
 
 
+BSP_OPTIONS = [
+    {"nom": "BAUDS", "type": "entier", "defaut": 9600, "min": 1200, "max": 115200,
+     "portee": "privee", "description": "Débit."},
+    {"nom": "MODE", "type": "enumeration", "defaut": "lent", "valeurs": ["lent", "rapide"],
+     "portee": "publique", "description": "Mode."},
+    {"nom": "TRACE", "type": "booleen", "defaut": False, "portee": "privee", "description": "Traces."},
+    {"nom": "NOM_CARTE", "type": "chaine", "defaut": "q", "portee": "privee", "description": "Nom."}]
+
+
+def test_cfg4_check_valeurs_options_graine(project, capsys):
+    """CFG-4 (N5) : valeurs fixées par la graine contrôlées contre le manifeste du greffon."""
+    _edit_json(_manifest_path(project, "board-q"), options=BSP_OPTIONS)
+    graine = _graine_path(project)
+    _edit_json(graine, options={"board-q": {"BAUDS": 115200, "MODE": "rapide", "TRACE": True,
+                                            "NOM_CARTE": "carte q"}})
+    code, out = _check(project, capsys)
+    assert code == 0, out
+
+    _edit_json(graine, options={
+        "board-q": {"BAUDS": 115201, "MODE": "turbo", "TRACE": 1, "NOM_CARTE": 3, "ABSENTE": 1},
+        "lepton-noyau": {"X": True},
+        "inconnu": {"X": True}})
+    code, out = _check(project, capsys)
+    assert code == 1
+    assert "/options/board-q/BAUDS: valeur refusée : 115201 hors des bornes [1200, 115200]" in out
+    assert "/options/board-q/MODE: valeur refusée : « turbo » absent des valeurs (lent, rapide)" in out
+    assert "/options/board-q/TRACE: valeur refusée : booléen attendu" in out
+    assert "/options/board-q/NOM_CARTE: valeur refusée : chaîne attendue" in out
+    assert "/options/board-q/ABSENTE: option « ABSENTE » non déclarée par board-q (BAUDS, MODE, TRACE, NOM_CARTE)" in out
+    assert "/options/lepton-noyau/X: option « X » non déclarée par lepton-noyau (aucune option)" in out
+    assert "/options/inconnu: « inconnu » n'est pas un greffon de la graine" in out
+
+    _edit_json(graine, options={"fam-test": {"BAUDS": True}, "board-q": {"BAUDS": True}})
+    code, out = _check(project, capsys)           # famille du BSP : greffon de la graine
+    assert "/options/fam-test/BAUDS: option « BAUDS » non déclarée par fam-test" in out
+    assert "/options/board-q/BAUDS: valeur refusée : entier attendu" in out
+
+    _edit_json(graine, options={"board-q": {"bauds": 9600}})
+    code, out = _check(project, capsys)           # forme : schéma de graine
+    assert code == 1 and "/options/board-q" in out
+
+
 def test_gra2_check_noyau_bsp_famille(project, repos, capsys):
     graine = _graine_path(project)
     _edit_json(graine, bsp="board-absent", applications=["app-absente"])
