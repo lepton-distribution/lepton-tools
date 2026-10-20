@@ -1,0 +1,69 @@
+{
+  "name": "lepton",
+  "displayName": "Lepton",
+  "description": "Environnement de développement Lepton : commandes de l'outil lepton dans VSCodium (ENV-12).",
+  "version": "0.1.0",
+  "publisher": "lepton-distribution",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lepton-distribution/lepton-tools.git",
+    "directory": "extension"
+  },
+  "engines": {
+    "vscode": "^1.135.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/src/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "configuration": {
+      "title": "Lepton",
+      "properties": {
+        "lepton.path": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Exécutable `lepton`. Vide : `~/.local/bin/lepton` (installation pipx) s'il existe, sinon `lepton` du `PATH`."
+        }
+      }
+    },
+    "commands": [
+      { "command": "lepton.seedStatus", "title": "état de la graine", "category": "Lepton" },
+      { "command": "lepton.seedAdd", "title": "ajouter un greffon à la graine", "category": "Lepton" },
+      { "command": "lepton.seedRemove", "title": "retirer un greffon de la graine", "category": "Lepton" },
+      { "command": "lepton.seedReplace", "title": "remplacer l'origine d'un greffon", "category": "Lepton" },
+      { "command": "lepton.seedLock", "title": "figer, vérifier ou restaurer la graine", "category": "Lepton" },
+      { "command": "lepton.scionNew", "title": "créer un greffon", "category": "Lepton" },
+      { "command": "lepton.scionRemove", "title": "retirer un greffon", "category": "Lepton" },
+      { "command": "lepton.fileAdd", "title": "créer un fichier dans le greffon", "category": "Lepton" },
+      { "command": "lepton.fileRemove", "title": "retirer le fichier de son greffon", "category": "Lepton" },
+      { "command": "lepton.fileMove", "title": "déplacer le fichier dans son greffon", "category": "Lepton" },
+      { "command": "lepton.dirAdd", "title": "créer un répertoire dans le greffon", "category": "Lepton" },
+      { "command": "lepton.dirRemove", "title": "retirer le répertoire du greffon", "category": "Lepton" },
+      { "command": "lepton.graft", "title": "regreffer", "category": "Lepton" },
+      { "command": "lepton.check", "title": "vérifier", "category": "Lepton" },
+      { "command": "lepton.generate", "title": "générer presets et espace de travail", "category": "Lepton" }
+    ],
+    "menus": {
+      "explorer/context": [
+        { "command": "lepton.fileAdd", "when": "explorerResourceIsFolder", "group": "lepton@1" },
+        { "command": "lepton.dirAdd", "when": "explorerResourceIsFolder", "group": "lepton@2" },
+        { "command": "lepton.dirRemove", "when": "explorerResourceIsFolder", "group": "lepton@3" },
+        { "command": "lepton.fileRemove", "when": "!explorerResourceIsFolder", "group": "lepton@1" },
+        { "command": "lepton.fileMove", "when": "!explorerResourceIsFolder", "group": "lepton@2" }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "test": "tsc -p . && node --test out/test/*.test.js",
+    "package": "vsce package --skip-license"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/vscode": "1.134.0",
+    "@vscode/vsce": "4.0.0",
+    "typescript": "5.9.3"
+  }
+}
