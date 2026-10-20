@@ -340,3 +340,24 @@ Propositions appliquées, à confirmer :
   unicité des noms d'options d'un greffon, des noms de greffons greffés et des configurations de
   la graine ; bornes `min` ≤ `max` ; greffon sans manifeste signalé seulement s'il porte
   `scion/sys/root/src` ; XSD par `xmllint` (absent : avertissement, comme `check FILE`).
+
+## 11. Amendements d'ENV-12, lot 2 (2026-10-20 ; O5, F7)
+
+Décision de l'utilisateur (`DEVENV-STATUS.md` §Décisions, 2026-10-20, PA-12 O5/F7).
+
+```
+lepton seed new NAME --bsp BSP --mkconf PATH ...      # PATH : XML de référence, copié dans la graine
+lepton seed mkconf import PATH                         # graine existante : même copie, applications déclarées
+lepton seed config add NAME --build-type Debug|Release|RelWithDebInfo|MinSizeRel --run qemu|carte [--no-generate]
+lepton seed config remove NAME [--no-generate]
+```
+
+| Sujet | Règle |
+| --- | --- |
+| XML du projet | `<graine>/project/scion/sys/user/<projet>/etc/mkconf_<projet>.xml`, greffé par le greffon local `lepton@project-<projet>` (celui de `CMakeUserPresets.json`) ; `mklepton_xml` = `sys/user/<projet>/etc/mkconf_<projet>.xml` |
+| Fichiers du XML | chaque `<file src_file>` copié sous son nom de base dans le même répertoire, `src_file` réécrit ; deux noms de base égaux : refus ; `src_path` des `<binaries>` inchangés |
+| Refus | XML de référence ou `src_file` absent du trunk ; fichier déjà présent dans la graine ; chemin cible fourni par un autre greffon (nom de projet en conflit dans `sys/user/`) |
+| Applications | `seed add` / `scion new` d'une application : `<bin name="<identifiant C>" stack="2048" priority="100" timeslice="1" />` dans `<binaries src_path="bin" dest_path="bin">` (créé avant `<files>`, sinon avant `</mklepton>`) ; `seed remove` / `scion remove` : déclaration retirée (tout bloc), sans avertissement CFG-5 pour ce binaire ; idempotent ; XSD contrôlé (xmllint absent : avertissement) |
+| Graine non migrée | XML hors du greffon projet : rien n'est écrit, avertissement avec `lepton seed mkconf import` ; `lepton check` l'avertit aussi (code inchangé) |
+| `seed config add` | refus : nom déjà présent, nom hors `identifiant`, exécution non permise par le BSP (qemu sans `qemu.machine`, carte sans `openocd`) ; puis `lepton generate` (sonde conservée) |
+| `seed config remove` | refus : nom absent, dernière configuration ; `build/<projet>-NAME` conservé et signalé ; puis `lepton generate` |

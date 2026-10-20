@@ -67,7 +67,7 @@
       "items": { "$ref": "#/$defs/configuration" }
     },
     "mklepton_xml": {
-      "description": "Chemin du XML mklepton du projet, relatif au trunk.",
+      "description": "Chemin du XML mklepton du projet, relatif au trunk ; fourni par le greffon local du projet (project/scion/ de la graine, sys/user/<projet>/etc/mkconf_<projet>.xml), copié par lepton seed new ou lepton seed mkconf import.",
       "$comment": "CFG-1 (XML mklepton, seconde source de configuration, versionnée dans la graine).",
       "$ref": "#/$defs/chemin_relatif"
     },

@@ -23,6 +23,7 @@ ref=${LEPTON_REF_ROOTSTOCK:-$HOME/lepton}
 arm=${ARM_GCC_BIN:-$HOME/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin}
 preset=qemu-mps2-an386-freertos
 mkconf=sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml
+xml_projet=sys/user/bout-en-bout/etc/mkconf_bout-en-bout.xml     # copie de $mkconf dans la graine (O5)
 depots_ref=(lepton/original/master lepton-famille/qemu-mps2 lepton-bsp/qemu-mps2-an386)
 
 export PATH="$arm:$PATH"
@@ -58,6 +59,13 @@ lance "$lepton" seed new bout-en-bout -C "$root" --bsp qemu-mps2-an386 --backend
     --origin "qemu-mps2=file://localhost$ref/depots/${depots_ref[1]}@master" \
     --origin "qemu-mps2-an386=file://localhost$ref/depots/${depots_ref[2]}@master"
 
+etape "XML du projet greffé depuis la graine (CFG-1, O5)"
+cible=$([ -L "$root/trunk/$xml_projet" ] && readlink -f "$root/trunk/$xml_projet")
+case $cible in
+    "$(cd "$root" && pwd -P)"/depots/lepton-seed/bout-en-bout/project/scion/*) echo "$xml_projet -> $cible" >>"$journal" ;;
+    *) echo "ÉCHEC : $xml_projet absent du trunk ou hors de la graine (journal : $journal)" >&2; exit 1 ;;
+esac
+
 etape "lepton check (graine, manifestes, XML : GRA-2, GRF-5, CFG-5)"
 lance "$lepton" check -C "$root"
 
@@ -71,7 +79,7 @@ lance cmake --preset host
 lance cmake --build "$root/build/host"
 
 etape "cmake $preset"
-lance cmake --preset "$preset"
+lance cmake --preset "$preset" -DLEPTON_MKCONF="$xml_projet"
 lance cmake --build "$root/build/$preset"
 
 etape "fumée QEMU (ctest -L smoke)"
