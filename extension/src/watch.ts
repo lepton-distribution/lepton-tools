@@ -158,8 +158,14 @@ export class Watchers implements vscode.Disposable {
     }
   }
 
-  private leftInTrunk(full: string): void {
-    vscode.window.showWarningMessage(
-      t("{0} stays a regular file of the trunk (reported by lepton check).", path.basename(full)));
+  /** Erreur persistante, suppression proposée : VSCodium 1.135 ne garde affichée qu'une notification
+   *  d'erreur munie d'un bouton (`sticky`) ; lepton check signale aussi ce fichier en erreur. */
+  private async leftInTrunk(full: string): Promise<void> {
+    const remove = t("Delete from the trunk");
+    const answer = await vscode.window.showErrorMessage(
+      t("{0} stays a regular file of the trunk: regrafting is blocked until it is moved or deleted (reported by lepton check).", path.basename(full)), remove);
+    if (answer === remove) {
+      await vscode.workspace.fs.delete(vscode.Uri.file(full), { useTrash: true });
+    }
   }
 }

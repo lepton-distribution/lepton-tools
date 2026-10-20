@@ -1,7 +1,5 @@
 {
   "clangd restarted when {0} changes": "clangd relancé quand {0} change",
-  "{0} changed: clangd restarted": "{0} a changé : clangd relancé",
-  "lepton: clangd restarted (new compilation database)": "lepton : clangd relancé (nouvelle base de compilation)",
   "regraft": "regreffer",
   "check": "vérifier",
   "generate": "générer",
@@ -66,5 +64,9 @@
   "Owner of {0}": "Propriétaire de {0}",
   "lepton: {0} moved to its scion": "lepton : {0} déplacé dans son greffon",
   "lepton: {0} left in the trunk — {1}": "lepton : {0} laissé dans le trunk — {1}",
-  "{0} stays a regular file of the trunk (reported by lepton check).": "{0} reste un fichier régulier du trunk (signalé par lepton check)."
+  "{0} changed": "{0} a changé",
+  "{0}: clangd restarted": "{0} : clangd relancé",
+  "{0} header(s) created under the build directories ({1})": "{0} en-tête(s) créé(s) sous les répertoires de construction ({1})",
+  "lepton: clangd restarted": "lepton : clangd relancé",
+  "{0} stays a regular file of the trunk: regrafting is blocked until it is moved or deleted (reported by lepton check).": "{0} reste un fichier régulier du trunk : la regreffe est bloquée tant qu'il n'est pas déplacé ou supprimé (signalé par lepton check)."
 }

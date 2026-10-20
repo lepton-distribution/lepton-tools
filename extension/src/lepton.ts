@@ -27,13 +27,13 @@ export function resolveLepton(configured: string, home: string = homedir()): str
   return existsSync(pipx) ? pipx : "lepton";
 }
 
-/** Lance `lepton ARGS` dans `cwd` ; `onOutput` reçoit stdout et stderr au fil de l'eau ;
+/** Lance `lepton ARGS` dans `cwd` ; `onOutput` reçoit stdout et stderr au fil de l'eau (flux nommé) ;
  *  `notFound` met en forme le message d'exécutable absent (traduit par l'appelant). */
 export function runLepton(
   exe: string,
   args: string[],
   cwd: string,
-  onOutput?: (text: string) => void,
+  onOutput?: (text: string, stream: "stdout" | "stderr") => void,
   signal?: AbortSignal,
   notFound: (exe: string) => string = (e) => `lepton not found: ${e} (setting lepton.path)`,
 ): Promise<LeptonResult> {
@@ -43,18 +43,18 @@ export function runLepton(
     const child = spawn(exe, args, { cwd, stdio: ["ignore", "pipe", "pipe"] });
     child.stdout.setEncoding("utf8").on("data", (d: string) => {
       stdout += d;
-      onOutput?.(d);
+      onOutput?.(d, "stdout");
     });
     child.stderr.setEncoding("utf8").on("data", (d: string) => {
       stderr += d;
-      onOutput?.(d);
+      onOutput?.(d, "stderr");
     });
     const abort = () => child.kill("SIGINT");
     signal?.addEventListener("abort", abort, { once: true });
     child.on("error", (e: NodeJS.ErrnoException) => {
       signal?.removeEventListener("abort", abort);
       const message = e.code === "ENOENT" ? notFound(exe) : e.message;
-      onOutput?.(message + "\n");
+      onOutput?.(message + "\n", "stderr");
       resolve({ code: EXIT_FAILURE, stdout, stderr: stderr + message + "\n" });
     });
     child.on("close", (code, sig) => {

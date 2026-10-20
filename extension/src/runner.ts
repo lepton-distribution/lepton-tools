@@ -30,21 +30,27 @@ export class LeptonRunner implements vscode.Disposable {
     return resolveLepton(vscode.workspace.getConfiguration("lepton").get<string>("path", ""));
   }
 
-  private spawn(args: string[], cwd: string, signal?: AbortSignal): Promise<LeptonResult> {
+  /** `echoStdout` faux : sortie standard (JSON lu par l'extension) gardée hors du canal. */
+  private spawn(args: string[], cwd: string, signal?: AbortSignal, echoStdout = true): Promise<LeptonResult> {
     const exe = this.exe();
     this.output.appendLine(`$ ${exe} ${args.join(" ")}    (${cwd})`);
-    return runLepton(exe, args, cwd, (t) => this.output.append(t), signal,
+    return runLepton(exe, args, cwd, (t, stream) => {
+      if (echoStdout || stream === "stderr") {
+        this.output.append(t);
+      }
+    }, signal,
       (e) => vscode.l10n.t("lepton not found: {0} (setting lepton.path)", e));
   }
 
-  /** Appel silencieux (observateurs, lectures JSON) : sortie dans le canal seulement. */
+  /** Appel silencieux (observateurs, lectures JSON) : sortie dans le canal seulement, sauf le JSON
+   *  d'une commande `--json`. */
   async exec(args: string[]): Promise<LeptonResult | undefined> {
     const cwd = this.cwd();
     if (!cwd) {
       return undefined;
     }
     return this.queue.run(async () => {
-      const result = await this.spawn(args, cwd);
+      const result = await this.spawn(args, cwd, undefined, !args.includes("--json"));
       this.output.appendLine(`→ code ${result.code}\n`);
       return result;
     });

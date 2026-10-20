@@ -18,11 +18,16 @@ test("arguments, répertoire de travail et code de retour transmis", async () =>
   const exe = fakeLepton('echo "cwd=$(pwd -P) args=$*"; echo "lepton: erreur: refus" >&2; echo "  → faire autrement" >&2; exit 1');
   const cwd = mkdtempSync(join(tmpdir(), "lepton-cwd-"));
   let streamed = "";
-  const r = await runLepton(exe, ["file", "add", "a b.c"], cwd, (t) => (streamed += t));
+  let errors = "";
+  const r = await runLepton(exe, ["file", "add", "a b.c"], cwd, (t, stream) => {
+    streamed += t;
+    if (stream === "stderr") errors += t;
+  });
   assert.equal(r.code, 1);
   assert.match(r.stdout, /args=file add a b\.c/);
   assert.ok(r.stdout.includes("cwd=" + (await import("node:fs")).realpathSync(cwd)));
-  assert.ok(streamed.includes("lepton: erreur: refus"));
+  assert.ok(streamed.includes("lepton: erreur: refus") && streamed.includes("args=file add"));
+  assert.ok(errors.includes("lepton: erreur: refus") && !errors.includes("args="));
   assert.equal(lastMessage(r), "lepton: erreur: refus → faire autrement");
 });
 

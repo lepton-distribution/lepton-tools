@@ -101,6 +101,21 @@ def test_check_rootstock_conforme(project, capsys):
     assert any(f.endswith("lepton-graine.json") for f in report["files"])
 
 
+def test_check_trunk_regular_file_and_broken_link(project, repos, capsys):
+    """ENV-12 lot 3 : check signale les fichiers réguliers et les liens cassés du trunk (FIC-3)."""
+    board = project / "trunk/sys/root/src/kernel/dev/bsp/board-q"
+    (board / "stray.c").write_text("")
+    (repos["bsp"] / "scion/sys/root/src/kernel/dev/bsp/board-q/board.c").rename(
+        repos["bsp"] / "scion/sys/root/src/kernel/dev/bsp/board-q/moved.c")
+    code, out = _check(project, capsys)
+    assert code == 1
+    assert "trunk/sys/root/src/kernel/dev/bsp/board-q/stray.c: fichier régulier dans le trunk (FIC-3)" in out
+    assert "trunk/sys/root/src/kernel/dev/bsp/board-q/board.c: lien cassé dans le trunk : lepton graft" in out
+    code, out = _check(project, capsys, "--json")
+    assert {a["file"] for a in json.loads(out)["anomalies"]} >= {
+        "trunk/sys/root/src/kernel/dev/bsp/board-q/stray.c", "trunk/sys/root/src/kernel/dev/bsp/board-q/board.c"}
+
+
 def test_check_non_exprimable_json_schema(project, capsys):
     bsp = _manifest_path(project, "board-q")
     _edit_json(bsp, script_liens="ld/absent.ld", options=[

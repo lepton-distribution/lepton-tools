@@ -322,6 +322,11 @@ def _manifest_label(rs: Rootstock, m: Manifest) -> str:
 def check_rootstock(rs: Rootstock, warn) -> tuple[list[str], list[Anomaly]]:
     """Fichiers contrôlés et anomalies ; `warn` reçoit les contrôles impossibles (xmllint absent)."""
     checked, anomalies = [], []
+    report = rs.check_trunk()             # FIC-3 : un fichier régulier bloque aussi toute regreffe
+    anomalies.extend(Anomaly(_rel(rs, p), "", "fichier régulier dans le trunk (FIC-3), regreffe bloquée : "
+                             "lepton file add --adopt pour le déplacer dans son greffon, ou le supprimer")
+                     for p in report.regular_files)
+    anomalies.extend(Anomaly(_rel(rs, p), "", "lien cassé dans le trunk : lepton graft") for p in report.broken_links)
     manifests = {}
     for key, m in rs.manifests().items():
         label = _manifest_label(rs, m)

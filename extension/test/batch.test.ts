@@ -1,7 +1,7 @@
 // Tests du regroupement d'événements, de la file d'exécution et de la lecture des arguments de clangd.
 import * as assert from "node:assert/strict";
 import { test } from "node:test";
-import { Batcher, SerialQueue, compileCommandsDir } from "../src/batch";
+import { Batcher, SerialQueue, compileCommandsDir, databaseDirectories } from "../src/batch";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -53,4 +53,14 @@ test("--compile-commands-dir lu dans clangd.arguments", () => {
   assert.equal(compileCommandsDir(["--compile-commands-dir="]), undefined);
   assert.equal(compileCommandsDir(undefined), undefined);
   assert.equal(compileCommandsDir("--compile-commands-dir=/x"), undefined);
+});
+
+test("répertoires de construction d'une base compile_commands.json", () => {
+  const db = JSON.stringify([
+    { directory: "/r/build/b", file: "x.c" }, { directory: "/r/build/a", file: "y.c" },
+    { directory: "/r/build/b", file: "z.c" }, { file: "sans-répertoire.c" },
+  ]);
+  assert.deepEqual(databaseDirectories(db), ["/r/build/a", "/r/build/b"]);
+  assert.deepEqual(databaseDirectories("{}"), []);
+  assert.deepEqual(databaseDirectories("pas du JSON"), []);
 });

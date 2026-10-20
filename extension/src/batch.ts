@@ -71,3 +71,23 @@ export function compileCommandsDir(args: unknown): string | undefined {
   }
   return undefined;
 }
+
+/** Répertoires de construction (`directory`) d'une base compile_commands.json, sans doublon. */
+export function databaseDirectories(text: string): string[] {
+  let entries: unknown;
+  try {
+    entries = JSON.parse(text);
+  } catch {
+    return [];
+  }
+  if (!Array.isArray(entries)) {
+    return [];
+  }
+  const dirs = new Set<string>();
+  for (const e of entries) {
+    if (e && typeof e.directory === "string" && e.directory) {
+      dirs.add(e.directory);
+    }
+  }
+  return [...dirs].sort();
+}

@@ -15,9 +15,13 @@ Version 0.2.0 (lot 3), active dès l'ouverture d'un espace :
 - redirection des créations du trunk (FIC-3) : un fichier régulier créé dans le trunk
   (« Nouveau fichier » de l'explorateur) est déplacé dans le clone de son greffon
   (`lepton file owner --json`, puis `lepton file add --adopt`) ; plusieurs greffons possibles :
-  choix parmi eux ; aucun : choix d'un greffon ou suppression du fichier ;
+  choix parmi eux ; aucun : choix d'un greffon ou suppression du fichier ; fichier laissé dans le
+  trunk : notification d'erreur avec « Supprimer du trunk » (toute regreffe est bloquée tant qu'il
+  reste ; `lepton check` le signale) ;
 - relance de clangd quand le contenu de `compile_commands.json` (`--compile-commands-dir` de
-  `clangd.arguments`) change : nouveau preset configuré, changement de preset (O10, R1) ;
+  `clangd.arguments`) change : nouveau preset configuré, changement de preset (O10, R1) ; et quand
+  un en-tête est créé sous un répertoire de construction de cette base (en-têtes générés à la
+  première construction d'un preset, que clangd ne relit pas de lui-même) ;
 - interface en anglais, traduite en français (`package.nls.fr.json`, `l10n/`) ; langue de
   VSCodium (pack de langue et `locale` réglés par `install-vscodium.sh`) ; messages de `lepton`
   en français.

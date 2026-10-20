@@ -37,7 +37,7 @@ MKCONF_PATTERN = "**/mkconf_*.xml"            # XML mklepton du noyau (xml.fileA
 # Sortie de `lepton check` (« <fichier>: [<ligne xmllint>: ]<emplacement et message> ») → panneau Problems,
 # en erreur (CFG-7 : le service JSON intégré signale les fautes de schéma en avertissement seulement)
 CHECK_MATCHER = {"owner": "lepton", "source": "lepton check", "severity": "error",
-                 "pattern": {"regexp": r"^(\S[^:]*\.(?:json|xml)): (?:(\d+): )?(.*)$",
+                 "pattern": {"regexp": r"^(?!lepton: )(\S[^:]*): (?:(\d+): )?(.*)$",
                              "file": 1, "line": 2, "message": 3}}
 _PROBE_SERIAL = re.compile(r"""^[^\s"'\\]+$""")
 
