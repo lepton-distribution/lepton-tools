@@ -15,7 +15,7 @@ restent.
 | Extension | `lepton-distribution.lepton@0.2.0` installée sur le Mac (`codium --install-extension --force`) ; `.vsix` local non versionné | — | — |
 | VSCodium (Mac) | pack `ms-ceintl.vscode-language-pack-fr@1.131.0`, `"locale": "fr"` dans `~/.vscode-oss/argv.json` (`.bak` laissé) | — | — |
 
-Rien n'est poussé (PA-P).
+Poussé (PA-P, accord du 2026-10-20) : lepton-tools `devenv/env-12` sur `origin` ; rien d'autre.
 
 ## Fait pendant la session
 - Forme du lot 3 présentée et validée (plan) ; décisions consignées (`DEVENV-STATUS.md` §Décisions,
