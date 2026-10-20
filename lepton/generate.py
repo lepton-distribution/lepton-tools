@@ -20,8 +20,8 @@ from pathlib import Path
 from lepton.checks import check_seed_options
 from lepton.errors import EXIT_OK, EXIT_TOOL, LeptonError
 from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, project_key
-from lepton.scion_runner import run, scion
-from lepton.seed import LOCAL_VERSION, _info, _remind_commit, _warn, finish, load_graine, scion_on_trunk
+from lepton.scion_runner import run
+from lepton.seed import _info, _remind_commit, _warn, finish, graft_project, load_graine, project_stem
 from lepton.validation import SCHEMA_FILES, SCION_MANIFEST, SEED_MANIFEST, schemas_dir
 
 PRESETS_FILE = "CMakeUserPresets.json"
@@ -131,6 +131,14 @@ def find_clangd(explicit: str | None) -> str | None:
 # --------------------------------------------------------------------------
 # contexte : graine, BSP, presets du noyau
 # --------------------------------------------------------------------------
+def check_configuration(c: dict, bsp_name: str, bsp: dict, action: str) -> None:
+    """Exécution de la configuration `c` permise par le BSP (qemu : machine ; carte : openocd)."""
+    if c["execution"] == "qemu" and not bsp.get("qemu", {}).get("machine"):
+        raise LeptonError(f"configuration {c['nom']} : exécution qemu, le BSP {bsp_name} ne déclare pas qemu", action)
+    if c["execution"] == "carte" and not bsp.get("openocd"):
+        raise LeptonError(f"configuration {c['nom']} : exécution carte, le BSP {bsp_name} ne déclare pas openocd", action)
+
+
 class Context:
     def __init__(self, rs: Rootstock):
         self.rs = rs
@@ -148,12 +156,7 @@ class Context:
                               f"cœurs pris en charge : {', '.join(ISA_OF_CORE)}")
         self.configurations = self.graine["configurations"]
         for c in self.configurations:
-            if c["execution"] == "qemu" and not self.bsp.get("qemu", {}).get("machine"):
-                raise LeptonError(f"configuration {c['nom']} : exécution qemu, le BSP {bsp.name} ne déclare pas qemu",
-                                  f"corriger « execution » dans {rs.seed_manifest_path()}")
-            if c["execution"] == "carte" and not self.bsp.get("openocd"):
-                raise LeptonError(f"configuration {c['nom']} : exécution carte, le BSP {bsp.name} ne déclare pas openocd",
-                                  f"corriger « execution » dans {rs.seed_manifest_path()}")
+            check_configuration(c, bsp.name, self.bsp, f"corriger « execution » dans {rs.seed_manifest_path()}")
         anomalies = check_seed_options(self.graine, by_name, str(rs.seed_manifest_path()))
         if anomalies:
             raise LeptonError("valeurs d'options de la graine refusées (CFG-4) :\n"
@@ -445,36 +448,14 @@ def prime_active(ctx: Context) -> None:
           "puis « clangd: Restart language server », ou relancer lepton generate avant l'ouverture")
 
 
-def _graft_project(ctx: Context, presets: Path) -> bool:
-    """Greffon local du projet (presets) : déclaré, inscrit puis greffé tant que le lien du trunk manque."""
-    rs, key = ctx.rs, project_key(ctx.project)
-    link = rs.trunk / PRESETS_FILE
-    changed = False
-    if key not in {s.key for s in rs.sources()}:
-        try:
-            location = str(ctx.seed_root.relative_to(rs.path))
-        except ValueError:
-            location = str(ctx.seed_root)
-        scion("seed-scion-add", "--seed", str(ctx.seed_root), key, LOCAL_VERSION, location, PROJECT_SUBPATH,
-              cwd=rs.path)
-        changed = True
-    if key not in {e.key for e in rs.grafted()}:
-        scion("seed-clone", "--seed", str(ctx.seed_root), cwd=rs.path)   # inscrit la clé dans la liste greffée
-        changed = True
-    if not (link.is_symlink() and link.resolve() == presets.resolve()):
-        scion_on_trunk(rs, "graft", "--scion", key)
-        changed = True
-    return changed
-
-
 def generate(args) -> int:
     rs = Rootstock.discover(args.rootstock)
     ctx = Context(rs)
     tools = host_tools(ctx, args.clangd)
 
-    presets = ctx.seed_root / PROJECT_SUBPATH / STEM_DIR / PRESETS_FILE
+    presets = project_stem(ctx.seed_root) / PRESETS_FILE
     seed_changed = _write_if_changed(presets, json.dumps(render_presets(ctx), ensure_ascii=False, indent=2) + "\n")
-    seed_changed |= _graft_project(ctx, presets)
+    seed_changed |= graft_project(rs, ctx.seed_root, ctx.project)
     workspace = rs.path / f"{ctx.project}.code-workspace"
     serial = probe_serial(ctx, workspace, args.probe_serial)
     ws_changed = _write_if_changed(workspace, render_workspace(ctx, tools, serial))

@@ -9,7 +9,8 @@ import pytest
 
 from lepton.cli import main
 
-MKCONF = "sys/user/demo/etc/mkconf_demo.xml"
+MKCONF = "sys/user/ref/etc/mkconf_ref.xml"           # XML de référence du noyau (modèle)
+PROJECT_XML = "sys/user/demo/etc/mkconf_demo.xml"     # copie du projet demo dans la graine (O5)
 
 KERNEL = {"nom": "lepton-noyau", "type": "noyau", "version": "1.0.0", "destination": "",
           "coeurs": ["cortex-m4f", "cortex-m7"], "backends": ["embos", "freertos"]}
@@ -69,7 +70,7 @@ def repos(tmp_path):
     base = tmp_path / "repos"
     r = {
         "kernel": make_scion_repo(base / "kernel", KERNEL, {
-            MKCONF: '<mklepton version="2"/>\n', "sys/root/src/kernel/core/kernel.c": "/* noyau */\n"}),
+            MKCONF: '<mklepton version="2">\n<kernel>\n   <heap size="10000" />\n</kernel>\n</mklepton>\n', "sys/root/src/kernel/core/kernel.c": "/* noyau */\n"}),
         "family": make_scion_repo(base / "fam-test", FAMILY, {
             "sys/root/src/kernel/dev/arch/cortexm/fam-test/uart.c": "/* uart */\n"}),
         "bsp": make_scion_repo(base / "board-q", bsp_manifest("board-q"), {

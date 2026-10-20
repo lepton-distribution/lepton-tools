@@ -17,7 +17,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from lepton.errors import EXIT_TOOL, LeptonError
-from lepton.rootstock import SOURCE_ROOT, STEM_DIR, Manifest, Rootstock
+from lepton.rootstock import PROJECT_SUBPATH, SOURCE_ROOT, STEM_DIR, Manifest, Rootstock
 from lepton.validation import Anomaly, validate_data, validate_json, validate_xml
 
 # Champs de manifeste qui désignent des fichiers relatifs à la destination
@@ -355,6 +355,10 @@ def check_rootstock(rs: Rootstock, warn) -> tuple[list[str], list[Anomaly]]:
     if not xml.exists():
         anomalies.append(Anomaly(label, "/mklepton_xml", f"« {graine['mklepton_xml']} » absent du trunk"))
         return checked, anomalies
+    if not xml.resolve().is_relative_to((rs.seed_root() / PROJECT_SUBPATH / STEM_DIR).resolve()):
+        # O5 (CFG-1) : XML du projet versionné dans la graine ; ici XML d'un greffon partagé
+        warn(f"{xml_label} : XML fourni par un greffon partagé, pas par la graine (CFG-1, O5) ; "
+             f"lepton seed mkconf import {graine['mklepton_xml']}")
     try:
         anomalies.extend(Anomaly(xml_label, a.location, a.message) for a in validate_xml(xml))
     except LeptonError as e:

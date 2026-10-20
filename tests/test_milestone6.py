@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import MKCONF, assert_trunk_clean
+from conftest import MKCONF, PROJECT_XML, assert_trunk_clean
 from lepton.cli import main
 from lepton.rootstock import KERNEL_KEY, Rootstock
 
@@ -201,8 +201,8 @@ def test_grf5_check_coeur_backend_dependances(project, capsys):
 
 
 def test_cfg5_check_pilote_binaire_non_fournis(project, capsys):
-    xml = (project / "trunk" / MKCONF).resolve()          # fichier du clone noyau, jamais le trunk
-    assert "depots" in xml.parts
+    xml = (project / "trunk" / PROJECT_XML).resolve()     # fichier de la graine (O5), jamais le trunk
+    assert "lepton-seed" in xml.parts
     xml.write_text(XML.format(extra_dev='<dev name="dev_ghost_map" use="on"/>',
                               extra_bin='<bin name="ls" stack="2048" priority="100" timeslice="1" />'))
     code, out = _check(project, capsys)
@@ -214,7 +214,9 @@ def test_cfg5_check_pilote_binaire_non_fournis(project, capsys):
 
 
 def test_cfg5_scion_remove_avertit(project, capsys):
-    """O4 : retrait d'une application que le XML déclare : avertissement CFG-5, retrait fait."""
+    """O4 : retrait d'une application que le XML déclare : avertissement CFG-5, retrait fait ; graine
+    non migrée (XML du noyau, O5) : lepton ne retire pas la déclaration."""
+    _edit_json(_graine_path(project), mklepton_xml=MKCONF)
     assert main(["scion", "new", "salut", "--type", "application", "-C", str(project), "--no-cmake"]) == 0
     xml = (project / "trunk" / MKCONF).resolve()
     xml.write_text(XML.format(extra_dev='<dev name="dev_ghost_map" use="on"/>',

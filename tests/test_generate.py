@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import MKCONF, assert_trunk_clean, url
+from conftest import MKCONF, PROJECT_XML, assert_trunk_clean, url
 from lepton import generate as gen
 from lepton.cli import main
 from lepton.rootstock import Rootstock, project_key
@@ -102,7 +102,7 @@ def test_generate_presets_grafted_in_trunk(project, tools):
     assert debug["inherits"] == "cross"
     assert debug["cacheVariables"] == {
         "CMAKE_BUILD_TYPE": "Debug", "LEPTON_ISA": "armv7m", "LEPTON_CPU": "cortex-m4f",
-        "LEPTON_BOARD": "board-q", "LEPTON_KAL_BACKEND": "embos", "LEPTON_MKCONF": MKCONF}
+        "LEPTON_BOARD": "board-q", "LEPTON_KAL_BACKEND": "embos", "LEPTON_MKCONF": PROJECT_XML}
     assert presets["configurePresets"][1]["cacheVariables"]["CMAKE_BUILD_TYPE"] == "Release"
     assert [p["configurePreset"] for p in presets["buildPresets"]] == ["demo-debug-qemu", "demo-release-qemu"]
     assert [p["name"] for p in presets["testPresets"]] == ["demo-debug-qemu", "demo-release-qemu"]
@@ -441,3 +441,50 @@ def test_status_and_lock_with_project_scion(project, tools, capsys):
     main(["check", "--json", "-C", str(project)])     # anomalies propres aux fixtures factices de conftest
     anomalies = json.dumps(json.loads(capsys.readouterr().out)["anomalies"])
     assert "project" not in anomalies and gen.PRESETS_FILE not in anomalies
+
+
+# --------------------------------------------------------------------------
+# F7 (O2) : seed config add / remove
+# --------------------------------------------------------------------------
+def _configs(root: Path) -> list[dict]:
+    return json.loads(_graine(root).read_text(encoding="utf-8"))["configurations"]
+
+
+def test_config_add_remove_regenere(project, tools, capsys):
+    assert main(["seed", "config", "add", "release-qemu", "--build-type", "Release", "--run", "qemu",
+                 "-C", str(project)]) == 0
+    assert _configs(project)[-1] == {"nom": "release-qemu", "construction": "Release", "execution": "qemu"}
+    presets = json.loads((project / "trunk" / gen.PRESETS_FILE).read_text())
+    assert [p["name"] for p in presets["configurePresets"]] == ["demo-debug-qemu", "demo-release-qemu"]
+    assert "demo-release-qemu" in json.dumps(_workspace(project))
+    (project / "build" / "demo-release-qemu").mkdir(parents=True)
+    capsys.readouterr()
+    assert main(["seed", "config", "remove", "release-qemu", "-C", str(project)]) == 0
+    out = capsys.readouterr().out
+    assert f"répertoire de construction conservé : {project / 'build' / 'demo-release-qemu'}" in out
+    presets = json.loads((project / "trunk" / gen.PRESETS_FILE).read_text())
+    assert [p["name"] for p in presets["configurePresets"]] == ["demo-debug-qemu"]
+    assert_trunk_clean(project)
+
+
+def test_config_no_generate(project, capsys):
+    capsys.readouterr()
+    assert main(["seed", "config", "add", "rel", "--build-type", "MinSizeRel", "--run", "qemu", "--no-generate",
+                 "-C", str(project)]) == 0
+    assert "lepton generate" in capsys.readouterr().out
+    assert not (project / "trunk" / gen.PRESETS_FILE).exists()
+
+
+@pytest.mark.parametrize("argv, message", [
+    (["add", "debug-qemu", "--build-type", "Debug", "--run", "qemu"], "déjà dans la graine"),
+    (["add", "debug-board", "--build-type", "Debug", "--run", "carte"], "le BSP board-q ne déclare pas openocd"),
+    (["add", "Rel", "--build-type", "Release", "--run", "qemu"], "NAME « Rel » refusé"),
+    (["remove", "absente"], "absente de la graine (debug-qemu)"),
+    (["remove", "debug-qemu"], "seule configuration de la graine"),
+])
+def test_config_refus(project, capsys, argv, message):
+    before = _graine(project).read_text(encoding="utf-8")
+    capsys.readouterr()
+    assert main(["seed", "config", *argv, "--no-generate", "-C", str(project)]) == 1
+    assert message in capsys.readouterr().err
+    assert _graine(project).read_text(encoding="utf-8") == before

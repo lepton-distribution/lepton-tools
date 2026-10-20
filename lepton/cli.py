@@ -9,6 +9,8 @@ Usage :
     lepton seed add SCION LOCATION --type T [--version V] [--path P] [--no-cmake]
     lepton seed remove SCION [--purge] [--no-cmake]
     lepton seed replace SCION LOCATION [--version V] [--path P] [--no-cmake]
+    lepton seed mkconf import PATH
+    lepton seed config add NAME --build-type T --run R [--no-generate] | seed config remove NAME [--no-generate]
     lepton scion new NAME --type T [--from BSP] [--repo DIR] [--destination D] [--no-seed] [--no-cmake]
     lepton scion remove NAME [--no-cmake]
     lepton file add PATH [--scion NAME] | file remove PATH | file mv SOURCE DESTINATION
@@ -25,7 +27,7 @@ import json
 import sys
 from pathlib import Path
 
-from lepton import __version__, checks, files, generate, scion_runner, scions, seed
+from lepton import __version__, checks, configs, files, generate, scion_runner, scions, seed
 from lepton.errors import EXIT_INTERRUPT, EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
 from lepton.rootstock import Rootstock
 from lepton.scion_runner import scion_status_line
@@ -110,7 +112,8 @@ def _add_seed_parser(sub, common) -> None:
     p = seed_sub.add_parser("new", parents=[common], help="crée un rootstock greffé depuis une graine neuve (GRA-1)")
     p.add_argument("name", metavar="NAME", help="nom du projet")
     p.add_argument("--bsp", required=True, metavar="BSP", help="greffon BSP de la carte")
-    p.add_argument("--mkconf", required=True, metavar="PATH", help="XML mklepton, chemin relatif au trunk")
+    p.add_argument("--mkconf", required=True, metavar="PATH",
+                   help="XML mklepton de référence, chemin relatif au trunk, copié dans la graine (O5)")
     p.add_argument("--backend", default="embos", choices=["embos", "freertos"], help="backend (défaut : embos)")
     p.add_argument("--seed-repo", metavar="DIR", help="dépôt git de la graine (défaut : depots/lepton-seed/NAME)")
     p.add_argument("--origin", action="append", metavar="SCION=LOCATION[@VERSION][:PATH]",
@@ -150,6 +153,26 @@ def _add_seed_parser(sub, common) -> None:
     _origin_options(p)
     _no_cmake(p)
     p.set_defaults(func=seed.seed_replace)
+
+    mk_p = seed_sub.add_parser("mkconf", parents=[common], help="XML mklepton du projet (CFG-1, O5)")
+    mk_sub = mk_p.add_subparsers(dest="mkconf_command", metavar="ACTION", parser_class=_Parser, required=True)
+    p = mk_sub.add_parser("import", parents=[common],
+                          help="copie un XML du trunk (et ses src_file) dans la graine, applications déclarées")
+    p.add_argument("path", metavar="PATH", help="XML mklepton de référence, chemin relatif au trunk")
+    p.set_defaults(func=seed.seed_mkconf_import)
+
+    cfg_p = seed_sub.add_parser("config", parents=[common], help="configurations de la graine (CFG-6)")
+    cfg_sub = cfg_p.add_subparsers(dest="config_command", metavar="ACTION", parser_class=_Parser, required=True)
+    p = cfg_sub.add_parser("add", parents=[common], help="ajoute une configuration (preset <projet>-NAME)")
+    p.add_argument("name", metavar="NAME", help="nom de la configuration (ex. release-qemu)")
+    p.add_argument("--build-type", required=True, choices=configs.BUILD_TYPES, help="type de construction CMake")
+    p.add_argument("--run", required=True, choices=configs.RUNS, help="cible d'exécution")
+    p.add_argument("--no-generate", action="store_true", help="ne pas régénérer presets et espace de travail")
+    p.set_defaults(func=configs.config_add)
+    p = cfg_sub.add_parser("remove", parents=[common], help="retire une configuration (build/ conservé)")
+    p.add_argument("name", metavar="NAME")
+    p.add_argument("--no-generate", action="store_true", help="ne pas régénérer presets et espace de travail")
+    p.set_defaults(func=configs.config_remove)
 
 
 def _add_scion_parser(sub, common) -> None:
