@@ -459,6 +459,7 @@ def seed_status(args) -> int:
                        "version": src.version if src else e.version,
                        "location": src.location if src else None,
                        "path": str(rs.clone(e)),
+                       "stem": str((rs.clone(e) / STEM_DIR).resolve()),
                        "in_seed": src is not None,
                        **_git_state(rs.clone(e))})
     grafted_names = {s["name"] for s in scions}

@@ -90,9 +90,9 @@ def test_fic2_dir_remove_several_owners(project, repos, capsys):
 
 # --- FIC-3 ---------------------------------------------------------------------------------------
 def test_fic3_refus_sans_proprietaire(project, tmp_path, capsys):
-    (project / "trunk/empty").mkdir()                 # répertoire du trunk sans aucune feuille
+    (project / "trunk/empty").mkdir()                 # répertoire du trunk sans aucune feuille : on remonte
     assert _lepton(project, "file", "add", str(project / "trunk/empty/x.c")) == 1
-    assert "sans greffon propriétaire" in capsys.readouterr().err
+    assert "plusieurs greffons possèdent trunk " in capsys.readouterr().err
     assert not (project / "trunk/empty/x.c").exists()
     assert _lepton(project, "file", "add", str(tmp_path / "elsewhere.c")) == 1
     assert "ni dans le trunk" in capsys.readouterr().err

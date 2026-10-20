@@ -13,9 +13,10 @@ Usage :
     lepton seed config add NAME --build-type T --run R [--no-generate] | seed config remove NAME [--no-generate]
     lepton scion new NAME --type T [--from BSP] [--repo DIR] [--destination D] [--no-seed] [--no-cmake]
     lepton scion remove NAME [--no-cmake]
-    lepton file add PATH [--scion NAME] | file remove PATH | file mv SOURCE DESTINATION
+    lepton file add PATH [--scion NAME] [--adopt] | file remove PATH | file mv SOURCE DESTINATION
+    lepton file owner PATH [--json]
     lepton dir add PATH [--scion NAME] | dir remove PATH [--scion NAME]
-    lepton graft [--scion NAME]... [--force] [--no-cmake]
+    lepton graft [--scion NAME]... [--path P]... [--force] [--no-cmake]
     lepton generate [--clangd PATH] [--probe-serial SERIAL]
 
 Codes de retour : 0 succès ; 1 utilisation, refus ou anomalie ; 2 échec ou absence d'un outil
@@ -203,6 +204,8 @@ def _add_files_parsers(sub, common) -> None:
     p = file_sub.add_parser("add", parents=[common], help="crée un fichier vide dans le clone propriétaire (FIC-1)")
     p.add_argument("path", metavar="PATH", help="chemin du trunk ou d'un clone")
     p.add_argument("--scion", metavar="NAME", help=owner_help)
+    p.add_argument("--adopt", action="store_true",
+                   help="PATH est un fichier régulier du trunk : le déplacer (contenu conservé) dans le clone (FIC-3)")
     p.set_defaults(func=files.file_add)
     p = file_sub.add_parser("remove", parents=[common], help="retire un fichier de son clone (FIC-1)")
     p.add_argument("path", metavar="PATH")
@@ -211,6 +214,10 @@ def _add_files_parsers(sub, common) -> None:
     p.add_argument("source", metavar="SOURCE")
     p.add_argument("destination", metavar="DESTINATION")
     p.set_defaults(func=files.file_mv)
+    p = file_sub.add_parser("owner", parents=[common], help="greffon propriétaire d'un chemin (code 1 si non déterminé)")
+    p.add_argument("path", metavar="PATH", help="chemin du trunk ou d'un clone, existant ou non")
+    p.add_argument("--json", action="store_true", help="sortie JSON")
+    p.set_defaults(func=files.file_owner)
 
     dir_p = sub.add_parser("dir", help="répertoires des greffons (FIC)", parents=[common])
     dir_sub = dir_p.add_subparsers(dest="dir_command", metavar="ACTION", parser_class=_Parser, required=True)
@@ -225,6 +232,9 @@ def _add_files_parsers(sub, common) -> None:
 
     p = sub.add_parser("graft", parents=[common], help="regreffe (fichiers système du trunk supprimés)")
     p.add_argument("--scion", action="append", metavar="NAME", help="ne regreffer que ce greffon (répétable)")
+    p.add_argument("--path", action="append", metavar="P",
+                   help="regreffer le greffon de ce chemin (clone ou lien du trunk, répétable) ; CMake "
+                        "reconfiguré seulement pour CMakeLists.txt ou lepton-greffon.json")
     p.add_argument("--force", action="store_true", help="transmis à scion : conserve les autres fichiers réguliers")
     _no_cmake(p)
     p.set_defaults(func=files.graft)

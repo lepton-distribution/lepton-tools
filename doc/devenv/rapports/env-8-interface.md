@@ -122,7 +122,8 @@ lepton scion remove NAME [--no-cmake]
 
 ### 3.7 `lepton file` et `lepton dir` (FIC-1, FIC-2, FIC-3, FIC-6)
 ```
-lepton file add PATH [--scion SCION]
+lepton file add PATH [--scion SCION] [--adopt]     # --adopt : §12
+lepton file owner PATH [--json]                    # §12
 lepton file remove PATH
 lepton file mv SOURCE DESTINATION
 lepton dir add PATH [--scion SCION]
@@ -146,7 +147,7 @@ propriétaire » (ENV-8 tâche 5). Greffon désigné hors de la graine → refus
 
 `CMakeLists.txt` ou `lepton-greffon.json` ajouté, retiré ou déplacé : reconfiguration CMake.
 
-### 3.8 `lepton graft [--scion SCION]... [--force] [--no-cmake]`
+### 3.8 `lepton graft [--scion SCION]... [--path P]... [--force] [--no-cmake]` (`--path` : §12)
 Suppression des fichiers système réguliers du trunk (`.DS_Store`, `._*`, Q8) ; `scion graft`
 (complet) ou `scion graft --scion <clé>` ; contrôle final du trunk ; reconfiguration CMake.
 `--force` transmis à scion : conserve les autres fichiers réguliers du trunk (règle scion).
@@ -361,3 +362,22 @@ lepton seed config remove NAME [--no-generate]
 | Graine non migrée | XML hors du greffon projet : rien n'est écrit, avertissement avec `lepton seed mkconf import` ; `lepton check` l'avertit aussi (code inchangé) |
 | `seed config add` | refus : nom déjà présent, nom hors `identifiant`, exécution non permise par le BSP (qemu sans `qemu.machine`, carte sans `openocd`) ; puis `lepton generate` (sonde conservée) |
 | `seed config remove` | refus : nom absent, dernière configuration ; `build/<projet>-NAME` conservé et signalé ; puis `lepton generate` |
+
+## 12. Amendements d'ENV-12, lot 3 (2026-10-20 ; F2, F3)
+
+Décisions de l'utilisateur (`DEVENV-STATUS.md` §Décisions, 2026-10-20, lot 3).
+
+```
+lepton file owner PATH [--json]                 # propriétaire d'un chemin du trunk ou d'un clone
+lepton file add PATH --adopt [--scion NAME]     # fichier régulier du trunk déplacé dans le clone
+lepton graft [--scion NAME]... [--path P]...    # greffon déduit du chemin
+```
+
+| Sujet | Règle |
+| --- | --- |
+| Propriétaire d'un chemin nouveau (§3.7, amendé) | plus proche répertoire existant du trunk, en **remontant au-delà des répertoires sans aucune feuille** (créés dans le trunk par l'éditeur) ; un répertoire vide sous la racine du trunk donne donc « plusieurs greffons » ; `file mv` applique la même règle à sa destination |
+| `file owner` | code 0 si propriétaire déterminé, 1 sinon ; texte ou JSON, émis dans les deux cas ; hors trunk et hors clone greffé : erreur ordinaire |
+| JSON de `file owner` | `path` (tel que donné), `relative` (au trunk), `trunk_path`, `kind` (`clone` chemin donné dans un clone, `link`, `directory`, `regular`, `absent`, `ignored` : liste greffée de scion ou fichier système du trunk, Q8 — `status` `none`), `status` (`owned`, `ambiguous`, `none`), `source` (`clone`, `link`, `directory`, `null`), `owner` (`name`, `key`, `in_seed`, `clone_path`) ou `null`, `candidates` (`name`, `key`, `in_seed`) |
+| `file add --adopt` | PATH doit être un fichier régulier du trunk (refus : lien, absent, chemin d'un clone) ; propriétaire comme `file add` (`--scion` si ambigu) ; refus si le chemin existe déjà dans le clone (fichier du trunk conservé) ; déplacement, contenu conservé, puis `scion graft --scion` ; CMake si `CMakeLists.txt` / `lepton-greffon.json` |
+| `graft --path` | chemin dans un clone greffé (existant ou supprimé) ou lien du trunk ; sinon refus « greffon non déterminé » ; combinable avec `--scion` ; sans `--scion`, CMake reconfiguré seulement si un chemin est `CMakeLists.txt` ou `lepton-greffon.json` (un répertoire supprimé qui en contenait n'est pas reconnu : `lepton graft` complet) |
+| `seed status --json` | champ `stem` par greffon : `<clone>/scion` résolu (répertoire observé par l'extension, F2) |

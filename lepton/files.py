@@ -5,13 +5,15 @@ Toute création se fait dans le clone du greffon propriétaire, jamais dans le t
 `scion graft --scion <clé>` ; le contrôle final du trunk suit chaque commande.
 """
 
+import json
 import os
 import shutil
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-from lepton.errors import EXIT_OK, LeptonError
-from lepton.rootstock import STEM_DIR, Rootstock, find_manifest
+from lepton.errors import EXIT_OK, EXIT_USER, LeptonError
+from lepton.rootstock import GRAFTED_LIST, STEM_DIR, Rootstock, find_manifest, is_system_file
 from lepton.scion_runner import git, scion
 from lepton.seed import _info, finish, scion_on_trunk
 
@@ -32,6 +34,7 @@ class Target:
     rs: Rootstock
     rel: Path                    # chemin relatif au trunk (et à scion/ du clone)
     owner: Owner | None          # connu si le chemin est donné dans un clone ou est un lien du trunk
+    in_clone: bool = False       # chemin donné dans un clone (et non par le trunk)
 
     @property
     def trunk_path(self) -> Path:
@@ -68,7 +71,7 @@ def _locate(rs: Rootstock, owners: list[Owner], raw: str) -> Target:
     if owner is None or path == owner.stem:
         raise LeptonError(f"{raw} : ni dans le trunk {rs.trunk}, ni dans un greffon greffé",
                           "donner un chemin du trunk, ou d'un clone sous scion/")
-    return Target(rs, path.relative_to(owner.stem), owner)
+    return Target(rs, path.relative_to(owner.stem), owner, in_clone=True)
 
 
 def _owners_under(owners: list[Owner], directory: Path) -> list[Owner]:
@@ -80,6 +83,20 @@ def _owners_under(owners: list[Owner], directory: Path) -> list[Owner]:
             if o is not None:
                 found.add(o)
     return [o for o in owners if o in found]
+
+
+def _search_dir(rs: Rootstock, owners: list[Owner], start: Path) -> tuple[Path, list[Owner]]:
+    """Répertoire du trunk qui décide du propriétaire d'un chemin nouveau : `start` ou son plus proche
+    parent existant, en remontant au-delà des répertoires sans aucune feuille (créés dans le trunk par
+    l'éditeur, décision du 2026-10-20) ; greffons de ses feuilles."""
+    existing = start
+    while not existing.is_dir():
+        existing = existing.parent
+    candidates = _owners_under(owners, existing)
+    while not candidates and existing != rs.trunk:
+        existing = existing.parent
+        candidates = _owners_under(owners, existing)
+    return existing, candidates
 
 
 def _by_name(rs: Rootstock, owners: list[Owner], name: str) -> Owner:
@@ -96,30 +113,47 @@ def _in_seed(rs: Rootstock, owner: Owner) -> Owner:
     return owner
 
 
-def _new_path_owner(rs: Rootstock, owners: list[Owner], t: Target, scion_name: str | None) -> Owner:
-    """Propriétaire d'un chemin nouveau : clone donné, --scion, sinon greffon unique des feuilles du
-    plus proche répertoire existant du trunk (§3.7)."""
+@dataclass
+class Ownership:
+    """Propriétaire d'un chemin (lepton file owner) : déterminé, ambigu ou absent."""
+    status: str                  # owned | ambiguous | none
+    source: str | None           # clone | link | directory | scion (--scion) | None
+    owner: Owner | None
+    candidates: list[Owner]
+    searched: Path | None        # répertoire du trunk dont les feuilles ont été examinées
+
+
+def _ownership(rs: Rootstock, owners: list[Owner], t: Target, scion_name: str | None) -> Ownership:
+    """Clone donné ou lien du trunk, --scion, sinon greffons des feuilles du répertoire (§3.7) : le
+    répertoire lui-même s'il existe dans le trunk, sinon son plus proche parent existant (_search_dir)."""
     chosen = _by_name(rs, owners, scion_name) if scion_name else None
     if t.owner is not None:
         if chosen is not None and chosen != t.owner:
             raise LeptonError(f"{t.rel} est dans le clone de {t.owner.name}, --scion désigne {chosen.name}",
                               "retirer --scion ou donner le chemin du trunk")
-        return _in_seed(rs, t.owner)
+        return Ownership("owned", "clone" if t.in_clone else "link", t.owner, [t.owner], None)
     if chosen is not None:
-        return _in_seed(rs, chosen)
-    existing = t.trunk_path.parent
-    while not existing.is_dir():
-        existing = existing.parent
-    candidates = _owners_under(owners, existing)
-    if not candidates:
-        raise LeptonError(f"{t.rel} : chemin du trunk sans greffon propriétaire "
-                          f"(aucune feuille sous {existing.relative_to(rs.trunk.parent)})",
+        return Ownership("owned", "scion", chosen, [chosen], None)
+    start = t.trunk_path if t.trunk_path.is_dir() and not t.trunk_path.is_symlink() else t.trunk_path.parent
+    existing, candidates = _search_dir(rs, owners, start)
+    status = "owned" if len(candidates) == 1 else "ambiguous" if candidates else "none"
+    return Ownership(status, "directory" if candidates else None,
+                     candidates[0] if len(candidates) == 1 else None, candidates, existing)
+
+
+def _new_path_owner(rs: Rootstock, owners: list[Owner], t: Target, scion_name: str | None) -> Owner:
+    """Propriétaire d'un chemin nouveau : clone donné, --scion, sinon greffon unique des feuilles du
+    plus proche répertoire du trunk qui en a (§3.7, _search_dir)."""
+    o = _ownership(rs, owners, t, scion_name)
+    where = o.searched.relative_to(rs.trunk.parent) if o.searched else None
+    if o.status == "none":
+        raise LeptonError(f"{t.rel} : chemin du trunk sans greffon propriétaire (aucune feuille sous {where})",
                           "désigner le greffon par --scion NAME")
-    if len(candidates) > 1:
-        raise LeptonError(f"{t.rel} : plusieurs greffons possèdent {existing.relative_to(rs.trunk.parent)} "
-                          f"({', '.join(o.name for o in candidates)})",
+    if o.status == "ambiguous":
+        raise LeptonError(f"{t.rel} : plusieurs greffons possèdent {where} "
+                          f"({', '.join(c.name for c in o.candidates)})",
                           "désigner le greffon par --scion NAME")
-    return _in_seed(rs, candidates[0])
+    return _in_seed(rs, o.owner)
 
 
 def _existing_owner(t: Target, what: str) -> Owner:
@@ -151,6 +185,8 @@ def file_add(args) -> int:
     rs = Rootstock.discover(args.rootstock)
     owners = _owners(rs)
     t = _locate(rs, owners, args.path)
+    if args.adopt:
+        return _adopt(rs, owners, t, args)
     owner = _new_path_owner(rs, owners, t, args.scion)
     _refuse_existing(t, owner)
     target = t.clone_path(owner)
@@ -158,6 +194,61 @@ def file_add(args) -> int:
     target.touch()
     _info(f"créé dans {owner.name} : {target}")
     return _regraft(rs, owner, t.rel.name in CMAKE_FILES)
+
+
+def _adopt(rs: Rootstock, owners: list[Owner], t: Target, args) -> int:
+    """--adopt : fichier régulier créé dans le trunk (éditeur, FIC-3) déplacé, contenu conservé, dans
+    le clone propriétaire, puis regreffe ; le lien prend sa place."""
+    source = t.trunk_path
+    if t.owner is not None or source.is_symlink() or not source.is_file():
+        raise LeptonError(f"--adopt : {args.path} n'est pas un fichier régulier du trunk",
+                          "lepton file add sans --adopt pour créer un fichier vide")
+    owner = _new_path_owner(rs, owners, t, args.scion)
+    target = t.clone_path(owner)
+    if target.exists() or target.is_symlink():
+        raise LeptonError(f"{target} existe déjà dans le clone de {owner.name}",
+                          "renommer le fichier du trunk, ou le supprimer puis lepton graft")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.move(str(source), str(target))
+    _info(f"déplacé dans {owner.name} : {source} → {target}")
+    return _regraft(rs, owner, t.rel.name in CMAKE_FILES)
+
+
+def _owner_json(o: Owner, rs: Rootstock, t: Target | None = None) -> dict:
+    data = {"name": o.name, "key": o.key, "in_seed": o.key in {s.key for s in rs.sources()}}
+    if t is not None:
+        data["clone_path"] = str(t.clone_path(o))
+    return data
+
+
+def file_owner(args) -> int:
+    """Propriétaire d'un chemin du trunk ou d'un clone (§3.7) ; code 1 s'il n'est pas déterminé."""
+    rs = Rootstock.discover(args.rootstock)
+    owners = _owners(rs)
+    t = _locate(rs, owners, args.path)
+    p = t.trunk_path
+    if not t.in_clone and p.is_file() and not p.is_symlink() and (p == rs.trunk / GRAFTED_LIST
+                                                                    or is_system_file(p.name)):
+        o = Ownership("none", None, None, [], None)          # liste de scion, fichier système (Q8)
+        kind = "ignored"
+    else:
+        o = _ownership(rs, owners, t, None)
+        kind = ("clone" if t.in_clone else "link" if p.is_symlink() else "directory" if p.is_dir()
+                else "regular" if p.is_file() else "absent")
+    result = {"path": args.path, "relative": str(t.rel), "trunk_path": str(p), "kind": kind,
+              "status": o.status, "source": o.source,
+              "owner": _owner_json(o.owner, rs, t) if o.owner else None,
+              "candidates": [_owner_json(c, rs) for c in o.candidates]}
+    if args.json:
+        json.dump(result, sys.stdout, ensure_ascii=False, indent=2)
+        print()
+    elif o.owner:
+        print(f"{o.owner.name} ({o.owner.key}) : {t.clone_path(o.owner)}")
+    elif o.candidates:
+        print(f"plusieurs greffons : {', '.join(c.name for c in o.candidates)}")
+    else:
+        print(f"aucun greffon propriétaire pour {t.rel}")
+    return EXIT_OK if o.status == "owned" else EXIT_USER
 
 
 def file_remove(args) -> int:
@@ -188,10 +279,7 @@ def file_mv(args) -> int:
         raise LeptonError(f"source dans {owner.name}, destination dans {dst.owner.name}",
                           "déplacement limité à un greffon : lepton file add puis lepton file remove")
     if dst.owner is None:
-        existing = dst.trunk_path.parent
-        while not existing.is_dir():
-            existing = existing.parent
-        if owner not in _owners_under(owners, existing):
+        if owner not in _search_dir(rs, owners, dst.trunk_path.parent)[1]:
             raise LeptonError(f"{dst.rel} : hors des répertoires de {owner.name}",
                               "déplacement limité à un greffon : lepton file add puis lepton file remove")
     _refuse_existing(dst, owner)
@@ -261,7 +349,18 @@ def dir_remove(args) -> int:
 def graft(args) -> int:
     rs = Rootstock.discover(args.rootstock)
     owners = _owners(rs)
-    keys = [_by_name(rs, owners, n).key for n in args.scion or []]
-    scion_on_trunk(rs, "graft", *(["--force"] if args.force else []), *(a for k in keys for a in ("--scion", k)))
-    _info("regreffe " + (f"de {', '.join(args.scion)}" if keys else "complète") + " faite")
-    return finish(rs, args.no_cmake)
+    chosen = [_by_name(rs, owners, n) for n in args.scion or []]
+    paths = args.path or []
+    for raw in paths:                       # --path : greffon déduit du chemin (observateur, F2)
+        t = _locate(rs, owners, raw)
+        if t.owner is None:
+            raise LeptonError(f"{raw} : greffon non déterminé (ni dans un clone, ni lien du trunk)",
+                              "donner un chemin sous scion/ d'un clone greffé, ou --scion NAME")
+        if t.owner not in chosen:
+            chosen.append(t.owner)
+    scion_on_trunk(rs, "graft", *(["--force"] if args.force else []),
+                   *(a for o in chosen for a in ("--scion", o.key)))
+    _info("regreffe " + (f"de {', '.join(o.name for o in chosen)}" if chosen else "complète") + " faite")
+    # --path sans --scion : CMake reconfiguré seulement pour un fichier qui l'impose (§3.7)
+    cmake_needed = not paths or bool(args.scion) or any(Path(p).name in CMAKE_FILES for p in paths)
+    return finish(rs, args.no_cmake or not cmake_needed)

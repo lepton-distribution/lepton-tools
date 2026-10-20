@@ -18,7 +18,7 @@ chaîne par les scripts du noyau, scion, lepton ; macOS Intel et Apple Silicon, 
 Commandes disponibles (0.1.0) : `lepton --version`, `lepton check [FILE...]` (sans argument :
 graine, greffons greffés et XML du rootstock), `lepton seed new | status | add | remove | replace |
 lock`, `lepton seed mkconf import`, `lepton seed config add | remove`, `lepton scion new | remove`,
-`lepton file add | remove | mv`, `lepton dir add | remove`, `lepton graft`, `lepton generate`
+`lepton file add | remove | mv | owner`, `lepton dir add | remove`, `lepton graft`, `lepton generate`
 (`lepton <commande> [<action>] --help`). Exemple :
 
 ```
@@ -28,6 +28,7 @@ lepton seed new demo -C ~/demo --bsp qemu-mps2-an386 \
 cd ~/demo/trunk
 lepton scion new ma-carte --type bsp --from qemu-mps2-an386   # dépôt depots/lepton-bsp/ma-carte
 lepton file add sys/root/src/kernel/dev/bsp/ma-carte/gpio.c    # créé dans le clone, regreffé
+lepton file owner sys/root/src/kernel/dev/bsp/ma-carte/spi.c   # greffon propriétaire (--json)
 lepton check                                                   # GRA-2, GRF-5, CFG-5
 lepton seed lock                                               # lepton-graine.lock.json (GRA-5)
 lepton generate        # CMakeUserPresets.json (graine, greffé) et ~/demo/demo.code-workspace
