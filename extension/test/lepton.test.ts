@@ -4,7 +4,7 @@ import { chmodSync, mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
-import { EXIT_FAILURE, EXIT_INTERRUPT, lastMessage, resolveLepton, runLepton } from "../src/lepton";
+import { EXIT_FAILURE, EXIT_INTERRUPT, lastMessage, parseJson, resolveLepton, runLepton } from "../src/lepton";
 
 function fakeLepton(body: string): string {
   const dir = mkdtempSync(join(tmpdir(), "lepton-ext-"));
@@ -26,10 +26,12 @@ test("arguments, répertoire de travail et code de retour transmis", async () =>
   assert.equal(lastMessage(r), "lepton: erreur: refus → faire autrement");
 });
 
-test("exécutable absent : code 2 et message", async () => {
+test("exécutable absent : code 2 et message (mis en forme par l'appelant)", async () => {
   const r = await runLepton("/nonexistent/lepton", ["check"], tmpdir());
   assert.equal(r.code, EXIT_FAILURE);
-  assert.match(lastMessage(r), /lepton introuvable/);
+  assert.match(lastMessage(r), /lepton not found: \/nonexistent\/lepton/);
+  const fr = await runLepton("/nonexistent/lepton", [], tmpdir(), undefined, undefined, (e) => `introuvable ${e}`);
+  assert.equal(lastMessage(fr), "introuvable /nonexistent/lepton");
 });
 
 test("annulation : SIGINT, code 130", async () => {
@@ -47,4 +49,9 @@ test("résolution de l'exécutable", () => {
   mkdirSync(join(home, ".local", "bin"), { recursive: true });
   writeFileSync(join(home, ".local", "bin", "lepton"), "");
   assert.equal(resolveLepton("", home), join(home, ".local", "bin", "lepton"));
+});
+
+test("JSON de lepton : lu, ou undefined", () => {
+  assert.deepEqual(parseJson({ code: 0, stdout: '{"a": 1}\n', stderr: "" }), { a: 1 });
+  assert.equal(parseJson({ code: 1, stdout: "texte", stderr: "" }), undefined);
 });

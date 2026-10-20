@@ -27,13 +27,15 @@ export function resolveLepton(configured: string, home: string = homedir()): str
   return existsSync(pipx) ? pipx : "lepton";
 }
 
-/** Lance `lepton ARGS` dans `cwd` ; `onOutput` reçoit stdout et stderr au fil de l'eau. */
+/** Lance `lepton ARGS` dans `cwd` ; `onOutput` reçoit stdout et stderr au fil de l'eau ;
+ *  `notFound` met en forme le message d'exécutable absent (traduit par l'appelant). */
 export function runLepton(
   exe: string,
   args: string[],
   cwd: string,
   onOutput?: (text: string) => void,
   signal?: AbortSignal,
+  notFound: (exe: string) => string = (e) => `lepton not found: ${e} (setting lepton.path)`,
 ): Promise<LeptonResult> {
   return new Promise((resolve) => {
     let stdout = "";
@@ -51,7 +53,7 @@ export function runLepton(
     signal?.addEventListener("abort", abort, { once: true });
     child.on("error", (e: NodeJS.ErrnoException) => {
       signal?.removeEventListener("abort", abort);
-      const message = e.code === "ENOENT" ? `lepton introuvable : ${exe} (réglage lepton.path)` : e.message;
+      const message = e.code === "ENOENT" ? notFound(exe) : e.message;
       onOutput?.(message + "\n");
       resolve({ code: EXIT_FAILURE, stdout, stderr: stderr + message + "\n" });
     });
@@ -67,4 +69,39 @@ export function lastMessage(result: LeptonResult): string {
   const lines = result.stderr.split("\n").map((l) => l.trim()).filter((l) => l);
   const start = lines.map((l) => l.startsWith("lepton:")).lastIndexOf(true);
   return lines.slice(start >= 0 ? start : Math.max(lines.length - 1, 0)).join(" ");
+}
+
+/** Greffon tel que le décrit lepton (`file owner --json`, `seed status --json`). */
+export interface ScionRef {
+  name: string;
+  key: string;
+  in_seed: boolean;
+}
+
+/** Sortie de `lepton file owner PATH --json` (rapports/env-8-interface.md §12). */
+export interface OwnerResult {
+  path: string;
+  relative: string;
+  trunk_path: string;
+  kind: "clone" | "link" | "directory" | "regular" | "absent" | "ignored";
+  status: "owned" | "ambiguous" | "none";
+  source: string | null;
+  owner: (ScionRef & { clone_path: string }) | null;
+  candidates: ScionRef[];
+}
+
+/** Sortie de `lepton seed status --json`, champs lus par l'extension. */
+export interface StatusResult {
+  rootstock: string;
+  trunk: string;
+  scions: (ScionRef & { role: string; stem: string })[];
+}
+
+/** JSON de la sortie standard de lepton ; `undefined` si elle n'en est pas. */
+export function parseJson<T>(result: LeptonResult): T | undefined {
+  try {
+    return JSON.parse(result.stdout) as T;
+  } catch {
+    return undefined;
+  }
 }

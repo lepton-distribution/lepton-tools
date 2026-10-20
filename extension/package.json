@@ -1,8 +1,8 @@
 {
   "name": "lepton",
-  "displayName": "Lepton",
-  "description": "Environnement de développement Lepton : commandes de l'outil lepton dans VSCodium (ENV-12).",
-  "version": "0.1.0",
+  "displayName": "%displayName%",
+  "description": "%description%",
+  "version": "0.2.0",
   "publisher": "lepton-distribution",
   "repository": {
     "type": "git",
@@ -16,7 +16,11 @@
     "Other"
   ],
   "main": "./out/src/extension.js",
-  "activationEvents": [],
+  "l10n": "./l10n",
+  "activationEvents": [
+    "workspaceContains:**/lepton-graine.json",
+    "onStartupFinished"
+  ],
   "contributes": {
     "configuration": {
       "title": "Lepton",
@@ -24,34 +28,135 @@
         "lepton.path": {
           "type": "string",
           "default": "",
-          "markdownDescription": "Exécutable `lepton`. Vide : `~/.local/bin/lepton` (installation pipx) s'il existe, sinon `lepton` du `PATH`."
+          "markdownDescription": "%config.path%"
+        },
+        "lepton.autoGraft.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.autoGraft.enabled%"
+        },
+        "lepton.autoGraft.delay": {
+          "type": "number",
+          "default": 1000,
+          "minimum": 100,
+          "markdownDescription": "%config.autoGraft.delay%"
+        },
+        "lepton.redirectTrunkCreations": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.redirectTrunkCreations%"
+        },
+        "lepton.restartClangd": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.restartClangd%"
         }
       }
     },
     "commands": [
-      { "command": "lepton.seedStatus", "title": "état de la graine", "category": "Lepton" },
-      { "command": "lepton.seedAdd", "title": "ajouter un greffon à la graine", "category": "Lepton" },
-      { "command": "lepton.seedRemove", "title": "retirer un greffon de la graine", "category": "Lepton" },
-      { "command": "lepton.seedReplace", "title": "remplacer l'origine d'un greffon", "category": "Lepton" },
-      { "command": "lepton.seedLock", "title": "figer, vérifier ou restaurer la graine", "category": "Lepton" },
-      { "command": "lepton.scionNew", "title": "créer un greffon", "category": "Lepton" },
-      { "command": "lepton.scionRemove", "title": "retirer un greffon", "category": "Lepton" },
-      { "command": "lepton.fileAdd", "title": "créer un fichier dans le greffon", "category": "Lepton" },
-      { "command": "lepton.fileRemove", "title": "retirer le fichier de son greffon", "category": "Lepton" },
-      { "command": "lepton.fileMove", "title": "déplacer le fichier dans son greffon", "category": "Lepton" },
-      { "command": "lepton.dirAdd", "title": "créer un répertoire dans le greffon", "category": "Lepton" },
-      { "command": "lepton.dirRemove", "title": "retirer le répertoire du greffon", "category": "Lepton" },
-      { "command": "lepton.graft", "title": "regreffer", "category": "Lepton" },
-      { "command": "lepton.check", "title": "vérifier", "category": "Lepton" },
-      { "command": "lepton.generate", "title": "générer presets et espace de travail", "category": "Lepton" }
+      {
+        "command": "lepton.seedStatus",
+        "title": "%command.seedStatus%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.seedAdd",
+        "title": "%command.seedAdd%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.seedRemove",
+        "title": "%command.seedRemove%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.seedReplace",
+        "title": "%command.seedReplace%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.seedLock",
+        "title": "%command.seedLock%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.scionNew",
+        "title": "%command.scionNew%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.scionRemove",
+        "title": "%command.scionRemove%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.fileAdd",
+        "title": "%command.fileAdd%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.fileRemove",
+        "title": "%command.fileRemove%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.fileMove",
+        "title": "%command.fileMove%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.dirAdd",
+        "title": "%command.dirAdd%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.dirRemove",
+        "title": "%command.dirRemove%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.graft",
+        "title": "%command.graft%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.check",
+        "title": "%command.check%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.generate",
+        "title": "%command.generate%",
+        "category": "Lepton"
+      }
     ],
     "menus": {
       "explorer/context": [
-        { "command": "lepton.fileAdd", "when": "explorerResourceIsFolder", "group": "lepton@1" },
-        { "command": "lepton.dirAdd", "when": "explorerResourceIsFolder", "group": "lepton@2" },
-        { "command": "lepton.dirRemove", "when": "explorerResourceIsFolder", "group": "lepton@3" },
-        { "command": "lepton.fileRemove", "when": "!explorerResourceIsFolder", "group": "lepton@1" },
-        { "command": "lepton.fileMove", "when": "!explorerResourceIsFolder", "group": "lepton@2" }
+        {
+          "command": "lepton.fileAdd",
+          "when": "explorerResourceIsFolder",
+          "group": "lepton@1"
+        },
+        {
+          "command": "lepton.dirAdd",
+          "when": "explorerResourceIsFolder",
+          "group": "lepton@2"
+        },
+        {
+          "command": "lepton.dirRemove",
+          "when": "explorerResourceIsFolder",
+          "group": "lepton@3"
+        },
+        {
+          "command": "lepton.fileRemove",
+          "when": "!explorerResourceIsFolder",
+          "group": "lepton@1"
+        },
+        {
+          "command": "lepton.fileMove",
+          "when": "!explorerResourceIsFolder",
+          "group": "lepton@2"
+        }
       ]
     }
   },
