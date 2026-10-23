@@ -15,10 +15,12 @@
   "command.check": "vérifier",
   "command.generate": "générer presets et espace de travail",
   "displayName": "Lepton",
-  "description": "Environnement de développement Lepton : commandes de l'outil lepton, regreffe automatique et relance de clangd dans VSCodium (ENV-12).",
+  "description": "Environnement de développement Lepton : commandes de l'outil lepton, regreffe automatique, relance de clangd et erreurs des manifestes à la saisie dans VSCodium (ENV-12).",
   "config.path": "Exécutable `lepton`. Vide : `~/.local/bin/lepton` (installation pipx) s'il existe, sinon `lepton` du `PATH`.",
   "config.autoGraft.enabled": "Regreffer automatiquement à la création ou à la suppression de fichiers sous `scion/` d'un clone greffé (éditeur, terminal, git) : `lepton graft --path …`.",
   "config.autoGraft.delay": "Délai (ms) après le dernier événement de fichier avant la regreffe automatique ; les événements sont regroupés.",
   "config.redirectTrunkCreations": "Déplacer un fichier régulier créé dans le trunk vers le clone de son greffon propriétaire (`lepton file add --adopt`) ; le trunk garde un lien.",
-  "config.restartClangd": "Relancer clangd quand le contenu du `compile_commands.json` désigné par `--compile-commands-dir` (réglage `clangd.arguments`) change."
+  "config.restartClangd": "Relancer clangd quand le contenu du `compile_commands.json` désigné par `--compile-commands-dir` (réglage `clangd.arguments`) change.",
+  "config.diagnostics.enabled": "Signaler à la saisie les erreurs de `lepton-greffon.json` et `lepton-graine.json` (`lepton check --stdin`), et contrôler tout le rootstock (`lepton check`) à l'enregistrement d'un manifeste ou du XML mklepton ; résultats dans *Problèmes*.",
+  "config.diagnostics.delay": "Délai (ms) après la dernière frappe avant le contrôle d'un manifeste."
 }

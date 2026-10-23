@@ -4,7 +4,9 @@ import { chmodSync, mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
-import { EXIT_FAILURE, EXIT_INTERRUPT, lastMessage, parseJson, resolveLepton, runLepton } from "../src/lepton";
+import {
+  EXIT_FAILURE, EXIT_INTERRUPT, diagnosticMessage, lastMessage, parseJson, placeOf, resolveLepton, runLepton,
+} from "../src/lepton";
 
 function fakeLepton(body: string): string {
   const dir = mkdtempSync(join(tmpdir(), "lepton-ext-"));
@@ -59,4 +61,40 @@ test("résolution de l'exécutable", () => {
 test("JSON de lepton : lu, ou undefined", () => {
   assert.deepEqual(parseJson({ code: 0, stdout: '{"a": 1}\n', stderr: "" }), { a: 1 });
   assert.equal(parseJson({ code: 1, stdout: "texte", stderr: "" }), undefined);
+});
+
+test("entrée standard transmise (check --stdin)", async () => {
+  const exe = fakeLepton('echo "args=$*"; cat');
+  const r = await runLepton(exe, ["check", "--stdin", "lepton-graine.json"], tmpdir(), undefined, undefined,
+    undefined, "{\n  \"é\": 1\n}");
+  assert.equal(r.code, 0);
+  assert.equal(r.stdout, 'args=check --stdin lepton-graine.json\n{\n  "é": 1\n}');
+  const none = await runLepton(fakeLepton("cat; echo fin"), [], tmpdir());   // sans input : stdin fermée
+  assert.equal(none.stdout, "fin\n");
+});
+
+test("portée d'une anomalie : situation de lepton, ligne entière, première ligne", () => {
+  const a = { file: "f", location: "/bsp", message: "m" };
+  assert.deepEqual(placeOf({ ...a, line: 11, column: 3, end_line: 11, end_column: 8 }),
+    { line: 10, character: 2, endLine: 10, endCharacter: 7 });
+  assert.deepEqual(placeOf({ ...a, line: 9, column: null, end_line: null, end_column: null }),
+    { line: 8, character: 0, endLine: 8 });
+  assert.deepEqual(placeOf(a), { line: 0, character: 0, endLine: 0 });
+  assert.deepEqual(placeOf({ ...a, line: 2, column: 7 }), { line: 1, character: 6, endLine: 1, endCharacter: 7 });
+});
+
+test("texte d'un diagnostic : emplacement en tête, numéro de ligne de xmllint retiré si situé", () => {
+  assert.equal(diagnosticMessage({ file: "f", location: "/projet", message: "champ non autorisé : x" }),
+    "/projet: champ non autorisé : x");
+  assert.equal(diagnosticMessage({ file: "f", location: "/", message: "champ obligatoire absent : noyau" }),
+    "champ obligatoire absent : noyau");
+  assert.equal(diagnosticMessage({ file: "f.xml", location: "", message: "9: Schemas validity error", line: 9 }),
+    "Schemas validity error");
+  assert.equal(diagnosticMessage({ file: "f.xml", location: "", message: "9: x" }), "9: x");
+});
+
+test("sortie JSON de check lue telle quelle", () => {
+  const out = { files: ["g.json"], anomalies: [{ file: "g.json", location: "/", message: "m", line: 1, column: 1,
+    end_line: 1, end_column: 2 }] };
+  assert.deepEqual(parseJson({ code: 1, stdout: JSON.stringify(out), stderr: "" }), out);
 });

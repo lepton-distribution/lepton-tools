@@ -26,7 +26,7 @@ export class LeptonRunner implements vscode.Disposable {
     return vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
   }
 
-  private exe(): string {
+  exe(): string {
     return resolveLepton(vscode.workspace.getConfiguration("lepton").get<string>("path", ""));
   }
 

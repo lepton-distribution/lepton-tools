@@ -15,10 +15,12 @@
   "command.check": "check",
   "command.generate": "generate presets and workspace",
   "displayName": "Lepton",
-  "description": "Lepton development environment: lepton tool commands, automatic regraft and clangd restart in VSCodium (ENV-12).",
+  "description": "Lepton development environment: lepton tool commands, automatic regraft, clangd restart and manifest errors as you type in VSCodium (ENV-12).",
   "config.path": "`lepton` executable. Empty: `~/.local/bin/lepton` (pipx installation) if it exists, otherwise `lepton` from the `PATH`.",
   "config.autoGraft.enabled": "Regraft automatically when files are created or deleted under `scion/` of a grafted clone (editor, terminal, git): `lepton graft --path …`.",
   "config.autoGraft.delay": "Delay (ms) after the last file event before the automatic regraft; events are grouped.",
   "config.redirectTrunkCreations": "Move a regular file created in the trunk to the clone of its owner scion (`lepton file add --adopt`); the trunk keeps a link.",
-  "config.restartClangd": "Restart clangd when the content of the `compile_commands.json` given by `--compile-commands-dir` (setting `clangd.arguments`) changes."
+  "config.restartClangd": "Restart clangd when the content of the `compile_commands.json` given by `--compile-commands-dir` (setting `clangd.arguments`) changes.",
+  "config.diagnostics.enabled": "Report errors in `lepton-greffon.json` and `lepton-graine.json` as you type (`lepton check --stdin`), and check the whole rootstock (`lepton check`) when a manifest or the mklepton XML is saved; results in *Problems*.",
+  "config.diagnostics.delay": "Delay (ms) after the last keystroke before a manifest is checked."
 }

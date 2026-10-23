@@ -28,7 +28,8 @@ export function resolveLepton(configured: string, home: string = homedir()): str
 }
 
 /** Lance `lepton ARGS` dans `cwd` ; `onOutput` reçoit stdout et stderr au fil de l'eau (flux nommé) ;
- *  `notFound` met en forme le message d'exécutable absent (traduit par l'appelant). */
+ *  `notFound` met en forme le message d'exécutable absent (traduit par l'appelant) ; `input` est
+ *  écrit sur l'entrée standard (`check --stdin`). */
 export function runLepton(
   exe: string,
   args: string[],
@@ -36,11 +37,14 @@ export function runLepton(
   onOutput?: (text: string, stream: "stdout" | "stderr") => void,
   signal?: AbortSignal,
   notFound: (exe: string) => string = (e) => `lepton not found: ${e} (setting lepton.path)`,
+  input?: string,
 ): Promise<LeptonResult> {
   return new Promise((resolve) => {
     let stdout = "";
     let stderr = "";
-    const child = spawn(exe, args, { cwd, stdio: ["ignore", "pipe", "pipe"] });
+    const child = spawn(exe, args, { cwd, stdio: ["pipe", "pipe", "pipe"] });
+    child.stdin.on("error", () => undefined);          // lepton terminé avant d'avoir tout lu
+    child.stdin.end(input ?? "", "utf8");              // sans input : entrée standard vide
     child.stdout.setEncoding("utf8").on("data", (d: string) => {
       stdout += d;
       onOutput?.(d, "stdout");
@@ -104,4 +108,52 @@ export function parseJson<T>(result: LeptonResult): T | undefined {
   } catch {
     return undefined;
   }
+}
+
+/** Anomalie de `lepton check --json` : portée à partir de 1, fin exclue, `null` si inconnue
+ *  (XML : ligne seule ; rapports/env-8-interface.md §13). */
+export interface Anomaly {
+  file: string;
+  location: string;
+  message: string;
+  line?: number | null;
+  column?: number | null;
+  end_line?: number | null;
+  end_column?: number | null;
+}
+
+/** Sortie de `lepton check --json`. */
+export interface CheckResult {
+  files: string[];
+  anomalies: Anomaly[];
+}
+
+/** Portée d'un diagnostic, à partir de 0 ; `endCharacter` absent : jusqu'à la fin de la ligne. */
+export interface Place {
+  line: number;
+  character: number;
+  endLine: number;
+  endCharacter?: number;
+}
+
+/** Portée de l'éditeur pour une anomalie : telle quelle si lepton la donne, ligne entière si la
+ *  colonne manque, première ligne si rien n'est situé. */
+export function placeOf(a: Anomaly): Place {
+  if (!a.line || a.line < 1) {
+    return { line: 0, character: 0, endLine: 0 };
+  }
+  const line = a.line - 1;
+  if (!a.column || a.column < 1) {
+    return { line, character: 0, endLine: line };
+  }
+  const endLine = a.end_line && a.end_line >= a.line ? a.end_line - 1 : line;
+  const endCharacter = a.end_column && a.end_column >= 1 ? a.end_column - 1 : a.column;
+  return { line, character: a.column - 1, endLine, endCharacter };
+}
+
+/** Texte du diagnostic : emplacement de lepton (pointeur, chemin XML) en tête, sans le numéro de
+ *  ligne de xmllint quand la ligne est déjà située. */
+export function diagnosticMessage(a: Anomaly): string {
+  const message = a.line ? a.message.replace(/^\d+: /, "") : a.message;
+  return a.location && a.location !== "/" ? `${a.location}: ${message}` : message;
 }

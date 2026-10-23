@@ -2,7 +2,7 @@
   "name": "lepton",
   "displayName": "%displayName%",
   "description": "%description%",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "lepton-distribution",
   "repository": {
     "type": "git",
@@ -50,6 +50,17 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "%config.restartClangd%"
+        },
+        "lepton.diagnostics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.diagnostics.enabled%"
+        },
+        "lepton.diagnostics.delay": {
+          "type": "number",
+          "default": 400,
+          "minimum": 100,
+          "markdownDescription": "%config.diagnostics.delay%"
         }
       }
     },

@@ -2,19 +2,22 @@
 import * as vscode from "vscode";
 import { ClangdRestarter } from "./clangd";
 import { Commands } from "./commands";
+import { Diagnostics } from "./diagnostics";
 import { LeptonRunner } from "./runner";
 import { Watchers } from "./watch";
 
 export function activate(context: vscode.ExtensionContext): void {
   const output = vscode.window.createOutputChannel("Lepton");
   const runner = new LeptonRunner(output);
-  const commands = new Commands(runner);
+  const diagnostics = new Diagnostics(runner);
+  const commands = new Commands(runner, diagnostics);
   commands.register(context);
   const watchers = new Watchers(runner, commands);
   const clangd = new ClangdRestarter(output);
-  context.subscriptions.push(output, runner, watchers, clangd);
+  context.subscriptions.push(output, runner, watchers, clangd, diagnostics);
   void watchers.refresh();
   void clangd.start();
+  diagnostics.refresh();
 }
 
 export function deactivate(): void {}

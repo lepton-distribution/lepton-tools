@@ -2,13 +2,14 @@
 // lepton décide et refuse, l'extension affiche (ENV-12 : aucune logique de graine ni de greffon).
 import * as path from "node:path";
 import * as vscode from "vscode";
+import { Diagnostics } from "./diagnostics";
 import { EXIT_OK, OwnerResult, ScionRef, StatusResult, parseJson } from "./lepton";
 import { LeptonRunner } from "./runner";
 
 const t = (message: string, ...args: (string | number)[]) => vscode.l10n.t(message, ...args);
 
 export class Commands {
-  constructor(private readonly runner: LeptonRunner) {}
+  constructor(private readonly runner: LeptonRunner, private readonly diagnostics: Diagnostics) {}
 
   register(context: vscode.ExtensionContext): void {
     const table: [string, (...a: any[]) => unknown][] = [
@@ -25,7 +26,8 @@ export class Commands {
       ["lepton.dirRemove", (uri?: vscode.Uri) => this.pathRemove("dir", uri)],
       ["lepton.fileMove", (uri?: vscode.Uri) => this.fileMove(uri)],
       ["lepton.graft", () => this.runner.run(t("regraft"), ["graft"])],
-      ["lepton.check", () => this.runner.run(t("check"), ["check"], { show: true })],
+      // L3-5 : résultat dans *Problèmes* (F5), annoncé par une notification
+      ["lepton.check", () => this.diagnostics.checkAll(true)],
       ["lepton.generate", () => this.runner.run(t("generate"), ["generate"])],
     ];
     for (const [id, fn] of table) {

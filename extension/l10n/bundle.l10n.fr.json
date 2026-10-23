@@ -68,5 +68,7 @@
   "{0}: clangd restarted": "{0} : clangd relancé",
   "{0} header(s) created under the build directories ({1})": "{0} en-tête(s) créé(s) sous les répertoires de construction ({1})",
   "lepton: clangd restarted": "lepton : clangd relancé",
-  "{0} stays a regular file of the trunk: regrafting is blocked until it is moved or deleted (reported by lepton check).": "{0} reste un fichier régulier du trunk : la regreffe est bloquée tant qu'il n'est pas déplacé ou supprimé (signalé par lepton check)."
+  "{0} stays a regular file of the trunk: regrafting is blocked until it is moved or deleted (reported by lepton check).": "{0} reste un fichier régulier du trunk : la regreffe est bloquée tant qu'il n'est pas déplacé ou supprimé (signalé par lepton check).",
+  "Show Problems": "Afficher les problèmes",
+  "lepton: {0} — {1} anomaly(ies), see Problems": "lepton : {0} — {1} anomalie(s), voir Problèmes"
 }
