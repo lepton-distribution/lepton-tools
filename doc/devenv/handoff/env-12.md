@@ -15,8 +15,8 @@ validés ; lots 5 et 6 restent.
 | Extension | `lepton-distribution.lepton@0.3.0` installée sur le Mac ; `.vsix` local non versionné (`extension/lepton-0.3.0.vsix`) | — | — |
 | Espaces d'essai | `essais/env-11/{qemu,f429zi,wl55jc1}`, `essais/env-9` régénérés (`json.validate.enable: false`) ; `qemu-gra2` non régénéré (BSP absent exprès) | — | — |
 
-Poussé : rien pendant cette session. `origin/devenv/env-12` est au commit dee3c60 (lot 3) ; les
-commits du lot 4 sont locaux (push soumis à PA-P).
+Poussé (PA-P, accord du 2026-10-23) : lepton-tools `devenv/env-12` sur `origin` (lot 4 compris) ;
+rien d'autre.
 
 ## Fait pendant la session
 - Forme de F5 présentée et validée (trois décisions, `DEVENV-STATUS.md` §Décisions, 2026-10-23).
@@ -35,7 +35,6 @@ commits du lot 4 sont locaux (push soumis à PA-P).
   validation VSCodium et cartes ; intégration du `.vsix` à l'installation (à décider) ; passage VM
   Debian (§2bis : pack de langue, locale, extension, F2-F5 sous inotify, `check --stdin`) ; bilan
   (CFG-1 / O5 à reclasser conforme ; R1, O10 à clore ; CFG-7 conforme).
-- [ ] Push de `devenv/env-12` (lot 4) : à proposer (PA-P).
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
