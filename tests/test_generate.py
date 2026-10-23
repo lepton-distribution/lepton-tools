@@ -258,6 +258,7 @@ def test_schema_associations(project, tools):
     patterns = [e["pattern"] for e in s["xml.fileAssociations"]]
     assert {e["systemId"] for e in s["xml.fileAssociations"]} == {str(xsd)}
     assert patterns == ["**/mkconf_*.xml"]                               # XML de la graine compris
+    assert s["json.validate.enable"] is False      # ENV-12 lot 4 : erreurs par l'extension (lepton check --stdin)
     _set_graine(project, mklepton_xml="sys/user/demo/etc/projet.xml")
     assert main(["generate", "-C", str(project)]) == 0
     patterns = [e["pattern"] for e in _workspace(project)["settings"]["xml.fileAssociations"]]

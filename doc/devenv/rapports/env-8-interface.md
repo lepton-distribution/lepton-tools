@@ -382,3 +382,20 @@ lepton graft [--scion NAME]... [--path P]...    # greffon déduit du chemin
 | `graft --path` | chemin dans un clone greffé (existant ou supprimé) ou lien du trunk ; sinon refus « greffon non déterminé » ; combinable avec `--scion` ; sans `--scion`, CMake reconfiguré seulement si un chemin est `CMakeLists.txt` ou `lepton-greffon.json` (un répertoire supprimé qui en contenait n'est pas reconnu : `lepton graft` complet) |
 | `seed status --json` | champ `stem` par greffon : `<clone>/scion` résolu (répertoire observé par l'extension, F2) |
 | `check` sans argument (amendé pendant l'essai) | contrôle aussi le trunk : chaque fichier régulier (« regreffe bloquée ») et chaque lien cassé est une anomalie (code 1), sous le chemin relatif au rootstock ; filtre de la tâche « lepton : vérifier » : `^(?!lepton: )(\S[^:]*): (?:(\d+): )?(.*)$` (tout fichier, avertissements `lepton:` exclus) |
+
+## 13. Amendements d'ENV-12, lot 4 (2026-10-23 ; F5, CFG-7)
+
+Décisions de l'utilisateur (`DEVENV-STATUS.md` §Décisions, 2026-10-23, lot 4).
+
+```
+lepton check [--json] --stdin FILE              # contenu de FILE lu sur l'entrée standard
+```
+
+| Sujet | Règle |
+| --- | --- |
+| `check --stdin` | un seul FILE (sinon refus, code 1) ; contenu lu sur l'entrée standard, type par le nom de FILE (comme `check FILE`), fichier sur disque non lu ; schéma seul (contrôles du rootstock : `check` sans argument) ; XML par `xmllint … -` |
+| JSON de `check` | chaque anomalie porte en plus `line`, `column`, `end_line`, `end_column` (à partir de 1, fin exclue, colonne en caractères ; `null` si inconnus) |
+| Situation des anomalies JSON | champ obligatoire absent : clé de l'objet (racine : `{` initial) ; champ non autorisé : **une anomalie par champ** (même `location` : l'objet), située sur sa clé ; autre mot-clé : la valeur (objet ou liste : sa clé, à défaut son crochet ouvrant) ; JSON mal formé : position de l'erreur ; contrôles non exprimables en JSON Schema (GRA-2, GRF-5, CFG-4, fichiers déclarés) : pointeur situé de même, ancêtre présent le plus proche si le pointeur n'existe pas |
+| Situation des anomalies XML | ligne lue dans la sortie de xmllint, colonne `null` ; CFG-5 : ligne de la balise `<dev>` / `<bin>` en cause |
+| Sortie texte | inchangée (`<fichier>: [<ligne>: ]<emplacement>: <message>`), à la scission des champs non autorisés près ; filtre de la tâche « lepton : vérifier » inchangé |
+| `generate` | réglage `json.validate.enable: false` dans l'espace (validation JSON par l'extension, en erreur ; `json.schemas` gardé pour la complétion et le survol) ; XML : lemminx inchangé |

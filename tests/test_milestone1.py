@@ -93,7 +93,7 @@ def test_grf2_json_output(tmp_path, capsys):
     out = json.loads(capsys.readouterr().out)
     assert out["files"] == [str(good), str(bad)]
     assert {a["file"] for a in out["anomalies"]} == {str(bad)}
-    assert set(out["anomalies"][0]) == {"file", "location", "message"}
+    assert set(out["anomalies"][0]) == {"file", "location", "message", "line", "column", "end_line", "end_column"}
 
 
 def test_check_malformed_json(tmp_path, capsys):

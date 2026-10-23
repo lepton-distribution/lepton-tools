@@ -260,7 +260,9 @@ def workspace_folders(ctx: Context) -> list[dict]:
 
 def schema_settings(ctx: Context) -> dict:
     """CFG-7 (N4) : manifestes JSON et XML mklepton associés aux schémas du paquet lepton (chemin
-    absolu résolu à la génération) ; validation et complétion à la saisie (JSON intégré, lemminx)."""
+    absolu résolu à la génération) ; complétion à la saisie (JSON intégré, lemminx), validation XML
+    par lemminx. Validation JSON intégrée coupée (ENV-12 lot 4) : elle ne signale qu'en avertissement,
+    l'extension Lepton signale en erreur (`lepton check --stdin`)."""
     schemas = schemas_dir()
     patterns = [MKCONF_PATTERN]
     seed_xml = f"**/{ctx.graine['mklepton_xml']}"
@@ -271,6 +273,7 @@ def schema_settings(ctx: Context) -> dict:
                          for name, kind in ((SCION_MANIFEST, "scion"), (SEED_MANIFEST, "seed"))],
         "xml.fileAssociations": [{"pattern": p, "systemId": str(schemas / SCHEMA_FILES["mklepton"])}
                                  for p in patterns],
+        "json.validate.enable": False,
     }
 
 

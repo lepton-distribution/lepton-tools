@@ -2,7 +2,7 @@
 
 Usage :
     lepton --version
-    lepton check [--json] [FILE...]
+    lepton check [--json] [FILE...] | check [--json] --stdin FILE
     lepton seed new NAME --bsp BSP --mkconf PATH [--backend B] [--seed-repo DIR] [--origin S=L]...
     lepton seed status [--json]
     lepton seed lock [--verify | --restore] [--no-cmake]
@@ -62,12 +62,18 @@ def _warn(message: str) -> None:
 def cmd_check(args) -> int:
     """FILE... : manifestes isolés (jalon 1) ; sans argument : rootstock entier (jalon 6, §3.9)."""
     anomalies, checked = [], []
+    text = None
+    if args.stdin:
+        if len(args.files) != 1:
+            raise LeptonError("--stdin : un seul FILE attendu (le fichier dont l'entrée standard est le contenu)",
+                              "lepton check --stdin FILE < contenu", EXIT_USER)
+        text = sys.stdin.read()
     if not args.files:
         checked, anomalies = checks.check_rootstock(Rootstock.discover(args.rootstock), _warn)
     for name in args.files:
         path = Path(name)
         try:
-            found = validate_file(path)
+            found = validate_file(path, text)
         except LeptonError as e:
             if e.code != EXIT_TOOL:
                 raise
@@ -262,7 +268,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("check", parents=[common],
                        help="valide les manifestes ; sans FILE : graine, greffons greffés, XML (GRA-2, GRF-5, CFG-5)")
-    p.add_argument("--json", action="store_true", help="sortie JSON")
+    p.add_argument("--json", action="store_true", help="sortie JSON (anomalies situées : line, column, …)")
+    p.add_argument("--stdin", action="store_true",
+                   help="contenu de FILE lu sur l'entrée standard (contenu non enregistré de l'éditeur ; "
+                        "type par le nom de FILE)")
     p.add_argument("files", nargs="*", metavar="FILE",
                    help="lepton-greffon.json, lepton-graine.json (ou $schema renseigné), XML mklepton")
     p.set_defaults(func=cmd_check)
