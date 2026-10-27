@@ -2,7 +2,7 @@
   "name": "lepton",
   "displayName": "%displayName%",
   "description": "%description%",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "publisher": "lepton-distribution",
   "repository": {
     "type": "git",
@@ -45,6 +45,11 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "%config.redirectTrunkCreations%"
+        },
+        "lepton.confirmTrunkDeletions": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.confirmTrunkDeletions%"
         },
         "lepton.restartClangd": {
           "type": "boolean",
@@ -139,8 +144,50 @@
         "command": "lepton.generate",
         "title": "%command.generate%",
         "category": "Lepton"
+      },
+      {
+        "command": "lepton.tree.refresh",
+        "title": "%command.tree.refresh%",
+        "category": "Lepton",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "lepton.tree.newFile",
+        "title": "%command.tree.newFile%",
+        "category": "Lepton",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "lepton.tree.removeFile",
+        "title": "%command.tree.removeFile%",
+        "category": "Lepton",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "lepton.tree.revealInClone",
+        "title": "%command.tree.revealInClone%",
+        "category": "Lepton",
+        "icon": "$(go-to-file)"
       }
     ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "lepton",
+          "title": "%view.container%",
+          "icon": "$(circuit-board)"
+        }
+      ]
+    },
+    "views": {
+      "lepton": [
+        {
+          "id": "lepton.architecture",
+          "name": "%view.architecture%",
+          "icon": "$(circuit-board)"
+        }
+      ]
+    },
     "menus": {
       "explorer/context": [
         {
@@ -167,6 +214,49 @@
           "command": "lepton.fileMove",
           "when": "!explorerResourceIsFolder",
           "group": "lepton@2"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "lepton.tree.refresh",
+          "when": "view == lepton.architecture",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "lepton.tree.newFile",
+          "when": "view == lepton.architecture && viewItem == lepton.dir",
+          "group": "inline"
+        },
+        {
+          "command": "lepton.tree.newFile",
+          "when": "view == lepton.architecture && viewItem == lepton.dir",
+          "group": "lepton@1"
+        },
+        {
+          "command": "lepton.tree.removeFile",
+          "when": "view == lepton.architecture && viewItem == lepton.file",
+          "group": "lepton@2"
+        },
+        {
+          "command": "lepton.tree.revealInClone",
+          "when": "view == lepton.architecture && viewItem =~ /^lepton\\.(file|dir|scion)$/",
+          "group": "lepton@3"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "lepton.tree.newFile",
+          "when": "false"
+        },
+        {
+          "command": "lepton.tree.removeFile",
+          "when": "false"
+        },
+        {
+          "command": "lepton.tree.revealInClone",
+          "when": "false"
         }
       ]
     }

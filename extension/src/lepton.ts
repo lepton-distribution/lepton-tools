@@ -87,18 +87,68 @@ export interface OwnerResult {
   path: string;
   relative: string;
   trunk_path: string;
-  kind: "clone" | "link" | "directory" | "regular" | "absent" | "ignored";
+  kind: "clone" | "link" | "unlinked" | "directory" | "regular" | "absent" | "ignored";
   status: "owned" | "ambiguous" | "none";
   source: string | null;
   owner: (ScionRef & { clone_path: string }) | null;
   candidates: ScionRef[];
 }
 
+/** Greffon de `lepton seed status --json`, avec son état git. */
+export interface StatusScion extends ScionRef {
+  role: string;
+  stem: string;
+  path: string;
+  version: string;
+  location: string | null;
+  branch: string | null;
+  commit: string | null;
+  dirty: number | null;
+  dirty_files: string[];
+}
+
 /** Sortie de `lepton seed status --json`, champs lus par l'extension. */
 export interface StatusResult {
   rootstock: string;
   trunk: string;
-  scions: (ScionRef & { role: string; stem: string })[];
+  scions: StatusScion[];
+}
+
+/** Fichier de `lepton seed tree --json` : `trunk_path` nul pour une source générée (hors trunk). */
+export interface TreeFile {
+  relative: string;
+  trunk_path: string | null;
+  clone_path: string;
+  kind: "compiled" | "header";
+}
+
+/** Fichiers d'un greffon (`key` nul : source générée ou hors greffon). */
+export interface TreeScion {
+  key: string | null;
+  name: string | null;
+  generated: boolean;
+  files: TreeFile[];
+}
+
+export interface TreeLibrary {
+  name: string;
+  type: string;
+  scions: TreeScion[];
+}
+
+/** Sortie de `lepton seed tree --json` (rapports/env-8-interface.md §14) ; `scions` = `seed status`. */
+export interface TreeResult {
+  rootstock: string;
+  trunk: string;
+  preset: string | null;
+  preset_reason: string;
+  build: string | null;
+  build_root: string;
+  source: "codemodel" | "manifests";
+  message: string | null;
+  scions: StatusScion[];
+  executables: { name: string; libraries: TreeLibrary[] }[];
+  by_scion: TreeScion[];
 }
 
 /** JSON de la sortie standard de lepton ; `undefined` si elle n'en est pas. */

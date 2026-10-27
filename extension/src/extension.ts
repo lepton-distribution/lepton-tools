@@ -4,6 +4,7 @@ import { ClangdRestarter } from "./clangd";
 import { Commands } from "./commands";
 import { Diagnostics } from "./diagnostics";
 import { LeptonRunner } from "./runner";
+import { ArchitectureView } from "./tree";
 import { Watchers } from "./watch";
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -14,7 +15,9 @@ export function activate(context: vscode.ExtensionContext): void {
   commands.register(context);
   const watchers = new Watchers(runner, commands);
   const clangd = new ClangdRestarter(output);
-  context.subscriptions.push(output, runner, watchers, clangd, diagnostics);
+  const architecture = new ArchitectureView(runner, [runner.onDidRunCommand, watchers.onDidChangeTrunk]);
+  architecture.register(context);
+  context.subscriptions.push(output, runner, watchers, clangd, diagnostics, architecture);
   void watchers.refresh();
   void clangd.start();
   diagnostics.refresh();

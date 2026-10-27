@@ -11,7 +11,16 @@ export class LeptonRunner implements vscode.Disposable {
   /** Émis après chaque commande lancée par l'utilisateur (la graine a pu changer). */
   readonly onDidRunCommand = this.changed.event;
 
+  private running = 0;
+  private lastEnd = 0;
+
   constructor(readonly output: vscode.OutputChannel) {}
+
+  /** Vrai pendant un lepton et `ms` après sa fin : les liens que lepton (ou scion) retire du trunk ne
+   *  sont pas des suppressions de l'utilisateur (L3-4). */
+  recentlyBusy(ms: number): boolean {
+    return this.running > 0 || Date.now() - this.lastEnd < ms;
+  }
 
   dispose(): void {
     this.changed.dispose();
@@ -34,12 +43,16 @@ export class LeptonRunner implements vscode.Disposable {
   private spawn(args: string[], cwd: string, signal?: AbortSignal, echoStdout = true): Promise<LeptonResult> {
     const exe = this.exe();
     this.output.appendLine(`$ ${exe} ${args.join(" ")}    (${cwd})`);
+    this.running++;
     return runLepton(exe, args, cwd, (t, stream) => {
       if (echoStdout || stream === "stderr") {
         this.output.append(t);
       }
     }, signal,
-      (e) => vscode.l10n.t("lepton not found: {0} (setting lepton.path)", e));
+      (e) => vscode.l10n.t("lepton not found: {0} (setting lepton.path)", e)).finally(() => {
+      this.running--;
+      this.lastEnd = Date.now();
+    });
   }
 
   /** Appel silencieux (observateurs, lectures JSON) : sortie dans le canal seulement, sauf le JSON
