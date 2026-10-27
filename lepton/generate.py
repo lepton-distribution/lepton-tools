@@ -39,6 +39,11 @@ MKCONF_PATTERN = "**/mkconf_*.xml"            # XML mklepton du noyau (xml.fileA
 CHECK_MATCHER = {"owner": "lepton", "source": "lepton check", "severity": "error",
                  "pattern": {"regexp": r"^(?!lepton: )(\S[^:]*): (?:(\d+): )?(.*)$",
                              "file": 1, "line": 2, "message": 3}}
+# L6-7 (ENV-12) : `$gcc` vient de l'extension C/C++ de Microsoft (absente : clangd, Open VSX) ;
+# diagnostics de gcc (`fichier:ligne:colonne: error|warning: message`), chemins absolus sous CMake
+GCC_MATCHER = {"owner": "lepton-gcc", "source": "gcc",
+               "pattern": {"regexp": r"^(.*?):(\d+):(\d+):\s+(?:fatal\s+)?(warning|error):\s+(.*)$",
+                           "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5}}
 # API fichier CMake : requête propre à lepton (seed tree), relative au répertoire de construction
 API_QUERY = Path(".cmake/api/v1/query/client-lepton/query.json")
 API_REQUESTS = {"requests": [{"kind": "codemodel", "version": 2}]}
@@ -351,13 +356,14 @@ def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[di
     trunk = ctx.rs.trunk
     cmake = tools["cmake"]
     mk = "lepton : mklepton (preset host)"
+    gcc = {**GCC_MATCHER, "fileLocation": ["autoDetect", str(trunk)]}
     result = [
         _task("lepton : regreffer", tools["lepton"], ["graft", "-C", str(ctx.rs.path)], ctx.rs.path),
         _task("lepton : vérifier", tools["lepton"], ["check", "-C", str(ctx.rs.path)], ctx.rs.path,
               problemMatcher={**CHECK_MATCHER, "fileLocation": ["autoDetect", str(ctx.rs.path)]}),
         _task("lepton : configurer host", cmake, ["--preset", HOST_PRESET], trunk),
         _task(mk, cmake, ["--build", "--preset", HOST_PRESET, "--target", "mklepton"], trunk,
-              dependsOn=["lepton : configurer host"], dependsOrder="sequence", problemMatcher=["$gcc"]),
+              dependsOn=["lepton : configurer host"], dependsOrder="sequence", problemMatcher=gcc),
     ]
     env = {"env": {"PYTHONDONTWRITEBYTECODE": "1"}}   # tests servis par le trunk : aucun __pycache__
     for c in ctx.configurations:
@@ -365,7 +371,7 @@ def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[di
         configure, build = f"lepton : configurer {preset}", f"lepton : construire {preset}"
         result.append(_task(configure, cmake, ["--preset", preset], trunk, dependsOn=[mk]))
         result.append(_task(build, cmake, ["--build", "--preset", preset], trunk,
-                            dependsOn=[configure], group="build", problemMatcher=["$gcc"]))
+                            dependsOn=[configure], group="build", problemMatcher=gcc))
         if c["execution"] == "qemu":
             result.append(_task(f"lepton : QEMU {preset} (console série)", tools["qemu"],
                                 ["-M", ctx.bsp["qemu"]["machine"], "-kernel", _elf(ctx, c), "-nographic",

@@ -297,6 +297,26 @@ def test_check_task_reports_errors(project, tools):
     assert regexp.match("lepton: attention: xmllint absent : XML mklepton non validé") is None
 
 
+def test_build_tasks_gcc_matcher(project, tools):
+    """L6-7 (ENV-12) : aucun matcher fourni par une extension absente (`$gcc`) ; diagnostics de gcc lus
+    par le matcher écrit dans la tâche."""
+    assert main(["generate", "-C", str(project)]) == 0
+    tasks = _workspace(project)["tasks"]["tasks"]
+    assert "$gcc" not in json.dumps(tasks)
+    builds = [t for t in tasks if t["label"].startswith("lepton : construire") or "mklepton" in t["label"]]
+    assert len(builds) == 2
+    for task in builds:
+        matcher = task["problemMatcher"]
+        assert matcher["fileLocation"] == ["autoDetect", str(project / "trunk")]
+        regexp = re.compile(matcher["pattern"]["regexp"])
+        m = regexp.match("/r/trunk/sys/root/src/a.c:12:5: error: 'x' undeclared (first use in this function)")
+        assert m and m.groups() == ("/r/trunk/sys/root/src/a.c", "12", "5", "error",
+                                    "'x' undeclared (first use in this function)")
+        assert regexp.match("/r/trunk/b.h:3:1: fatal error: c.h: No such file or directory").group(4) == "error"
+        assert regexp.match("a.c:7:2: warning: unused variable 'y' [-Wunused-variable]").group(4) == "warning"
+        assert regexp.match("[12/40] Building C object …") is None
+
+
 def test_check_names_grafted_manifests_by_trunk(project, capsys):
     """IDE-4 : lepton check désigne un manifeste greffé par le trunk (chemin ouvert par la tâche)."""
     capsys.readouterr()
