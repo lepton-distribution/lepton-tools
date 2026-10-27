@@ -173,7 +173,7 @@ def _add_seed_parser(sub, common) -> None:
     mk_sub = mk_p.add_subparsers(dest="mkconf_command", metavar="ACTION", parser_class=_Parser, required=True)
     p = mk_sub.add_parser("import", parents=[common],
                           help="copie un XML du trunk (et ses src_file) dans la graine, applications déclarées")
-    p.add_argument("path", metavar="PATH", help="XML mklepton de référence, chemin relatif au trunk")
+    p.add_argument("path", metavar="PATH", help="XML mklepton de référence, chemin relatif au trunk (ou absolu sous le trunk)")
     p.set_defaults(func=seed.seed_mkconf_import)
 
     cfg_p = seed_sub.add_parser("config", parents=[common], help="configurations de la graine (CFG-6)")

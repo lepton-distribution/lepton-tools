@@ -241,7 +241,14 @@ def _validate_project_xml(xml: Path, label: str) -> None:
 
 def import_mkconf(rs: Rootstock, seed_root: Path, project: str, reference: str) -> str:
     """O5 : copie du XML de référence `reference` (relatif au trunk) et de ses `<file src_file>` dans
-    le greffon projet, `src_file` réécrits ; greffe ; rend le chemin du XML du projet (trunk)."""
+    le greffon projet, `src_file` réécrits ; greffe ; rend le chemin du XML du projet (trunk).
+    Chemin absolu admis sous le trunk (désigné dans l'explorateur, F7 d'ENV-12), ramené au trunk."""
+    if Path(reference).is_absolute():
+        try:
+            reference = str(Path(reference).relative_to(rs.trunk))
+        except ValueError:
+            raise LeptonError(f"XML « {reference} » hors du trunk {rs.trunk}",
+                              "désigner le XML par le trunk (lien greffé), pas par le clone") from None
     ref = rs.trunk / reference
     if not ref.is_file():
         raise LeptonError(f"XML « {reference} » absent du trunk greffé",
@@ -468,8 +475,12 @@ def status_data(rs: Rootstock) -> tuple[dict, dict | None, dict, list[str], Trun
     report = rs.check_trunk()
     seed_state = {"path": str(rs.seed_root()), "manifest": str(graine_path) if graine else None,
                   **_git_state(rs.seed_root())}
+    # configurations de la graine (F7 d'ENV-12 : choix de `seed config remove` dans la palette)
+    configurations = [{"name": c["nom"], "build_type": c["construction"], "run": c["execution"],
+                       "preset": f"{graine['projet']['nom']}-{c['nom']}"}
+                      for c in graine.get("configurations", [])] if graine else []
     result = {"rootstock": str(rs.path), "trunk": str(rs.trunk), "seed": seed_state, "scions": scions,
-              "missing": missing,
+              "configurations": configurations, "missing": missing,
               "trunk_check": {"regular_files": [str(p) for p in report.regular_files],
                               "broken_links": [str(p) for p in report.broken_links]}}
     return result, graine, roles, missing, report
@@ -493,6 +504,8 @@ def seed_status(args) -> int:
     else:
         _info(f"            projet {graine['projet']['nom']} {graine['projet']['version']}, "
               f"backend {graine['backend']}, XML {graine['mklepton_xml']}")
+        _info("            configurations : " + ", ".join(
+            f"{c['name']} ({c['build_type']}, {c['run']})" for c in result["configurations"]))
     # largeurs d'après le contenu (O17 : version ou branche longue, `devenv/env-6-r3`)
     width = max([len(s["name"]) for s in scions] + [7])
     vwidth = max([len(s["version"]) for s in scions] + [8])

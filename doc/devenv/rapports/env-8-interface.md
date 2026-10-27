@@ -420,3 +420,14 @@ lepton seed tree [--preset NAME] [--json]       # exécutif → bibliothèques �
 | `generate` | dépose `build/<preset>/.cmake/api/v1/query/client-lepton/query.json` (codemodel v2) pour chaque configuration de la graine : réponse aussi après une configuration en ligne de commande ; crée donc `build/<preset>/` avant la première configuration |
 | `file owner` (L3-4) | chemin du trunk absent dont le fichier existe dans le clone d'un seul greffon greffé : `kind: unlinked`, propriétaire déterminé (`source: link`) ; répertoire supprimé : non traité (`absent`) |
 | `file remove`, `graft --path` | acceptent un chemin `unlinked` : retrait du fichier du clone, ou restauration du lien |
+
+## 15. Amendements d'ENV-12, lot 6 (2026-10-27 ; F7 en palette, F8)
+
+Propositions appliquées pendant la session S1 du lot 6 (essai VSCodium conforme), à confirmer.
+
+| Sujet | Règle |
+| --- | --- |
+| `seed status --json` | champ `configurations` : `name`, `build_type`, `run`, `preset` (`<projet>-<nom>`) par configuration de la graine, dans son ordre ; liste vide sans `lepton-graine.json` ; choix de `seed config remove` dans la palette |
+| `seed status` (texte) | ligne `configurations : <nom> (<type>, <exécution>), …` sous la ligne du projet |
+| `seed mkconf import PATH` | PATH relatif au trunk, ou absolu **sous le trunk** (désigné dans l'explorateur), ramené au trunk ; absolu hors du trunk (chemin d'un clone compris) : refus, code 1 |
+| F8 (extension seule) | correspondance clone → trunk des sources de l'arrêt d'après `stem` et `trunk` de `seed status --json` ; aucune option de lepton ajoutée |

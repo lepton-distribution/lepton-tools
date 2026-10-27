@@ -215,3 +215,15 @@ def test_mkconf_import(project, capsys):
     assert main(["seed", "mkconf", "import", MKCONF, "-C", str(project)]) == 1   # déjà migrée
     assert "déjà fourni par le greffon du projet" in capsys.readouterr().err
     assert_trunk_clean(project)
+
+
+def test_mkconf_import_chemin_absolu(project, capsys):
+    """F7 (palette) : XML désigné par son chemin absolu du trunk, ramené au trunk ; hors trunk refusé."""
+    _unmigrate(project)
+    outside = (project / "trunk" / MKCONF).resolve()                  # chemin du clone
+    assert main(["seed", "mkconf", "import", str(outside), "-C", str(project)]) == 1
+    assert "hors du trunk" in capsys.readouterr().err
+    assert main(["seed", "mkconf", "import", str(project / "trunk" / MKCONF), "-C", str(project)]) == 0
+    assert _graine(project)["mklepton_xml"] == PROJECT_XML
+    assert f"copie de {MKCONF}" in capsys.readouterr().out
+    assert_trunk_clean(project)

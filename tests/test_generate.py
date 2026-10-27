@@ -481,6 +481,19 @@ def test_config_add_remove_regenere(project, tools, capsys):
     assert_trunk_clean(project)
 
 
+def test_config_status_json(project, capsys):
+    """Configurations listées par seed status (--json : choix de la palette, F7 d'ENV-12)."""
+    assert main(["seed", "config", "add", "rel", "--build-type", "MinSizeRel", "--run", "qemu", "--no-generate",
+                 "-C", str(project)]) == 0
+    capsys.readouterr()
+    main(["seed", "status", "--json", "-C", str(project)])
+    assert json.loads(capsys.readouterr().out)["configurations"] == [
+        {"name": "debug-qemu", "build_type": "Debug", "run": "qemu", "preset": "demo-debug-qemu"},
+        {"name": "rel", "build_type": "MinSizeRel", "run": "qemu", "preset": "demo-rel"}]
+    main(["seed", "status", "-C", str(project)])
+    assert "configurations : debug-qemu (Debug, qemu), rel (MinSizeRel, qemu)" in capsys.readouterr().out
+
+
 def test_config_no_generate(project, capsys):
     capsys.readouterr()
     assert main(["seed", "config", "add", "rel", "--build-type", "MinSizeRel", "--run", "qemu", "--no-generate",
