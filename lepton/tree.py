@@ -3,7 +3,8 @@ ENV-12 lot 5, décisions du 2026-10-27).
 
 Source : réponse de l'API fichier CMake (codemodel-v2) du preset actif — cibles réellement construites,
 sources dans l'ordre de CMake ; chaque source est rattachée à son greffon par le lien du trunk. Les
-en-têtes `.h` des répertoires où un greffon compile des sources s'y ajoutent. Sans réponse (preset non
+en-têtes `.h` des répertoires où un greffon compile des sources s'y ajoutent, puis les sources de ces
+répertoires compilées par aucune cible (`unbuilt`). Sans réponse (preset non
 configuré) : repli sur les liens du trunk, par greffon, sans exécutif ni bibliothèque. Les greffons sont
 ceux de `seed status` (même calcul), pour une vue cohérente avec l'état de la graine.
 """
@@ -119,28 +120,36 @@ def _entry(rs: Rootstock, trunk_path: Path, kind: str) -> dict:
             "clone_path": str(trunk_path.resolve()), "kind": kind}
 
 
-def _headers(rs: Rootstock, owners: list[Owner], owner: Owner, directories: list[Path]) -> list[dict]:
-    """En-têtes .h des répertoires du trunk donnés, liens vers le clone du même greffon."""
-    found = []
+def _neighbours(rs: Rootstock, owners: list[Owner], owner: Owner, directories: list[Path],
+                compiled: set[Path]) -> list[dict]:
+    """Liens vers le clone du même greffon dans les répertoires du trunk donnés : en-têtes .h, puis
+    sources compilées par aucune cible (`unbuilt` : pas encore configurées, ou hors des `sources` du
+    manifeste ; décision du 2026-10-27, essai du lot 5)."""
+    headers, unbuilt = [], []
     for d in directories:
         try:
-            names = sorted(e.name for e in os.scandir(d) if e.name.endswith(HEADER_SUFFIX) and e.is_symlink())
+            names = sorted(e.name for e in os.scandir(d) if e.is_symlink())
         except OSError:
             continue
         for n in names:
             p = d / n
-            if _owner_of(owners, p.resolve()) == owner:
-                found.append(_entry(rs, p, "header"))
-    return found
+            if p.suffix == HEADER_SUFFIX and _owner_of(owners, p.resolve()) == owner:
+                headers.append(_entry(rs, p, "header"))
+            elif p.suffix in SOURCE_SUFFIXES and p not in compiled and _owner_of(owners, p.resolve()) == owner:
+                unbuilt.append(_entry(rs, p, "unbuilt"))
+    return headers + unbuilt
 
 
-def _library(rs: Rootstock, owners: list[Owner], name: str, target: dict) -> dict:
-    files = _Files()
+def _compiled_paths(target: dict) -> list[Path]:
+    """Sources compilées d'une cible (`compileGroupIndex`), chemins absolus."""
     root = Path(target["_source_root"])
-    for s in target.get("sources", []):
-        if "compileGroupIndex" not in s:            # sources non compilées (règles, en-têtes listés)
-            continue
-        path = Path(s["path"]) if os.path.isabs(s["path"]) else root / s["path"]
+    return [Path(s["path"]) if os.path.isabs(s["path"]) else root / s["path"]
+            for s in target.get("sources", []) if "compileGroupIndex" in s]
+
+
+def _library(rs: Rootstock, owners: list[Owner], name: str, target: dict, compiled: set[Path]) -> dict:
+    files = _Files()
+    for path in _compiled_paths(target):            # sources non compilées (règles, en-têtes listés) omises
         if rs.trunk in path.parents:
             owner = _owner_of(owners, path.resolve()) if path.is_symlink() else None
             files.add(owner, False, _entry(rs, path, "compiled"))
@@ -154,7 +163,7 @@ def _library(rs: Rootstock, owners: list[Owner], name: str, target: dict) -> dic
         if owner is None:
             continue
         directories = list(dict.fromkeys(Path(f["trunk_path"]).parent for f in group["files"]))
-        group["files"] += _headers(rs, owners, owner, directories)
+        group["files"] += _neighbours(rs, owners, owner, directories, compiled)
     return {"name": name, "type": target["type"], "scions": scions}
 
 
@@ -176,10 +185,11 @@ def _dependencies(targets: dict[str, dict], name: str) -> list[str]:
 def executables(rs: Rootstock, owners: list[Owner], targets: dict[str, dict]) -> list[dict]:
     names = sorted((n for n, t in targets.items() if t["type"] == "EXECUTABLE"),
                    key=lambda n: (n != MAIN_EXECUTABLE, n))
+    compiled = {p for t in targets.values() for p in _compiled_paths(t)}     # par toutes les cibles
     result = []
     for n in names:
-        libraries = [_library(rs, owners, n, targets[n])]          # sources propres de l'exécutif
-        libraries += [_library(rs, owners, d, targets[d]) for d in _dependencies(targets, n)]
+        libraries = [_library(rs, owners, n, targets[n], compiled)]          # sources propres de l'exécutif
+        libraries += [_library(rs, owners, d, targets[d], compiled) for d in _dependencies(targets, n)]
         result.append({"name": n, "libraries": [lib for lib in libraries if lib["scions"]]})
     return result
 
@@ -223,9 +233,9 @@ def tree_data(rs: Rootstock, explicit: str | None) -> dict:
 
 def _print_group(group: dict, indent: str, verbose: bool) -> None:
     name = group["name"] or ("(généré)" if group["generated"] else "(hors greffon)")
-    compiled = sum(1 for f in group["files"] if f["kind"] == "compiled")
-    headers = len(group["files"]) - compiled
-    _info(f"{indent}{name} : {compiled} source(s), {headers} en-tête(s)")
+    count = {k: sum(1 for f in group["files"] if f["kind"] == k) for k in ("compiled", "header", "unbuilt")}
+    unbuilt = f", {count['unbuilt']} hors construction" if count["unbuilt"] else ""
+    _info(f"{indent}{name} : {count['compiled']} source(s), {count['header']} en-tête(s){unbuilt}")
     if verbose:
         for f in group["files"]:
             _info(f"{indent}    {f['relative']}")

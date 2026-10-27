@@ -119,7 +119,7 @@ export interface TreeFile {
   relative: string;
   trunk_path: string | null;
   clone_path: string;
-  kind: "compiled" | "header";
+  kind: "compiled" | "header" | "unbuilt";
 }
 
 /** Fichiers d'un greffon (`key` nul : source générée ou hors greffon). */

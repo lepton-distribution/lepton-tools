@@ -90,9 +90,6 @@ export class ArchitectureView implements vscode.TreeDataProvider<Node>, vscode.D
       this.data = undefined;
       this.error = result ? lastMessage(result) || t("lepton seed tree --json: unreadable output") : undefined;
     }
-    if (this.view) {
-      this.view.description = this.data?.preset ?? undefined;
-    }
     this.changed.fire(undefined);
   }
 
@@ -179,7 +176,10 @@ export class ArchitectureView implements vscode.TreeDataProvider<Node>, vscode.D
       case "executable": {
         const item = new vscode.TreeItem(node.name, node.name === "lepton" ? C.Expanded : C.Collapsed);
         item.iconPath = new vscode.ThemeIcon("file-binary");
-        item.description = t("executable");
+        // preset sur l'exécutif : la description de la vue n'est pas affichée quand elle est seule
+        // dans son conteneur (titre fondu « LEPTON: ARCHITECTURE », essai du 2026-10-27)
+        item.description = [t("executable"), this.data?.preset].filter((x) => x).join(" · ");
+        item.tooltip = this.data?.preset ? `${this.data.preset} — ${this.data.preset_reason}` : undefined;
         return item;
       }
       case "library": {
@@ -210,7 +210,8 @@ export class ArchitectureView implements vscode.TreeDataProvider<Node>, vscode.D
         const target = vscode.Uri.file(node.file.trunk_path ?? node.file.clone_path);
         const item = new vscode.TreeItem(target, C.None);
         item.label = node.name;
-        item.description = node.file.kind === "header" ? t("header") : undefined;
+        item.description = node.file.kind === "header" ? t("header")
+          : node.file.kind === "unbuilt" ? t("not built") : undefined;
         item.tooltip = node.file.trunk_path ? `${node.file.trunk_path}\n→ ${node.file.clone_path}` : node.file.clone_path;
         item.command = { command: "vscode.open", title: t("Open"), arguments: [target] };
         item.contextValue = node.group.key ? "lepton.file" : undefined;

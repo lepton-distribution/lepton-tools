@@ -68,6 +68,7 @@ def _groups(lib: dict) -> dict:
 
 def test_tree_from_codemodel(project, repos, capsys):
     (repos["bsp"] / BOARD_CLONE / "board.h").write_text("")
+    (repos["bsp"] / BOARD_CLONE / "essai.c").write_text("")              # hors construction (point 5)
     assert main(["graft", "--no-cmake", "-C", str(project)]) == 0
     first = _presets(project)[0]
     build = _reply(project, first)
@@ -86,7 +87,9 @@ def test_tree_from_codemodel(project, repos, capsys):
     assert gen["key"] is None and gen["generated"] and gen["files"][0]["trunk_path"] is None
     board = libs[3]["scions"][0]
     assert [(f["relative"], f["kind"]) for f in board["files"]] == [
-        (BOARD_C, "compiled"), (f"{SRC}/kernel/dev/bsp/board-q/board.h", "header")]
+        (BOARD_C, "compiled"), (f"{SRC}/kernel/dev/bsp/board-q/board.h", "header"),
+        (f"{SRC}/kernel/dev/bsp/board-q/essai.c", "unbuilt")]
+    assert all(f["kind"] != "unbuilt" for g in libs[1]["scions"] for f in g["files"])   # kernel.c : compilé ailleurs
     assert board["files"][0]["trunk_path"] == str(project / "trunk" / BOARD_C)
     assert board["files"][0]["clone_path"] == str((repos["bsp"] / BOARD_CLONE / "board.c").resolve())
     assert_trunk_clean(project)
