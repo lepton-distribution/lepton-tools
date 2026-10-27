@@ -26,17 +26,37 @@ Version 0.2.0 (lot 3), active dès l'ouverture d'un espace :
   VSCodium (pack de langue et `locale` réglés par `install-vscodium.sh`) ; messages de `lepton`
   en français.
 
+Version 0.3.0 (lot 4) : erreurs des manifestes à la saisie (CFG-7, `lepton check --json --stdin`)
+et contrôle complet à l'enregistrement d'un manifeste ou du XML mklepton, dans *Problèmes*.
+
+Version 0.4.0 (lot 5) : vue « Architecture » (IDE-1, `lepton seed tree --json`) — exécutif →
+bibliothèques → greffons → répertoires → fichiers ; suppression d'un lien greffé dans le trunk :
+« Supprimer du greffon » ou « Restaurer le lien » (L3-4).
+
+Version 0.5.0 (lot 6) :
+- palette : ajout et retrait d'une configuration de la graine (`lepton seed config add/remove`),
+  import d'un XML mklepton de référence (`lepton seed mkconf import`, aussi par le menu contextuel
+  d'un `.xml`) ;
+- débogage (F8) : à l'arrêt, sources de la pile et des points d'arrêt ouvertes par leur lien du
+  trunk, et non sous le chemin du clone que rend gdb (`stem` et `trunk` de
+  `lepton seed status --json`).
+
 Réglages : `lepton.path` (vide : `~/.local/bin/lepton`, sinon `lepton` du `PATH`) ;
 `lepton.autoGraft.enabled`, `lepton.autoGraft.delay` (ms, défaut 1000) ;
-`lepton.redirectTrunkCreations` ; `lepton.restartClangd`. Les commandes s'exécutent une à une dans
-le répertoire de l'espace ouvert (`<rootstock>/<projet>.code-workspace` généré par
-`lepton generate`).
+`lepton.redirectTrunkCreations` ; `lepton.confirmTrunkDeletions` ; `lepton.restartClangd` ;
+`lepton.diagnostics.enabled`, `lepton.diagnostics.delay` (ms, défaut 400) ;
+`lepton.debug.trunkPaths`. Les commandes s'exécutent une à une dans le répertoire de l'espace
+ouvert (`<rootstock>/<projet>.code-workspace` généré par `lepton generate`).
 
-Construction (Node ≥ 22, versions épinglées dans `package.json`) :
+Installation : `scripts/install-vscodium.sh` installe `dist/lepton-<version>.vsix`, versionné dans
+ce dépôt, si la version installée diffère.
+
+Construction (Node ≥ 22, versions épinglées dans `package.json`) ; à chaque changement de version,
+commiter le `.vsix` de `dist/` (un seul, celui de la version : contrôlé par `npm test`) :
 
 ```
 npm ci
 npm test                 # compilation et tests node:test
-npm run package          # lepton-0.2.0.vsix
-codium --install-extension lepton-0.2.0.vsix
+npm run package          # compilation, puis dist/lepton-<version>.vsix (remplace le précédent)
+codium --install-extension dist/lepton-<version>.vsix --force
 ```

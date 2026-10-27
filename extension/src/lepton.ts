@@ -107,11 +107,20 @@ export interface StatusScion extends ScionRef {
   dirty_files: string[];
 }
 
+/** Configuration de la graine (preset généré `<projet>-<nom>`). */
+export interface StatusConfiguration {
+  name: string;
+  build_type: string;
+  run: string;
+  preset: string;
+}
+
 /** Sortie de `lepton seed status --json`, champs lus par l'extension. */
 export interface StatusResult {
   rootstock: string;
   trunk: string;
   scions: StatusScion[];
+  configurations: StatusConfiguration[];
 }
 
 /** Fichier de `lepton seed tree --json` : `trunk_path` nul pour une source générée (hors trunk). */

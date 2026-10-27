@@ -18,6 +18,9 @@ export class Commands {
       ["lepton.seedRemove", () => this.seedRemove()],
       ["lepton.seedReplace", () => this.seedReplace()],
       ["lepton.seedLock", () => this.seedLock()],
+      ["lepton.seedConfigAdd", () => this.seedConfigAdd()],
+      ["lepton.seedConfigRemove", () => this.seedConfigRemove()],
+      ["lepton.seedMkconfImport", (uri?: vscode.Uri) => this.seedMkconfImport(uri)],
       ["lepton.scionNew", () => this.scionNew()],
       ["lepton.scionRemove", () => this.scionRemove()],
       ["lepton.fileAdd", (uri?: vscode.Uri) => this.pathAdd("file", uri)],
@@ -53,6 +56,16 @@ export class Commands {
     return (await vscode.window.showWarningMessage(message, { modal: true }, action)) === action;
   }
 
+  private async status(): Promise<StatusResult | undefined> {
+    const result = await this.runner.exec(["seed", "status", "--json"]);
+    const status = result && parseJson<StatusResult>(result);
+    if (!status?.scions) {
+      vscode.window.showErrorMessage(t("lepton seed status --json: unreadable output"));
+      return undefined;
+    }
+    return status;
+  }
+
   /** Greffons du rootstock d'après `lepton seed status --json`, présentés tels quels ;
    *  `among` : restreint aux greffons nommés (candidats donnés par lepton). */
   async pickScion(placeHolder: string, among?: ScionRef[]): Promise<string | undefined> {
@@ -60,12 +73,8 @@ export class Commands {
     if (among) {
       items = among.map((s) => ({ label: s.name, description: s.key }));
     } else {
-      const result = await this.runner.exec(["seed", "status", "--json"]);
-      const status = result && parseJson<StatusResult>(result);
-      if (!status?.scions) {
-        vscode.window.showErrorMessage(t("lepton seed status --json: unreadable output"));
-        return undefined;
-      }
+      const status = await this.status();
+      if (!status) return undefined;
       items = status.scions.map((s) => ({ label: s.name, description: s.role }));
     }
     const chosen = await vscode.window.showQuickPick(items, { placeHolder, ignoreFocusOut: true });
@@ -142,6 +151,42 @@ export class Commands {
       return;
     }
     await this.runner.run(t("seed lock"), ["seed", "lock", ...args], { show: true });
+  }
+
+  // ------------------------------------------------------------------ configurations (CFG-6, F7)
+
+  private async seedConfigAdd(): Promise<void> {
+    const name = await this.ask(t("Name of the new configuration"), "release-qemu");
+    if (!name) return;
+    // choix de la CLI (enums `construction` et `execution` du schéma de graine)
+    const buildType = await this.pick(["Debug", "Release", "RelWithDebInfo", "MinSizeRel"], t("CMake build type"));
+    if (!buildType) return;
+    const run = await this.pick(["qemu", "carte"], t("Run target"));
+    if (!run) return;
+    await this.runner.run(t("add the configuration {0}", name),
+      ["seed", "config", "add", name, "--build-type", buildType, "--run", run]);
+  }
+
+  private async seedConfigRemove(): Promise<void> {
+    const status = await this.status();
+    if (!status) return;
+    const chosen = await vscode.window.showQuickPick(
+      (status.configurations ?? []).map((c) => ({ label: c.name, description: `${c.build_type}, ${c.run}`,
+        detail: t("preset {0}", c.preset) })),
+      { placeHolder: t("Configuration to remove from the seed"), ignoreFocusOut: true });
+    if (!chosen) return;
+    if (!(await this.confirm(t("Remove the configuration {0} (its build directory is kept)?", chosen.label),
+      t("Remove")))) return;
+    await this.runner.run(t("remove the configuration {0}", chosen.label),
+      ["seed", "config", "remove", chosen.label]);
+  }
+
+  /** XML mklepton de référence désigné dans l'explorateur, sinon fichier actif, sinon saisie ;
+   *  lepton le ramène au trunk et refuse ce qui n'est pas un XML mklepton. */
+  private async seedMkconfImport(uri?: vscode.Uri): Promise<void> {
+    const xml = await this.target(uri, t("Reference mklepton XML to import (path relative to the trunk)"));
+    if (!xml) return;
+    await this.runner.run(t("import {0}", path.basename(xml)), ["seed", "mkconf", "import", xml]);
   }
 
   // ------------------------------------------------------------------ greffons (GRF)

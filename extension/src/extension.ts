@@ -2,6 +2,7 @@
 import * as vscode from "vscode";
 import { ClangdRestarter } from "./clangd";
 import { Commands } from "./commands";
+import { DebugSources } from "./debug";
 import { Diagnostics } from "./diagnostics";
 import { LeptonRunner } from "./runner";
 import { ArchitectureView } from "./tree";
@@ -17,7 +18,8 @@ export function activate(context: vscode.ExtensionContext): void {
   const clangd = new ClangdRestarter(output);
   const architecture = new ArchitectureView(runner, [runner.onDidRunCommand, watchers.onDidChangeTrunk]);
   architecture.register(context);
-  context.subscriptions.push(output, runner, watchers, clangd, diagnostics, architecture);
+  const debugSources = new DebugSources(runner);
+  context.subscriptions.push(output, runner, watchers, clangd, diagnostics, architecture, debugSources);
   void watchers.refresh();
   void clangd.start();
   diagnostics.refresh();

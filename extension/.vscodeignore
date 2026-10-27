@@ -5,3 +5,5 @@ out/test/**
 tsconfig.json
 .gitignore
 node_modules/**
+dist/**
+*.vsix
