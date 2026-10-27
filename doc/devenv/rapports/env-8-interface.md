@@ -399,3 +399,24 @@ lepton check [--json] --stdin FILE              # contenu de FILE lu sur l'entr�
 | Situation des anomalies XML | ligne lue dans la sortie de xmllint, colonne `null` ; CFG-5 : ligne de la balise `<dev>` / `<bin>` en cause |
 | Sortie texte | inchangée (`<fichier>: [<ligne>: ]<emplacement>: <message>`), à la scission des champs non autorisés près ; filtre de la tâche « lepton : vérifier » inchangé |
 | `generate` | réglage `json.validate.enable: false` dans l'espace (validation JSON par l'extension, en erreur ; `json.schemas` gardé pour la complétion et le survol) ; XML : lemminx inchangé |
+
+## 14. Amendements d'ENV-12, lot 5 (2026-10-27 ; F6, IDE-1, L3-4)
+
+Décisions de l'utilisateur (`DEVENV-STATUS.md` §Décisions, 2026-10-27, lot 5).
+
+```
+lepton seed tree [--preset NAME] [--json]       # exécutif → bibliothèques → greffons → fichiers
+```
+
+| Sujet | Règle |
+| --- | --- |
+| Preset lu | `--preset` ; sinon celui dont le répertoire de construction est cité par `build/.active/compile_commands.json` (preset actif de CMake Tools, amorcé par `generate`) ; sinon le premier preset de la graine ayant une réponse ; `preset_reason` l'indique |
+| Source | réponse de l'API fichier CMake (codemodel-v2, index `build/<preset>/.cmake/api/v1/reply/index-*.json` le plus récent) : `source: codemodel` ; sans réponse : `source: manifests`, `executables` vide, `by_scion` = sources (`.c`, `.cpp`, `.S`, `.s`) et en-têtes liés dans le trunk, par greffon, `message` explicatif ; `--preset` désignant un preset sans réponse : refus, code 1 |
+| Exécutifs | cibles `EXECUTABLE`, `lepton` en premier ; chacune : ses sources propres (bibliothèque du nom de l'exécutif, type `EXECUTABLE`), puis ses bibliothèques (`STATIC`, `OBJECT`, `SHARED`, `MODULE`) par fermeture transitive des dépendances, ordre de CMake ; utilitaires omis ; bibliothèque sans fichier omise |
+| Greffon d'une source | par le lien du trunk (clone propriétaire) ; source hors trunk (répertoire de construction) : groupe `generated: true`, `key` nul, `trunk_path` nul ; fichier du trunk qui n'est pas un lien : `key` nul |
+| Fichiers | sources compilées (`compileGroupIndex`), dans l'ordre de CMake, `kind: compiled` ; puis en-têtes `.h` des mêmes répertoires du trunk, liens vers le même greffon, `kind: header` ; chacun : `relative` (au trunk), `trunk_path`, `clone_path` |
+| `scions` | entrées de `seed status --json`, calcul partagé (`seed.status_data`) : vue cohérente avec l'état de la graine |
+| Autres champs | `rootstock`, `trunk`, `preset`, `build`, `build_root` (`<rootstock>/build`, observé par l'extension) |
+| `generate` | dépose `build/<preset>/.cmake/api/v1/query/client-lepton/query.json` (codemodel v2) pour chaque configuration de la graine : réponse aussi après une configuration en ligne de commande ; crée donc `build/<preset>/` avant la première configuration |
+| `file owner` (L3-4) | chemin du trunk absent dont le fichier existe dans le clone d'un seul greffon greffé : `kind: unlinked`, propriétaire déterminé (`source: link`) ; répertoire supprimé : non traité (`absent`) |
+| `file remove`, `graft --path` | acceptent un chemin `unlinked` : retrait du fichier du clone, ou restauration du lien |

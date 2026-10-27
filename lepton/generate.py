@@ -39,6 +39,9 @@ MKCONF_PATTERN = "**/mkconf_*.xml"            # XML mklepton du noyau (xml.fileA
 CHECK_MATCHER = {"owner": "lepton", "source": "lepton check", "severity": "error",
                  "pattern": {"regexp": r"^(?!lepton: )(\S[^:]*): (?:(\d+): )?(.*)$",
                              "file": 1, "line": 2, "message": 3}}
+# API fichier CMake : requête propre à lepton (seed tree), relative au répertoire de construction
+API_QUERY = Path(".cmake/api/v1/query/client-lepton/query.json")
+API_REQUESTS = {"requests": [{"kind": "codemodel", "version": 2}]}
 _PROBE_SERIAL = re.compile(r"""^[^\s"'\\]+$""")
 
 # Cœur (enum du schéma) → famille d'ISA du noyau (cmake/isa/) et cœur QEMU (-cpu)
@@ -139,6 +142,11 @@ def check_configuration(c: dict, bsp_name: str, bsp: dict, action: str) -> None:
         raise LeptonError(f"configuration {c['nom']} : exécution carte, le BSP {bsp_name} ne déclare pas openocd", action)
 
 
+def preset_name(project: str, configuration: dict) -> str:
+    """Preset CMake d'une configuration de la graine : <projet>-<nom>."""
+    return f"{project}-{configuration['nom']}"
+
+
 class Context:
     def __init__(self, rs: Rootstock):
         self.rs = rs
@@ -175,7 +183,7 @@ class Context:
                               "greffon noyau d'ENV-5 ou plus récent")
 
     def preset(self, configuration: dict) -> str:
-        return f"{self.project}-{configuration['nom']}"
+        return preset_name(self.project, configuration)
 
     def bsp_file(self, rel: str) -> Path:
         """Fichier déclaré par le BSP, par le chemin du trunk (chemin canonique, PA-1)."""
@@ -451,6 +459,14 @@ def prime_active(ctx: Context) -> None:
           "puis « clangd: Restart language server », ou relancer lepton generate avant l'ouverture")
 
 
+def write_api_queries(ctx: Context) -> None:
+    """Requête codemodel-v2 de l'API fichier CMake dans chaque répertoire de construction de la graine :
+    la réponse lue par `lepton seed tree` (vue IDE-1) existe aussi après une configuration en ligne de
+    commande, sans CMake Tools (ENV-12 lot 5)."""
+    for c in ctx.configurations:
+        _write_if_changed(ctx.build_dir(c) / API_QUERY, json.dumps(API_REQUESTS, indent=2) + "\n")
+
+
 def generate(args) -> int:
     rs = Rootstock.discover(args.rootstock)
     ctx = Context(rs)
@@ -463,6 +479,7 @@ def generate(args) -> int:
     serial = probe_serial(ctx, workspace, args.probe_serial)
     ws_changed = _write_if_changed(workspace, render_workspace(ctx, tools, serial))
     prime_active(ctx)
+    write_api_queries(ctx)
     finish(rs, no_cmake=True)
 
     _info(f"{'écrit    ' if seed_changed else 'inchangé '} {presets} (greffé : {rs.trunk / PRESETS_FILE})")

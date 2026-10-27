@@ -304,19 +304,32 @@ def test_active_compile_commands_primed(project, tools, capsys):
     assert not active.exists() and "aucun preset configuré" in capsys.readouterr().err
 
     release = project / "build" / "demo-release-qemu" / gen.COMPILE_COMMANDS
-    release.parent.mkdir(parents=True)
+    release.parent.mkdir(parents=True, exist_ok=True)
     release.write_text("[]\n")
     assert main(["generate", "-C", str(project)]) == 0
     assert active.read_text() == "[]\n" and "aucun preset configuré" not in capsys.readouterr().err
 
     debug = project / "build" / "demo-debug-qemu" / gen.COMPILE_COMMANDS
-    debug.parent.mkdir(parents=True)
+    debug.parent.mkdir(parents=True, exist_ok=True)
     debug.write_text('[{"file": "x.c"}]\n')
     assert main(["generate", "-C", str(project)]) == 0
     assert active.read_text() == "[]\n"                                 # base de CMake Tools gardée
     active.unlink()
     assert main(["generate", "-C", str(project)]) == 0
     assert active.read_text() == debug.read_text()                      # premier preset de la graine
+    assert_trunk_clean(project)
+
+
+def test_cmake_api_query_per_preset(project, tools):
+    """ENV-12 lot 5 : requête codemodel-v2 propre à lepton dans chaque répertoire de construction de la
+    graine (seed tree lit la réponse, même après une configuration sans CMake Tools)."""
+    _set_graine(project, configurations=[
+        {"nom": "debug-qemu", "construction": "Debug", "execution": "qemu"},
+        {"nom": "release-qemu", "construction": "Release", "execution": "qemu"}])
+    assert main(["generate", "-C", str(project)]) == 0
+    for preset in ("demo-debug-qemu", "demo-release-qemu"):
+        query = project / "build" / preset / gen.API_QUERY
+        assert json.loads(query.read_text()) == {"requests": [{"kind": "codemodel", "version": 2}]}
     assert_trunk_clean(project)
 
 
@@ -458,7 +471,7 @@ def test_config_add_remove_regenere(project, tools, capsys):
     presets = json.loads((project / "trunk" / gen.PRESETS_FILE).read_text())
     assert [p["name"] for p in presets["configurePresets"]] == ["demo-debug-qemu", "demo-release-qemu"]
     assert "demo-release-qemu" in json.dumps(_workspace(project))
-    (project / "build" / "demo-release-qemu").mkdir(parents=True)
+    (project / "build" / "demo-release-qemu").mkdir(parents=True, exist_ok=True)
     capsys.readouterr()
     assert main(["seed", "config", "remove", "release-qemu", "-C", str(project)]) == 0
     out = capsys.readouterr().out

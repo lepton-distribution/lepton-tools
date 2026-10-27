@@ -16,8 +16,8 @@ from urllib.parse import urlparse
 from lepton import __version__, cmake, mkconf
 from lepton.checks import removal_unprovided
 from lepton.errors import EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
-from lepton.rootstock import (KERNEL_KEY, PROJECT_SUBPATH, STEM_DIR, Manifest, Rootstock, find_manifest,
-                              is_system_file, project_key, scion_key)
+from lepton.rootstock import (KERNEL_KEY, PROJECT_SUBPATH, STEM_DIR, Manifest, Rootstock, TrunkReport,
+                              find_manifest, is_system_file, project_key, scion_key)
 from lepton.scion_runner import git, run, scion
 from lepton.templates import c_identifier, render_text, render_tree, templates_dir
 from lepton.validation import SEED_MANIFEST, validate_data, validate_xml
@@ -428,8 +428,9 @@ def _git_state(clone: Path) -> dict:
     return state
 
 
-def seed_status(args) -> int:
-    rs = Rootstock.discover(args.rootstock)
+def status_data(rs: Rootstock) -> tuple[dict, dict | None, dict, list[str], TrunkReport]:
+    """État de la graine (GRA-6) : résultat JSON de `seed status`, graine, rôles, greffons absents et
+    contrôle du trunk ; partagé avec `seed tree` (vue IDE-1 cohérente avec seed status)."""
     seed_dot = rs.seed_dot()
     graine_path = seed_dot / SEED_MANIFEST
     graine = load_graine(graine_path) if graine_path.exists() else None
@@ -471,6 +472,13 @@ def seed_status(args) -> int:
               "missing": missing,
               "trunk_check": {"regular_files": [str(p) for p in report.regular_files],
                               "broken_links": [str(p) for p in report.broken_links]}}
+    return result, graine, roles, missing, report
+
+
+def seed_status(args) -> int:
+    rs = Rootstock.discover(args.rootstock)
+    result, graine, roles, missing, report = status_data(rs)
+    seed_state, scions = result["seed"], result["scions"]
     coherent = report.clean and not missing
 
     if args.json:

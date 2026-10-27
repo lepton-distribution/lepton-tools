@@ -5,6 +5,7 @@ Usage :
     lepton check [--json] [FILE...] | check [--json] --stdin FILE
     lepton seed new NAME --bsp BSP --mkconf PATH [--backend B] [--seed-repo DIR] [--origin S=L]...
     lepton seed status [--json]
+    lepton seed tree [--preset NAME] [--json]
     lepton seed lock [--verify | --restore] [--no-cmake]
     lepton seed add SCION LOCATION --type T [--version V] [--path P] [--no-cmake]
     lepton seed remove SCION [--purge] [--no-cmake]
@@ -28,7 +29,7 @@ import json
 import sys
 from pathlib import Path
 
-from lepton import __version__, checks, configs, files, generate, scion_runner, scions, seed
+from lepton import __version__, checks, configs, files, generate, scion_runner, scions, seed, tree
 from lepton.errors import EXIT_INTERRUPT, EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
 from lepton.rootstock import Rootstock
 from lepton.scion_runner import scion_status_line
@@ -131,6 +132,13 @@ def _add_seed_parser(sub, common) -> None:
     p = seed_sub.add_parser("status", parents=[common], help="état des greffons de la graine (GRA-6)")
     p.add_argument("--json", action="store_true", help="sortie JSON")
     p.set_defaults(func=seed.seed_status)
+
+    p = seed_sub.add_parser("tree", parents=[common],
+                            help="architecture : exécutif → bibliothèques → greffons → fichiers (IDE-1)")
+    p.add_argument("--preset", metavar="NAME",
+                   help="preset lu (défaut : celui de build/.active, sinon le premier configuré)")
+    p.add_argument("--json", action="store_true", help="sortie JSON")
+    p.set_defaults(func=tree.seed_tree)
 
     p = seed_sub.add_parser("lock", parents=[common], help="fige le commit de chaque greffon (GRA-5)")
     mode = p.add_mutually_exclusive_group()

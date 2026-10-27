@@ -35,6 +35,7 @@ class Target:
     rel: Path                    # chemin relatif au trunk (et à scion/ du clone)
     owner: Owner | None          # connu si le chemin est donné dans un clone ou est un lien du trunk
     in_clone: bool = False       # chemin donné dans un clone (et non par le trunk)
+    unlinked: bool = False       # chemin du trunk absent, fichier présent dans le clone (lien supprimé, L3-4)
 
     @property
     def trunk_path(self) -> Path:
@@ -65,8 +66,14 @@ def _locate(rs: Rootstock, owners: list[Owner], raw: str) -> Target:
     path = path.parent.resolve() / path.name        # répertoires du trunk : vrais répertoires (E6)
     if path == rs.trunk or rs.trunk in path.parents:
         rel = path.relative_to(rs.trunk)
-        owner = _owner_of(owners, path.resolve()) if path.is_symlink() else None
-        return Target(rs, rel, owner)
+        if path.is_symlink():
+            return Target(rs, rel, _owner_of(owners, path.resolve()))
+        if not path.exists() and rel.parts:
+            # lien supprimé du trunk (explorateur, L3-4) : greffon unique dont le clone a le fichier
+            found = [o for o in owners if (o.stem / rel).is_file()]
+            if len(found) == 1:
+                return Target(rs, rel, found[0], unlinked=True)
+        return Target(rs, rel, None)
     owner = _owner_of(owners, path)
     if owner is None or path == owner.stem:
         raise LeptonError(f"{raw} : ni dans le trunk {rs.trunk}, ni dans un greffon greffé",
@@ -233,8 +240,8 @@ def file_owner(args) -> int:
         kind = "ignored"
     else:
         o = _ownership(rs, owners, t, None)
-        kind = ("clone" if t.in_clone else "link" if p.is_symlink() else "directory" if p.is_dir()
-                else "regular" if p.is_file() else "absent")
+        kind = ("clone" if t.in_clone else "unlinked" if t.unlinked else "link" if p.is_symlink()
+                else "directory" if p.is_dir() else "regular" if p.is_file() else "absent")
     result = {"path": args.path, "relative": str(t.rel), "trunk_path": str(p), "kind": kind,
               "status": o.status, "source": o.source,
               "owner": _owner_json(o.owner, rs, t) if o.owner else None,

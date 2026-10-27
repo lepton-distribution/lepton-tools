@@ -145,6 +145,24 @@ def test_graft_path_refusals(project, tmp_path, capsys):
 
 
 # --- seed status --json : stem -------------------------------------------------------------------
+def test_unlinked_trunk_path(project, repos, fake_build, capsys):
+    """L3-4 : lien greffé supprimé du trunk (explorateur) → kind unlinked, greffon déterminé ;
+    restauration par graft --path, retrait du clone par file remove du chemin du trunk."""
+    link = project / BOARD / "board.c"
+    clone = (repos["bsp"] / BOARD_CLONE / "board.c").resolve()
+    link.unlink()
+    code, r = _owner(project, capsys, link)
+    assert code == 0 and r["kind"] == "unlinked" and r["owner"]["clone_path"] == str(clone)
+    assert _lepton(project, "graft", "--path", str(link), "--no-cmake") == 0
+    assert link.is_symlink() and link.resolve() == clone
+    link.unlink()
+    assert _lepton(project, "file", "remove", str(link)) == 0
+    assert not clone.exists() and not link.is_symlink() and not fake_build.exists()   # pas de CMake (.c)
+    code, r = _owner(project, capsys, link)                           # plus dans aucun clone
+    assert r["kind"] == "absent"
+    assert_trunk_clean(project)
+
+
 def test_status_stem(project, repos, capsys):
     capsys.readouterr()
     _lepton(project, "seed", "status", "--json")
