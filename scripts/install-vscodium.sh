@@ -22,6 +22,8 @@
 #   (INS-3, INS-5), sauf APT pour le .deb de VSCodium.
 # - Extensions : scripts/extensions.lst (une ligne éditeur.nom@version), depuis Open VSX ;
 #   CodeLLDB depuis le paquet de la plateforme de sa release GitHub (somme épinglée ci-dessous).
+# - Extension Lepton : extension/dist/lepton-<version>.vsix versionné dans ce dépôt (ENV-12,
+#   décision du 2026-10-27), installé si la version installée diffère de extension/package.json.
 # - Réglages utilisateur de VSCodium : mises à jour automatiques et télémétrie Red Hat coupées,
 #   lemminx natif (PA-10) ; fusion dans settings.json, copie .bak avant écriture.
 # - Langue de VSCodium : pack de langue français (extensions.lst) et "locale": "fr" dans
@@ -56,6 +58,7 @@ LOCALE="fr"
 
 LEPTON_TOOLS="$(cd "$(dirname "$0")/.." && pwd)"
 EXTENSIONS_LST="$LEPTON_TOOLS/scripts/extensions.lst"
+EXTENSION_LEPTON_ID="lepton-distribution.lepton"
 
 DRY_RUN=0
 SKIP_TOOLCHAIN=0
@@ -334,11 +337,28 @@ installer_extensions() {
   done
   # Extensions présentes hors liste : signalées, jamais retirées.
   local liste
-  liste="$(lire_extensions | sed 's/@.*//' | tr '[:upper:]' '[:lower:]')"
+  liste="$(lire_extensions | sed 's/@.*//' | tr '[:upper:]' '[:lower:]'; echo "$EXTENSION_LEPTON_ID")"
   # grep toléré : liste vide (hôte sans extension) → code 1, fatal avec pipefail.
   printf '%s\n' "$installees" | sed 's/@.*//' | { grep -v '^$' || true; } | while read -r id; do
     printf '%s\n' "$liste" | grep -qx "$id" || info "hors liste (conservée) : $id"
   done
+}
+
+# Extension Lepton (ENV-12) : .vsix de ce dépôt, sans Node.js ni réseau sur l'hôte.
+installer_extension_lepton() {
+  log "Extension Lepton ($LEPTON_TOOLS/extension/dist)"
+  local version vsix actuelle
+  version="$(sed -n 's/^  "version": *"\(.*\)",$/\1/p' "$LEPTON_TOOLS/extension/package.json" | head -1)"
+  [ -n "$version" ] || die "version introuvable dans $LEPTON_TOOLS/extension/package.json."
+  vsix="$LEPTON_TOOLS/extension/dist/lepton-$version.vsix"
+  [ -f "$vsix" ] || die "$vsix absent : dans $LEPTON_TOOLS/extension, « npm ci && npm run package », puis rejouer."
+  actuelle="$(extensions_installees | awk -F@ -v id="$EXTENSION_LEPTON_ID" '$1 == id { print $2 }')"
+  if [ "$actuelle" = "$version" ]; then
+    info "$EXTENSION_LEPTON_ID@$version : déjà installée"
+    return
+  fi
+  [ -z "$actuelle" ] || info "$EXTENSION_LEPTON_ID : $actuelle → $version"
+  run "$CODIUM" --install-extension "$vsix" --force
 }
 
 # --- Réglages utilisateur (PA-10) --------------------------------------------------------
@@ -510,6 +530,7 @@ installer_scion
 installer_vscodium
 trouver_codium
 installer_extensions
+installer_extension_lepton
 regler_vscodium
 regler_locale
 installer_lepton

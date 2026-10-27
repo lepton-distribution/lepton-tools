@@ -11,7 +11,8 @@ requis). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`
 `pip install -e '.[test]'` et `python -m pytest`.
 
 Environnement complet (VSCodium épinglé, extensions de `scripts/extensions.lst` depuis Open VSX,
-chaîne par les scripts du noyau, scion, lepton ; macOS Intel et Apple Silicon, Debian) :
+extension Lepton de `extension/dist/`, chaîne par les scripts du noyau, scion, lepton ; macOS
+Intel et Apple Silicon, Debian) :
 `scripts/install-vscodium.sh --lepton-clone <clone du noyau> [--seed-scions <clone seed.scions>]`
 (`--dry-run` affiche sans exécuter ; `--help` pour les options). Rejouable.
 
