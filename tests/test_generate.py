@@ -136,6 +136,20 @@ def test_generate_regrafts_missing_link(project, tools):
     assert not (project / "trunk" / ".DS_Store").exists()
 
 
+def test_presets_link_touched_when_changed(project, tools):
+    """L6-5 (ENV-12) : presets réécrits → date du lien du trunk avancée (observateur de l'éditeur) ;
+    presets inchangés → lien intact."""
+    assert main(["generate", "-C", str(project)]) == 0
+    link = project / "trunk" / gen.PRESETS_FILE
+    os.utime(link, (1_000_000, 1_000_000), follow_symlinks=False)
+    assert main(["generate", "-C", str(project)]) == 0
+    assert os.lstat(link).st_mtime == 1_000_000
+    assert main(["seed", "config", "add", "rel", "--build-type", "MinSizeRel", "--run", "qemu",
+                 "-C", str(project)]) == 0
+    assert link.is_symlink() and os.lstat(link).st_mtime > 1_000_000
+    assert_trunk_clean(project)
+
+
 def test_generate_never_reads_mklepton_xml(project, tools):
     """CFG-1 : le XML mklepton n'est jamais lu (seul son chemin est recopié)."""
     xml = (project / "trunk" / MKCONF).resolve()

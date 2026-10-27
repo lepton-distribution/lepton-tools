@@ -421,6 +421,14 @@ def _write_if_changed(path: Path, text: str) -> bool:
     return True
 
 
+def touch_link(link: Path) -> None:
+    """L6-5 (ENV-12) : l'observateur de fichiers de VSCodium ne suit pas les liens ; la réécriture de
+    la cible dans le clone n'est pas vue sur le chemin du trunk (CMake Tools ne relit pas ses presets).
+    La date du lien lui-même est avancée ; cible et contenu inchangés."""
+    if link.is_symlink():
+        os.utime(link, follow_symlinks=False)
+
+
 def probe_serial(ctx: Context, workspace: Path, option: str | None) -> str | None:
     """O8 : série de sonde de l'option ; sans option, celle de l'espace existant ; "" la retire."""
     if option is not None:
@@ -473,8 +481,10 @@ def generate(args) -> int:
     tools = host_tools(ctx, args.clangd)
 
     presets = project_stem(ctx.seed_root) / PRESETS_FILE
-    seed_changed = _write_if_changed(presets, json.dumps(render_presets(ctx), ensure_ascii=False, indent=2) + "\n")
-    seed_changed |= graft_project(rs, ctx.seed_root, ctx.project)
+    presets_changed = _write_if_changed(presets, json.dumps(render_presets(ctx), ensure_ascii=False, indent=2) + "\n")
+    seed_changed = graft_project(rs, ctx.seed_root, ctx.project) or presets_changed
+    if presets_changed:
+        touch_link(rs.trunk / PRESETS_FILE)
     workspace = rs.path / f"{ctx.project}.code-workspace"
     serial = probe_serial(ctx, workspace, args.probe_serial)
     ws_changed = _write_if_changed(workspace, render_workspace(ctx, tools, serial))
