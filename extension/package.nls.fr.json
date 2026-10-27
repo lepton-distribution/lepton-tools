@@ -26,8 +26,9 @@
   "command.tree.refresh": "rafraîchir la vue Architecture",
   "command.tree.newFile": "nouveau fichier dans ce répertoire du greffon",
   "command.tree.removeFile": "retirer le fichier de son greffon",
-  "command.tree.revealInClone": "révéler dans le clone",
+  "command.tree.revealInClone": "révéler dans le clone (gestionnaire de fichiers)",
   "view.container": "Lepton",
   "view.architecture": "Architecture",
-  "config.confirmTrunkDeletions": "Quand un lien greffé est supprimé du trunk (le fichier reste dans son clone et reviendrait à la regreffe suivante), demander s'il faut retirer le fichier de son greffon (`lepton file remove`) ou restaurer le lien (`lepton graft --path`)."
+  "config.confirmTrunkDeletions": "Quand un lien greffé est supprimé du trunk (le fichier reste dans son clone et reviendrait à la regreffe suivante), demander s'il faut retirer le fichier de son greffon (`lepton file remove`) ou restaurer le lien (`lepton graft --path`).",
+  "command.tree.revealRepository": "sélectionner le dépôt git dans l'explorateur"
 }

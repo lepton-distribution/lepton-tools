@@ -167,7 +167,13 @@
         "command": "lepton.tree.revealInClone",
         "title": "%command.tree.revealInClone%",
         "category": "Lepton",
-        "icon": "$(go-to-file)"
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "lepton.tree.revealRepository",
+        "title": "%command.tree.revealRepository%",
+        "category": "Lepton",
+        "icon": "$(repo)"
       }
     ],
     "viewsContainers": {
@@ -243,6 +249,11 @@
           "command": "lepton.tree.revealInClone",
           "when": "view == lepton.architecture && viewItem =~ /^lepton\\.(file|dir|scion)$/",
           "group": "lepton@3"
+        },
+        {
+          "command": "lepton.tree.revealRepository",
+          "when": "view == lepton.architecture && viewItem =~ /^lepton\\.(file|dir|scion)$/",
+          "group": "lepton@4"
         }
       ],
       "commandPalette": [
@@ -256,6 +267,10 @@
         },
         {
           "command": "lepton.tree.revealInClone",
+          "when": "false"
+        },
+        {
+          "command": "lepton.tree.revealRepository",
           "when": "false"
         }
       ]

@@ -56,6 +56,7 @@ export class ArchitectureView implements vscode.TreeDataProvider<Node>, vscode.D
       ["lepton.tree.newFile", (n) => this.newFile(n)],
       ["lepton.tree.removeFile", (n) => this.removeFile(n)],
       ["lepton.tree.revealInClone", (n) => this.revealInClone(n)],
+      ["lepton.tree.revealRepository", (n) => this.revealRepository(n)],
     ];
     for (const [id, fn] of table) {
       context.subscriptions.push(vscode.commands.registerCommand(id, fn));
@@ -285,27 +286,36 @@ export class ArchitectureView implements vscode.TreeDataProvider<Node>, vscode.D
     }
   }
 
-  /** Fichier ou répertoire du clone, dans le dossier « git · … » de l'espace s'il y est, sinon dans
-   *  le Finder / gestionnaire de fichiers. */
+  /** Fichier ou répertoire du clone dans le Finder / gestionnaire de fichiers : les fichiers greffés
+   *  sont masqués dans les dossiers « git · … » de l'espace (P5, PA-1), l'explorateur ne peut pas les
+   *  sélectionner (essai du lot 5). */
   private async revealInClone(node?: Node): Promise<void> {
     let target: string | undefined;
     if (node?.kind === "file") {
       target = node.file.clone_path;
     } else if (node?.kind === "dir") {
-      target = this.status(node.group.key) && path.join(this.status(node.group.key)!.stem, ...node.dir.path.split("/"));
+      const s = this.status(node.group.key);
+      target = s && path.join(s.stem, ...node.dir.path.split("/"));
     } else if (node?.kind === "scion") {
       target = this.status(node.group.key)?.stem;
     } else if (node?.kind === "status") {
       target = node.scion.stem;
     }
-    if (!target) {
-      return;
+    if (target) {
+      await vscode.commands.executeCommand("revealFileInOS", vscode.Uri.file(target));
     }
-    const uri = vscode.Uri.file(target);
-    if (vscode.workspace.getWorkspaceFolder(uri)) {
-      await vscode.commands.executeCommand("revealInExplorer", uri);
-    } else {
-      await vscode.commands.executeCommand("revealFileInOS", uri);
+  }
+
+  /** Dossier « git · <greffon> » de l'espace (racine du clone), sélectionné dans l'explorateur. */
+  private async revealRepository(node?: Node): Promise<void> {
+    const key = node?.kind === "status" ? node.scion.key
+      : node?.kind === "file" || node?.kind === "dir" || node?.kind === "scion" ? node.group.key : null;
+    const s = this.status(key);
+    const folder = s && vscode.workspace.getWorkspaceFolder(vscode.Uri.file(s.path));
+    if (folder) {
+      await vscode.commands.executeCommand("revealInExplorer", folder.uri);
+    } else if (s) {
+      vscode.window.showWarningMessage(t("The clone of {0} is not a folder of this workspace: {1}", s.name, s.path));
     }
   }
 }

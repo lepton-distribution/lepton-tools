@@ -91,5 +91,6 @@
   "{0} was deleted from the trunk only: the scion {1} still has it, and the next regraft brings it back.": "{0} n'a été supprimé que du trunk : le greffon {1} le contient toujours, et la prochaine regreffe le rétablit.",
   "{0} files were deleted from the trunk only: their scions still have them, and the next regraft brings them back.": "{0} fichiers n'ont été supprimés que du trunk : leurs greffons les contiennent toujours, et la prochaine regreffe les rétablit.",
   "restore {0} link(s)": "restaurer {0} lien(s)",
-  "not built": "hors construction"
+  "not built": "hors construction",
+  "The clone of {0} is not a folder of this workspace: {1}": "Le clone de {0} n'est pas un dossier de cet espace : {1}"
 }

@@ -26,8 +26,9 @@
   "command.tree.refresh": "refresh the architecture view",
   "command.tree.newFile": "new file in this directory of the scion",
   "command.tree.removeFile": "remove the file from its scion",
-  "command.tree.revealInClone": "reveal in the clone",
+  "command.tree.revealInClone": "reveal in the clone (file manager)",
   "view.container": "Lepton",
   "view.architecture": "Architecture",
-  "config.confirmTrunkDeletions": "When a grafted link is deleted from the trunk (the file stays in its clone and would come back at the next regraft), ask whether to remove the file from its scion (`lepton file remove`) or to restore the link (`lepton graft --path`)."
+  "config.confirmTrunkDeletions": "When a grafted link is deleted from the trunk (the file stays in its clone and would come back at the next regraft), ask whether to remove the file from its scion (`lepton file remove`) or to restore the link (`lepton graft --path`).",
+  "command.tree.revealRepository": "select the git repository in the explorer"
 }
