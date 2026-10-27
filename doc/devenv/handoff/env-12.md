@@ -15,7 +15,8 @@ faits et validés ; lot 6 reste.
 | Extension | `lepton-distribution.lepton@0.4.0` installée sur le Mac (`.vsix` de fc9a647) ; `.vsix` local non versionné (`extension/lepton-0.4.0.vsix`) | — | — |
 | Espaces d'essai | `essais/env-11/{qemu,f429zi,wl55jc1}`, `essais/env-9` régénérés (requête `client-lepton` déposée) ; `wl55jc1` : `env11wl-debug-board` reconfiguré (réponse CMake présente) | — | — |
 
-Poussé : `origin/devenv/env-12` = 6f3ade5 (lot 4). Les commits du lot 5 ne sont pas poussés (PA-P).
+Poussé (PA-P, accord du 2026-10-27) : lepton-tools `devenv/env-12` sur `origin` (lot 5 compris, f03f71c) ;
+rien d'autre.
 
 ## Fait pendant la session
 - Forme de F6 et L3-4 tranchée (quatre décisions, puis plan validé : `DEVENV-STATUS.md` §Décisions,

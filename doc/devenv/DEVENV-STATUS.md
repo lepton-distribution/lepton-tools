@@ -5,7 +5,7 @@ Dernière mise à jour : 2026-10-27 — ENV-12 lot 5 (F6 vue Architecture IDE-1,
 
 ## Prochaine action
 
-ENV-12 lot 6 (dernier lot) sur `devenv/env-12` (lepton-tools, tête au commit de passation du 2026-10-27, lot 5 ; lot 5 non poussé, PA-P) : présenter d'abord à l'utilisateur le découpage du lot (F8 essai borné R3 ; F7 en palette : `seed config add/remove`, `seed mkconf import` ; intégration du `.vsix` à `install-vscodium.sh` à décider ; validation VSCodium et cartes ; consigne et passage VM Debian selon §2bis ; bilan d'ENV-12) et l'ordre des sessions, attendre l'accord, puis exécuter ; passation `handoff/env-12.md`.
+ENV-12 lot 6 (dernier lot) sur `devenv/env-12` (lepton-tools, tête au commit du push du 2026-10-27, lot 5 poussé) : présenter d'abord à l'utilisateur le découpage du lot (F8 essai borné R3 ; F7 en palette : `seed config add/remove`, `seed mkconf import` ; intégration du `.vsix` à `install-vscodium.sh` à décider ; validation VSCodium et cartes ; consigne et passage VM Debian selon §2bis ; bilan d'ENV-12) et l'ordre des sessions, attendre l'accord, puis exécuter ; passation `handoff/env-12.md`.
 
 ## Étapes
 
@@ -257,6 +257,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-27 | — (ENV-12 lot 5) | Plan validé : `lepton seed tree [--preset NAME] [--json]` (preset par défaut : celui de `build/.active/compile_commands.json`, sinon le premier configuré) ; greffons de la vue = entrées de `seed status` ; requête `client-lepton` déposée par `generate` ; exécutifs `lepton` puis `kal_bench` ; `file owner` `kind: unlinked` et `file remove` d'un lien absent ; conteneur « Lepton », vue « Architecture » ; extension 0.4.0. Décision de l'utilisateur (accord du plan). |
 | 2026-10-27 | — (ENV-12 lot 5, essai) | Point 5 : une source d'un greffon compilée par aucune cible (pas encore configurée, ou hors des `sources` du manifeste) apparaît dans la vue « hors construction » (`seed tree` : `kind: unbuilt`), sans reconfiguration de CMake par `file add`. Point 7 : « révéler dans le clone » ouvre le gestionnaire de fichiers (fichiers greffés masqués dans les dossiers « git · … », P5) ; action « sélectionner le dépôt git dans l'explorateur » ajoutée. Décisions de l'utilisateur. |
 | 2026-10-27 | — (ENV-12 lot 5) | Essai VSCodium 8/8 conforme ; critère « vue IDE-1 cohérente avec `lepton seed status` » satisfait (Mac). Propositions appliquées, à confirmer : nœud « Greffons de la graine » (greffons sans source compilée) ; preset sur le nœud exécutif (description de la vue non affichée, vue seule dans son conteneur) ; L3-4 : suppressions ignorées pendant un lepton et 3 s après, aucune question au-delà de 20, fichiers seulement. Observations L5-1 à L5-4 : `rapports/env-12-lot5.md` §5. |
+| 2026-10-27 | PA-P (ENV-12 lot 5) | Push accordé et fait : lepton-tools `devenv/env-12` 6f3ade5 → f03f71c (avance rapide, lot 5) ; `main`, clone noyau, seed.scions non poussés. Décision de l'utilisateur. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
