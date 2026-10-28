@@ -138,3 +138,18 @@ def test_rootstock_xml_cfg5_line(project, capsys):
     [a] = [a for a in json.loads(out)["anomalies"] if "dev_ghost_map" in a["location"]]
     assert "dev_ghost_map" in xml.read_text().splitlines()[a["line"] - 1]
 
+
+@needs_xmllint
+def test_rootstock_xml_xsd_line(project, capsys):
+    """D-a (ENV-12 lot 6 S3) : refus du XSD au contrôle complet situé à la ligne de xmllint."""
+    from conftest import PROJECT_XML
+    xml = (project / "trunk" / PROJECT_XML).resolve()
+    lines = xml.read_text().splitlines()
+    i = next(n for n, l in enumerate(lines) if "<mklepton" in l) + 1
+    lines.insert(i, "<inconnu/>")
+    xml.write_text("\n".join(lines) + "\n")
+    code, out = _check(project, capsys, "--json")
+    assert code == 1
+    [a] = [a for a in json.loads(out)["anomalies"] if "inconnu" in a["message"]]
+    assert a["line"] == i + 1 and a["message"].startswith(f"{i + 1}: ")
+

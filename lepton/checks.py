@@ -14,6 +14,7 @@ Une définition dans une macro par collage de lexèmes (`dev_cmsdk_uart_##n##_ma
 import json
 import re
 import xml.etree.ElementTree as ET
+from dataclasses import replace
 from pathlib import Path
 
 from lepton.errors import EXIT_TOOL, LeptonError
@@ -390,7 +391,8 @@ def check_rootstock(rs: Rootstock, warn) -> tuple[list[str], list[Anomaly]]:
         warn(f"{xml_label} : XML fourni par un greffon partagé, pas par la graine (CFG-1, O5) ; "
              f"lepton seed mkconf import {graine['mklepton_xml']}")
     try:
-        anomalies.extend(Anomaly(xml_label, a.location, a.message) for a in validate_xml(xml))
+        # ligne de xmllint gardée (D-a, ENV-12 lot 6 S3)
+        anomalies.extend(replace(a, file=xml_label) for a in validate_xml(xml))
     except LeptonError as e:
         if e.code != EXIT_TOOL:
             raise
