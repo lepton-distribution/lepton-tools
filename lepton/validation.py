@@ -122,29 +122,79 @@ def _message(err: ValidationError) -> str:
         return f"liste trop courte (au moins {val} élément(s))"
     if v == "uniqueItems":
         return "éléments en double"
+    if v in ("anyOf", "oneOf"):
+        # branches faites de champs obligatoires seuls (BSP : openocd et sonde, ou qemu)
+        if all(isinstance(s, dict) and set(s) == {"required"} for s in val):
+            return "champ obligatoire absent : " + ", ou ".join(" et ".join(s["required"]) for s in val)
+        return "valeur ne correspondant à aucune des formes admises"
     return err.message
+
+
+def _forbidden_keys(err: ValidationError, kind: str, data) -> tuple[dict, list[str]]:
+    """Champs refusés par un schéma `false` sous « properties » (champ interdit pour un type) :
+    jsonschema n'en donne ni le nom ni le chemin ; retrouvés dans le schéma et dans l'objet. Le
+    chemin de schéma omet « $ref » : les « properties » d'une référence locale (« #/$defs/… ») du
+    même nœud sont aussi parcourues. Renvoie l'objet qui porte les champs et leurs noms."""
+    if err.validator is not None or not err.absolute_schema_path or err.absolute_schema_path[-1] != "properties":
+        return {}, []
+    root = _validator(kind).schema
+    node, parent = root, data
+    try:
+        for p in list(err.absolute_schema_path)[:-1]:
+            node = node[p]
+        for p in err.absolute_path:
+            parent = parent[p]
+        falses = set()
+        while isinstance(node, dict):
+            falses |= {k for k, s in node.get("properties", {}).items() if s is False}
+            ref = node.get("$ref")
+            if not (isinstance(ref, str) and ref.startswith("#/")):
+                break
+            node = root
+            for q in ref[2:].split("/"):
+                node = node[q]
+    except (KeyError, IndexError, TypeError):
+        return {}, []
+    if not isinstance(parent, dict):
+        return {}, []
+    return parent, [k for k in parent if k in falses and parent[k] == err.instance]
 
 
 def validate_data(data, kind: str, label: str, text: str | None = None) -> list[Anomaly]:
     """Valide un manifeste déjà chargé (`label` : nom affiché dans les anomalies) ; `text`, le texte
     dont il provient, situe chaque anomalie. Champs non autorisés : une anomalie par champ, située
-    sur sa clé."""
+    sur sa clé (sous l'objet pour « additionalProperties », sous le champ pour un champ interdit
+    par le type)."""
     errors = sorted(_validator(kind).iter_errors(data), key=lambda e: list(e.absolute_path))
     try:
         found = jsonpos.members(text) if text is not None else None
     except (IndexError, ValueError):        # texte différent des données (fichier modifié entre-temps)
         found = None
-    result = []
+    result, seen = [], set()
+
+    def on_key(pointer: str, k: str, message: str, location: str) -> None:
+        where = f"{pointer.rstrip('/')}/{k.replace('~', '~0').replace('/', '~1')}"
+        if (where, message) in seen:        # schéma false : une erreur par champ de même valeur
+            return
+        seen.add((where, message))
+        a = Anomaly(label, location or where, message)
+        result.append(a.place(text, jsonpos.span_of(found, where, on_key=True)) if found else a)
+
     for e in errors:
         pointer = _pointer(e)
         if e.validator == "additionalProperties" and isinstance(e.instance, dict):
             connus = set(e.schema.get("properties", {}))
             for k in sorted(k for k in e.instance if k not in connus):
-                a = Anomaly(label, pointer, f"champ non autorisé : {k}")
-                where = f"{pointer.rstrip('/')}/{k.replace('~', '~0').replace('/', '~1')}"
-                result.append(a.place(text, jsonpos.span_of(found, where, on_key=True)) if found else a)
+                on_key(pointer, k, f"champ non autorisé : {k}", pointer)
             continue
-        a = Anomaly(label, pointer, _message(e))
+        parent, keys = _forbidden_keys(e, kind, data)
+        if keys:
+            t = parent.get("type")
+            pour = f" pour le type « {t} »" if isinstance(t, str) else ""
+            for k in keys:
+                on_key(pointer, k, f"champ non autorisé{pour} : {k}", "")
+            continue
+        a = Anomaly(label, pointer, _message(e) if e.validator is not None else "valeur non autorisée")
         result.append(a.place(text, jsonpos.span_of(found, pointer)) if found else a)
     return result
 
