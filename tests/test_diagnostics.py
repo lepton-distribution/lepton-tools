@@ -236,3 +236,19 @@ def test_messages_minproperties_minimum_type(capsys):
     p = EXAMPLES / "invalides" / "graine-option-valeur-objet.json"
     main(["check", "--json", str(p)])
     assert [a["message"] for a in _anomalies(capsys)] == ["type attendu : booléen, entier ou texte"]
+
+
+def test_property_name_located_on_key(monkeypatch, capsys):
+    """propertyNames : nom de champ refusé nommé comme tel, situé sur sa clé (pas sur l'objet)."""
+    data = json.loads((EXAMPLES / "graine.json").read_text(encoding="utf-8"))
+    data["options"] = {"mesure": {"MESURE_PERIODE_MS": 100, "periode_ms": 1}, "Mesure": {"A": 1}}
+    text = json.dumps(data, ensure_ascii=False, indent=2)
+    _stdin(monkeypatch, text)
+    assert main(["check", "--json", "--stdin", "lepton-graine.json"]) == 1
+    found = {a["location"]: a for a in _anomalies(capsys)}
+    lines = text.splitlines()
+    for where, key, motif in (("/options/Mesure", "Mesure", "^[a-z0-9][a-z0-9._-]*$"),
+                              ("/options/mesure/periode_ms", "periode_ms", "^[A-Z][A-Z0-9_]*$")):
+        a = found[where]
+        assert a["message"] == f'nom de champ "{key}" non conforme au motif {motif}'
+        assert lines[a["line"] - 1][a["column"] - 1:a["end_column"] - 1] == f'"{key}"'
