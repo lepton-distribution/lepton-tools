@@ -166,3 +166,6 @@ décider au bilan de la session Mac.
 | 2026-10-28 | VM → Mac | AVANCEMENT R12-1 | §6.7 conforme ; O-e |
 | 2026-10-28 | VM → Mac | AVANCEMENT R12-1 | §6.8, §6.9 conformes ; O-f |
 | 2026-10-28 | VM → Mac | FIN-SUCCÈS R12-1 | voir le Bilan en tête de ce rapport |
+| 2026-10-28 | Mac → VM | ORDRE R12-2 | réinstaller lepton depuis `main` dbd49f0 (renvoi R1 : D-b, O-r1, O-r2) et contrôler `lepton check` et `pytest` ; session VM `debian-linux-vm-breezy-pnueli` ; sans sudo, commit ni push |
+| 2026-10-28 | VM → Mac | ACCUSÉ R12-2 | `origin/main` dbd49f0 ; clone propre sur `devenv/env-12-debian` (bc95a6a) ; pas de branche `main` locale (créée au suivi d'`origin/main`) |
+| 2026-10-28 | VM → Mac | FIN-SUCCÈS R12-2 | clone sur `main` dbd49f0 ; `pipx install --force` : lepton 0.1.0, Python 3.13.5 ; 6 contrôles conformes (champ interdit, nom de champ, types en français, sans `type` : 1 anomalie, aucun message anglais sur `invalides/`, graine `env11` : 5 conformes) ; `pytest` 198 passed (93,8 s, `venv-test` éditable) ; écarts : clone laissé sur `main` (avant : `devenv/env-12-debian`), `~/tmp-claude` créé comme `TMPDIR` |
