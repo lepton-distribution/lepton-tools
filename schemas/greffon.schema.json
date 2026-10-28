@@ -3,7 +3,7 @@
   "$id": "urn:lepton:schema:greffon:1",
   "title": "Manifeste de greffon Lepton",
   "description": "Manifeste déclaratif d'un greffon (scion), lu par CMake (string(JSON)) et par l'outil lepton. Fichier lepton-greffon.json dans le répertoire de destination du greffon, sys/root/src/<destination>/ (la racine scion/ est commune à tous les greffons du trunk ; ENV-5).",
-  "$comment": "GRF-2 (manifeste JSON validé par JSON Schema), décision 9 (JSON + JSON Schema, champ description). ENV-3.",
+  "$comment": "GRF-2 (manifeste JSON validé par JSON Schema), décision 9 (JSON + JSON Schema, champ description). ENV-3. Chaque « if » sur « type » exige « type » : sans lui, un « if » serait vrai par vacuité et tous les « then » s’appliqueraient (D-b, ENV-12 R1).",
   "type": "object",
   "required": ["nom", "type", "version"],
   "properties": {
@@ -178,7 +178,7 @@
   "allOf": [
     {
       "$comment": "Noyau : coeurs et backends obligatoires (GRF-5, CFG-2) ; ses bibliothèques kernel, lib, sbin, bin sont définies par son CMakeLists.txt (BLD-1).",
-      "if": { "properties": { "type": { "const": "noyau" } } },
+      "if": { "required": ["type"], "properties": { "type": { "const": "noyau" } } },
       "then": {
         "required": ["destination", "coeurs", "backends"],
         "properties": {
@@ -191,7 +191,7 @@
     },
     {
       "$comment": "Famille : sous kernel/dev/arch, dans la bibliothèque kernel (BLD-1, PA-2 Q2/Q3).",
-      "if": { "properties": { "type": { "const": "famille" } } },
+      "if": { "required": ["type"], "properties": { "type": { "const": "famille" } } },
       "then": {
         "required": ["destination", "bibliotheque", "coeurs", "mcu"],
         "properties": {
@@ -206,7 +206,7 @@
     },
     {
       "$comment": "BSP : GRF-3 ; débogage sur carte (openocd + sonde) ou exécution QEMU, au moins l'un des deux.",
-      "if": { "properties": { "type": { "const": "bsp" } } },
+      "if": { "required": ["type"], "properties": { "type": { "const": "bsp" } } },
       "then": {
         "required": ["destination", "bibliotheque", "famille", "coeur", "mcu", "frequence_cpu", "script_liens", "demarrage"],
         "properties": {
@@ -223,7 +223,7 @@
     },
     {
       "$comment": "Application : sous bin/, bibliothèque bin (décision 3).",
-      "if": { "properties": { "type": { "const": "application" } } },
+      "if": { "required": ["type"], "properties": { "type": { "const": "application" } } },
       "then": {
         "required": ["destination", "bibliotheque", "sources"],
         "properties": {
@@ -235,7 +235,7 @@
     },
     {
       "$comment": "Bibliothèque : sous lib/, bibliothèque lib ou dédiée.",
-      "if": { "properties": { "type": { "const": "bibliotheque" } } },
+      "if": { "required": ["type"], "properties": { "type": { "const": "bibliotheque" } } },
       "then": {
         "required": ["destination", "bibliotheque", "sources"],
         "properties": {
@@ -335,19 +335,19 @@
       "additionalProperties": false,
       "allOf": [
         {
-          "if": { "properties": { "type": { "const": "booleen" } } },
+          "if": { "required": ["type"], "properties": { "type": { "const": "booleen" } } },
           "then": { "properties": { "defaut": { "type": "boolean" }, "min": false, "max": false, "valeurs": false } }
         },
         {
-          "if": { "properties": { "type": { "const": "entier" } } },
+          "if": { "required": ["type"], "properties": { "type": { "const": "entier" } } },
           "then": { "required": ["min", "max"], "properties": { "defaut": { "type": "integer" }, "valeurs": false } }
         },
         {
-          "if": { "properties": { "type": { "const": "enumeration" } } },
+          "if": { "required": ["type"], "properties": { "type": { "const": "enumeration" } } },
           "then": { "required": ["valeurs"], "properties": { "defaut": { "type": "string" }, "min": false, "max": false } }
         },
         {
-          "if": { "properties": { "type": { "const": "chaine" } } },
+          "if": { "required": ["type"], "properties": { "type": { "const": "chaine" } } },
           "$comment": "O16 (ENV-8 R2) : « ; » (séparateur de liste) et « # » (définition retirée par CMake) ne sont pas transmissibles par une définition de compilation ; « \" » et « \\ » sont échappés par le lecteur CMake.",
           "then": { "properties": { "defaut": { "type": "string", "pattern": "^[^;#\\n\\r]*$" }, "min": false, "max": false, "valeurs": false } }
         }
