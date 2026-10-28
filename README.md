@@ -11,14 +11,15 @@ requis). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`
 `pip install -e '.[test]'` et `python -m pytest`.
 
 Environnement complet (VSCodium épinglé, extensions de `scripts/extensions.lst` depuis Open VSX,
-chaîne par les scripts du noyau, scion, lepton ; macOS Intel et Apple Silicon, Debian) :
+extension Lepton de `extension/dist/`, chaîne par les scripts du noyau, scion, lepton ; macOS
+Intel et Apple Silicon, Debian) :
 `scripts/install-vscodium.sh --lepton-clone <clone du noyau> [--seed-scions <clone seed.scions>]`
 (`--dry-run` affiche sans exécuter ; `--help` pour les options). Rejouable.
 
 Commandes disponibles (0.1.0) : `lepton --version`, `lepton check [FILE...]` (sans argument :
 graine, greffons greffés et XML du rootstock), `lepton seed new | status | add | remove | replace |
-lock`, `lepton scion new | remove`,
-`lepton file add | remove | mv`, `lepton dir add | remove`, `lepton graft`, `lepton generate`
+lock`, `lepton seed mkconf import`, `lepton seed config add | remove`, `lepton scion new | remove`,
+`lepton file add | remove | mv | owner`, `lepton dir add | remove`, `lepton graft`, `lepton generate`
 (`lepton <commande> [<action>] --help`). Exemple :
 
 ```
@@ -28,11 +29,20 @@ lepton seed new demo -C ~/demo --bsp qemu-mps2-an386 \
 cd ~/demo/trunk
 lepton scion new ma-carte --type bsp --from qemu-mps2-an386   # dépôt depots/lepton-bsp/ma-carte
 lepton file add sys/root/src/kernel/dev/bsp/ma-carte/gpio.c    # créé dans le clone, regreffé
+lepton file owner sys/root/src/kernel/dev/bsp/ma-carte/spi.c   # greffon propriétaire (--json)
 lepton check                                                   # GRA-2, GRF-5, CFG-5
 lepton seed lock                                               # lepton-graine.lock.json (GRA-5)
 lepton generate        # CMakeUserPresets.json (graine, greffé) et ~/demo/demo.code-workspace
+lepton seed config add release-qemu --build-type Release --run qemu   # preset demo-release-qemu
 codium ~/demo/demo.code-workspace
 ```
+
+XML mklepton du projet (CFG-1) : `seed new` copie le XML `--mkconf` (modèle du noyau) et ses
+fichiers `src_file` (`.boot`, `.init`) dans la graine, sous `project/scion/sys/user/<projet>/etc/`,
+greffés dans le trunk (`sys/user/<projet>/etc/mkconf_<projet>.xml`) ; il se modifie par le trunk.
+`scion new`, `seed add`, `scion remove`, `seed remove` d'une application y ajoutent ou retirent son
+`<bin>` (bloc `/usr/bin`). Graine antérieure : `lepton seed mkconf import <XML du trunk>`, puis
+`lepton generate`.
 
 Dans VSCodium, ouvrir les fichiers par le dossier `trunk` (les fichiers greffés sont masqués dans les
 dossiers `git · …`). Après un changement de preset, rouvrir les fichiers déjà ouverts (ou

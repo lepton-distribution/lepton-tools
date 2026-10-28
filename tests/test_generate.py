@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import MKCONF, assert_trunk_clean, url
+from conftest import MKCONF, PROJECT_XML, assert_trunk_clean, url
 from lepton import generate as gen
 from lepton.cli import main
 from lepton.rootstock import Rootstock, project_key
@@ -102,7 +102,7 @@ def test_generate_presets_grafted_in_trunk(project, tools):
     assert debug["inherits"] == "cross"
     assert debug["cacheVariables"] == {
         "CMAKE_BUILD_TYPE": "Debug", "LEPTON_ISA": "armv7m", "LEPTON_CPU": "cortex-m4f",
-        "LEPTON_BOARD": "board-q", "LEPTON_KAL_BACKEND": "embos", "LEPTON_MKCONF": MKCONF}
+        "LEPTON_BOARD": "board-q", "LEPTON_KAL_BACKEND": "embos", "LEPTON_MKCONF": PROJECT_XML}
     assert presets["configurePresets"][1]["cacheVariables"]["CMAKE_BUILD_TYPE"] == "Release"
     assert [p["configurePreset"] for p in presets["buildPresets"]] == ["demo-debug-qemu", "demo-release-qemu"]
     assert [p["name"] for p in presets["testPresets"]] == ["demo-debug-qemu", "demo-release-qemu"]
@@ -134,6 +134,20 @@ def test_generate_regrafts_missing_link(project, tools):
     assert main(["generate", "-C", str(project)]) == 0
     assert link.is_symlink()
     assert not (project / "trunk" / ".DS_Store").exists()
+
+
+def test_presets_link_touched_when_changed(project, tools):
+    """L6-5 (ENV-12) : presets réécrits → date du lien du trunk avancée (observateur de l'éditeur) ;
+    presets inchangés → lien intact."""
+    assert main(["generate", "-C", str(project)]) == 0
+    link = project / "trunk" / gen.PRESETS_FILE
+    os.utime(link, (1_000_000, 1_000_000), follow_symlinks=False)
+    assert main(["generate", "-C", str(project)]) == 0
+    assert os.lstat(link).st_mtime == 1_000_000
+    assert main(["seed", "config", "add", "rel", "--build-type", "MinSizeRel", "--run", "qemu",
+                 "-C", str(project)]) == 0
+    assert link.is_symlink() and os.lstat(link).st_mtime > 1_000_000
+    assert_trunk_clean(project)
 
 
 def test_generate_never_reads_mklepton_xml(project, tools):
@@ -258,6 +272,9 @@ def test_schema_associations(project, tools):
     patterns = [e["pattern"] for e in s["xml.fileAssociations"]]
     assert {e["systemId"] for e in s["xml.fileAssociations"]} == {str(xsd)}
     assert patterns == ["**/mkconf_*.xml"]                               # XML de la graine compris
+    assert s["json.validate.enable"] is False      # ENV-12 lot 4 : erreurs par l'extension (lepton check --stdin)
+    # O-b (ENV-12 lot 6 S3) : CMake Tools n'édite pas les CMakeLists à la création ou à la suppression
+    assert s["cmake.modifyLists.addNewSourceFiles"] == s["cmake.modifyLists.removeDeletedSourceFiles"] == "no"
     _set_graine(project, mklepton_xml="sys/user/demo/etc/projet.xml")
     assert main(["generate", "-C", str(project)]) == 0
     patterns = [e["pattern"] for e in _workspace(project)["settings"]["xml.fileAssociations"]]
@@ -282,6 +299,26 @@ def test_check_task_reports_errors(project, tools):
     assert regexp.match("lepton: attention: xmllint absent : XML mklepton non validé") is None
 
 
+def test_build_tasks_gcc_matcher(project, tools):
+    """L6-7 (ENV-12) : aucun matcher fourni par une extension absente (`$gcc`) ; diagnostics de gcc lus
+    par le matcher écrit dans la tâche."""
+    assert main(["generate", "-C", str(project)]) == 0
+    tasks = _workspace(project)["tasks"]["tasks"]
+    assert "$gcc" not in json.dumps(tasks)
+    builds = [t for t in tasks if t["label"].startswith("lepton : construire") or "mklepton" in t["label"]]
+    assert len(builds) == 2
+    for task in builds:
+        matcher = task["problemMatcher"]
+        assert matcher["fileLocation"] == ["autoDetect", str(project / "trunk")]
+        regexp = re.compile(matcher["pattern"]["regexp"])
+        m = regexp.match("/r/trunk/sys/root/src/a.c:12:5: error: 'x' undeclared (first use in this function)")
+        assert m and m.groups() == ("/r/trunk/sys/root/src/a.c", "12", "5", "error",
+                                    "'x' undeclared (first use in this function)")
+        assert regexp.match("/r/trunk/b.h:3:1: fatal error: c.h: No such file or directory").group(4) == "error"
+        assert regexp.match("a.c:7:2: warning: unused variable 'y' [-Wunused-variable]").group(4) == "warning"
+        assert regexp.match("[12/40] Building C object …") is None
+
+
 def test_check_names_grafted_manifests_by_trunk(project, capsys):
     """IDE-4 : lepton check désigne un manifeste greffé par le trunk (chemin ouvert par la tâche)."""
     capsys.readouterr()
@@ -303,19 +340,32 @@ def test_active_compile_commands_primed(project, tools, capsys):
     assert not active.exists() and "aucun preset configuré" in capsys.readouterr().err
 
     release = project / "build" / "demo-release-qemu" / gen.COMPILE_COMMANDS
-    release.parent.mkdir(parents=True)
+    release.parent.mkdir(parents=True, exist_ok=True)
     release.write_text("[]\n")
     assert main(["generate", "-C", str(project)]) == 0
     assert active.read_text() == "[]\n" and "aucun preset configuré" not in capsys.readouterr().err
 
     debug = project / "build" / "demo-debug-qemu" / gen.COMPILE_COMMANDS
-    debug.parent.mkdir(parents=True)
+    debug.parent.mkdir(parents=True, exist_ok=True)
     debug.write_text('[{"file": "x.c"}]\n')
     assert main(["generate", "-C", str(project)]) == 0
     assert active.read_text() == "[]\n"                                 # base de CMake Tools gardée
     active.unlink()
     assert main(["generate", "-C", str(project)]) == 0
     assert active.read_text() == debug.read_text()                      # premier preset de la graine
+    assert_trunk_clean(project)
+
+
+def test_cmake_api_query_per_preset(project, tools):
+    """ENV-12 lot 5 : requête codemodel-v2 propre à lepton dans chaque répertoire de construction de la
+    graine (seed tree lit la réponse, même après une configuration sans CMake Tools)."""
+    _set_graine(project, configurations=[
+        {"nom": "debug-qemu", "construction": "Debug", "execution": "qemu"},
+        {"nom": "release-qemu", "construction": "Release", "execution": "qemu"}])
+    assert main(["generate", "-C", str(project)]) == 0
+    for preset in ("demo-debug-qemu", "demo-release-qemu"):
+        query = project / "build" / preset / gen.API_QUERY
+        assert json.loads(query.read_text()) == {"requests": [{"kind": "codemodel", "version": 2}]}
     assert_trunk_clean(project)
 
 
@@ -441,3 +491,63 @@ def test_status_and_lock_with_project_scion(project, tools, capsys):
     main(["check", "--json", "-C", str(project)])     # anomalies propres aux fixtures factices de conftest
     anomalies = json.dumps(json.loads(capsys.readouterr().out)["anomalies"])
     assert "project" not in anomalies and gen.PRESETS_FILE not in anomalies
+
+
+# --------------------------------------------------------------------------
+# F7 (O2) : seed config add / remove
+# --------------------------------------------------------------------------
+def _configs(root: Path) -> list[dict]:
+    return json.loads(_graine(root).read_text(encoding="utf-8"))["configurations"]
+
+
+def test_config_add_remove_regenere(project, tools, capsys):
+    assert main(["seed", "config", "add", "release-qemu", "--build-type", "Release", "--run", "qemu",
+                 "-C", str(project)]) == 0
+    assert _configs(project)[-1] == {"nom": "release-qemu", "construction": "Release", "execution": "qemu"}
+    presets = json.loads((project / "trunk" / gen.PRESETS_FILE).read_text())
+    assert [p["name"] for p in presets["configurePresets"]] == ["demo-debug-qemu", "demo-release-qemu"]
+    assert "demo-release-qemu" in json.dumps(_workspace(project))
+    (project / "build" / "demo-release-qemu").mkdir(parents=True, exist_ok=True)
+    capsys.readouterr()
+    assert main(["seed", "config", "remove", "release-qemu", "-C", str(project)]) == 0
+    out = capsys.readouterr().out
+    assert f"répertoire de construction conservé : {project / 'build' / 'demo-release-qemu'}" in out
+    presets = json.loads((project / "trunk" / gen.PRESETS_FILE).read_text())
+    assert [p["name"] for p in presets["configurePresets"]] == ["demo-debug-qemu"]
+    assert_trunk_clean(project)
+
+
+def test_config_status_json(project, capsys):
+    """Configurations listées par seed status (--json : choix de la palette, F7 d'ENV-12)."""
+    assert main(["seed", "config", "add", "rel", "--build-type", "MinSizeRel", "--run", "qemu", "--no-generate",
+                 "-C", str(project)]) == 0
+    capsys.readouterr()
+    main(["seed", "status", "--json", "-C", str(project)])
+    assert json.loads(capsys.readouterr().out)["configurations"] == [
+        {"name": "debug-qemu", "build_type": "Debug", "run": "qemu", "preset": "demo-debug-qemu"},
+        {"name": "rel", "build_type": "MinSizeRel", "run": "qemu", "preset": "demo-rel"}]
+    main(["seed", "status", "-C", str(project)])
+    assert "configurations : debug-qemu (Debug, qemu), rel (MinSizeRel, qemu)" in capsys.readouterr().out
+
+
+def test_config_no_generate(project, capsys):
+    capsys.readouterr()
+    assert main(["seed", "config", "add", "rel", "--build-type", "MinSizeRel", "--run", "qemu", "--no-generate",
+                 "-C", str(project)]) == 0
+    assert "lepton generate" in capsys.readouterr().out
+    assert not (project / "trunk" / gen.PRESETS_FILE).exists()
+
+
+@pytest.mark.parametrize("argv, message", [
+    (["add", "debug-qemu", "--build-type", "Debug", "--run", "qemu"], "déjà dans la graine"),
+    (["add", "debug-board", "--build-type", "Debug", "--run", "carte"], "le BSP board-q ne déclare pas openocd"),
+    (["add", "Rel", "--build-type", "Release", "--run", "qemu"], "NAME « Rel » refusé"),
+    (["remove", "absente"], "absente de la graine (debug-qemu)"),
+    (["remove", "debug-qemu"], "seule configuration de la graine"),
+])
+def test_config_refus(project, capsys, argv, message):
+    before = _graine(project).read_text(encoding="utf-8")
+    capsys.readouterr()
+    assert main(["seed", "config", *argv, "--no-generate", "-C", str(project)]) == 1
+    assert message in capsys.readouterr().err
+    assert _graine(project).read_text(encoding="utf-8") == before

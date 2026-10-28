@@ -10,7 +10,9 @@ lancée que si ENV-11 montre que la phase 1 ne suffit pas.
 ## Prérequis
 - ENV-11 terminée.
 - Point d'arrêt PA-12 : décision de lancer l'étape, liste des fonctions retenues.
-- Node.js et `vsce`/`ovsx` <À CONFIRMER : versions> ; branche `devenv/env-12` dans `lepton-tools`.
+- Node.js 22.15.0 (nvm), typescript 5.9.3, `@types/vscode` 1.134.0, `@types/node` 22.20.5,
+  `@vscode/vsce` 4.0.0 (2026-10-20) ; `ovsx` installé seulement pour une publication (PA-P) ; branche
+  `devenv/env-12` dans `lepton-tools`.
 
 ## Tâches
 

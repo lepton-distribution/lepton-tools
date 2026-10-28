@@ -1,0 +1,317 @@
+{
+  "name": "lepton",
+  "displayName": "%displayName%",
+  "description": "%description%",
+  "version": "0.5.1",
+  "publisher": "lepton-distribution",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lepton-distribution/lepton-tools.git",
+    "directory": "extension"
+  },
+  "engines": {
+    "vscode": "^1.135.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/src/extension.js",
+  "l10n": "./l10n",
+  "activationEvents": [
+    "workspaceContains:**/lepton-graine.json",
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "Lepton",
+      "properties": {
+        "lepton.path": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "%config.path%"
+        },
+        "lepton.autoGraft.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.autoGraft.enabled%"
+        },
+        "lepton.autoGraft.delay": {
+          "type": "number",
+          "default": 1000,
+          "minimum": 100,
+          "markdownDescription": "%config.autoGraft.delay%"
+        },
+        "lepton.redirectTrunkCreations": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.redirectTrunkCreations%"
+        },
+        "lepton.confirmTrunkDeletions": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.confirmTrunkDeletions%"
+        },
+        "lepton.restartClangd": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.restartClangd%"
+        },
+        "lepton.diagnostics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.diagnostics.enabled%"
+        },
+        "lepton.diagnostics.delay": {
+          "type": "number",
+          "default": 400,
+          "minimum": 100,
+          "markdownDescription": "%config.diagnostics.delay%"
+        },
+        "lepton.debug.trunkPaths": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.debug.trunkPaths%"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "lepton.seedStatus",
+        "title": "%command.seedStatus%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.seedAdd",
+        "title": "%command.seedAdd%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.seedRemove",
+        "title": "%command.seedRemove%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.seedReplace",
+        "title": "%command.seedReplace%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.seedLock",
+        "title": "%command.seedLock%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.seedConfigAdd",
+        "title": "%command.seedConfigAdd%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.seedConfigRemove",
+        "title": "%command.seedConfigRemove%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.seedMkconfImport",
+        "title": "%command.seedMkconfImport%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.scionNew",
+        "title": "%command.scionNew%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.scionRemove",
+        "title": "%command.scionRemove%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.fileAdd",
+        "title": "%command.fileAdd%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.fileRemove",
+        "title": "%command.fileRemove%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.fileMove",
+        "title": "%command.fileMove%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.dirAdd",
+        "title": "%command.dirAdd%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.dirRemove",
+        "title": "%command.dirRemove%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.graft",
+        "title": "%command.graft%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.check",
+        "title": "%command.check%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.generate",
+        "title": "%command.generate%",
+        "category": "Lepton"
+      },
+      {
+        "command": "lepton.tree.refresh",
+        "title": "%command.tree.refresh%",
+        "category": "Lepton",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "lepton.tree.newFile",
+        "title": "%command.tree.newFile%",
+        "category": "Lepton",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "lepton.tree.removeFile",
+        "title": "%command.tree.removeFile%",
+        "category": "Lepton",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "lepton.tree.revealInClone",
+        "title": "%command.tree.revealInClone%",
+        "category": "Lepton",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "lepton.tree.revealRepository",
+        "title": "%command.tree.revealRepository%",
+        "category": "Lepton",
+        "icon": "$(repo)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "lepton",
+          "title": "%view.container%",
+          "icon": "$(circuit-board)"
+        }
+      ]
+    },
+    "views": {
+      "lepton": [
+        {
+          "id": "lepton.architecture",
+          "name": "%view.architecture%",
+          "icon": "$(circuit-board)"
+        }
+      ]
+    },
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "lepton.fileAdd",
+          "when": "explorerResourceIsFolder",
+          "group": "lepton@1"
+        },
+        {
+          "command": "lepton.dirAdd",
+          "when": "explorerResourceIsFolder",
+          "group": "lepton@2"
+        },
+        {
+          "command": "lepton.dirRemove",
+          "when": "explorerResourceIsFolder",
+          "group": "lepton@3"
+        },
+        {
+          "command": "lepton.fileRemove",
+          "when": "!explorerResourceIsFolder",
+          "group": "lepton@1"
+        },
+        {
+          "command": "lepton.fileMove",
+          "when": "!explorerResourceIsFolder",
+          "group": "lepton@2"
+        }
+     ,
+        {
+          "command": "lepton.seedMkconfImport",
+          "when": "resourceExtname == .xml",
+          "group": "lepton@3"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "lepton.tree.refresh",
+          "when": "view == lepton.architecture",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "lepton.tree.newFile",
+          "when": "view == lepton.architecture && viewItem == lepton.dir",
+          "group": "inline"
+        },
+        {
+          "command": "lepton.tree.newFile",
+          "when": "view == lepton.architecture && viewItem == lepton.dir",
+          "group": "lepton@1"
+        },
+        {
+          "command": "lepton.tree.removeFile",
+          "when": "view == lepton.architecture && viewItem == lepton.file",
+          "group": "lepton@2"
+        },
+        {
+          "command": "lepton.tree.revealInClone",
+          "when": "view == lepton.architecture && viewItem =~ /^lepton\\.(file|dir|scion)$/",
+          "group": "lepton@3"
+        },
+        {
+          "command": "lepton.tree.revealRepository",
+          "when": "view == lepton.architecture && viewItem =~ /^lepton\\.(file|dir|scion)$/",
+          "group": "lepton@4"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "lepton.tree.newFile",
+          "when": "false"
+        },
+        {
+          "command": "lepton.tree.removeFile",
+          "when": "false"
+        },
+        {
+          "command": "lepton.tree.revealInClone",
+          "when": "false"
+        },
+        {
+          "command": "lepton.tree.revealRepository",
+          "when": "false"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "vscode:prepublish": "tsc -p .",
+    "test": "tsc -p . && node --test out/test/*.test.js",
+    "package": "rm -f dist/*.vsix && vsce package --skip-license --out dist/"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/vscode": "1.134.0",
+    "@vscode/vsce": "4.0.0",
+    "typescript": "5.9.3"
+  }
+}

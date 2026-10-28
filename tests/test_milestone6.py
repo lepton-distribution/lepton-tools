@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import MKCONF, assert_trunk_clean
+from conftest import MKCONF, PROJECT_XML, assert_trunk_clean
 from lepton.cli import main
 from lepton.rootstock import KERNEL_KEY, Rootstock
 
@@ -99,6 +99,21 @@ def test_check_rootstock_conforme(project, capsys):
     report = json.loads(out)
     assert code == 0 and report["anomalies"] == []
     assert any(f.endswith("lepton-graine.json") for f in report["files"])
+
+
+def test_check_trunk_regular_file_and_broken_link(project, repos, capsys):
+    """ENV-12 lot 3 : check signale les fichiers réguliers et les liens cassés du trunk (FIC-3)."""
+    board = project / "trunk/sys/root/src/kernel/dev/bsp/board-q"
+    (board / "stray.c").write_text("")
+    (repos["bsp"] / "scion/sys/root/src/kernel/dev/bsp/board-q/board.c").rename(
+        repos["bsp"] / "scion/sys/root/src/kernel/dev/bsp/board-q/moved.c")
+    code, out = _check(project, capsys)
+    assert code == 1
+    assert "trunk/sys/root/src/kernel/dev/bsp/board-q/stray.c: fichier régulier dans le trunk (FIC-3)" in out
+    assert "trunk/sys/root/src/kernel/dev/bsp/board-q/board.c: lien cassé dans le trunk : lepton graft" in out
+    code, out = _check(project, capsys, "--json")
+    assert {a["file"] for a in json.loads(out)["anomalies"]} >= {
+        "trunk/sys/root/src/kernel/dev/bsp/board-q/stray.c", "trunk/sys/root/src/kernel/dev/bsp/board-q/board.c"}
 
 
 def test_check_non_exprimable_json_schema(project, capsys):
@@ -201,8 +216,8 @@ def test_grf5_check_coeur_backend_dependances(project, capsys):
 
 
 def test_cfg5_check_pilote_binaire_non_fournis(project, capsys):
-    xml = (project / "trunk" / MKCONF).resolve()          # fichier du clone noyau, jamais le trunk
-    assert "depots" in xml.parts
+    xml = (project / "trunk" / PROJECT_XML).resolve()     # fichier de la graine (O5), jamais le trunk
+    assert "lepton-seed" in xml.parts
     xml.write_text(XML.format(extra_dev='<dev name="dev_ghost_map" use="on"/>',
                               extra_bin='<bin name="ls" stack="2048" priority="100" timeslice="1" />'))
     code, out = _check(project, capsys)
@@ -214,7 +229,9 @@ def test_cfg5_check_pilote_binaire_non_fournis(project, capsys):
 
 
 def test_cfg5_scion_remove_avertit(project, capsys):
-    """O4 : retrait d'une application que le XML déclare : avertissement CFG-5, retrait fait."""
+    """O4 : retrait d'une application que le XML déclare : avertissement CFG-5, retrait fait ; graine
+    non migrée (XML du noyau, O5) : lepton ne retire pas la déclaration."""
+    _edit_json(_graine_path(project), mklepton_xml=MKCONF)
     assert main(["scion", "new", "salut", "--type", "application", "-C", str(project), "--no-cmake"]) == 0
     xml = (project / "trunk" / MKCONF).resolve()
     xml.write_text(XML.format(extra_dev='<dev name="dev_ghost_map" use="on"/>',

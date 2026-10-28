@@ -20,8 +20,8 @@ from pathlib import Path
 from lepton.checks import check_seed_options
 from lepton.errors import EXIT_OK, EXIT_TOOL, LeptonError
 from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, project_key
-from lepton.scion_runner import run, scion
-from lepton.seed import LOCAL_VERSION, _info, _remind_commit, _warn, finish, load_graine, scion_on_trunk
+from lepton.scion_runner import run
+from lepton.seed import _info, _remind_commit, _warn, finish, graft_project, load_graine, project_stem
 from lepton.validation import SCHEMA_FILES, SCION_MANIFEST, SEED_MANIFEST, schemas_dir
 
 PRESETS_FILE = "CMakeUserPresets.json"
@@ -37,8 +37,16 @@ MKCONF_PATTERN = "**/mkconf_*.xml"            # XML mklepton du noyau (xml.fileA
 # Sortie de `lepton check` (« <fichier>: [<ligne xmllint>: ]<emplacement et message> ») → panneau Problems,
 # en erreur (CFG-7 : le service JSON intégré signale les fautes de schéma en avertissement seulement)
 CHECK_MATCHER = {"owner": "lepton", "source": "lepton check", "severity": "error",
-                 "pattern": {"regexp": r"^(\S[^:]*\.(?:json|xml)): (?:(\d+): )?(.*)$",
+                 "pattern": {"regexp": r"^(?!lepton: )(\S[^:]*): (?:(\d+): )?(.*)$",
                              "file": 1, "line": 2, "message": 3}}
+# L6-7 (ENV-12) : `$gcc` vient de l'extension C/C++ de Microsoft (absente : clangd, Open VSX) ;
+# diagnostics de gcc (`fichier:ligne:colonne: error|warning: message`), chemins absolus sous CMake
+GCC_MATCHER = {"owner": "lepton-gcc", "source": "gcc",
+               "pattern": {"regexp": r"^(.*?):(\d+):(\d+):\s+(?:fatal\s+)?(warning|error):\s+(.*)$",
+                           "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5}}
+# API fichier CMake : requête propre à lepton (seed tree), relative au répertoire de construction
+API_QUERY = Path(".cmake/api/v1/query/client-lepton/query.json")
+API_REQUESTS = {"requests": [{"kind": "codemodel", "version": 2}]}
 _PROBE_SERIAL = re.compile(r"""^[^\s"'\\]+$""")
 
 # Cœur (enum du schéma) → famille d'ISA du noyau (cmake/isa/) et cœur QEMU (-cpu)
@@ -131,6 +139,19 @@ def find_clangd(explicit: str | None) -> str | None:
 # --------------------------------------------------------------------------
 # contexte : graine, BSP, presets du noyau
 # --------------------------------------------------------------------------
+def check_configuration(c: dict, bsp_name: str, bsp: dict, action: str) -> None:
+    """Exécution de la configuration `c` permise par le BSP (qemu : machine ; carte : openocd)."""
+    if c["execution"] == "qemu" and not bsp.get("qemu", {}).get("machine"):
+        raise LeptonError(f"configuration {c['nom']} : exécution qemu, le BSP {bsp_name} ne déclare pas qemu", action)
+    if c["execution"] == "carte" and not bsp.get("openocd"):
+        raise LeptonError(f"configuration {c['nom']} : exécution carte, le BSP {bsp_name} ne déclare pas openocd", action)
+
+
+def preset_name(project: str, configuration: dict) -> str:
+    """Preset CMake d'une configuration de la graine : <projet>-<nom>."""
+    return f"{project}-{configuration['nom']}"
+
+
 class Context:
     def __init__(self, rs: Rootstock):
         self.rs = rs
@@ -148,12 +169,7 @@ class Context:
                               f"cœurs pris en charge : {', '.join(ISA_OF_CORE)}")
         self.configurations = self.graine["configurations"]
         for c in self.configurations:
-            if c["execution"] == "qemu" and not self.bsp.get("qemu", {}).get("machine"):
-                raise LeptonError(f"configuration {c['nom']} : exécution qemu, le BSP {bsp.name} ne déclare pas qemu",
-                                  f"corriger « execution » dans {rs.seed_manifest_path()}")
-            if c["execution"] == "carte" and not self.bsp.get("openocd"):
-                raise LeptonError(f"configuration {c['nom']} : exécution carte, le BSP {bsp.name} ne déclare pas openocd",
-                                  f"corriger « execution » dans {rs.seed_manifest_path()}")
+            check_configuration(c, bsp.name, self.bsp, f"corriger « execution » dans {rs.seed_manifest_path()}")
         anomalies = check_seed_options(self.graine, by_name, str(rs.seed_manifest_path()))
         if anomalies:
             raise LeptonError("valeurs d'options de la graine refusées (CFG-4) :\n"
@@ -172,7 +188,7 @@ class Context:
                               "greffon noyau d'ENV-5 ou plus récent")
 
     def preset(self, configuration: dict) -> str:
-        return f"{self.project}-{configuration['nom']}"
+        return preset_name(self.project, configuration)
 
     def bsp_file(self, rel: str) -> Path:
         """Fichier déclaré par le BSP, par le chemin du trunk (chemin canonique, PA-1)."""
@@ -257,7 +273,9 @@ def workspace_folders(ctx: Context) -> list[dict]:
 
 def schema_settings(ctx: Context) -> dict:
     """CFG-7 (N4) : manifestes JSON et XML mklepton associés aux schémas du paquet lepton (chemin
-    absolu résolu à la génération) ; validation et complétion à la saisie (JSON intégré, lemminx)."""
+    absolu résolu à la génération) ; complétion à la saisie (JSON intégré, lemminx), validation XML
+    par lemminx. Validation JSON intégrée coupée (ENV-12 lot 4) : elle ne signale qu'en avertissement,
+    l'extension Lepton signale en erreur (`lepton check --stdin`)."""
     schemas = schemas_dir()
     patterns = [MKCONF_PATTERN]
     seed_xml = f"**/{ctx.graine['mklepton_xml']}"
@@ -268,6 +286,7 @@ def schema_settings(ctx: Context) -> dict:
                          for name, kind in ((SCION_MANIFEST, "scion"), (SEED_MANIFEST, "seed"))],
         "xml.fileAssociations": [{"pattern": p, "systemId": str(schemas / SCHEMA_FILES["mklepton"])}
                                  for p in patterns],
+        "json.validate.enable": False,
     }
 
 
@@ -284,6 +303,9 @@ def workspace_settings(ctx: Context, tools: dict, probe_serial: str | None = Non
         "cmake.ignoreCMakeListsMissing": True,
         "cmake.options.statusBarVisibility": "visible",   # sélecteur de preset (IDE-5, O11)
         "cmake.copyCompileCommands": str(active / COMPILE_COMMANDS),
+        # sources déclarées par les manifestes : CMake Tools n'édite aucun CMakeLists (O-b, ENV-12)
+        "cmake.modifyLists.addNewSourceFiles": "no",
+        "cmake.modifyLists.removeDeletedSourceFiles": "no",
         "clangd.arguments": [f"--compile-commands-dir={active}", "--background-index",
                              f"--query-driver={tools['gcc']}"],
         "cortex-debug.armToolchainPath": str(Path(tools["gcc"]).parent),   # objdump, nm (gdb : gdbPath)
@@ -337,13 +359,14 @@ def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[di
     trunk = ctx.rs.trunk
     cmake = tools["cmake"]
     mk = "lepton : mklepton (preset host)"
+    gcc = {**GCC_MATCHER, "fileLocation": ["autoDetect", str(trunk)]}
     result = [
         _task("lepton : regreffer", tools["lepton"], ["graft", "-C", str(ctx.rs.path)], ctx.rs.path),
         _task("lepton : vérifier", tools["lepton"], ["check", "-C", str(ctx.rs.path)], ctx.rs.path,
               problemMatcher={**CHECK_MATCHER, "fileLocation": ["autoDetect", str(ctx.rs.path)]}),
         _task("lepton : configurer host", cmake, ["--preset", HOST_PRESET], trunk),
         _task(mk, cmake, ["--build", "--preset", HOST_PRESET, "--target", "mklepton"], trunk,
-              dependsOn=["lepton : configurer host"], dependsOrder="sequence", problemMatcher=["$gcc"]),
+              dependsOn=["lepton : configurer host"], dependsOrder="sequence", problemMatcher=gcc),
     ]
     env = {"env": {"PYTHONDONTWRITEBYTECODE": "1"}}   # tests servis par le trunk : aucun __pycache__
     for c in ctx.configurations:
@@ -351,7 +374,7 @@ def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[di
         configure, build = f"lepton : configurer {preset}", f"lepton : construire {preset}"
         result.append(_task(configure, cmake, ["--preset", preset], trunk, dependsOn=[mk]))
         result.append(_task(build, cmake, ["--build", "--preset", preset], trunk,
-                            dependsOn=[configure], group="build", problemMatcher=["$gcc"]))
+                            dependsOn=[configure], group="build", problemMatcher=gcc))
         if c["execution"] == "qemu":
             result.append(_task(f"lepton : QEMU {preset} (console série)", tools["qemu"],
                                 ["-M", ctx.bsp["qemu"]["machine"], "-kernel", _elf(ctx, c), "-nographic",
@@ -407,6 +430,14 @@ def _write_if_changed(path: Path, text: str) -> bool:
     return True
 
 
+def touch_link(link: Path) -> None:
+    """L6-5 (ENV-12) : l'observateur de fichiers de VSCodium ne suit pas les liens ; la réécriture de
+    la cible dans le clone n'est pas vue sur le chemin du trunk (CMake Tools ne relit pas ses presets).
+    La date du lien lui-même est avancée ; cible et contenu inchangés."""
+    if link.is_symlink():
+        os.utime(link, follow_symlinks=False)
+
+
 def probe_serial(ctx: Context, workspace: Path, option: str | None) -> str | None:
     """O8 : série de sonde de l'option ; sans option, celle de l'espace existant ; "" la retire."""
     if option is not None:
@@ -445,26 +476,12 @@ def prime_active(ctx: Context) -> None:
           "puis « clangd: Restart language server », ou relancer lepton generate avant l'ouverture")
 
 
-def _graft_project(ctx: Context, presets: Path) -> bool:
-    """Greffon local du projet (presets) : déclaré, inscrit puis greffé tant que le lien du trunk manque."""
-    rs, key = ctx.rs, project_key(ctx.project)
-    link = rs.trunk / PRESETS_FILE
-    changed = False
-    if key not in {s.key for s in rs.sources()}:
-        try:
-            location = str(ctx.seed_root.relative_to(rs.path))
-        except ValueError:
-            location = str(ctx.seed_root)
-        scion("seed-scion-add", "--seed", str(ctx.seed_root), key, LOCAL_VERSION, location, PROJECT_SUBPATH,
-              cwd=rs.path)
-        changed = True
-    if key not in {e.key for e in rs.grafted()}:
-        scion("seed-clone", "--seed", str(ctx.seed_root), cwd=rs.path)   # inscrit la clé dans la liste greffée
-        changed = True
-    if not (link.is_symlink() and link.resolve() == presets.resolve()):
-        scion_on_trunk(rs, "graft", "--scion", key)
-        changed = True
-    return changed
+def write_api_queries(ctx: Context) -> None:
+    """Requête codemodel-v2 de l'API fichier CMake dans chaque répertoire de construction de la graine :
+    la réponse lue par `lepton seed tree` (vue IDE-1) existe aussi après une configuration en ligne de
+    commande, sans CMake Tools (ENV-12 lot 5)."""
+    for c in ctx.configurations:
+        _write_if_changed(ctx.build_dir(c) / API_QUERY, json.dumps(API_REQUESTS, indent=2) + "\n")
 
 
 def generate(args) -> int:
@@ -472,13 +489,16 @@ def generate(args) -> int:
     ctx = Context(rs)
     tools = host_tools(ctx, args.clangd)
 
-    presets = ctx.seed_root / PROJECT_SUBPATH / STEM_DIR / PRESETS_FILE
-    seed_changed = _write_if_changed(presets, json.dumps(render_presets(ctx), ensure_ascii=False, indent=2) + "\n")
-    seed_changed |= _graft_project(ctx, presets)
+    presets = project_stem(ctx.seed_root) / PRESETS_FILE
+    presets_changed = _write_if_changed(presets, json.dumps(render_presets(ctx), ensure_ascii=False, indent=2) + "\n")
+    seed_changed = graft_project(rs, ctx.seed_root, ctx.project) or presets_changed
+    if presets_changed:
+        touch_link(rs.trunk / PRESETS_FILE)
     workspace = rs.path / f"{ctx.project}.code-workspace"
     serial = probe_serial(ctx, workspace, args.probe_serial)
     ws_changed = _write_if_changed(workspace, render_workspace(ctx, tools, serial))
     prime_active(ctx)
+    write_api_queries(ctx)
     finish(rs, no_cmake=True)
 
     _info(f"{'écrit    ' if seed_changed else 'inchangé '} {presets} (greffé : {rs.trunk / PRESETS_FILE})")

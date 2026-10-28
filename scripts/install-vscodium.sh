@@ -22,8 +22,13 @@
 #   (INS-3, INS-5), sauf APT pour le .deb de VSCodium.
 # - Extensions : scripts/extensions.lst (une ligne éditeur.nom@version), depuis Open VSX ;
 #   CodeLLDB depuis le paquet de la plateforme de sa release GitHub (somme épinglée ci-dessous).
+# - Extension Lepton : extension/dist/lepton-<version>.vsix versionné dans ce dépôt (ENV-12,
+#   décision du 2026-10-27), installé si la version installée diffère de extension/package.json.
 # - Réglages utilisateur de VSCodium : mises à jour automatiques et télémétrie Red Hat coupées,
 #   lemminx natif (PA-10) ; fusion dans settings.json, copie .bak avant écriture.
+# - Langue de VSCodium : pack de langue français (extensions.lst) et "locale": "fr" dans
+#   ~/.vscode-oss/argv.json (amendement PA-10, 2026-10-20) ; une autre locale déjà réglée est
+#   laissée (avertissement).
 # - scion (pipx, version SCION_REF) et lepton (pipx install de ce dépôt ; réinstallé si le paquet
 #   installé diffère des sources, même à version égale).
 #
@@ -49,9 +54,11 @@ CODELLDB_SHA256_DARWIN_X64="e25cc716b94c62c07fec268ff2785d2b797245b160502baef8b9
 CODELLDB_SHA256_DARWIN_ARM64="2f114a990e1b368dd1dbd33c80c0e719767af2d228391ec0df0571c957f9ac91"
 CODELLDB_SHA256_LINUX_X64="1cd7f386598022b51a5b93b9ffa23e812b23f519cfe1833384ec4bef4bfd1be1"
 SCION_REF="0.5.1.1"
+LOCALE="fr"
 
 LEPTON_TOOLS="$(cd "$(dirname "$0")/.." && pwd)"
 EXTENSIONS_LST="$LEPTON_TOOLS/scripts/extensions.lst"
+EXTENSION_LEPTON_ID="lepton-distribution.lepton"
 
 DRY_RUN=0
 SKIP_TOOLCHAIN=0
@@ -330,11 +337,28 @@ installer_extensions() {
   done
   # Extensions présentes hors liste : signalées, jamais retirées.
   local liste
-  liste="$(lire_extensions | sed 's/@.*//' | tr '[:upper:]' '[:lower:]')"
+  liste="$(lire_extensions | sed 's/@.*//' | tr '[:upper:]' '[:lower:]'; echo "$EXTENSION_LEPTON_ID")"
   # grep toléré : liste vide (hôte sans extension) → code 1, fatal avec pipefail.
   printf '%s\n' "$installees" | sed 's/@.*//' | { grep -v '^$' || true; } | while read -r id; do
     printf '%s\n' "$liste" | grep -qx "$id" || info "hors liste (conservée) : $id"
   done
+}
+
+# Extension Lepton (ENV-12) : .vsix de ce dépôt, sans Node.js ni réseau sur l'hôte.
+installer_extension_lepton() {
+  log "Extension Lepton ($LEPTON_TOOLS/extension/dist)"
+  local version vsix actuelle
+  version="$(sed -n 's/^  "version": *"\(.*\)",$/\1/p' "$LEPTON_TOOLS/extension/package.json" | head -1)"
+  [ -n "$version" ] || die "version introuvable dans $LEPTON_TOOLS/extension/package.json."
+  vsix="$LEPTON_TOOLS/extension/dist/lepton-$version.vsix"
+  [ -f "$vsix" ] || die "$vsix absent : dans $LEPTON_TOOLS/extension, « npm ci && npm run package », puis rejouer."
+  actuelle="$(extensions_installees | awk -F@ -v id="$EXTENSION_LEPTON_ID" '$1 == id { print $2 }')"
+  if [ "$actuelle" = "$version" ]; then
+    info "$EXTENSION_LEPTON_ID@$version : déjà installée"
+    return
+  fi
+  [ -z "$actuelle" ] || info "$EXTENSION_LEPTON_ID : $actuelle → $version"
+  run "$CODIUM" --install-extension "$vsix" --force
 }
 
 # --- Réglages utilisateur (PA-10) --------------------------------------------------------
@@ -391,6 +415,53 @@ regler_vscodium() {
     10) run fusion_reglages ecrire "$SETTINGS" ;;
     11) warn "réglages non modifiés : ajouter à la main dans $SETTINGS : update.mode \"none\", extensions.autoUpdate \"off\", extensions.autoCheckUpdates false, redhat.telemetry.enabled false, xml.server.preferBinary true." ;;
     *)  die "fusion des réglages en échec (code $rc) : python3 est-il installé ?" ;;
+  esac
+}
+
+# --- Langue de VSCodium (amendement PA-10, 2026-10-20) ----------------------------------
+# argv.json est en JSONC (commentaires écrits par VSCodium) : édition textuelle qui les conserve.
+# Code 0 = conforme, 10 = à écrire (mode verifier), 11 = illisible, 12 = autre locale (laissée).
+locale_argv() {
+  python3 -I - "$1" "$2" "$LOCALE" <<'EOF'
+import os, re, shutil, sys
+mode, chemin, voulue = sys.argv[1], sys.argv[2], sys.argv[3]
+texte = open(chemin, encoding="utf-8").read() if os.path.exists(chemin) else ""
+actives = "\n".join(l for l in texte.splitlines() if not l.lstrip().startswith("//"))
+m = re.search(r'"locale"\s*:\s*"([^"]*)"', actives)
+if m and m.group(1) == voulue:
+    sys.exit(0)
+if m:
+    print(f"  {chemin} : locale {m.group(1)!r} déjà réglée, laissée")
+    sys.exit(12)
+if texte.strip() and "{" not in actives:
+    sys.exit(11)
+if mode == "verifier":
+    print(f"  locale : (absente) → {voulue!r}")
+    sys.exit(10)
+if texte.strip():
+    shutil.copy2(chemin, chemin + ".bak")
+    i = texte.index("{") + 1
+    suite = re.sub(r"//[^\n]*", "", texte[i:]).strip()
+    virgule = "," if suite not in ("", "}") else ""
+    texte = texte[:i] + f'\n\t"locale": "{voulue}"{virgule}\n' + texte[i:]
+else:
+    os.makedirs(os.path.dirname(chemin), exist_ok=True)
+    texte = f'{{\n\t"locale": "{voulue}"\n}}\n'
+with open(chemin, "w", encoding="utf-8") as f:
+    f.write(texte)
+EOF
+}
+
+regler_locale() {
+  local argv="$HOME/.vscode-oss/argv.json" rc=0
+  log "Langue de VSCodium ($argv)"
+  locale_argv verifier "$argv" || rc=$?
+  case "$rc" in
+    0)  info "locale $LOCALE : déjà réglée" ;;
+    10) run locale_argv ecrire "$argv" ;;
+    12) warn "locale de VSCodium non modifiée (autre valeur dans $argv) : y écrire \"locale\": \"$LOCALE\" pour l'interface en français." ;;
+    11) warn "locale non réglée : $argv illisible ; y ajouter \"locale\": \"$LOCALE\" à la main." ;;
+    *)  die "réglage de la locale en échec (code $rc) : python3 est-il installé ?" ;;
   esac
 }
 
@@ -459,6 +530,8 @@ installer_scion
 installer_vscodium
 trouver_codium
 installer_extensions
+installer_extension_lepton
 regler_vscodium
+regler_locale
 installer_lepton
 bilan

@@ -14,11 +14,12 @@ Une définition dans une macro par collage de lexèmes (`dev_cmsdk_uart_##n##_ma
 import json
 import re
 import xml.etree.ElementTree as ET
+from dataclasses import replace
 from pathlib import Path
 
 from lepton.errors import EXIT_TOOL, LeptonError
-from lepton.rootstock import SOURCE_ROOT, STEM_DIR, Manifest, Rootstock
-from lepton.validation import Anomaly, validate_data, validate_json, validate_xml
+from lepton.rootstock import PROJECT_SUBPATH, SOURCE_ROOT, STEM_DIR, Manifest, Rootstock
+from lepton.validation import Anomaly, locate, validate_data, validate_json, validate_xml
 
 # Champs de manifeste qui désignent des fichiers relatifs à la destination
 FILE_FIELDS = ("vecteurs", "remplacants_forts", "demarrage", "openocd")
@@ -269,9 +270,16 @@ def provided_symbols(manifests: list[Manifest]) -> tuple[set[str], list[re.Patte
     return devices, patterns, binaries
 
 
+def _xml_line(text: str, tag: str, name: str) -> int | None:
+    """Ligne de la balise `<tag … name="name"` (diagnostics de l'éditeur ; ElementTree ne la donne pas)."""
+    m = re.search(rf"<{tag}\b[^>]*\bname\s*=\s*[\"']{re.escape(name)}[\"']", text)
+    return text.count("\n", 0, m.start()) + 1 if m else None
+
+
 def check_mkconf_provided(xml: Path, label: str, manifests: list[Manifest]) -> list[Anomaly]:
     try:
-        root = ET.parse(xml).getroot()
+        text = xml.read_text(encoding="utf-8", errors="replace")
+        root = ET.fromstring(text)
     except (OSError, ET.ParseError) as e:
         return [Anomaly(label, "", f"XML illisible : {e}")]
     devices, patterns, binaries = provided_symbols(manifests)
@@ -280,12 +288,14 @@ def check_mkconf_provided(xml: Path, label: str, manifests: list[Manifest]) -> l
         name = dev.get("name")
         if dev.get("use") == "on" and name not in devices and not any(p.fullmatch(name) for p in patterns):
             found.append(Anomaly(label, f"devices/dev[@name='{name}']",
-                                 "pilote déclaré dans le XML, défini par aucun greffon greffé (CFG-5)"))
+                                 "pilote déclaré dans le XML, défini par aucun greffon greffé (CFG-5)",
+                                 _xml_line(text, "dev", name)))
     for b in root.iter("bin"):
         name = b.get("name")
         if name not in binaries:
             found.append(Anomaly(label, f"binaries/bin[@name='{name}']",
-                                 f"binaire déclaré dans le XML, {name}_main défini par aucun greffon greffé (CFG-5)"))
+                                 f"binaire déclaré dans le XML, {name}_main défini par aucun greffon greffé (CFG-5)",
+                                 _xml_line(text, "bin", name)))
     return found
 
 
@@ -319,14 +329,35 @@ def _manifest_label(rs: Rootstock, m: Manifest) -> str:
 # --------------------------------------------------------------------------
 # lepton check sans argument
 # --------------------------------------------------------------------------
+def _text(path: Path) -> str | None:
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError:
+        return None
+
+
+def _located(rs: Rootstock, anomalies: list[Anomaly]) -> list[Anomaly]:
+    """Anomalies à pointeur JSON situées dans leur fichier (diagnostics de l'éditeur, lot 4)."""
+    for label in {a.file for a in anomalies if a.line is None and a.location.startswith("/")}:
+        text = _text(rs.path / label)            # label relatif au rootstock, ou absolu
+        if text is not None:
+            locate([a for a in anomalies if a.file == label], text)
+    return anomalies
+
+
 def check_rootstock(rs: Rootstock, warn) -> tuple[list[str], list[Anomaly]]:
     """Fichiers contrôlés et anomalies ; `warn` reçoit les contrôles impossibles (xmllint absent)."""
     checked, anomalies = [], []
+    report = rs.check_trunk()             # FIC-3 : un fichier régulier bloque aussi toute regreffe
+    anomalies.extend(Anomaly(_rel(rs, p), "", "fichier régulier dans le trunk (FIC-3), regreffe bloquée : "
+                             "lepton file add --adopt pour le déplacer dans son greffon, ou le supprimer")
+                     for p in report.regular_files)
+    anomalies.extend(Anomaly(_rel(rs, p), "", "lien cassé dans le trunk : lepton graft") for p in report.broken_links)
     manifests = {}
     for key, m in rs.manifests().items():
         label = _manifest_label(rs, m)
         checked.append(label)
-        anomalies.extend(validate_data(m.data, "scion", label))
+        anomalies.extend(validate_data(m.data, "scion", label, _text(m.path)))
         anomalies.extend(check_options(m, label))
         anomalies.extend(check_declared_files(m, label))
         manifests[key] = (m, label)
@@ -340,11 +371,11 @@ def check_rootstock(rs: Rootstock, warn) -> tuple[list[str], list[Anomaly]]:
     checked.append(label)
     if not graine_path.exists():
         anomalies.append(Anomaly(label, "", "manifeste de graine absent (graine hors lepton)"))
-        return checked, anomalies
+        return checked, _located(rs, anomalies)
     found = validate_json(graine_path, "seed")
     anomalies.extend(found)
     if found:
-        return checked, anomalies          # rôles indéterminables sur une graine invalide
+        return checked, _located(rs, anomalies)    # rôles indéterminables sur une graine invalide
     graine = json.loads(graine_path.read_text(encoding="utf-8"))
     by_name = {m.name: m for m, _ in manifests.values()}
     anomalies.extend(check_seed(graine, by_name, label))
@@ -354,12 +385,17 @@ def check_rootstock(rs: Rootstock, warn) -> tuple[list[str], list[Anomaly]]:
     checked.append(xml_label)
     if not xml.exists():
         anomalies.append(Anomaly(label, "/mklepton_xml", f"« {graine['mklepton_xml']} » absent du trunk"))
-        return checked, anomalies
+        return checked, _located(rs, anomalies)
+    if not xml.resolve().is_relative_to((rs.seed_root() / PROJECT_SUBPATH / STEM_DIR).resolve()):
+        # O5 (CFG-1) : XML du projet versionné dans la graine ; ici XML d'un greffon partagé
+        warn(f"{xml_label} : XML fourni par un greffon partagé, pas par la graine (CFG-1, O5) ; "
+             f"lepton seed mkconf import {graine['mklepton_xml']}")
     try:
-        anomalies.extend(Anomaly(xml_label, a.location, a.message) for a in validate_xml(xml))
+        # ligne de xmllint gardée (D-a, ENV-12 lot 6 S3)
+        anomalies.extend(replace(a, file=xml_label) for a in validate_xml(xml))
     except LeptonError as e:
         if e.code != EXIT_TOOL:
             raise
         warn(f"{xml_label} : {e.message}" + (f" ({e.action})" if e.action else ""))
     anomalies.extend(check_mkconf_provided(xml, xml_label, [m for m, _ in manifests.values()]))
-    return checked, anomalies
+    return checked, _located(rs, anomalies)

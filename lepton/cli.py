@@ -2,18 +2,22 @@
 
 Usage :
     lepton --version
-    lepton check [--json] [FILE...]
+    lepton check [--json] [FILE...] | check [--json] --stdin FILE
     lepton seed new NAME --bsp BSP --mkconf PATH [--backend B] [--seed-repo DIR] [--origin S=L]...
     lepton seed status [--json]
+    lepton seed tree [--preset NAME] [--json]
     lepton seed lock [--verify | --restore] [--no-cmake]
     lepton seed add SCION LOCATION --type T [--version V] [--path P] [--no-cmake]
     lepton seed remove SCION [--purge] [--no-cmake]
     lepton seed replace SCION LOCATION [--version V] [--path P] [--no-cmake]
+    lepton seed mkconf import PATH
+    lepton seed config add NAME --build-type T --run R [--no-generate] | seed config remove NAME [--no-generate]
     lepton scion new NAME --type T [--from BSP] [--repo DIR] [--destination D] [--no-seed] [--no-cmake]
     lepton scion remove NAME [--no-cmake]
-    lepton file add PATH [--scion NAME] | file remove PATH | file mv SOURCE DESTINATION
+    lepton file add PATH [--scion NAME] [--adopt] | file remove PATH | file mv SOURCE DESTINATION
+    lepton file owner PATH [--json]
     lepton dir add PATH [--scion NAME] | dir remove PATH [--scion NAME]
-    lepton graft [--scion NAME]... [--force] [--no-cmake]
+    lepton graft [--scion NAME]... [--path P]... [--force] [--no-cmake]
     lepton generate [--clangd PATH] [--probe-serial SERIAL]
 
 Codes de retour : 0 succès ; 1 utilisation, refus ou anomalie ; 2 échec ou absence d'un outil
@@ -25,7 +29,7 @@ import json
 import sys
 from pathlib import Path
 
-from lepton import __version__, checks, files, generate, scion_runner, scions, seed
+from lepton import __version__, checks, configs, files, generate, scion_runner, scions, seed, tree
 from lepton.errors import EXIT_INTERRUPT, EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
 from lepton.rootstock import Rootstock
 from lepton.scion_runner import scion_status_line
@@ -59,12 +63,18 @@ def _warn(message: str) -> None:
 def cmd_check(args) -> int:
     """FILE... : manifestes isolés (jalon 1) ; sans argument : rootstock entier (jalon 6, §3.9)."""
     anomalies, checked = [], []
+    text = None
+    if args.stdin:
+        if len(args.files) != 1:
+            raise LeptonError("--stdin : un seul FILE attendu (le fichier dont l'entrée standard est le contenu)",
+                              "lepton check --stdin FILE < contenu", EXIT_USER)
+        text = sys.stdin.read()
     if not args.files:
         checked, anomalies = checks.check_rootstock(Rootstock.discover(args.rootstock), _warn)
     for name in args.files:
         path = Path(name)
         try:
-            found = validate_file(path)
+            found = validate_file(path, text)
         except LeptonError as e:
             if e.code != EXIT_TOOL:
                 raise
@@ -110,7 +120,8 @@ def _add_seed_parser(sub, common) -> None:
     p = seed_sub.add_parser("new", parents=[common], help="crée un rootstock greffé depuis une graine neuve (GRA-1)")
     p.add_argument("name", metavar="NAME", help="nom du projet")
     p.add_argument("--bsp", required=True, metavar="BSP", help="greffon BSP de la carte")
-    p.add_argument("--mkconf", required=True, metavar="PATH", help="XML mklepton, chemin relatif au trunk")
+    p.add_argument("--mkconf", required=True, metavar="PATH",
+                   help="XML mklepton de référence, chemin relatif au trunk, copié dans la graine (O5)")
     p.add_argument("--backend", default="embos", choices=["embos", "freertos"], help="backend (défaut : embos)")
     p.add_argument("--seed-repo", metavar="DIR", help="dépôt git de la graine (défaut : depots/lepton-seed/NAME)")
     p.add_argument("--origin", action="append", metavar="SCION=LOCATION[@VERSION][:PATH]",
@@ -121,6 +132,13 @@ def _add_seed_parser(sub, common) -> None:
     p = seed_sub.add_parser("status", parents=[common], help="état des greffons de la graine (GRA-6)")
     p.add_argument("--json", action="store_true", help="sortie JSON")
     p.set_defaults(func=seed.seed_status)
+
+    p = seed_sub.add_parser("tree", parents=[common],
+                            help="architecture : exécutif → bibliothèques → greffons → fichiers (IDE-1)")
+    p.add_argument("--preset", metavar="NAME",
+                   help="preset lu (défaut : celui de build/.active, sinon le premier configuré)")
+    p.add_argument("--json", action="store_true", help="sortie JSON")
+    p.set_defaults(func=tree.seed_tree)
 
     p = seed_sub.add_parser("lock", parents=[common], help="fige le commit de chaque greffon (GRA-5)")
     mode = p.add_mutually_exclusive_group()
@@ -151,6 +169,26 @@ def _add_seed_parser(sub, common) -> None:
     _no_cmake(p)
     p.set_defaults(func=seed.seed_replace)
 
+    mk_p = seed_sub.add_parser("mkconf", parents=[common], help="XML mklepton du projet (CFG-1, O5)")
+    mk_sub = mk_p.add_subparsers(dest="mkconf_command", metavar="ACTION", parser_class=_Parser, required=True)
+    p = mk_sub.add_parser("import", parents=[common],
+                          help="copie un XML du trunk (et ses src_file) dans la graine, applications déclarées")
+    p.add_argument("path", metavar="PATH", help="XML mklepton de référence, chemin relatif au trunk (ou absolu sous le trunk)")
+    p.set_defaults(func=seed.seed_mkconf_import)
+
+    cfg_p = seed_sub.add_parser("config", parents=[common], help="configurations de la graine (CFG-6)")
+    cfg_sub = cfg_p.add_subparsers(dest="config_command", metavar="ACTION", parser_class=_Parser, required=True)
+    p = cfg_sub.add_parser("add", parents=[common], help="ajoute une configuration (preset <projet>-NAME)")
+    p.add_argument("name", metavar="NAME", help="nom de la configuration (ex. release-qemu)")
+    p.add_argument("--build-type", required=True, choices=configs.BUILD_TYPES, help="type de construction CMake")
+    p.add_argument("--run", required=True, choices=configs.RUNS, help="cible d'exécution")
+    p.add_argument("--no-generate", action="store_true", help="ne pas régénérer presets et espace de travail")
+    p.set_defaults(func=configs.config_add)
+    p = cfg_sub.add_parser("remove", parents=[common], help="retire une configuration (build/ conservé)")
+    p.add_argument("name", metavar="NAME")
+    p.add_argument("--no-generate", action="store_true", help="ne pas régénérer presets et espace de travail")
+    p.set_defaults(func=configs.config_remove)
+
 
 def _add_scion_parser(sub, common) -> None:
     scion_p = sub.add_parser("scion", help="greffons du projet (GRF)", parents=[common])
@@ -180,6 +218,8 @@ def _add_files_parsers(sub, common) -> None:
     p = file_sub.add_parser("add", parents=[common], help="crée un fichier vide dans le clone propriétaire (FIC-1)")
     p.add_argument("path", metavar="PATH", help="chemin du trunk ou d'un clone")
     p.add_argument("--scion", metavar="NAME", help=owner_help)
+    p.add_argument("--adopt", action="store_true",
+                   help="PATH est un fichier régulier du trunk : le déplacer (contenu conservé) dans le clone (FIC-3)")
     p.set_defaults(func=files.file_add)
     p = file_sub.add_parser("remove", parents=[common], help="retire un fichier de son clone (FIC-1)")
     p.add_argument("path", metavar="PATH")
@@ -188,6 +228,10 @@ def _add_files_parsers(sub, common) -> None:
     p.add_argument("source", metavar="SOURCE")
     p.add_argument("destination", metavar="DESTINATION")
     p.set_defaults(func=files.file_mv)
+    p = file_sub.add_parser("owner", parents=[common], help="greffon propriétaire d'un chemin (code 1 si non déterminé)")
+    p.add_argument("path", metavar="PATH", help="chemin du trunk ou d'un clone, existant ou non")
+    p.add_argument("--json", action="store_true", help="sortie JSON")
+    p.set_defaults(func=files.file_owner)
 
     dir_p = sub.add_parser("dir", help="répertoires des greffons (FIC)", parents=[common])
     dir_sub = dir_p.add_subparsers(dest="dir_command", metavar="ACTION", parser_class=_Parser, required=True)
@@ -202,6 +246,9 @@ def _add_files_parsers(sub, common) -> None:
 
     p = sub.add_parser("graft", parents=[common], help="regreffe (fichiers système du trunk supprimés)")
     p.add_argument("--scion", action="append", metavar="NAME", help="ne regreffer que ce greffon (répétable)")
+    p.add_argument("--path", action="append", metavar="P",
+                   help="regreffer le greffon de ce chemin (clone ou lien du trunk, répétable) ; CMake "
+                        "reconfiguré seulement pour CMakeLists.txt ou lepton-greffon.json")
     p.add_argument("--force", action="store_true", help="transmis à scion : conserve les autres fichiers réguliers")
     _no_cmake(p)
     p.set_defaults(func=files.graft)
@@ -229,7 +276,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("check", parents=[common],
                        help="valide les manifestes ; sans FILE : graine, greffons greffés, XML (GRA-2, GRF-5, CFG-5)")
-    p.add_argument("--json", action="store_true", help="sortie JSON")
+    p.add_argument("--json", action="store_true", help="sortie JSON (anomalies situées : line, column, …)")
+    p.add_argument("--stdin", action="store_true",
+                   help="contenu de FILE lu sur l'entrée standard (contenu non enregistré de l'éditeur ; "
+                        "type par le nom de FILE)")
     p.add_argument("files", nargs="*", metavar="FILE",
                    help="lepton-greffon.json, lepton-graine.json (ou $schema renseigné), XML mklepton")
     p.set_defaults(func=cmd_check)

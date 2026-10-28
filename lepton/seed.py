@@ -1,25 +1,26 @@
 """Graine : seed new, status, add, remove, replace, lock (GRA-1 à GRA-6 ; interface §3.2-§3.5).
 
 Toute écriture des listes `.scion.*` et du trunk passe par scion ; lepton écrit seulement les
-manifestes `lepton-graine.json`, `lepton-graine.lock.json` et, à la création, les fichiers du
-modèle de graine.
+manifestes `lepton-graine.json`, `lepton-graine.lock.json`, à la création les fichiers du modèle de
+graine, et les fichiers du greffon local du projet (`project/scion/` : XML mklepton du projet, O5).
 """
 
 import json
 import re
+import shutil
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlparse
 
-from lepton import __version__, cmake
+from lepton import __version__, cmake, mkconf
 from lepton.checks import removal_unprovided
-from lepton.errors import EXIT_OK, EXIT_USER, LeptonError
-from lepton.rootstock import (KERNEL_KEY, Manifest, Rootstock, find_manifest, is_system_file, project_key,
-                              scion_key)
+from lepton.errors import EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
+from lepton.rootstock import (KERNEL_KEY, PROJECT_SUBPATH, STEM_DIR, Manifest, Rootstock, TrunkReport,
+                              find_manifest, is_system_file, project_key, scion_key)
 from lepton.scion_runner import git, run, scion
-from lepton.templates import render_text, render_tree, templates_dir
-from lepton.validation import SEED_MANIFEST, validate_data
+from lepton.templates import c_identifier, render_text, render_tree, templates_dir
+from lepton.validation import SEED_MANIFEST, validate_data, validate_xml
 
 KERNEL_NAME = "lepton-noyau"
 DEFAULT_KERNEL_ORIGIN = "https://github.com/lepton-distribution/lepton-original-tree.scions.git@master"
@@ -181,6 +182,143 @@ def _expect(rs: Rootstock, key: str, name: str, kind: str) -> Manifest:
 
 
 # --------------------------------------------------------------------------
+# greffon local du projet (ENV-9 : presets ; O5 : XML mklepton du projet)
+# --------------------------------------------------------------------------
+def project_stem(seed_root: Path) -> Path:
+    """`<graine>/project/scion/` : racine greffée à la racine du trunk."""
+    return seed_root / PROJECT_SUBPATH / STEM_DIR
+
+
+def _project_links_missing(rs: Rootstock, stem: Path) -> bool:
+    for p in stem.rglob("*"):
+        if p.is_file() and not is_system_file(p.name):
+            link = rs.trunk / p.relative_to(stem)
+            if not (link.is_symlink() and link.resolve() == p.resolve()):
+                return True
+    return False
+
+
+def graft_project(rs: Rootstock, seed_root: Path, project: str) -> bool:
+    """Greffon local du projet : déclaré, inscrit puis greffé tant qu'un lien du trunk manque ;
+    rend vrai si la graine ou le trunk a changé."""
+    key = project_key(project)
+    changed = False
+    if key not in {s.key for s in rs.sources()}:
+        try:
+            location = str(seed_root.relative_to(rs.path))
+        except ValueError:
+            location = str(seed_root)
+        scion("seed-scion-add", "--seed", str(seed_root), key, LOCAL_VERSION, location, PROJECT_SUBPATH,
+              cwd=rs.path)
+        changed = True
+    if key not in {e.key for e in rs.grafted()}:
+        scion("seed-clone", "--seed", str(seed_root), cwd=rs.path)   # inscrit la clé dans la liste greffée
+        changed = True
+    if _project_links_missing(rs, project_stem(seed_root)):
+        scion_on_trunk(rs, "graft", "--scion", key)
+        changed = True
+    return changed
+
+
+def in_project(rs: Rootstock, seed_root: Path, rel: str) -> Path | None:
+    """Fichier du greffon projet désigné par `rel` (relatif au trunk), si le trunk y mène."""
+    target = (rs.trunk / rel).resolve()
+    stem = project_stem(seed_root).resolve()
+    return target if target.is_file() and target.is_relative_to(stem) else None
+
+
+def _validate_project_xml(xml: Path, label: str) -> None:
+    try:
+        anomalies = validate_xml(xml)
+    except LeptonError as e:
+        if e.code != EXIT_TOOL:
+            raise
+        _warn(f"{label} : {e.message}" + (f" ({e.action})" if e.action else ""))
+        return
+    for a in anomalies:
+        _warn(f"{label}: {a.message} (lepton check)")
+
+
+def import_mkconf(rs: Rootstock, seed_root: Path, project: str, reference: str) -> str:
+    """O5 : copie du XML de référence `reference` (relatif au trunk) et de ses `<file src_file>` dans
+    le greffon projet, `src_file` réécrits ; greffe ; rend le chemin du XML du projet (trunk).
+    Chemin absolu admis sous le trunk (désigné dans l'explorateur, F7 d'ENV-12), ramené au trunk."""
+    if Path(reference).is_absolute():
+        try:
+            reference = str(Path(reference).relative_to(rs.trunk))
+        except ValueError:
+            raise LeptonError(f"XML « {reference} » hors du trunk {rs.trunk}",
+                              "désigner le XML par le trunk (lien greffé), pas par le clone") from None
+    ref = rs.trunk / reference
+    if not ref.is_file():
+        raise LeptonError(f"XML « {reference} » absent du trunk greffé",
+                          "donner le chemin, relatif au trunk, d'un XML mklepton fourni par un greffon")
+    text = mkconf.read(ref)
+    target_rel = mkconf.project_xml(project)
+    copies = mkconf.project_copies(text, project)
+    stem = project_stem(seed_root)
+    plan = [(ref, target_rel)] + [(rs.trunk / src, dest) for src, dest in copies.items()]
+    for source, dest in plan:
+        if (stem / dest).exists():
+            raise LeptonError(f"{stem / dest} existe déjà : XML du projet déjà présent dans la graine",
+                              "le modifier en place (lepton seed status : champ XML)")
+        if (rs.trunk / dest).exists() or (rs.trunk / dest).is_symlink():
+            raise LeptonError(f"{rs.trunk / dest} fourni par un autre greffon : conflit avec le XML du projet",
+                              f"nom de projet distinct des répertoires de sys/user/ ({mkconf.project_etc(project)})")
+        if not source.is_file():
+            raise LeptonError(f"XML « {reference} » : src_file « {source.relative_to(rs.trunk)} » absent du trunk",
+                              "corriger le XML de référence")
+    for source, dest in plan[1:]:
+        (stem / dest).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, stem / dest)
+        shutil.copymode(source, stem / dest)
+    (stem / target_rel).parent.mkdir(parents=True, exist_ok=True)
+    (stem / target_rel).write_text(mkconf.rewrite_src_files(text, copies), encoding="utf-8")
+    _validate_project_xml(stem / target_rel, target_rel)
+    graft_project(rs, seed_root, project)
+    _info(f"XML du projet : {target_rel} (copie de {reference}"
+          + (f", avec {', '.join(Path(d).name for d in copies.values())}" if copies else "") + ")")
+    return target_rel
+
+
+def declare_application(rs: Rootstock, graine: dict, name: str, add: bool) -> bool:
+    """O5 : `<bin>` de l'application `name` ajouté au XML du projet ou retiré ; XML hors du greffon
+    projet (graine non migrée) : rien n'est écrit. Rend vrai si le XML a changé."""
+    rel = graine["mklepton_xml"]
+    xml = in_project(rs, rs.seed_root(), rel)
+    bin_name = c_identifier(name)
+    if xml is None:
+        _warn(f"{rel} hors du greffon du projet : <bin name=\"{bin_name}\"> non {'déclaré' if add else 'retiré'} "
+              f"(lepton seed mkconf import {rel})")
+        return False
+    text = mkconf.read(xml)
+    new = mkconf.add_bin(text, bin_name) if add else mkconf.remove_bin(text, bin_name)
+    if new is None:
+        return False
+    xml.write_text(new, encoding="utf-8")
+    _validate_project_xml(xml, rel)
+    _info(f"XML du projet : <bin name=\"{bin_name}\"> {'déclaré' if add else 'retiré'} ({rel})")
+    return True
+
+
+def seed_mkconf_import(args) -> int:
+    """Migration d'une graine (O5) : XML du projet copié depuis `PATH`, applications déclarées."""
+    rs, seed_root, graine_path, graine = _seed_context(args)
+    project = graine["projet"]["nom"]
+    if in_project(rs, seed_root, graine["mklepton_xml"]) is not None:
+        raise LeptonError(f"XML de la graine déjà fourni par le greffon du projet ({graine['mklepton_xml']})",
+                          "le modifier en place")
+    graine["mklepton_xml"] = import_mkconf(rs, seed_root, project, args.path)
+    save_graine(graine_path, graine)
+    for app in graine.get("applications", []):
+        declare_application(rs, graine, app, add=True)
+    finish(rs, no_cmake=True)
+    _info(f"presets à régénérer (LEPTON_MKCONF) : lepton generate -C {rs.path}")
+    _remind_commit(seed_root)
+    return EXIT_OK
+
+
+# --------------------------------------------------------------------------
 # seed new (GRA-1, GRA-2, GRA-3)
 # --------------------------------------------------------------------------
 def seed_new(args) -> int:
@@ -257,12 +395,15 @@ def seed_new(args) -> int:
         if not (rs.trunk / args.mkconf).exists():
             raise LeptonError(f"--mkconf « {args.mkconf} » absent du trunk greffé",
                               "donner le chemin, relatif au trunk, d'un XML mklepton fourni par un greffon")
+        # 6. XML du projet (O5) : copie du XML de référence dans le greffon local du projet
+        xml = import_mkconf(rs, seed_repo, name, args.mkconf)
     except LeptonError as e:
         e.action = f"{e.action} ; {left}"
         raise
 
-    # 6. manifeste de graine, commit initial du dépôt de la graine
-    render_tree("seed", seed_repo, dict(values, configurations=configurations_for(b)), only={GRAINE_REL})
+    # 7. manifeste de graine, commit initial du dépôt de la graine
+    render_tree("seed", seed_repo, dict(values, configurations=configurations_for(b), mkconf=xml),
+                only={GRAINE_REL})
     finish(rs, no_cmake=True)
     git(seed_repo, "add", "-A")
     git(seed_repo, "commit", "-q", "-m", f"Graine {name} créée par lepton seed new")
@@ -294,8 +435,9 @@ def _git_state(clone: Path) -> dict:
     return state
 
 
-def seed_status(args) -> int:
-    rs = Rootstock.discover(args.rootstock)
+def status_data(rs: Rootstock) -> tuple[dict, dict | None, dict, list[str], TrunkReport]:
+    """État de la graine (GRA-6) : résultat JSON de `seed status`, graine, rôles, greffons absents et
+    contrôle du trunk ; partagé avec `seed tree` (vue IDE-1 cohérente avec seed status)."""
     seed_dot = rs.seed_dot()
     graine_path = seed_dot / SEED_MANIFEST
     graine = load_graine(graine_path) if graine_path.exists() else None
@@ -325,6 +467,7 @@ def seed_status(args) -> int:
                        "version": src.version if src else e.version,
                        "location": src.location if src else None,
                        "path": str(rs.clone(e)),
+                       "stem": str((rs.clone(e) / STEM_DIR).resolve()),
                        "in_seed": src is not None,
                        **_git_state(rs.clone(e))})
     grafted_names = {s["name"] for s in scions}
@@ -332,10 +475,21 @@ def seed_status(args) -> int:
     report = rs.check_trunk()
     seed_state = {"path": str(rs.seed_root()), "manifest": str(graine_path) if graine else None,
                   **_git_state(rs.seed_root())}
+    # configurations de la graine (F7 d'ENV-12 : choix de `seed config remove` dans la palette)
+    configurations = [{"name": c["nom"], "build_type": c["construction"], "run": c["execution"],
+                       "preset": f"{graine['projet']['nom']}-{c['nom']}"}
+                      for c in graine.get("configurations", [])] if graine else []
     result = {"rootstock": str(rs.path), "trunk": str(rs.trunk), "seed": seed_state, "scions": scions,
-              "missing": missing,
+              "configurations": configurations, "missing": missing,
               "trunk_check": {"regular_files": [str(p) for p in report.regular_files],
                               "broken_links": [str(p) for p in report.broken_links]}}
+    return result, graine, roles, missing, report
+
+
+def seed_status(args) -> int:
+    rs = Rootstock.discover(args.rootstock)
+    result, graine, roles, missing, report = status_data(rs)
+    seed_state, scions = result["seed"], result["scions"]
     coherent = report.clean and not missing
 
     if args.json:
@@ -350,6 +504,8 @@ def seed_status(args) -> int:
     else:
         _info(f"            projet {graine['projet']['nom']} {graine['projet']['version']}, "
               f"backend {graine['backend']}, XML {graine['mklepton_xml']}")
+        _info("            configurations : " + ", ".join(
+            f"{c['name']} ({c['build_type']}, {c['run']})" for c in result["configurations"]))
     # largeurs d'après le contenu (O17 : version ou branche longue, `devenv/env-6-r3`)
     width = max([len(s["name"]) for s in scions] + [7])
     vwidth = max([len(s["version"]) for s in scions] + [8])
@@ -440,6 +596,8 @@ def add_scion(rs: Rootstock, name: str, kind: str, origin: Origin, no_cmake: boo
         graine["bsp"] = name
     save_graine(graine_path, graine)
     _info(f"{name} ajouté ({key}, {origin.version}, {origin.location})")
+    if kind == "application":
+        declare_application(rs, graine, name, add=True)
     finish(rs, no_cmake)
     _remind_commit(seed_root)
     return EXIT_OK
@@ -477,11 +635,15 @@ def seed_remove(args) -> int:
         _warn(f"{key} greffé hors de la graine : retiré du trunk seulement")
     scion_on_trunk(rs, "graft-remove", key, *(["--purge"] if args.purge else []))
 
+    application = name in graine.get("applications", [])
     for field in ("applications", "bibliotheques"):
         if name in graine.get(field, []):
             graine[field].remove(name)
     save_graine(graine_path, graine)
     _info(f"{name} retiré ({key})")
+    if application and declare_application(rs, graine, name, add=False):
+        # déclaration retirée du XML du projet (O5) : plus d'anomalie CFG-5 pour ce binaire
+        unprovided = [a for a in unprovided if a.location != f"binaries/bin[@name='{c_identifier(name)}']"]
     for a in unprovided:
         _warn(f"{a.file}: {a.location} : fourni seulement par {name}, sans fournisseur désormais (CFG-5) ; "
               "retirer la déclaration du XML avant de construire (lepton check)")

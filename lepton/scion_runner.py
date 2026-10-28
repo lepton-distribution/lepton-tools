@@ -47,15 +47,17 @@ VERBOSE = False
 
 
 def run(cmd: list[str], cwd: Path | None = None, tool: str | None = None,
-        check: bool = True) -> subprocess.CompletedProcess:
-    """Exécute un outil externe (liste d'arguments) ; absence, ou échec si `check` → LeptonError code 2."""
+        check: bool = True, input: str | None = None) -> subprocess.CompletedProcess:
+    """Exécute un outil externe (liste d'arguments, `input` sur l'entrée standard) ; absence, ou
+    échec si `check` → LeptonError code 2."""
     tool = tool or cmd[0]
     exe = shutil.which(cmd[0])
     if exe is None:
         raise LeptonError(f"{tool} absent", f"installer {tool} et vérifier le PATH", EXIT_TOOL)
     if VERBOSE:
         print(f"lepton: exécute : {shlex.join(cmd)}" + (f"  (dans {cwd})" if cwd else ""), file=sys.stderr)
-    res = subprocess.run([exe, *cmd[1:]], cwd=cwd, capture_output=True, text=True, check=False)
+    res = subprocess.run([exe, *cmd[1:]], cwd=cwd, capture_output=True, text=True, check=False,
+                         input=input)
     if check and res.returncode != 0:
         detail = (res.stderr or res.stdout).strip()
         raise LeptonError(f"échec de « {shlex.join(cmd)} » (code {res.returncode})"

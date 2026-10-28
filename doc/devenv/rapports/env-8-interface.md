@@ -122,7 +122,8 @@ lepton scion remove NAME [--no-cmake]
 
 ### 3.7 `lepton file` et `lepton dir` (FIC-1, FIC-2, FIC-3, FIC-6)
 ```
-lepton file add PATH [--scion SCION]
+lepton file add PATH [--scion SCION] [--adopt]     # --adopt : §12
+lepton file owner PATH [--json]                    # §12
 lepton file remove PATH
 lepton file mv SOURCE DESTINATION
 lepton dir add PATH [--scion SCION]
@@ -146,7 +147,7 @@ propriétaire » (ENV-8 tâche 5). Greffon désigné hors de la graine → refus
 
 `CMakeLists.txt` ou `lepton-greffon.json` ajouté, retiré ou déplacé : reconfiguration CMake.
 
-### 3.8 `lepton graft [--scion SCION]... [--force] [--no-cmake]`
+### 3.8 `lepton graft [--scion SCION]... [--path P]... [--force] [--no-cmake]` (`--path` : §12)
 Suppression des fichiers système réguliers du trunk (`.DS_Store`, `._*`, Q8) ; `scion graft`
 (complet) ou `scion graft --scion <clé>` ; contrôle final du trunk ; reconfiguration CMake.
 `--force` transmis à scion : conserve les autres fichiers réguliers du trunk (règle scion).
@@ -340,3 +341,95 @@ Propositions appliquées, à confirmer :
   unicité des noms d'options d'un greffon, des noms de greffons greffés et des configurations de
   la graine ; bornes `min` ≤ `max` ; greffon sans manifeste signalé seulement s'il porte
   `scion/sys/root/src` ; XSD par `xmllint` (absent : avertissement, comme `check FILE`).
+
+## 11. Amendements d'ENV-12, lot 2 (2026-10-20 ; O5, F7)
+
+Décision de l'utilisateur (`DEVENV-STATUS.md` §Décisions, 2026-10-20, PA-12 O5/F7).
+
+```
+lepton seed new NAME --bsp BSP --mkconf PATH ...      # PATH : XML de référence, copié dans la graine
+lepton seed mkconf import PATH                         # graine existante : même copie, applications déclarées
+lepton seed config add NAME --build-type Debug|Release|RelWithDebInfo|MinSizeRel --run qemu|carte [--no-generate]
+lepton seed config remove NAME [--no-generate]
+```
+
+| Sujet | Règle |
+| --- | --- |
+| XML du projet | `<graine>/project/scion/sys/user/<projet>/etc/mkconf_<projet>.xml`, greffé par le greffon local `lepton@project-<projet>` (celui de `CMakeUserPresets.json`) ; `mklepton_xml` = `sys/user/<projet>/etc/mkconf_<projet>.xml` |
+| Fichiers du XML | chaque `<file src_file>` copié sous son nom de base dans le même répertoire, `src_file` réécrit ; deux noms de base égaux : refus ; `src_path` des `<binaries>` inchangés |
+| Refus | XML de référence ou `src_file` absent du trunk ; fichier déjà présent dans la graine ; chemin cible fourni par un autre greffon (nom de projet en conflit dans `sys/user/`) |
+| Applications | `seed add` / `scion new` d'une application : `<bin name="<identifiant C>" stack="2048" priority="100" timeslice="1" />` dans `<binaries src_path="bin" dest_path="bin">` (créé avant `<files>`, sinon avant `</mklepton>`) ; `seed remove` / `scion remove` : déclaration retirée (tout bloc), sans avertissement CFG-5 pour ce binaire ; idempotent ; XSD contrôlé (xmllint absent : avertissement) |
+| Graine non migrée | XML hors du greffon projet : rien n'est écrit, avertissement avec `lepton seed mkconf import` ; `lepton check` l'avertit aussi (code inchangé) |
+| `seed config add` | refus : nom déjà présent, nom hors `identifiant`, exécution non permise par le BSP (qemu sans `qemu.machine`, carte sans `openocd`) ; puis `lepton generate` (sonde conservée) |
+| `seed config remove` | refus : nom absent, dernière configuration ; `build/<projet>-NAME` conservé et signalé ; puis `lepton generate` |
+
+## 12. Amendements d'ENV-12, lot 3 (2026-10-20 ; F2, F3)
+
+Décisions de l'utilisateur (`DEVENV-STATUS.md` §Décisions, 2026-10-20, lot 3).
+
+```
+lepton file owner PATH [--json]                 # propriétaire d'un chemin du trunk ou d'un clone
+lepton file add PATH --adopt [--scion NAME]     # fichier régulier du trunk déplacé dans le clone
+lepton graft [--scion NAME]... [--path P]...    # greffon déduit du chemin
+```
+
+| Sujet | Règle |
+| --- | --- |
+| Propriétaire d'un chemin nouveau (§3.7, amendé) | plus proche répertoire existant du trunk, en **remontant au-delà des répertoires sans aucune feuille** (créés dans le trunk par l'éditeur) ; un répertoire vide sous la racine du trunk donne donc « plusieurs greffons » ; `file mv` applique la même règle à sa destination |
+| `file owner` | code 0 si propriétaire déterminé, 1 sinon ; texte ou JSON, émis dans les deux cas ; hors trunk et hors clone greffé : erreur ordinaire |
+| JSON de `file owner` | `path` (tel que donné), `relative` (au trunk), `trunk_path`, `kind` (`clone` chemin donné dans un clone, `link`, `directory`, `regular`, `absent`, `ignored` : liste greffée de scion ou fichier système du trunk, Q8 — `status` `none`), `status` (`owned`, `ambiguous`, `none`), `source` (`clone`, `link`, `directory`, `null`), `owner` (`name`, `key`, `in_seed`, `clone_path`) ou `null`, `candidates` (`name`, `key`, `in_seed`) |
+| `file add --adopt` | PATH doit être un fichier régulier du trunk (refus : lien, absent, chemin d'un clone) ; propriétaire comme `file add` (`--scion` si ambigu) ; refus si le chemin existe déjà dans le clone (fichier du trunk conservé) ; déplacement, contenu conservé, puis `scion graft --scion` ; CMake si `CMakeLists.txt` / `lepton-greffon.json` |
+| `graft --path` | chemin dans un clone greffé (existant ou supprimé) ou lien du trunk ; sinon refus « greffon non déterminé » ; combinable avec `--scion` ; sans `--scion`, CMake reconfiguré seulement si un chemin est `CMakeLists.txt` ou `lepton-greffon.json` (un répertoire supprimé qui en contenait n'est pas reconnu : `lepton graft` complet) |
+| `seed status --json` | champ `stem` par greffon : `<clone>/scion` résolu (répertoire observé par l'extension, F2) |
+| `check` sans argument (amendé pendant l'essai) | contrôle aussi le trunk : chaque fichier régulier (« regreffe bloquée ») et chaque lien cassé est une anomalie (code 1), sous le chemin relatif au rootstock ; filtre de la tâche « lepton : vérifier » : `^(?!lepton: )(\S[^:]*): (?:(\d+): )?(.*)$` (tout fichier, avertissements `lepton:` exclus) |
+
+## 13. Amendements d'ENV-12, lot 4 (2026-10-23 ; F5, CFG-7)
+
+Décisions de l'utilisateur (`DEVENV-STATUS.md` §Décisions, 2026-10-23, lot 4).
+
+```
+lepton check [--json] --stdin FILE              # contenu de FILE lu sur l'entrée standard
+```
+
+| Sujet | Règle |
+| --- | --- |
+| `check --stdin` | un seul FILE (sinon refus, code 1) ; contenu lu sur l'entrée standard, type par le nom de FILE (comme `check FILE`), fichier sur disque non lu ; schéma seul (contrôles du rootstock : `check` sans argument) ; XML par `xmllint … -` |
+| JSON de `check` | chaque anomalie porte en plus `line`, `column`, `end_line`, `end_column` (à partir de 1, fin exclue, colonne en caractères ; `null` si inconnus) |
+| Situation des anomalies JSON | champ obligatoire absent : clé de l'objet (racine : `{` initial) ; champ non autorisé : **une anomalie par champ** (même `location` : l'objet), située sur sa clé ; autre mot-clé : la valeur (objet ou liste : sa clé, à défaut son crochet ouvrant) ; JSON mal formé : position de l'erreur ; contrôles non exprimables en JSON Schema (GRA-2, GRF-5, CFG-4, fichiers déclarés) : pointeur situé de même, ancêtre présent le plus proche si le pointeur n'existe pas |
+| Situation des anomalies XML | ligne lue dans la sortie de xmllint, colonne `null` ; CFG-5 : ligne de la balise `<dev>` / `<bin>` en cause |
+| Sortie texte | inchangée (`<fichier>: [<ligne>: ]<emplacement>: <message>`), à la scission des champs non autorisés près ; filtre de la tâche « lepton : vérifier » inchangé |
+| `generate` | réglage `json.validate.enable: false` dans l'espace (validation JSON par l'extension, en erreur ; `json.schemas` gardé pour la complétion et le survol) ; XML : lemminx inchangé |
+
+## 14. Amendements d'ENV-12, lot 5 (2026-10-27 ; F6, IDE-1, L3-4)
+
+Décisions de l'utilisateur (`DEVENV-STATUS.md` §Décisions, 2026-10-27, lot 5).
+
+```
+lepton seed tree [--preset NAME] [--json]       # exécutif → bibliothèques → greffons → fichiers
+```
+
+| Sujet | Règle |
+| --- | --- |
+| Preset lu | `--preset` ; sinon celui dont le répertoire de construction est cité par `build/.active/compile_commands.json` (preset actif de CMake Tools, amorcé par `generate`) ; sinon le premier preset de la graine ayant une réponse ; `preset_reason` l'indique |
+| Source | réponse de l'API fichier CMake (codemodel-v2, index `build/<preset>/.cmake/api/v1/reply/index-*.json` le plus récent) : `source: codemodel` ; sans réponse : `source: manifests`, `executables` vide, `by_scion` = sources (`.c`, `.cpp`, `.S`, `.s`) et en-têtes liés dans le trunk, par greffon, `message` explicatif ; `--preset` désignant un preset sans réponse : refus, code 1 |
+| Exécutifs | cibles `EXECUTABLE`, `lepton` en premier ; chacune : ses sources propres (bibliothèque du nom de l'exécutif, type `EXECUTABLE`), puis ses bibliothèques (`STATIC`, `OBJECT`, `SHARED`, `MODULE`) par fermeture transitive des dépendances, ordre de CMake ; utilitaires omis ; bibliothèque sans fichier omise |
+| Greffon d'une source | par le lien du trunk (clone propriétaire) ; source hors trunk (répertoire de construction) : groupe `generated: true`, `key` nul, `trunk_path` nul ; fichier du trunk qui n'est pas un lien : `key` nul |
+| Fichiers | sources compilées (`compileGroupIndex`), dans l'ordre de CMake, `kind: compiled` ; puis, dans les mêmes répertoires du trunk et liés au même greffon, les en-têtes `.h` (`kind: header`) et les sources compilées par aucune cible (`kind: unbuilt` : pas encore configurées, ou hors des `sources` du manifeste ; décision de l'utilisateur, essai du lot 5) ; chacun : `relative` (au trunk), `trunk_path`, `clone_path` |
+| `scions` | entrées de `seed status --json`, calcul partagé (`seed.status_data`) : vue cohérente avec l'état de la graine |
+| Autres champs | `rootstock`, `trunk`, `preset`, `build`, `build_root` (`<rootstock>/build`, observé par l'extension) |
+| `generate` | dépose `build/<preset>/.cmake/api/v1/query/client-lepton/query.json` (codemodel v2) pour chaque configuration de la graine : réponse aussi après une configuration en ligne de commande ; crée donc `build/<preset>/` avant la première configuration |
+| `file owner` (L3-4) | chemin du trunk absent dont le fichier existe dans le clone d'un seul greffon greffé : `kind: unlinked`, propriétaire déterminé (`source: link`) ; répertoire supprimé : non traité (`absent`) |
+| `file remove`, `graft --path` | acceptent un chemin `unlinked` : retrait du fichier du clone, ou restauration du lien |
+
+## 15. Amendements d'ENV-12, lot 6 (2026-10-27 ; F7 en palette, F8)
+
+Propositions appliquées pendant la session S1 du lot 6 (essai VSCodium conforme), à confirmer.
+
+| Sujet | Règle |
+| --- | --- |
+| `seed status --json` | champ `configurations` : `name`, `build_type`, `run`, `preset` (`<projet>-<nom>`) par configuration de la graine, dans son ordre ; liste vide sans `lepton-graine.json` ; choix de `seed config remove` dans la palette |
+| `seed status` (texte) | ligne `configurations : <nom> (<type>, <exécution>), …` sous la ligne du projet |
+| `seed mkconf import PATH` | PATH relatif au trunk, ou absolu **sous le trunk** (désigné dans l'explorateur), ramené au trunk ; absolu hors du trunk (chemin d'un clone compris) : refus, code 1 |
+| F8 (extension seule) | correspondance clone → trunk des sources de l'arrêt d'après `stem` et `trunk` de `seed status --json` ; aucune option de lepton ajoutée |
+| `generate` (S2, L6-5) | presets réécrits (`generate`, et `seed config add/remove` qui l'appellent ; `seed mkconf import` et `seed new` invitent à lancer `generate`) : date du lien `trunk/CMakeUserPresets.json` avancée (`os.utime(…, follow_symlinks=False)`) ; l'observateur de VSCodium ne suit pas les liens, CMake Tools relit alors ses presets sans rechargement ; presets inchangés : lien intact. Décision de l'utilisateur (2026-10-27) |
+| `generate` (S2, L6-7) | tâches « construire » et « mklepton » : matcher écrit dans la tâche (`GCC_MATCHER` : `fichier:ligne:colonne: [fatal ]error\|warning: message`, `fileLocation` autoDetect sur le trunk) au lieu de `$gcc`, fourni par l'extension C/C++ de Microsoft, absente (clangd, Open VSX) : « référence de problemMatcher non valide : $gcc ». Décision de l'utilisateur (2026-10-27) |

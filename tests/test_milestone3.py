@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import MKCONF, assert_trunk_clean, url
+from conftest import MKCONF, PROJECT_XML, assert_trunk_clean, url
 from lepton.cli import main
 from lepton.rootstock import Rootstock, scion_key
 from lepton.seed import parse_location
@@ -38,7 +38,7 @@ def test_gra1_seed_new(project):
     graine_path = rs.seed_manifest_path()
     assert validate_file(graine_path) == []
     graine = _graine(project)
-    assert (graine["noyau"], graine["bsp"], graine["mklepton_xml"]) == ("lepton-noyau", "board-q", MKCONF)
+    assert (graine["noyau"], graine["bsp"], graine["mklepton_xml"]) == ("lepton-noyau", "board-q", PROJECT_XML)
     assert graine["configurations"] == [{"nom": "debug-qemu", "construction": "Debug", "execution": "qemu"}]
     seed_root = rs.seed_root()
     assert seed_root == project / "depots" / "lepton-seed" / "demo"
@@ -249,7 +249,7 @@ def test_gra6_status(project, repos, capsys):
     assert code == 0 and st["missing"] == [] and st["trunk_check"] == {"regular_files": [], "broken_links": []}
     scions = _by_name(st)
     assert {n: s["role"] for n, s in scions.items() if n != "building"} == \
-        {"lepton-noyau": "noyau", "fam-test": "famille", "board-q": "bsp"}
+        {"lepton-noyau": "noyau", "fam-test": "famille", "board-q": "bsp", "project-demo": "projet"}
     assert scions["building"]["role"] == "sans manifeste" and scions["building"]["commit"] is None
     assert scions["board-q"]["branch"] == "master" and scions["board-q"]["dirty"] == 0
     assert scions["lepton-noyau"]["ahead"] == 0 and scions["lepton-noyau"]["behind"] == 0
