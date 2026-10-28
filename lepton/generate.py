@@ -303,6 +303,9 @@ def workspace_settings(ctx: Context, tools: dict, probe_serial: str | None = Non
         "cmake.ignoreCMakeListsMissing": True,
         "cmake.options.statusBarVisibility": "visible",   # sélecteur de preset (IDE-5, O11)
         "cmake.copyCompileCommands": str(active / COMPILE_COMMANDS),
+        # sources déclarées par les manifestes : CMake Tools n'édite aucun CMakeLists (O-b, ENV-12)
+        "cmake.modifyLists.addNewSourceFiles": "no",
+        "cmake.modifyLists.removeDeletedSourceFiles": "no",
         "clangd.arguments": [f"--compile-commands-dir={active}", "--background-index",
                              f"--query-driver={tools['gcc']}"],
         "cortex-debug.armToolchainPath": str(Path(tools["gcc"]).parent),   # objdump, nm (gdb : gdbPath)
