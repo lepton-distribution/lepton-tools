@@ -193,3 +193,46 @@ def test_invalid_examples_messages_translated(capsys):
     p = EXAMPLES / "invalides" / "bsp-sans-openocd-ni-qemu.json"
     main(["check", "--json", str(p)])
     assert [a["message"] for a in _anomalies(capsys)] == ["champ obligatoire absent : openocd et sonde, ou qemu"]
+
+
+# --- O-r1 (ENV-12 R1) : mots-clés des schémas tous traduits -------------------------------------
+# Mots-clés qui produisent une anomalie, traduits par validation._message ou traités par
+# validate_data ; un mot-clé nouveau dans un schéma fait échouer test_schema_keywords_translated.
+TRANSLATED = {"required", "additionalProperties", "enum", "const", "type", "pattern", "minLength", "minItems",
+              "uniqueItems", "anyOf", "oneOf", "minProperties", "minimum"}
+# Applicateurs et annotations : pas d'anomalie propre (celles de leurs sous-schémas sont traduites)
+STRUCTURE = {"properties", "items", "allOf", "if", "then", "$ref", "propertyNames", "$schema", "$id", "$comment",
+             "title", "description", "$defs"}
+
+
+def _keywords(node, found: set, under_names: bool = False) -> None:
+    if isinstance(node, dict):
+        for k, v in node.items():
+            if not under_names:
+                found.add(k)
+            _keywords(v, found, under_names=not under_names and k in ("properties", "$defs"))
+    elif isinstance(node, list):
+        for v in node:
+            _keywords(v, found)
+
+
+def test_schema_keywords_translated():
+    found = set()
+    for name in ("greffon", "graine"):
+        _keywords(json.loads((REPO / "schemas" / f"{name}.schema.json").read_text(encoding="utf-8")), found)
+    assert found - TRANSLATED - STRUCTURE == set()
+
+
+def test_messages_minproperties_minimum_type(capsys):
+    from lepton.validation import validate_data
+    data = json.loads((EXAMPLES / "greffon-bsp-nucleo-f429zi.json").read_text(encoding="utf-8"))
+    data["frequence_cpu"] = 0
+    assert [a.message for a in validate_data(data, "scion", "m")] == ["valeur 0 inférieure au minimum 1"]
+    data["frequence_cpu"] = "180 MHz"
+    assert [a.message for a in validate_data(data, "scion", "m")] == ["type attendu : entier"]
+    p = EXAMPLES / "invalides" / "graine-option-greffon-vide.json"
+    main(["check", "--json", str(p)])
+    assert [a["message"] for a in _anomalies(capsys)] == ["objet vide (au moins 1 champ(s))"]
+    p = EXAMPLES / "invalides" / "graine-option-valeur-objet.json"
+    main(["check", "--json", str(p)])
+    assert [a["message"] for a in _anomalies(capsys)] == ["type attendu : booléen, entier ou texte"]

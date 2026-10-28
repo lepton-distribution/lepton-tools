@@ -21,6 +21,10 @@ SEED_MANIFEST = "lepton-graine.json"
 # Ligne d'anomalie de xmllint, préfixe du fichier retiré : « <ligne>: <message> »
 _XMLLINT_LINE = re.compile(r"(\d+): (.*)")
 
+# Types JSON Schema → noms affichés
+_TYPES = {"string": "texte", "integer": "entier", "number": "nombre", "boolean": "booléen",
+          "array": "liste", "object": "objet", "null": "null"}
+
 SCHEMA_FILES = {
     "scion": "greffon.schema.json",
     "seed": "graine.schema.json",
@@ -113,13 +117,18 @@ def _message(err: ValidationError) -> str:
     if v == "const":
         return f"valeur {json.dumps(inst, ensure_ascii=False)} différente de {json.dumps(val, ensure_ascii=False)}"
     if v == "type":
-        return f"type attendu : {val}"
+        noms = [_TYPES.get(t, t) for t in ([val] if isinstance(val, str) else val)]
+        return "type attendu : " + (", ".join(noms[:-1]) + " ou " + noms[-1] if len(noms) > 1 else noms[0])
     if v == "pattern":
         return f"valeur {json.dumps(inst, ensure_ascii=False)} non conforme au motif {val}"
     if v == "minLength":
         return f"texte trop court (au moins {val} caractère(s))"
     if v == "minItems":
         return f"liste trop courte (au moins {val} élément(s))"
+    if v == "minProperties":
+        return f"objet vide (au moins {val} champ(s))" if not inst else f"objet trop petit (au moins {val} champ(s))"
+    if v == "minimum":
+        return f"valeur {json.dumps(inst, ensure_ascii=False)} inférieure au minimum {val}"
     if v == "uniqueItems":
         return "éléments en double"
     if v in ("anyOf", "oneOf"):
