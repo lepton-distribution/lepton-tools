@@ -173,7 +173,7 @@ def validate_data(data, kind: str, label: str, text: str | None = None) -> list[
     """Valide un manifeste déjà chargé (`label` : nom affiché dans les anomalies) ; `text`, le texte
     dont il provient, situe chaque anomalie. Champs non autorisés : une anomalie par champ, située
     sur sa clé (sous l'objet pour « additionalProperties », sous le champ pour un champ interdit
-    par le type)."""
+    par le type) ; nom de champ refusé (« propertyNames ») : situé sur sa clé."""
     errors = sorted(_validator(kind).iter_errors(data), key=lambda e: list(e.absolute_path))
     try:
         found = jsonpos.members(text) if text is not None else None
@@ -202,6 +202,13 @@ def validate_data(data, kind: str, label: str, text: str | None = None) -> list[
             pour = f" pour le type « {t} »" if isinstance(t, str) else ""
             for k in keys:
                 on_key(pointer, k, f"champ non autorisé{pour} : {k}", "")
+            continue
+        if "propertyNames" in e.absolute_schema_path and isinstance(e.instance, str):
+            # jsonschema rattache l'erreur à l'objet ; l'instance est le nom refusé
+            m = _message(e)
+            m = ("nom de champ " + m.removeprefix("valeur ") if m.startswith("valeur ")
+                 else f"nom de champ {json.dumps(e.instance, ensure_ascii=False)} : {m}")
+            on_key(pointer, e.instance, m, "")
             continue
         a = Anomaly(label, pointer, _message(e) if e.validator is not None else "valeur non autorisée")
         result.append(a.place(text, jsonpos.span_of(found, pointer)) if found else a)

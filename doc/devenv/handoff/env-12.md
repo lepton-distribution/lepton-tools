@@ -3,16 +3,16 @@
 ## Statut
 terminée (2026-10-28) ; renvoi R1 (D-b) terminé le 2026-10-28 — `lepton check` d'un manifeste de
 greffon sans `type` ne rend que l'erreur du discriminant ; champ interdit pour le type nommé, situé
-et en français ; O-r1 corrigé (tous les mots-clés des schémas traduits). Aucun renvoi ouvert. Passation précédente (lot 6 S3) : historique git de ce fichier
+et en français ; O-r1 corrigé (tous les mots-clés des schémas traduits) ; O-r2 corrigé (nom de champ refusé situé sur sa clé). Aucun renvoi ouvert. Passation précédente (lot 6 S3) : historique git de ce fichier
 (c5a3852) et `rapports/env-12-bilan.md`.
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/env-12-r1` (depuis `main` e8a9d9a), fusionnée `--no-ff` dans `main` après ce commit, les deux poussées (PA-P) | `devenv(env-12-r1): état et passation (O-r1 …)` ; avant : cadeb0e O-r1, 4670382 fusion de D-b dans `main`, 08df06c passation D-b, 4e636aa validation et tests, e2e6cf8 schéma | oui |
+| lepton-tools | `devenv/env-12-r1` (depuis `main` e8a9d9a), fusionnée `--no-ff` dans `main` après ce commit, les deux poussées (PA-P) | `devenv(env-12-r1): état et passation (O-r2 …)` ; avant : 471dd7e O-r2, e1b217b fusion d'O-r1 dans `main`, 17cd48d passation O-r1, cadeb0e O-r1, 4670382 fusion de D-b dans `main`, 08df06c passation D-b, 4e636aa validation et tests, e2e6cf8 schéma | oui |
 | clone noyau `~/lepton/depots/lepton/original/master` | `master` 16a331b | non touché | oui |
 | seed.scions | `master` f1d1f3c (tag 0.5.1.1) | non touché | oui |
-| lepton (pipx, Mac) | `~/.local/bin/lepton` | `pipx install --force` depuis cadeb0e | — |
+| lepton (pipx, Mac) | `~/.local/bin/lepton` | `pipx install --force` depuis 471dd7e | — |
 | lepton (Debian) | 0.1.0 depuis 0b4e96e | non réinstallé (D-b non revalidé sur la VM, comportement indépendant de l'hôte) | — |
 
 ## Fait pendant la session
@@ -44,6 +44,10 @@ et en français ; O-r1 corrigé (tous les mots-clés des schémas traduits). Auc
   traduit ou structurel : un mot-clé nouveau non traduit le fait échouer) et
   `test_messages_minproperties_minimum_type` ; `pytest` 197 ; exemples invalides relus : aucun message
   anglais.
+- O-r2 (demande de l'utilisateur) : 471dd7e — nom de champ refusé par `propertyNames` (clés de `options`
+  de la graine) : « nom de champ "Mesure" non conforme au motif … », pointeur `/options/Mesure`, situé
+  sur la clé (avant : `/options`, « valeur … ») ; test `test_property_name_located_on_key` (rouge sans la
+  correction) ; `pytest` 198.
 
 ## Reste à faire dans l'étape
 - Rien.
@@ -58,11 +62,10 @@ et en français ; O-r1 corrigé (tous les mots-clés des schémas traduits). Auc
 | Fusion `--no-ff` dans `main`, push de `devenv/env-12-r1` et `main` (PA-P), pour D-b | utilisateur | oui |
 | Traiter O-r1 dans la même session, sur `devenv/env-12-r1` | utilisateur | oui |
 | Seconde fusion `--no-ff` dans `main` et push de `devenv/env-12-r1` et `main` (O-r1, PA-P) | utilisateur | oui |
+| Corriger O-r2 (`propertyNames`), fusionner et pousser (PA-P) | utilisateur | oui |
 
 ## Observations (non décidées)
-- `propertyNames` : un nom de champ refusé (`invalides/graine-option-greffon-majuscule.json`) est
-  signalé sur l'objet parent (« /options: valeur "Mesure" non conforme au motif … ») ; message
-  français, mais ni « nom de champ » ni position sur la clé. Proposition : laisser.
+- Aucune.
 
 ## Pièges rencontrés
 - jsonschema omet `$ref` du chemin de schéma : l'erreur de `sans_champ_materiel` paraît sous
@@ -75,12 +78,13 @@ et en français ; O-r1 corrigé (tous les mots-clés des schémas traduits). Auc
 - [x] Aucun « False schema does not allow » ni « is not valid under » sur les exemples invalides.
 - [x] Champ interdit situé sur sa clé (diagnostic de l'éditeur à la bonne place).
 - [x] O-r1 : aucun message anglais sur les exemples invalides ; couverture des mots-clés testée.
-- [x] `pytest` vert (197).
+- [x] O-r2 : nom de champ refusé situé sur sa clé.
+- [x] `pytest` vert (198).
 
 ## Reprise
 ```
 cd /Users/cle_d_anton/lepton-tools-dev/lepton-tools && claude
-# Chantier terminé (ENV-0 à ENV-12, renvoi R1 : D-b et O-r1 fermés). Suite sur décision de
+# Chantier terminé (ENV-0 à ENV-12, renvoi R1 : D-b, O-r1, O-r2 fermés). Suite sur décision de
 # l'utilisateur (skill lepton-portage-instructions).
 # Tests de lepton : ~/lepton-tools-dev/venv-lepton-tools/bin/python -m pytest -q (≈ 5 min)
 ```
