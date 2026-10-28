@@ -22,7 +22,7 @@ Lot 6, session S3. Sources : `env-12-lot3.md` à `env-12-lot6.md` (Mac, QEMU et 
 | FIC-3 (P1) | — | conforme | F3 (`file add --adopt`), L3-4 ; Mac et Debian |
 | IDE-1 (P1) | — | conforme | F6, `seed tree` (codemodel du preset actif) |
 | IDE-6 (P2) | non testée | conforme | F1, 18 opérations de lepton en palette, français |
-| CFG-7 (P2) | JSON en avertissement (reprise 4) | conforme | F5, `check --stdin` ; D-a corrigé (§3) ; D-b renvoyé (lisibilité) |
+| CFG-7 (P2) | JSON en avertissement (reprise 4) | conforme | F5, `check --stdin` ; D-a corrigé (§3) ; D-b corrigé en R1 (§3) |
 | CFG-1 / O5 (P1) | écart accepté (XML dans le greffon noyau) | conforme | lot 2, `seed mkconf import` ; graines d'essai migrées (Mac lot 2, Debian 6d3d2a5) |
 | O2 (une configuration par `seed new`) | renvoyé | clos | F7, `seed config add/remove` (lot 2, palette lot 6) |
 | R1 (fichiers ouverts gardant l'ancienne commande après changement de preset) | documenté (ENV-9) | clos | F4, relance de clangd (lot 3) |
@@ -35,7 +35,7 @@ Lot 6, session S3. Sources : `env-12-lot3.md` à `env-12-lot6.md` (Mac, QEMU et 
 | ID | Constat | Suite (décision de l'utilisateur, 2026-10-28) |
 | --- | --- | --- |
 | D-a | `lepton/checks.py` l. 393 : au contrôle complet, l'anomalie XML perd `line` ; l'erreur paraît en 1:1 avec le préfixe « 9: » (`check --stdin` correct) | **Corrigé** (c0374c9) : anomalie recopiée entière (`dataclasses.replace`) ; test `test_rootstock_xml_xsd_line` (échoue sans la correction) ; réserve CFG-7 levée |
-| D-b | Clé `type` absente ou inconnue dans un manifeste de greffon : cascade `oneOf` (≈ 20 erreurs, « False schema does not allow » non traduit, placé en 1:1) | **Renvoyé** après ENV-12 : sans discriminant valide, ne rendre que l'erreur de `type` ; traduire le message des schémas `false` |
+| D-b | Clé `type` absente ou inconnue dans un manifeste de greffon : cascade `oneOf` (≈ 20 erreurs, « False schema does not allow » non traduit, placé en 1:1) | **Renvoyé** après ENV-12 : sans discriminant valide, ne rendre que l'erreur de `type` ; traduire le message des schémas `false`. **Corrigé** en R1 (2026-10-28, `devenv/env-12-r1`) : chaque `if` sur `type` du schéma exige `type` (e2e6cf8 ; `type` absent : 20 → 1 anomalie ; `type` inconnu : déjà 1) ; champ interdit par un schéma `false` nommé, situé sur sa clé, en français, références locales comprises ; `anyOf` / `oneOf` traduits (4e636aa) ; 3 tests, `pytest` 195 |
 
 ## 4. Observations
 
@@ -86,4 +86,5 @@ ordre clos.
 ## 7. Clôture
 
 ENV-12 terminée le 2026-10-28 (décision de l'utilisateur) ; `devenv/env-12` fusionnée dans `main` et
-poussée (PA-P accordé). Renvoi ouvert : D-b.
+poussée (PA-P accordé). Renvoi D-b corrigé le 2026-10-28 (R1, `devenv/env-12-r1`, fusionnée dans `main` et
+poussée, PA-P accordé).
