@@ -3,16 +3,16 @@
 ## Statut
 terminée (2026-10-28) ; renvoi R1 (D-b) terminé le 2026-10-28 — `lepton check` d'un manifeste de
 greffon sans `type` ne rend que l'erreur du discriminant ; champ interdit pour le type nommé, situé
-et en français. Aucun renvoi ouvert. Passation précédente (lot 6 S3) : historique git de ce fichier
+et en français ; O-r1 corrigé (tous les mots-clés des schémas traduits). Aucun renvoi ouvert. Passation précédente (lot 6 S3) : historique git de ce fichier
 (c5a3852) et `rapports/env-12-bilan.md`.
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/env-12-r1` (depuis `main` e8a9d9a), fusionnée `--no-ff` dans `main` après ce commit, les deux poussées (PA-P) | `devenv(env-12-r1): état et passation` ; avant : 4e636aa validation et tests, e2e6cf8 schéma | oui |
+| lepton-tools | `devenv/env-12-r1` (depuis `main` e8a9d9a), fusionnée `--no-ff` dans `main` après ce commit, les deux poussées (PA-P) | `devenv(env-12-r1): état et passation (O-r1 …)` ; avant : cadeb0e O-r1, 4670382 fusion de D-b dans `main`, 08df06c passation D-b, 4e636aa validation et tests, e2e6cf8 schéma | oui |
 | clone noyau `~/lepton/depots/lepton/original/master` | `master` 16a331b | non touché | oui |
 | seed.scions | `master` f1d1f3c (tag 0.5.1.1) | non touché | oui |
-| lepton (pipx, Mac) | `~/.local/bin/lepton` | `pipx install --force` depuis 4e636aa | — |
+| lepton (pipx, Mac) | `~/.local/bin/lepton` | `pipx install --force` depuis cadeb0e | — |
 | lepton (Debian) | 0.1.0 depuis 0b4e96e | non réinstallé (D-b non revalidé sur la VM, comportement indépendant de l'hôte) | — |
 
 ## Fait pendant la session
@@ -38,6 +38,12 @@ et en français. Aucun renvoi ouvert. Passation précédente (lot 6 S3) : histor
   `essais/env-9` : `lepton check` 0. `~/lepton` : `lepton check` 1 « manifeste de graine absent
   (graine hors lepton) », identique avec le lepton d'avant la correction (graine de la migration).
 - Bilan `rapports/env-12-bilan.md` §3 (D-b corrigé), §2 (CFG-7), §7.
+- O-r1 (demande de l'utilisateur, après la fusion de D-b) : cadeb0e `_message` — `minProperties`
+  (« objet vide (au moins 1 champ(s)) »), `minimum`, `type` en noms français (« booléen, entier ou
+  texte ») ; tests `test_schema_keywords_translated` (tout mot-clé des schémas greffon et graine est
+  traduit ou structurel : un mot-clé nouveau non traduit le fait échouer) et
+  `test_messages_minproperties_minimum_type` ; `pytest` 197 ; exemples invalides relus : aucun message
+  anglais.
 
 ## Reste à faire dans l'étape
 - Rien.
@@ -49,12 +55,14 @@ et en français. Aucun renvoi ouvert. Passation précédente (lot 6 S3) : histor
 | Correction par le schéma (`required` dans les `if`) + traduction du schéma `false` ; PA-3 non rouvert (langage inchangé) | utilisateur (plan accepté) | oui |
 | Traduction d'`anyOf` / `oneOf` | proposition de la session, acceptée avec le plan | oui |
 | Extension aux 4 `if` des types d'option (même défaut, même correction) | proposition de la session, appliquée (signalée) | oui |
-| Fusion `--no-ff` dans `main`, push de `devenv/env-12-r1` et `main` (PA-P) | utilisateur | oui |
+| Fusion `--no-ff` dans `main`, push de `devenv/env-12-r1` et `main` (PA-P), pour D-b | utilisateur | oui |
+| Traiter O-r1 dans la même session, sur `devenv/env-12-r1` | utilisateur | oui |
+| Seconde fusion `--no-ff` dans `main` et push de `devenv/env-12-r1` et `main` (O-r1, PA-P) | utilisateur | oui |
 
 ## Observations (non décidées)
-- O-r1 : `minProperties` non traduit (« {} should be non-empty », exemple
-  `invalides/graine-option-greffon-vide.json`) ; d'autres mots-clés peuvent rester en anglais
-  (`_message` ne couvre que les plus courants). Proposition : traduire au besoin.
+- `propertyNames` : un nom de champ refusé (`invalides/graine-option-greffon-majuscule.json`) est
+  signalé sur l'objet parent (« /options: valeur "Mesure" non conforme au motif … ») ; message
+  français, mais ni « nom de champ » ni position sur la clé. Proposition : laisser.
 
 ## Pièges rencontrés
 - jsonschema omet `$ref` du chemin de schéma : l'erreur de `sans_champ_materiel` paraît sous
@@ -66,12 +74,13 @@ et en français. Aucun renvoi ouvert. Passation précédente (lot 6 S3) : histor
 - [x] `type` absent : une seule anomalie, « champ obligatoire absent : type ».
 - [x] Aucun « False schema does not allow » ni « is not valid under » sur les exemples invalides.
 - [x] Champ interdit situé sur sa clé (diagnostic de l'éditeur à la bonne place).
-- [x] `pytest` vert (195).
+- [x] O-r1 : aucun message anglais sur les exemples invalides ; couverture des mots-clés testée.
+- [x] `pytest` vert (197).
 
 ## Reprise
 ```
 cd /Users/cle_d_anton/lepton-tools-dev/lepton-tools && claude
-# Chantier terminé (ENV-0 à ENV-12, renvoi D-b fermé). Suite sur décision de l'utilisateur
-# (skill lepton-portage-instructions) ; observation O-r1 ci-dessus.
+# Chantier terminé (ENV-0 à ENV-12, renvoi R1 : D-b et O-r1 fermés). Suite sur décision de
+# l'utilisateur (skill lepton-portage-instructions).
 # Tests de lepton : ~/lepton-tools-dev/venv-lepton-tools/bin/python -m pytest -q (≈ 5 min)
 ```
