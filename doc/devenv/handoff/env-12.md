@@ -13,7 +13,7 @@ et en français ; O-r1 corrigé (tous les mots-clés des schémas traduits) ; O-
 | clone noyau `~/lepton/depots/lepton/original/master` | `master` 16a331b | non touché | oui |
 | seed.scions | `master` f1d1f3c (tag 0.5.1.1) | non touché | oui |
 | lepton (pipx, Mac) | `~/.local/bin/lepton` | `pipx install --force` depuis 471dd7e | — |
-| lepton (Debian) | 0.1.0 depuis 0b4e96e | non réinstallé (D-b non revalidé sur la VM, comportement indépendant de l'hôte) | — |
+| lepton (Debian) | 0.1.0, pipx, Python 3.13.5 | réinstallé depuis `main` dbd49f0 (ordre R12-2) ; clone VM laissé sur `main` (auparavant `devenv/env-12-debian`) | oui |
 
 ## Fait pendant la session
 - Cause de D-b établie : (1) `type` absent → chaque `if {"properties": {"type": {"const": …}}}` vrai
@@ -48,6 +48,9 @@ et en français ; O-r1 corrigé (tous les mots-clés des schémas traduits) ; O-
   de la graine) : « nom de champ "Mesure" non conforme au motif … », pointeur `/options/Mesure`, situé
   sur la clé (avant : `/options`, « valeur … ») ; test `test_property_name_located_on_key` (rouge sans la
   correction) ; `pytest` 198.
+- Ordre R12-2 (demande de l'utilisateur, session VM `debian-linux-vm-breezy-pnueli`) : lepton réinstallé
+  sur Debian depuis dbd49f0 ; contrôles D-b, O-r1, O-r2 conformes ; `pytest` 198 sur Debian
+  (`rapports/env-12-debian.md` §6).
 
 ## Reste à faire dans l'étape
 - Rien.
