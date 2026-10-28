@@ -19,7 +19,7 @@ relevés et non corrigés (§5, D-a et D-b). Aucune correction propre à Debian.
 | lepton | 0.1.0 avant et après ; réinstallé depuis les sources de 0b4e96e (INS n° 1) ; `lepton --version` : `lepton 0.1.0` / `scion 0.5.1.1 (requis ≥ 0.5.1.1)` |
 | Locale de VSCodium | avant : « pas de locale » ; après : `"locale": "fr"` dans `~/.vscode-oss/argv.json` |
 | Outils | `/usr/bin/xmllint`, `/usr/bin/clangd`, `/usr/bin/gdb-multiarch`, `/usr/bin/qemu-system-arm` présents |
-| `fs.inotify.max_user_watches` | 30075 avant (< 65536 : arrêt du §5) ; relevé à 524288 par l'utilisateur (`echo 524288 > /proc/sys/fs/inotify/max_user_watches`, sudo, non persistant), décision de l'utilisateur ; rootstock d'essai : 1898 répertoires ; `max_user_instances` 128 |
+| `fs.inotify.max_user_watches` | 30075 avant (< 65536 : arrêt du §5) ; relevé à 524288 par l'utilisateur (`echo 524288 > /proc/sys/fs/inotify/max_user_watches`, sudo, non persistant), décision de l'utilisateur ; remis à 30075 par l'utilisateur en fin de session (sudo), valeur vérifiée ; rootstock d'essai : 1898 répertoires ; `max_user_instances` 128 |
 | Espace | `/tmp` 747 Mo (647 Mo libres) ; `/home` 26 Go (20 Go libres) |
 | Rootstock d'essai | `~/lepton-tools-dev/essais/env-11/qemu` (graine `env11`, FreeRTOS, an386) ; `lepton seed status` code 0, 5 greffons, trunk sans fichier régulier ni lien cassé |
 
