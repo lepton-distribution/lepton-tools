@@ -51,6 +51,7 @@ Lot 6, session S3. Sources : `env-12-lot3.md` à `env-12-lot6.md` (Mac, QEMU et 
 | L6-9, L6-10 | F2 par un terminal (dossiers greffés masqués) ; flash prouvé par `verify_image` | Laisser ; L6-10 à noter dans la skill `lepton-cibles` |
 | R-1, R-2 | Correspondance `stem` ↔ `trunk` recalculée par l'extension ; énumérations de la CLI recopiées | Laisser (lepton refuse toute valeur hors liste) |
 | O-r1 | Relevée en R1 (D-b) : `minProperties` (« {} should be non-empty »), `minimum` non traduits ; `type` affiché en liste Python, noms anglais | **Corrigé** en R1 (cadeb0e, demande de l'utilisateur) : tous les mots-clés des schémas traduits, test de couverture des mots-clés ; `pytest` 197 |
+| O-r2 | Relevée en R1 : nom de champ refusé par `propertyNames` (graine, `options`) signalé sur l'objet parent comme « valeur » | **Corrigé** en R1 (471dd7e, demande de l'utilisateur) : « nom de champ "X" … », situé sur la clé ; `pytest` 198 |
 
 ## 5. Propositions appliquées en cours d'étape (confirmées en bloc par l'utilisateur le 2026-10-28)
 
