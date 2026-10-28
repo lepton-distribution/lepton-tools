@@ -153,3 +153,43 @@ def test_rootstock_xml_xsd_line(project, capsys):
     [a] = [a for a in json.loads(out)["anomalies"] if "inconnu" in a["message"]]
     assert a["line"] == i + 1 and a["message"].startswith(f"{i + 1}: ")
 
+
+
+# --- D-b (ENV-12 R1) : discriminant « type » absent, champ interdit pour le type ---------------------
+def test_scion_without_type_single_anomaly(monkeypatch, capsys):
+    data = json.loads((EXAMPLES / "greffon-application.json").read_text(encoding="utf-8"))
+    del data["type"]
+    _stdin(monkeypatch, json.dumps(data, ensure_ascii=False, indent=2))
+    assert main(["check", "--json", "--stdin", "lepton-greffon.json"]) == 1
+    assert [a["message"] for a in _anomalies(capsys)] == ["champ obligatoire absent : type"]
+
+
+def test_scion_field_forbidden_for_type(monkeypatch, capsys):
+    """Schéma false : une anomalie par champ (même valeur pour deux champs), située sur sa clé,
+    message en français ; idem par une référence locale (sans_champ_materiel)."""
+    data = json.loads((EXAMPLES / "greffon-noyau.json").read_text(encoding="utf-8"))
+    data["bibliotheque"] = data["mcu"] = "lib"
+    text = json.dumps(data, ensure_ascii=False, indent=2)
+    _stdin(monkeypatch, text)
+    assert main(["check", "--json", "--stdin", "lepton-greffon.json"]) == 1
+    found = _anomalies(capsys)
+    lines = text.splitlines()
+    assert [a["message"] for a in found] == [f"champ non autorisé pour le type « noyau » : {k}" for k in ("bibliotheque", "mcu")]
+    for a, k in zip(found, ("bibliotheque", "mcu")):
+        assert a["location"] == f"/{k}" and lines[a["line"] - 1][a["column"] - 1:a["end_column"] - 1] == f'"{k}"'
+    data = json.loads((EXAMPLES / "greffon-application.json").read_text(encoding="utf-8"))
+    data["coeur"] = "cortex-m4f"
+    _stdin(monkeypatch, json.dumps(data, ensure_ascii=False, indent=2))
+    assert main(["check", "--json", "--stdin", "lepton-greffon.json"]) == 1
+    assert [a["message"] for a in _anomalies(capsys)] == ["champ non autorisé pour le type « application » : coeur"]
+
+
+def test_invalid_examples_messages_translated(capsys):
+    """Aucun message anglais de jsonschema pour les schémas false, anyOf et oneOf."""
+    for p in sorted((EXAMPLES / "invalides").glob("*.json")):
+        main(["check", "--json", str(p)])
+        for a in _anomalies(capsys):
+            assert "False schema" not in a["message"] and "is not valid under" not in a["message"], (p.name, a)
+    p = EXAMPLES / "invalides" / "bsp-sans-openocd-ni-qemu.json"
+    main(["check", "--json", str(p)])
+    assert [a["message"] for a in _anomalies(capsys)] == ["champ obligatoire absent : openocd et sonde, ou qemu"]
