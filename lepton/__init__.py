@@ -2,5 +2,6 @@
 
 __version__ = "0.1.0"
 
-# Version minimale de scion (ENV-7 : seed-scion-add/remove, graft --scion, graft-remove)
-SCION_MIN_VERSION = (0, 5, 1, 1)
+# Version minimale de scion (ENV-7 : seed-scion-add/remove, graft --scion, graft-remove ;
+# ENV-15 : fichiers ignorés par git non greffés, fichiers tolérés du trunk)
+SCION_MIN_VERSION = (0, 5, 2, 0)

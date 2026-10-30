@@ -1,5 +1,6 @@
 """Jalon 5 d'ENV-8 : fichiers et regreffe — file, dir, graft (FIC-1, FIC-2, FIC-3, FIC-6)."""
 
+import os
 import subprocess
 from pathlib import Path
 
@@ -137,13 +138,17 @@ def test_fic6_git_log_follow(project, repos, capsys):
 
 
 # --- lepton graft (§3.8, PA-9 Q8) ----------------------------------------------------------------
-def test_graft_removes_system_files(project, repos, capsys):
+def test_graft_removes_system_files(project, repos, tmp_path, monkeypatch, capsys):
+    # exclusions git globales du test, indépendantes du poste (scion ≥ 0.5.2.0, ENV-15)
+    (tmp_path / "excludes").write_text(".DS_Store\n")
+    (tmp_path / "gitconfig").write_text(f"[core]\n\texcludesFile = {tmp_path / 'excludes'}\n")
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", str(tmp_path / "gitconfig"))
     for p in (project / "trunk/.DS_Store", project / BOARD / "._board.c"):
         p.write_bytes(b"\0")
-    (repos["bsp"] / BOARD_CLONE / ".DS_Store").write_bytes(b"\0")       # venu du clone : lien conservé
+    (repos["bsp"] / BOARD_CLONE / ".DS_Store").write_bytes(b"\0")       # venu du clone, ignoré par git
     assert _lepton(project, "graft") == 0
     assert not (project / "trunk/.DS_Store").exists() and not (project / BOARD / "._board.c").exists()
-    assert (project / BOARD / ".DS_Store").is_symlink()
+    assert not os.path.lexists(project / BOARD / ".DS_Store")           # non greffé (scion E1)
     assert_trunk_clean(project)
     assert _lepton(project, "graft", "--scion", "board-q") == 0
     assert _lepton(project, "graft", "--scion", "unknown") == 1
