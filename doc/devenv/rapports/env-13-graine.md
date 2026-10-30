@@ -185,3 +185,18 @@ Consigne `consignes/env-13-debian.md` (2b92666), texte envoyé tel quel dans l'o
 | --- | --- | --- |
 | 2026-10-30 | `ORDRE R13-1` → `lepton-portage-debian` | rootstock neuf `~/lepton-tools-dev/essais/env-13-debian` depuis `original-tree`, host + 14 presets, fumée et banc KAL QEMU, rapport sur `devenv/env-13-debian` (push sur accord) |
 | 2026-10-30 | `ACCUSÉ R13-1` ← `lepton-portage-debian` | ordre reformulé conforme ; lepton-tools `main` d0c54d1 ; `git ls-remote` des 9 dépôts conforme ; Debian 13.7, scion 0.5.1.1, lepton 0.1.0, gcc 14.2.1 (paquet Debian), cmake 3.31.6, QEMU 10.0.13, embOS présent ; écarts non bloquants : consigne non poussée (texte de l'ordre fait foi), QEMU 10.0.13 contre 11.1.2, `/tmp` 647 Mo libres |
+| 2026-10-30 | `AVANCEMENT R13-1` ×2 ← `lepton-portage-debian` | §6 : greffe conforme (C2) ; §7-§8 : C1 à C6 conformes, rapport f8aec03 en local |
+| 2026-10-30 | `FIN-SUCCÈS R13-1` ← `lepton-portage-debian` | C1 à C6 conformes ; `devenv/env-13-debian` f8aec03 poussée (accord de l'utilisateur sur la VM), fusionnée dans `main` par la session Mac ; rapport `rapports/env-13-debian.md`, captures `oracles/env-13-debian/` |
+
+Résultat (`rapports/env-13-debian.md`) : rootstock neuf depuis `original-tree` (9 entrées, 4011 liens,
+0 cassé) ; host ctest 7/7, empreintes mklepton **identiques** au Mac ; 14/14 presets construits
+(embOS compris) ; 6 presets QEMU : fumée réussie, banc 19/19 (hard) et 15/15 (soft) ; trunk propre
+après construction.
+
+Écarts :
+- `net.ping_ftpd` en plus sous Debian : test réseau (tap en espace de noms) créé seulement hors
+  macOS (`cmake/components/firmware.cmake:202-208` du noyau, décision du 2026-10-08) ; attendu.
+- `comparer-oracle.py` code 1 Mac/Debian sur les 14 presets (+15/16 symboles côté Debian, sections
+  `.debug_*`) : chaînes différentes (Arm GNU Toolchain 14.2.Rel1 / paquet Debian 14.2.1, binutils
+  2.44) ; comparaison informative, non analysée.
+- QEMU 10.0.13 (Debian) contre 11.1.2 (Mac) : sans effet sur les résultats.
