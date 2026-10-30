@@ -5,7 +5,7 @@ Dernière mise à jour : 2026-10-30 — ENV-13 terminée : graine `original-tree
 
 ## Prochaine action
 
-Toutes les étapes du plan sont terminées. Fusionner `devenv/env-13` de lepton-tools dans `main` et la pousser (PA-P, accord de l'utilisateur requis) ; ensuite, au choix de l'utilisateur, repointer sur GitHub les graines d'essai `essais/env-9` et `essais/env-11/*` (anciens clones `file://` supprimés, `handoff/env-13.md` §Reste).
+Toutes les étapes du plan sont terminées (ENV-13 fusionnée et poussée). Au choix de l'utilisateur : repointer sur GitHub les graines d'essai `essais/env-9` et `essais/env-11/*` (anciens clones `file://` supprimés, `handoff/env-13.md` §Reste).
 
 ## Étapes
 
@@ -24,7 +24,7 @@ Toutes les étapes du plan sont terminées. Fusionner `devenv/env-13` de lepton-
 | ENV-10 | Script d'installation VSCodium | terminée (2026-10-15) ; reprise R5 (D3, D4, O6, O12 ; noyau O9) terminée (2026-10-16) | lepton-tools `devenv/env-10` (poussée), `devenv/env-10-debian` (VM, fusionnée), `devenv/env-10-r5` (fusionnée, poussée), `devenv/env-10-r5-debian` (VM, poussée, fusionnée) ; clone noyau `devenv/env-10` (poussée), `devenv/env-10-r5` (fusionnée, poussée) | `handoff/env-10.md` |
 | ENV-11 | Validation de bout en bout | terminée (2026-10-15) | lepton-tools `devenv/env-11` (poussée jusqu'à 8cca1c0), `devenv/env-11-debian` (VM, poussée, fusionnée) ; clone noyau `devenv/env-11` (poussée) | `handoff/env-11.md` |
 | ENV-12 | Extension VSCodium | terminée (2026-10-28) ; lots 1 à 6 (F0-F8, O5) ; validation Mac (QEMU, NUCLEO-F429ZI, NUCLEO-WL55JC1) et Debian (R12-1) ; bilan `rapports/env-12-bilan.md` ; renvoi R1 (D-b, O-r1, O-r2) terminé (2026-10-28) | lepton-tools `devenv/env-12` (depuis `main` 361b337, fusionnée dans `main`, poussée), `devenv/env-12-debian` (VM, poussée, fusionnée), `devenv/env-12-r1` (depuis `main` e8a9d9a, fusionnée dans `main`, poussée) | `handoff/env-12.md` |
-| ENV-13 | Graine de référence publiée | terminée (2026-10-30) ; rapport `rapports/env-13-graine.md` | lepton-tools `devenv/env-13` (depuis `main` 14d64e9, non fusionnée, non poussée) ; graine `devenv/env-13` (depuis `original-tree` 43d12e6, fusionnée dans `original-tree` 0f1275a, poussée) | `handoff/env-13.md` |
+| ENV-13 | Graine de référence publiée | terminée (2026-10-30) ; rapport `rapports/env-13-graine.md` | lepton-tools `devenv/env-13` (depuis `main` 14d64e9, fusionnée dans `main` cbfc562, poussée) ; graine `devenv/env-13` (depuis `original-tree` 43d12e6, fusionnée dans `original-tree` 0f1275a, poussée) | `handoff/env-13.md` |
 
 Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), abandonnée (décision).
 
@@ -335,3 +335,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-30 | ENV-13 | PA-13 : séquence de regreffe éprouvée sur la copie `essais/env-13` (trunk identique au réel) ; graine 9d72b6b ; oracle avant (host + 14 presets) ; regreffe de `<ROOTSTOCK>` ; oracle après : `comparer-oracle` code 0 sur les 14 presets, banc KAL et fumée identiques, E1 démontré (`SOURCE_DATE_EPOCH`, elf/bin/hex identiques) ; rapport `rapports/env-13-graine.md`. |
 | 2026-10-30 | ENV-13 | PA-14 : graine fusionnée dans `original-tree` (0f1275a) et poussée (PA-P, pushurl SSH) ; anciens clones `depots/lepton-famille/*`, `depots/lepton-bsp/*` archivés puis supprimés ; rootstock vierge `essais/env-13-vierge` greffé depuis GitHub, `qemu-mps2-an386-freertos` : ctest 18/18 (fumée comprise) ; copies d'essai supprimées. |
 | 2026-10-30 | ENV-13 | Fin de session : étape terminée ; passation `handoff/env-13.md` ; `devenv/env-13` de lepton-tools ni fusionnée ni poussée. |
+| 2026-10-30 | ENV-13 | PA-P (demande de l'utilisateur) : `devenv/env-13` fusionnée dans `main` (cbfc562, `--no-ff`) ; `main` et `devenv/env-13` poussées. |

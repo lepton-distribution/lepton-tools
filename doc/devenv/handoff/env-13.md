@@ -7,7 +7,7 @@ greffons famille et BSP sur GitHub) ; `<ROOTSTOCK>` est regreffé sans régressi
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/env-13` (depuis `main` 14d64e9), non fusionnée, non poussée | commit de cette passation, sur a5579af « devenv(env-13): PA-13, regreffe de la graine publiée, oracles avant et après » | oui |
+| lepton-tools | `main` (fusion cbfc562 de `devenv/env-13`, poussées toutes deux) | commit d'état après la fusion, sur cbfc562 « Fusion de devenv/env-13 » | oui |
 | clone noyau `depots/lepton/original/master` | `master` 16a331b = `origin/master` | non touché | oui |
 | graine `depots/lepton-seed.scions/original-tree` | `original-tree` 0f1275a « Fusion de devenv/env-13 » = `origin/original-tree` (poussée) ; `devenv/env-13` 9d72b6b, locale | pushurl SSH | oui |
 | 7 greffons `depots/lepton/family-<nom>/master`, `depots/lepton/bsp-<nom>/master` | `master` = `origin/master` (3954357, 046779e, e98a482, 01b5528, 8ea7ee5, 1eccc2f, a329f4d) | clones neufs, pushurl SSH | oui |
@@ -31,8 +31,8 @@ greffons famille et BSP sur GitHub) ; `<ROOTSTOCK>` est regreffé sans régressi
 
 ## Reste à faire dans l'étape
 - Aucune tâche du fichier d'étape.
-- Hors étape, soumis à accord : fusion de `devenv/env-13` de lepton-tools dans `main` et push
-  (PA-P).
+- Fait après la clôture, à la demande de l'utilisateur (PA-P) : `devenv/env-13` fusionnée dans
+  `main` (cbfc562) ; `main` et `devenv/env-13` poussées.
 - Hors étape, au choix de l'utilisateur : les graines de `essais/env-9` et
   `essais/env-11/{qemu,qemu-gra2,f429zi,wl55jc1}` désignent en `file://` les anciens clones
   supprimés. Leurs clones existants fonctionnent, mais un nouveau `seed-clone` ou `graft-update`
@@ -73,5 +73,5 @@ greffons famille et BSP sur GitHub) ; `<ROOTSTOCK>` est regreffé sans régressi
 Première action de la session suivante :
 ```
 cd /Users/cle_d_anton/lepton-tools-dev/lepton-tools && claude
-# « fusionne devenv/env-13 dans main » : skill devenv-session ; fusion --no-ff ; push sur accord (PA-P).
+# Aucune étape restante ; au choix de l'utilisateur : repointer les graines d'essai (§Reste).
 ```
