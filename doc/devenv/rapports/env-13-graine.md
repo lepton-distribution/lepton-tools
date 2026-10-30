@@ -175,3 +175,13 @@ scion graft
       presets QEMU.
 - [x] `original-tree` poussée ; un rootstock vierge greffe l'arbre complet depuis GitHub et le
       preset QEMU passe la fumée.
+
+## 8. Validation Debian (ordre R13-1, après clôture)
+
+Demande de l'utilisateur : reconstruire toutes les cibles sur la VM Debian depuis la graine publiée.
+Consigne `consignes/env-13-debian.md` (2b92666), texte envoyé tel quel dans l'ordre.
+
+| Date | Message | Résumé |
+| --- | --- | --- |
+| 2026-10-30 | `ORDRE R13-1` → `lepton-portage-debian` | rootstock neuf `~/lepton-tools-dev/essais/env-13-debian` depuis `original-tree`, host + 14 presets, fumée et banc KAL QEMU, rapport sur `devenv/env-13-debian` (push sur accord) |
+| 2026-10-30 | `ACCUSÉ R13-1` ← `lepton-portage-debian` | ordre reformulé conforme ; lepton-tools `main` d0c54d1 ; `git ls-remote` des 9 dépôts conforme ; Debian 13.7, scion 0.5.1.1, lepton 0.1.0, gcc 14.2.1 (paquet Debian), cmake 3.31.6, QEMU 10.0.13, embOS présent ; écarts non bloquants : consigne non poussée (texte de l'ordre fait foi), QEMU 10.0.13 contre 11.1.2, `/tmp` 647 Mo libres |
