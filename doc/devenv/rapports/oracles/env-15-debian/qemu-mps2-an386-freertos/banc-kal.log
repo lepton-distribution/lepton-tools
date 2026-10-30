@@ -1,0 +1,51 @@
+Internal ctest changing into directory: /home/lepton-user/lepton-tools-dev/essais/env-15-debian/build/qemu-mps2-an386-freertos
+Test project /home/lepton-user/lepton-tools-dev/essais/env-15-debian/build/qemu-mps2-an386-freertos
+      Start  1: smoke.lsh
+ 1/19 Test  #1: smoke.lsh ........................   Passed    3.20 sec
+      Start  2: net.ping_ftpd
+ 2/19 Test  #2: net.ping_ftpd ....................   Passed    4.01 sec
+      Start  3: kal.T1
+ 3/19 Test  #3: kal.T1 ...........................   Passed    0.06 sec
+      Start  4: kal.T2
+ 4/19 Test  #4: kal.T2 ...........................   Passed    0.06 sec
+      Start  5: kal.T3
+ 5/19 Test  #5: kal.T3 ...........................   Passed    0.06 sec
+      Start  6: kal.T4
+ 6/19 Test  #6: kal.T4 ...........................   Passed    0.06 sec
+      Start  7: kal.T5
+ 7/19 Test  #7: kal.T5 ...........................   Passed    0.05 sec
+      Start  8: kal.T6
+ 8/19 Test  #8: kal.T6 ...........................   Passed    0.06 sec
+      Start  9: kal.T7
+ 9/19 Test  #9: kal.T7 ...........................   Passed    0.06 sec
+      Start 10: kal.T8
+10/19 Test #10: kal.T8 ...........................   Passed    0.08 sec
+      Start 11: kal.T1F
+11/19 Test #11: kal.T1F ..........................   Passed    0.06 sec
+      Start 12: kal.T4F
+12/19 Test #12: kal.T4F ..........................   Passed    0.07 sec
+      Start 13: kal.T6F
+13/19 Test #13: kal.T6F ..........................   Passed    0.07 sec
+      Start 14: kal.T7F
+14/19 Test #14: kal.T7F ..........................   Passed    0.06 sec
+      Start 15: kal.TICI
+15/19 Test #15: kal.TICI .........................   Passed    0.12 sec
+      Start 16: kal.TCLK
+16/19 Test #16: kal.TCLK .........................   Passed    0.57 sec
+      Start 17: kal.TSBRK
+17/19 Test #17: kal.TSBRK ........................   Passed    0.05 sec
+      Start 18: kal.IRQ
+18/19 Test #18: kal.IRQ ..........................   Passed    0.07 sec
+      Start 19: kal.harness_fail
+19/19 Test #19: kal.harness_fail .................   Passed    0.05 sec
+
+100% tests passed, 0 tests failed out of 19
+
+Label Time Summary:
+arch:cortex-m4f     =   8.82 sec*proc (19 tests)
+backend:freertos    =   8.82 sec*proc (19 tests)
+kal                 =   4.81 sec*proc (18 tests)
+net                 =   4.01 sec*proc (1 test)
+smoke               =   3.20 sec*proc (1 test)
+
+Total Test time (real) =   8.83 sec
