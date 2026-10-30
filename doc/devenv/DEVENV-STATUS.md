@@ -5,7 +5,7 @@ Dernière mise à jour : 2026-10-30 — ENV-13 terminée : graine `original-tree
 
 ## Prochaine action
 
-Toutes les étapes du plan sont terminées (ENV-13 fusionnée et poussée). Au choix de l'utilisateur : repointer sur GitHub les graines d'essai `essais/env-9` et `essais/env-11/*` (anciens clones `file://` supprimés, `handoff/env-13.md` §Reste).
+Toutes les étapes du plan sont terminées (ENV-13 fusionnée et poussée ; graines d'essai repointées sur GitHub). Aucune action en attente : nouvelle demande de l'utilisateur, ou révision du plan (skill `lepton-portage-instructions`).
 
 ## Étapes
 
@@ -336,3 +336,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-30 | ENV-13 | PA-14 : graine fusionnée dans `original-tree` (0f1275a) et poussée (PA-P, pushurl SSH) ; anciens clones `depots/lepton-famille/*`, `depots/lepton-bsp/*` archivés puis supprimés ; rootstock vierge `essais/env-13-vierge` greffé depuis GitHub, `qemu-mps2-an386-freertos` : ctest 18/18 (fumée comprise) ; copies d'essai supprimées. |
 | 2026-10-30 | ENV-13 | Fin de session : étape terminée ; passation `handoff/env-13.md` ; `devenv/env-13` de lepton-tools ni fusionnée ni poussée. |
 | 2026-10-30 | ENV-13 | PA-P (demande de l'utilisateur) : `devenv/env-13` fusionnée dans `main` (cbfc562, `--no-ff`) ; `main` et `devenv/env-13` poussées. |
+| 2026-10-30 | ENV-13 (après clôture) | Demande de l'utilisateur : graines d'essai `essais/env-9`, `essais/env-11/{qemu,qemu-gra2,f429zi,wl55jc1}` repointées sur GitHub (2 greffons famille/BSP chacune, `scion seed-scion-add --replace`, version `master` inchangée, ordre des ramifications conservé ; `original::tree` laissé en `file://` vers `<ROOTSTOCK>`, toujours présent), commit local par graine ; `origin` des 10 clones en `https://`, `fetch` conforme. Contrôle `seed-clone` : listes inchangées sauf `qemu-gra2` (essai GRA-2, BSP volontairement dégreffé), où l'entrée du BSP a été réinscrite puis retirée par `graft-remove` (0 feuille) : 4 entrées, 3427 liens, état d'origine. |

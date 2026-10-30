@@ -33,10 +33,9 @@ greffons famille et BSP sur GitHub) ; `<ROOTSTOCK>` est regreffé sans régressi
 - Aucune tâche du fichier d'étape.
 - Fait après la clôture, à la demande de l'utilisateur (PA-P) : `devenv/env-13` fusionnée dans
   `main` (cbfc562) ; `main` et `devenv/env-13` poussées.
-- Hors étape, au choix de l'utilisateur : les graines de `essais/env-9` et
-  `essais/env-11/{qemu,qemu-gra2,f429zi,wl55jc1}` désignent en `file://` les anciens clones
-  supprimés. Leurs clones existants fonctionnent, mais un nouveau `seed-clone` ou `graft-update`
-  y échouerait. Les repointer sur GitHub ou restaurer l'archive.
+- Fait après la clôture, à la demande de l'utilisateur : graines de `essais/env-9` et
+  `essais/env-11/{qemu,qemu-gra2,f429zi,wl55jc1}` repointées sur GitHub (greffons famille/BSP ;
+  `original::tree` reste en `file://` vers `<ROOTSTOCK>`) ; `origin` des clones en `https://`.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
@@ -54,6 +53,11 @@ greffons famille et BSP sur GitHub) ; `<ROOTSTOCK>` est regreffé sans régressi
   supprimer du clone (fait dans la copie de preuve seulement ; clone depuis supprimé).
 - `comparer-oracle` entre deux rootstocks de chemins différents : code 1 (`.text` et sections de
   débogage), à cause des `__FILE__` absolus (E3). Comparer dans le même rootstock.
+- `scion seed-clone` n'est pas neutre sur un rootstock où un greffon a été volontairement
+  dégreffé (`essais/env-11/qemu-gra2`, GRA-2) : il réinscrit l'entrée dans la liste greffée →
+  `graft-remove` de cette clé (0 feuille). Pour contrôler une graine, préférer une copie.
+- Le hook `proteger-trunk.py` refuse aussi une commande qui ne fait que lire un fichier du trunk
+  avec `cp` → relever une empreinte (`shasum <`) au lieu de copier.
 - Le piège prévu par le fichier d'étape (chemin du clone dans le débogage) ne se produit pas : le
   compilateur reçoit les chemins du trunk.
 
