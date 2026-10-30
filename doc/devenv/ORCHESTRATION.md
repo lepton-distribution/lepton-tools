@@ -32,7 +32,7 @@ Hôtes :
 | Hôte | Rôle | Étapes |
 | --- | --- | --- |
 | Mac mini Intel, macOS (hôte principal) | Développement, construction native, flash et débogage | Toutes |
-| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian) |
+| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian), ENV-15 (partie Debian) |
 
 Règles de parallélisme Mac / VM :
 
@@ -142,6 +142,10 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | PA-14 | ENV-13 | Push de la graine `original-tree` ; sort des anciens clones `depots/lepton-famille/*` et `depots/lepton-bsp/*` | ouvert |
 | PA-15 | ENV-14 | Inventaire du nettoyage : liste des chemins à supprimer, arbitrages, documents à corriger, avant toute suppression | ouvert |
 | PA-16 | ENV-14 | Rapport de non-régression : push de `devenv/env-14` du noyau pour la validation Debian ; après `FIN-SUCCÈS R14-1`, fusion dans `master` et push | ouvert |
+| PA-17 | ENV-15 | Évolutions de scion avant implémentation : filtre des fichiers ignorés (E1), fichiers étrangers du trunk (E2), comportement des sources non git, numéro de version | ouvert |
+| PA-18 | ENV-15 | Rapport : tag et push de `seed.scions`, push de `devenv/env-15` (lepton-tools), ordre R15-1 ; après `FIN-SUCCÈS R15-1`, fusion dans `main` et push | ouvert |
+| PA-19 | ENV-16 | Option retenue pour la graine de référence (manifeste dans `original-tree` avec schéma étendu, ou `lepton check` qui admet une graine de référence) avant toute modification | ouvert |
+| PA-20 | ENV-16 | Rapport : push de `devenv/env-16` et, le cas échéant, de la graine `original-tree` ; fusion dans `main` | ouvert |
 | PA-P | toutes | Tout `git push`, toute action `scion seed-update` / `graft-update` | permanent |
 
 ## 5. Règles de travail (rappel des acquis du portage)
@@ -162,8 +166,8 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | Élément | Rôle | Étapes |
 | --- | --- | --- |
 | skill `devenv-session` | Procédure de début et de fin de session, passation | toutes |
-| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14 |
-| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14 |
+| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15 |
+| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15 |
 | skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14 |
 | hook `proteger-trunk.py` | Refuse Write/Edit sous `<ROOTSTOCK>/trunk/` et les commandes shell d'écriture visant `trunk/` | toutes |
 
@@ -190,6 +194,8 @@ ce plan.
 | ENV-12 | Extension VSCodium (phase 2) | ENV-11 |
 | ENV-13 | Graine de référence publiée | ENV-6, ENV-11 |
 | ENV-14 | Nettoyage de l'arbre | ENV-13 |
+| ENV-15 | Fichiers ignorés et fichiers étrangers dans scion | ENV-14 |
+| ENV-16 | Graine de référence et `lepton check` | ENV-13 (indépendante d'ENV-15) |
 
 Ordre conseillé : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12. ENV-1 et ENV-2 sont permutables ;
 ENV-4 et ENV-5 aussi ; ENV-7 peut suivre directement ENV-2 si l'audit le justifie.
