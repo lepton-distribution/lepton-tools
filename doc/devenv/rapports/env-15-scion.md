@@ -179,4 +179,26 @@ Réponse de l'utilisateur du 2026-10-30 :
 - scion 0.5.2.0 installé par pipx avant le PA-18 : conservé.
 
 ## 8. Validation Debian (R15-1)
-<À compléter après `FIN-*` R15-1.>
+| Date | Message | Résumé |
+| --- | --- | --- |
+| 2026-10-30 | `ORDRE R15-1` | envoyé à `lepton-vm-debian` (Remote Control) par `fix-scion-ignored-graft-files` ; consigne `consignes/env-15-debian.md` (lepton-tools `devenv/env-15` f5e7be8), texte joint tel quel |
+| 2026-10-30 | `ACCUSÉ R15-1` | reçu de `lepton-vm-debian` : §5 conforme (Debian 13.7, git 2.47.3, embOS 5.20.0.0 présent, `core.excludesFile` absent ; `devenv/env-15` f5e7be8 ; tag 0.5.2.0 472c12e, graine 0f1275a, noyau 118912a, f4 7694ad5, 6 autres greffons inchangés) ; écart prévu : banc 19/15 au lieu de 18/14 (`net.ping_ftpd` Linux seul, comme R13-1 et R14-1) |
+| 2026-10-30 | `AVANCEMENT R15-1` (Mac) | accusé reçu ; banc 19/15 attendu sur Debian, à consigner comme constat |
+| 2026-10-30 | `AVANCEMENT R15-1` (VM) | arrêt au §5 : `pipx install` de scion 0.5.2.0 et de lepton refusé par les permissions de la session VM, rien installé ni lancé ; attend l'utilisateur |
+| 2026-10-30 | reprise R15-1 | installations pipx de scion 0.5.2.0 et de lepton faites sur la VM par l'utilisateur ; la VM reprend au §5 |
+| 2026-10-30 | `AVANCEMENT R15-1` (VM) | §6 : C3 et C4 conformes (3929 liens, 0 cassé, 0 régulier ; « 2 chemin(s) ignoré(s) par git », listes avant / E1 / après identiques, sha256 9e16ec37…) ; côté noyau, `.DS_Store` déjà ignoré par le `.gitignore` du clone (ligne 482) ; C2 non lancé : clonage et tests de scion refusés par les permissions de la session VM, demandés à l'utilisateur ; listes produites par `find -printf` (équivalence vérifiée) ; §7 lancé |
+| 2026-10-30 | `AVANCEMENT R15-1` (VM) | C2 conforme (tests lancés par l'utilisateur : 126 tests, OK (skipped=1), code 0) ; §7-§8 : `rejouer-oracle` code 0 (host ctest 7/7, 6/6 presets QEMU, banc 19/19 hard et 15/15 soft, `smoke.lsh` réussi), `comparer-oracle` code 0 contre `env-14-debian` partout, empreintes mklepton et symboles identiques (1599, 1596, 1639, 1638, 1561, 1601) ; trunk : 0 lien cassé, 0 fichier régulier ; suite : rapport, commit, question de push |
+| 2026-10-30 | `FIN-SUCCÈS R15-1` | C1 à C8 conformes ; `devenv/env-15-debian` fe4905f (depuis f5e7be8, 47 fichiers, tous sous `rapports/`) poussée par la VM avec l'accord de l'utilisateur ; rapport `rapports/env-15-debian.md`, captures `rapports/oracles/env-15-debian/` ; vérifiés côté Mac, fusionnés dans `devenv/env-15` (0d3e38f) |
+
+## 9. Clôture (PA-18 (2))
+
+- `devenv/env-15-debian` fe4905f vérifiée (parent f5e7be8 ; 47 fichiers ajoutés, tous sous
+  `rapports/`) et fusionnée dans `devenv/env-15` (0d3e38f) ; `devenv/env-15` fusionnée dans `main`
+  et poussée (décision PA-18 (2)).
+- Écart relevé en fin de session : le clone noyau gardait scion 0.5.1.1 par défaut
+  (`scripts/install-{macos,debian}.sh` `SCION_REF`, `doc/BUILDING.md`, `README-PAQUET.md`), alors
+  que lepton exige ≥ 0.5.2.0. Aligné avec l'accord de l'utilisateur, comme en ENV-7 R1 : clone
+  noyau `devenv/env-15` 0ad8a03 (depuis `master` 118912a), fusionnée dans `master` 6f1801d ;
+  `master` et la branche poussés. Ces fichiers sont hors du trunk : aucune regreffe ; trunk de
+  `<ROOTSTOCK>` : 0 fichier régulier, 0 lien cassé. Non validé sur Debian (la VM a installé
+  scion par la commande de la consigne, sans ces scripts).
