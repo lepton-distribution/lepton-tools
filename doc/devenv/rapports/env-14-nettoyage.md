@@ -111,3 +111,4 @@ Consigne `consignes/env-14-debian.md` ; branches poussées au PA-16 (1) : clone 
 | Date | Message | Résumé |
 | --- | --- | --- |
 | 2026-10-30 | `ORDRE R14-1` | `nettoyage-arbre-env-14` → `lepton-vm-debian` (Remote Control) : rootstock neuf depuis `original-tree`, bascule noyau et `family-stm32f4xx` sur `devenv/env-14`, 15 presets, non-régression contre R13-1 ; texte intégral de la consigne |
+| 2026-10-30 | `ACCUSÉ R14-1` | `lepton-vm-debian` : ordre reformulé ; Debian 13.7, scion 0.5.1.1, lepton 0.1.0, arm-none-eabi-gcc 14.2.1, cmake 3.31.6, ninja 1.12.1, QEMU 10.0.13, Python 3.13.5 ; embOS présent ; lepton-tools `devenv/env-14` 42d3906 ; `git ls-remote` des 10 références conforme au §1 ; aucun écart |
