@@ -34,8 +34,9 @@ greffons famille et BSP sur GitHub) ; `<ROOTSTOCK>` est regreffé sans régressi
 - Fait après la clôture, à la demande de l'utilisateur (PA-P) : `devenv/env-13` fusionnée dans
   `main` (cbfc562) ; `main` et `devenv/env-13` poussées.
 - Fait après la clôture, à la demande de l'utilisateur : graines de `essais/env-9` et
-  `essais/env-11/{qemu,qemu-gra2,f429zi,wl55jc1}` repointées sur GitHub (greffons famille/BSP ;
-  `original::tree` reste en `file://` vers `<ROOTSTOCK>`) ; `origin` des clones en `https://`.
+  `essais/env-11/{qemu,qemu-gra2,f429zi,wl55jc1}` entièrement repointées sur GitHub (greffons
+  famille/BSP, puis `original::tree`) ; `origin` des clones en `https://` ; HEAD des clones noyau
+  inchangés (42733ce, 1dde0af), en retard sur GitHub `master` 16a331b.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
