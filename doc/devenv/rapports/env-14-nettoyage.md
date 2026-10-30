@@ -101,3 +101,13 @@ fin renvoyé devant l'invite suivante), la ligne asynchrone `rcv SIGCHLD` et les
   `include/user_kernel_mkconf.h` du BSP `nucleo-wl55jc1` (cite `src/arch/st-stm32wl55jci-nucleo`),
   laissés au PA-15 ; `net/html` dans le XML Olimex et `lhttpd.c` désigne
   `tauon-basic/src/bin/net/html/`, conservé. Aucune autre.
+
+## 6. Validation Debian (ordre R14-1, ORCHESTRATION §2bis)
+
+Consigne `consignes/env-14-debian.md` ; branches poussées au PA-16 (1) : clone noyau
+`devenv/env-14` e5a5689, `family-stm32f4xx` `devenv/env-14` af964c6, lepton-tools `devenv/env-14`
+42d3906 (`git ls-remote` conforme).
+
+| Date | Message | Résumé |
+| --- | --- | --- |
+| 2026-10-30 | `ORDRE R14-1` | `nettoyage-arbre-env-14` → `lepton-vm-debian` (Remote Control) : rootstock neuf depuis `original-tree`, bascule noyau et `family-stm32f4xx` sur `devenv/env-14`, 15 presets, non-régression contre R13-1 ; texte intégral de la consigne |
