@@ -1,57 +1,77 @@
-# Passation ENV-13 — Graine de référence publiée — session du 2026-10-30 (préparation)
+# Passation ENV-13 — Graine de référence publiée — session du 2026-10-30
 
 ## Statut
-à faire — étape préparée (publication des greffons, révision du plan) ; aucune tâche du fichier
-d'étape commencée, aucune branche `devenv/env-13` créée.
+terminée — la graine `original-tree` publiée est le point d'entrée de l'arbre complet (noyau + 7
+greffons famille et BSP sur GitHub) ; `<ROOTSTOCK>` est regreffé sans régression.
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `main` (poussée jusqu'à bf4d9ed) | commit de cette passation, sur bf4d9ed « devenv: révision du plan — étape ENV-13 » | oui |
-| clone noyau `depots/lepton/original/master` | `master` 16a331b | non touché | oui |
-| graine `depots/lepton-seed.scions/original-tree` | `original-tree` 43d12e6, 4 commits d'avance sur `origin` (ENV-6), non poussée | non touchée | oui |
-| 7 greffons `depots/lepton-famille/*`, `depots/lepton-bsp/*` | `master` = `origin/master` (table du fichier d'étape) | distant `origin` SSH ajouté, `master` suivi | oui |
+| lepton-tools | `devenv/env-13` (depuis `main` 14d64e9), non fusionnée, non poussée | commit de cette passation, sur a5579af « devenv(env-13): PA-13, regreffe de la graine publiée, oracles avant et après » | oui |
+| clone noyau `depots/lepton/original/master` | `master` 16a331b = `origin/master` | non touché | oui |
+| graine `depots/lepton-seed.scions/original-tree` | `original-tree` 0f1275a « Fusion de devenv/env-13 » = `origin/original-tree` (poussée) ; `devenv/env-13` 9d72b6b, locale | pushurl SSH | oui |
+| 7 greffons `depots/lepton/family-<nom>/master`, `depots/lepton/bsp-<nom>/master` | `master` = `origin/master` (3954357, 046779e, e98a482, 01b5528, 8ea7ee5, 1eccc2f, a329f4d) | clones neufs, pushurl SSH | oui |
+| anciens `depots/lepton-famille/*`, `depots/lepton-bsp/*` | supprimés | archive `essais/archives/lepton-anciens-clones-famille-bsp-20261030.tar.gz` | — |
 
 ## Fait pendant la session
-- 5 dépôts publics créés par `gh` dans `lepton-distribution` (stm32f4xx, stm32wlxx, nucleo-f429zi,
-  nucleo-wl55jc1, qemu-mps2-an500), `master` poussé ; `origin` ajouté aux 7 dépôts locaux ;
-  `git ls-remote` : `master` identique pour les 7 (PA-P, 5f816a2).
-- Description GitHub de `lepton-bsp-qemu-mps2-an386` corrigée (« bcp » → « bsp »).
-- `gh` 2.103.3 installé (Homebrew) et authentifié (`lepton-phlb`, admin de l'organisation).
-- Constats : noyau publié sans code des 4 cartes ; collision des clés `famille::`/`bsp::` avec des
-  URL (`scion/graft.py`) ; `building` portable (`INSTALL_LAYOUT` de scion).
-- Plan révisé (skill `lepton-portage-instructions`) : `etapes/ENV-13-graine-publiee.md`, PA-13,
-  PA-14, graphe, skills (bf4d9ed, poussé).
+- PA-13 : séquence de regreffe établie dans le code de scion (`sync` ne retire aucune clé) et
+  éprouvée sur une copie, dont le trunk est identique au réel (rapport §2).
+- Graine : commit 9d72b6b (7 clés `family-`/`bsp-`, `master`, `https://`), fusionné dans
+  `original-tree` (0f1275a) et poussé (`git ls-remote`).
+- `<ROOTSTOCK>` regreffé : 9 entrées, 0 lien cassé, 0 lien vers les anciens clones, trunk
+  identique à l'état de départ (SHA-256 des 4037 cibles).
+- Oracle `env-13-avant` / `env-13-apres` (host + 14 presets, `rejouer-oracle.sh`) :
+  `comparer-oracle.py` code 0 partout ; banc KAL et fumée identiques ; E1 démontré
+  (`rapports/env-13-preuve-empreintes.sh`, `oracles/env-13-apres/preuve-e1.log`).
+- Anciens clones vérifiés (0 commit non publié), archivés puis supprimés.
+- Rootstock vierge `~/lepton-tools-dev/essais/env-13-vierge` greffé depuis GitHub ;
+  `qemu-mps2-an386-freertos` : ctest 18/18 (fumée comprise) ; écart E3 expliqué (chemin du
+  rootstock dans `__FILE__`).
+- Rapport complet : `doc/devenv/rapports/env-13-graine.md`.
 
 ## Reste à faire dans l'étape
-- [ ] Tâches 1 à 7 de `etapes/ENV-13-graine-publiee.md`.
+- Aucune tâche du fichier d'étape.
+- Hors étape, soumis à accord : fusion de `devenv/env-13` de lepton-tools dans `main` et push
+  (PA-P).
+- Hors étape, au choix de l'utilisateur : les graines de `essais/env-9` et
+  `essais/env-11/{qemu,qemu-gra2,f429zi,wl55jc1}` désignent en `file://` les anciens clones
+  supprimés. Leurs clones existants fonctionnent, mais un nouveau `seed-clone` ou `graft-update`
+  y échouerait. Les repointer sur GitHub ou restaurer l'archive.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
 | --- | --- | --- |
-| Publier les 5 greffons : publics, `master` seul, `origin` dans les 7 dépôts, graine laissée de côté | utilisateur | oui |
-| Nouvelle étape ENV-13 ; clés `family-`/`bsp-` ; URL `https://` ; anciens clones au PA-14 | utilisateur | oui |
-| Essai de la regreffe sur une copie d'essai ; pushurl SSH ; essai final en rootstock vierge | proposition de la session (dans le fichier d'étape), non validée à part | non |
+| PA-13 : séquence validée ; accord PA-P pour la regreffe réelle ; `.DS_Store` conservés (`--force`) ; oracle sur les 15 répertoires (host compris) | utilisateur | oui |
+| PA-14 : push de la graine avec pushurl SSH ; anciens clones archivés puis supprimés ; rootstock vierge `essais/env-13-vierge` ; copies d'essai supprimées | utilisateur | oui |
+| Commit de graine fait dans la copie et rapatrié par `git fetch` (même hash) ; fusion `--no-ff` dans `original-tree` (convention d'ENV-6) | proposition de la session (annoncée au PA-13) | oui (PA-13) |
+| Preuve E1 étendue à `nucleo-wl55jc1-freertos` ; capture `oracles/env-13-vierge/` | proposition de la session | non (rapport seulement) |
 
 ## Pièges rencontrés
-- Homebrew : « Permission denied @ apply2files - /usr/local/lib/pcsc/drivers/SCLGENERIC.bundle »
-  → liens `root` cassés de 2015 (pilotes de carte à puce) → sans effet sur `gh` ;
-  `sudo rm -r /usr/local/lib/pcsc` à la main si l'utilisateur le souhaite.
-- La skill `lepton-portage-instructions` renvoie à `references/archetypes-portage.md`, absent.
+- Trunk de `<ROOTSTOCK>` avec 24 `.DS_Store` du Finder → `graft-remove` et `graft` refusent
+  (`_check_stray`) → `--force`, qui les conserve.
+- Ancien clone `lepton-bsp/qemu-mps2-an500` avec `.DS_Store` ignorés sous `scion/` → regreffe en
+  conflit avec le noyau (« sys/.DS_Store : déjà fourni par original::tree »), annulée par scion → les
+  supprimer du clone (fait dans la copie de preuve seulement ; clone depuis supprimé).
+- `comparer-oracle` entre deux rootstocks de chemins différents : code 1 (`.text` et sections de
+  débogage), à cause des `__FILE__` absolus (E3). Comparer dans le même rootstock.
+- Le piège prévu par le fichier d'étape (chemin du clone dans le débogage) ne se produit pas : le
+  compilateur reçoit les chemins du trunk.
 
 ## Critères de validation
-- [ ] PA-13 et PA-14 tranchés et consignés.
-- [ ] Graine : 7 clés `family-`/`bsp-`, version `master`, URL `https://` ; `original::tree` et
+- [x] PA-13 et PA-14 tranchés et consignés.
+- [x] Graine : 7 clés `family-`/`bsp-`, version `master`, URL `https://` ; `original::tree` et
       `building` inchangés ; 4 commits d'ENV-6 conservés.
-- [ ] 7 clones sous `depots/lepton/<clé>/master` au commit de la table ; pushurl SSH.
-- [ ] Trunk : 0 fichier régulier, 0 lien cassé, 0 lien vers les anciens clones.
-- [ ] `comparer-oracle.py` code 0 sur les 14 presets, ou chaque écart expliqué ; fumée et banc KAL
-      identiques sur les 6 presets QEMU.
-- [ ] `original-tree` poussée (si accordé) ; un rootstock vierge greffe l'arbre complet depuis
-      GitHub et le preset QEMU passe la fumée.
+- [x] 7 clones sous `depots/lepton/<clé>/master` au commit de la table ; pushurl SSH.
+- [x] Trunk : 0 fichier régulier (hors 24 `.DS_Store`, PA-13), 0 lien cassé, 0 lien vers les
+      anciens clones.
+- [x] `comparer-oracle.py` code 0 sur les 14 presets ; fumée et banc KAL identiques sur les 6
+      presets QEMU.
+- [x] `original-tree` poussée ; un rootstock vierge greffe l'arbre complet depuis GitHub et le
+      preset QEMU passe la fumée.
 
 ## Reprise
+Première action de la session suivante :
 ```
 cd /Users/cle_d_anton/lepton-tools-dev/lepton-tools && claude
-# « démarre la session ENV-13 » : skill devenv-session, mode plan, puis tâche 1 jusqu'au PA-13.
+# « fusionne devenv/env-13 dans main » : skill devenv-session ; fusion --no-ff ; push sur accord (PA-P).
 ```

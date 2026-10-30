@@ -122,3 +122,56 @@ lignes vides (même normalisation qu'en R3).
 lepton/bsp::qemu-mps2-an500 »), et scion a annulé la greffe. L'ancien clone `lepton-bsp/qemu-mps2-an500`
 contient deux `.DS_Store` ignorés par git sous `scion/` (`scion/.DS_Store`, `scion/sys/.DS_Store`).
 Ils ont été supprimés dans la copie seulement. Les nouveaux clones n'en contiennent pas.
+
+## 5. Publication et anciens clones (PA-14, 2026-10-30)
+
+Décision de l'utilisateur : push de la graine (pushurl SSH) ; anciens clones archivés puis
+supprimés ; rootstock vierge `essais/env-13-vierge` ; copies d'essai supprimées en fin d'étape.
+
+- Graine : `devenv/env-13` fusionnée dans `original-tree` (0f1275a, « Fusion de devenv/env-13 ») ;
+  `remote.origin.pushurl` = `ssh://git@github.com/lepton-distribution/lepton-seed.scions.git` ;
+  `git push origin original-tree` : 083c30b..0f1275a. `git ls-remote` : `original-tree` 0f1275a,
+  `master` f41a23f (inchangé). `devenv/env-13` de la graine non poussée.
+- Anciens clones : sur toutes les branches et tous les tags, aucun commit absent d'`origin/master` ;
+  `devenv/env-6` (7 dépôts) et `devenv/env-9` (`nucleo-wl55jc1`) contenues dans `master` ; seuls des
+  `.DS_Store` ignorés. Archive `~/lepton-tools-dev/essais/archives/lepton-anciens-clones-famille-bsp-20261030.tar.gz`
+  (8,4 Mo, 2517 entrées, SHA-256 7741048128ac2cc38e7134232e709c1f546a52a26a6db5f4ea11227447867a87), puis
+  `rm -rf depots/lepton-famille depots/lepton-bsp`. Trunk : 0 lien cassé après suppression.
+- Graines d'essai qui les désignent en `file://` (`essais/env-9`, `essais/env-11/{qemu,qemu-gra2,f429zi,wl55jc1}`) :
+  leurs clones existent déjà et restent utilisables ; un nouveau `seed-clone` ou `graft-update` y
+  échouerait (archive à restaurer, ou graine à repointer sur GitHub).
+- Copies `essais/env-13` et `essais/env-13-preuve` supprimées (résultats dans ce rapport et
+  `oracles/env-13-apres/preuve-e1.log`).
+
+## 6. Rootstock vierge (tâche 7)
+
+`~/lepton-tools-dev/essais/env-13-vierge` :
+```bash
+scion rootstock-install
+scion seed-add --version original-tree https://github.com/lepton-distribution/lepton-seed.scions.git
+scion graft
+```
+- 9 entrées ; 9 clones `https://` (noyau 16a331b, graine 0f1275a, 7 greffons aux commits de la
+  table) ; 4011 liens, 0 cassé, 0 fichier régulier. Les 26 liens de plus de `~/lepton` (4037) sont
+  tous des `.DS_Store` ignorés du clone noyau local.
+- `qemu-mps2-an386-freertos` (avec `host`) : construction réussie ; `ctest` 18/18, dont `smoke.lsh`
+  (`uname -a` : `cortexM4-qemu-mps2-an386`). Capture `oracles/env-13-vierge/qemu-mps2-an386-freertos/`.
+- Comparaison avec `env-13-apres` : symboles identiques ; `.text` +156, `.debug_line` +28892,
+  `.debug_str` +4030 (code 1). **E3** : chemin absolu du rootstock dans les chaînes `__FILE__`
+  (5 dans le `.bin` : `tasks.c`, `queue.c`, `timers.c`, `event_groups.c`, `port.c` de FreeRTOS) et dans
+  les informations de débogage ; `/Users/cle_d_anton/lepton-tools-dev/essais/env-13-vierge` a 31
+  caractères de plus que `/Users/cle_d_anton/lepton` : 5 × 31 = 155, 156 avec l'alignement. Effet
+  connu de l'absence de `-ffile-prefix-map` (PA-1) ; pas de changement de code.
+
+## 7. Critères de validation
+
+- [x] PA-13 et PA-14 tranchés et consignés.
+- [x] Graine : 7 clés `family-`/`bsp-`, version `master`, URL `https://` ; `original::tree` et
+      `building` inchangés ; 4 commits d'ENV-6 conservés.
+- [x] 7 clones sous `depots/lepton/<clé>/master` au commit de la table ; pushurl SSH.
+- [x] Trunk : 0 fichier régulier (hors 24 `.DS_Store` conservés, PA-13), 0 lien cassé, 0 lien vers
+      les anciens clones.
+- [x] `comparer-oracle.py` code 0 sur les 14 presets ; fumée et banc KAL identiques sur les 6
+      presets QEMU.
+- [x] `original-tree` poussée ; un rootstock vierge greffe l'arbre complet depuis GitHub et le
+      preset QEMU passe la fumée.
