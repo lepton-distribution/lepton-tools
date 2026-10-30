@@ -1,0 +1,32 @@
+depots/lepton/original/master : devenv/env-14
+depots/lepton/family-stm32f4xx/master : devenv/env-14
+liens : 3929
+== apres qemu-mps2-an386-embos
+493052ee97d44392501f3bb66d486933c1b693028c4792be7dc9793eef8c5a46  lepton.elf
+056cd7c7b2cc73f53eb93408310b2a7096bdef810c2a52dfe1c10870a3606bc5  lepton.bin
+f350902e503777706655ad76e3209eddfbfadd36a529f023cef8b5d02e1022f1  lepton.hex
+== apres nucleo-f429zi-freertos
+3eef5961c413c4e5827e416debfa4c280997e279004c0be5eac8ba1ff3f45762  lepton.elf
+849b52f34d76935afafb0cafb33d595349bbe9476b6085b4ba4afe17a3425b3e  lepton.bin
+bfb97e86fc54c1326c03dcedd51af32f6fc163252f06cc8a4941468119b9caff  lepton.hex
+== apres nucleo-wl55jc1-freertos
+0b93b12c2bdbdf2cd7205ccb7e57ed9127068f7a0771c5bb7d00893474500044  lepton.elf
+d14c75d6614175191e6cc54d9cc09afcb9f036d007ae1fc179d1ece04d23efae  lepton.bin
+4324b7eb7e4076d6f2e6b9f97828567384dbd5f7f21d640168d4ff95dcc7b109  lepton.hex
+greffe partielle : 3728 feuilles liées dans /Users/cle_d_anton/lepton-tools-dev/essais/env-14-preuve/trunk
+liens : 4011 ; cassés : 0
+== avant qemu-mps2-an386-embos
+493052ee97d44392501f3bb66d486933c1b693028c4792be7dc9793eef8c5a46  lepton.elf
+056cd7c7b2cc73f53eb93408310b2a7096bdef810c2a52dfe1c10870a3606bc5  lepton.bin
+f350902e503777706655ad76e3209eddfbfadd36a529f023cef8b5d02e1022f1  lepton.hex
+== avant nucleo-f429zi-freertos
+3eef5961c413c4e5827e416debfa4c280997e279004c0be5eac8ba1ff3f45762  lepton.elf
+849b52f34d76935afafb0cafb33d595349bbe9476b6085b4ba4afe17a3425b3e  lepton.bin
+bfb97e86fc54c1326c03dcedd51af32f6fc163252f06cc8a4941468119b9caff  lepton.hex
+== avant nucleo-wl55jc1-freertos
+0b93b12c2bdbdf2cd7205ccb7e57ed9127068f7a0771c5bb7d00893474500044  lepton.elf
+d14c75d6614175191e6cc54d9cc09afcb9f036d007ae1fc179d1ece04d23efae  lepton.bin
+4324b7eb7e4076d6f2e6b9f97828567384dbd5f7f21d640168d4ff95dcc7b109  lepton.hex
+qemu-mps2-an386-embos : identiques
+nucleo-f429zi-freertos : identiques
+nucleo-wl55jc1-freertos : identiques
