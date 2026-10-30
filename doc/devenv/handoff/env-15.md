@@ -37,8 +37,9 @@ conforme ; lepton exige scion ≥ 0.5.2.0.
   - `<ROOTSTOCK>` et les rootstocks d'essai n'ont pas de `.scion.trunk.tolerated` ; lepton purge
     déjà `.DS_Store` / `._*` du trunk (PA-9 Q8). Créer ce fichier n'a pas été demandé.
   - Les rootstocks d'essai ne profitent d'E1 qu'avec scion 0.5.2.0 à leur prochaine regreffe.
-  - Supprimables : `essais/env-15`, `essais/env-15-venv`, `essais/env-15-mesures` ; sur la VM,
-    `~/lepton-tools-dev/essais/env-15-debian` et `~/env-15-journaux/`.
+  - `essais/env-15`, `essais/env-15-venv`, `essais/env-15-mesures` : supprimés après clôture
+    (demande de l'utilisateur). Supprimables sur la VM : `~/lepton-tools-dev/essais/env-15-debian`
+    et `~/env-15-journaux/`.
   - Le défaut scion 0.5.2.0 des scripts du clone noyau n'a pas été exécuté sur Debian.
 
 ## Décisions
