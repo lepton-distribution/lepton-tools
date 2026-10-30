@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-28 — ENV-12 renvoi R1 (D-b, O-r1 et O-r2 corrigés : schéma greffon, messages de `lepton check` tous en français ; `devenv/env-12-r1` fusionnée dans `main`, poussée) ; chantier : toutes les étapes terminées, aucun renvoi ouvert.
+Dernière mise à jour : 2026-10-30 — greffons famille et BSP publiés sur GitHub ; plan révisé : étape ENV-13 (graine de référence publiée) ajoutée, à faire.
 
 ## Prochaine action
 
-Toutes les étapes ENV-0 à ENV-12 sont terminées ; renvoi R1 (D-b, O-r1, O-r2) terminé. Aucune action en attente : une session suivante ne démarre que sur décision de l'utilisateur (révision du plan par la skill `lepton-portage-instructions` pour une suite du chantier).
+Démarrer ENV-13 (`etapes/ENV-13-graine-publiee.md`) : skill `devenv-session`, mode plan, puis tâche 1 (état de départ, séquence de regreffe éprouvée sur une copie d'essai) jusqu'au PA-13.
 
 ## Étapes
 
@@ -24,6 +24,7 @@ Toutes les étapes ENV-0 à ENV-12 sont terminées ; renvoi R1 (D-b, O-r1, O-r2)
 | ENV-10 | Script d'installation VSCodium | terminée (2026-10-15) ; reprise R5 (D3, D4, O6, O12 ; noyau O9) terminée (2026-10-16) | lepton-tools `devenv/env-10` (poussée), `devenv/env-10-debian` (VM, fusionnée), `devenv/env-10-r5` (fusionnée, poussée), `devenv/env-10-r5-debian` (VM, poussée, fusionnée) ; clone noyau `devenv/env-10` (poussée), `devenv/env-10-r5` (fusionnée, poussée) | `handoff/env-10.md` |
 | ENV-11 | Validation de bout en bout | terminée (2026-10-15) | lepton-tools `devenv/env-11` (poussée jusqu'à 8cca1c0), `devenv/env-11-debian` (VM, poussée, fusionnée) ; clone noyau `devenv/env-11` (poussée) | `handoff/env-11.md` |
 | ENV-12 | Extension VSCodium | terminée (2026-10-28) ; lots 1 à 6 (F0-F8, O5) ; validation Mac (QEMU, NUCLEO-F429ZI, NUCLEO-WL55JC1) et Debian (R12-1) ; bilan `rapports/env-12-bilan.md` ; renvoi R1 (D-b, O-r1, O-r2) terminé (2026-10-28) | lepton-tools `devenv/env-12` (depuis `main` 361b337, fusionnée dans `main`, poussée), `devenv/env-12-debian` (VM, poussée, fusionnée), `devenv/env-12-r1` (depuis `main` e8a9d9a, fusionnée dans `main`, poussée) | `handoff/env-12.md` |
+| ENV-13 | Graine de référence publiée | à faire | — | — |
 
 Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), abandonnée (décision).
 
@@ -272,6 +273,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-28 | PA-P (ENV-12 clôture) | ENV-12 close ; fusion `--no-ff` de `devenv/env-12` dans `main` ; push de `devenv/env-12` et `main` (lepton-tools) accordé ; clone noyau et seed.scions non touchés. Décision de l'utilisateur. |
 | 2026-10-28 | ENV-12 R1 (D-b) | Renvoi D-b traité sur `devenv/env-12-r1` depuis `main` ; plan accepté : `"required": ["type"]` dans chaque `if` sur `type` du schéma greffon (9 : 5 types de greffon, 4 types d'option ; langage accepté inchangé, PA-3 non rouvert), champ interdit d'un schéma `false` nommé et situé, `anyOf` / `oneOf` traduits (proposition de la session acceptée avec le plan). PA-P : fusion `--no-ff` dans `main` et push de `devenv/env-12-r1` et `main` accordés. Puis O-r1 traité à la demande de l'utilisateur, même branche ; seconde fusion dans `main` et push accordés (PA-P). Puis O-r2 (`propertyNames`) traité, fusionné et poussé sur demande explicite de l'utilisateur (PA-P). Décisions de l'utilisateur. |
 | 2026-10-30 | PA-P (hors étape) | Publication des greffons famille et BSP : 5 dépôts publics créés par `gh` dans `lepton-distribution` (`lepton-famille-stm32f4xx`, `lepton-famille-stm32wlxx`, `lepton-bsp-nucleo-f429zi`, `lepton-bsp-nucleo-wl55jc1`, `lepton-bsp-qemu-mps2-an500`) ; `master` seul poussé (01b5528, 1eccc2f, 8ea7ee5, a329f4d, e98a482) ; distant `origin` (SSH) ajouté aux 7 dépôts locaux, `master` suivi ; graine `lepton-seed.scions` `original-tree` (chemins locaux, 4 commits d'avance) laissée de côté. Décision de l'utilisateur. |
+| 2026-10-30 | — (révision du plan, ENV-13) | Graine `original-tree` à publier comme point d'entrée de l'arbre complet : nouvelle étape ENV-13 (pas une reprise d'ENV-6) ; clés des 7 greffons renommées selon la convention de `lepton` (`family-<nom>`, `bsp-<nom>` ; `famille::<nom>` avec une URL ferait cloner les 3 familles dans `depots/lepton/famille/master` et les 4 BSP dans `depots/lepton/bsp/master`) ; URL `https://` (pushurl SSH dans les clones) ; sort des anciens clones `depots/lepton-famille/*`, `depots/lepton-bsp/*` tranché en fin d'étape (PA-14) ; entrée `building` inchangée (créée par `scion rootstock-install`). Décisions de l'utilisateur. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -325,3 +327,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-28 | ENV-12 R1 | O-r2 (demande de l'utilisateur) : `lepton check` — nom de champ refusé par `propertyNames` nommé « nom de champ » et situé sur sa clé (471dd7e) ; `pytest` 198 ; lepton réinstallé (pipx) ; fusion dans `main`, push (PA-P) ; bilan §4. |
 | 2026-10-28 | ENV-12 R1 | Ordre R12-2 (§2bis : ORDRE, ACCUSÉ, FIN-SUCCÈS ; session VM `debian-linux-vm-breezy-pnueli`, demande de l'utilisateur) : lepton réinstallé sur Debian depuis `main` dbd49f0 ; messages D-b, O-r1, O-r2 conformes ; `pytest` 198 sur Debian (`rapports/env-12-debian.md` §6) ; fusion dans `main` et push accordés (PA-P). |
 | 2026-10-30 | — (hors étape) | Greffons famille et BSP publiés sur GitHub (PA-P) : 5 dépôts créés, `master` poussé, `origin` configuré dans les 7 dépôts ; `git ls-remote` conforme pour les 7. |
+| 2026-10-30 | — (révision du plan) | Étape ENV-13 « Graine de référence publiée » ajoutée (skill `lepton-portage-instructions`) : `etapes/ENV-13-graine-publiee.md`, PA-13 et PA-14 (ORCHESTRATION §4), graphe §6, skills §5bis. |
