@@ -24,7 +24,7 @@ Démarrer ENV-13 (`etapes/ENV-13-graine-publiee.md`) : skill `devenv-session`, m
 | ENV-10 | Script d'installation VSCodium | terminée (2026-10-15) ; reprise R5 (D3, D4, O6, O12 ; noyau O9) terminée (2026-10-16) | lepton-tools `devenv/env-10` (poussée), `devenv/env-10-debian` (VM, fusionnée), `devenv/env-10-r5` (fusionnée, poussée), `devenv/env-10-r5-debian` (VM, poussée, fusionnée) ; clone noyau `devenv/env-10` (poussée), `devenv/env-10-r5` (fusionnée, poussée) | `handoff/env-10.md` |
 | ENV-11 | Validation de bout en bout | terminée (2026-10-15) | lepton-tools `devenv/env-11` (poussée jusqu'à 8cca1c0), `devenv/env-11-debian` (VM, poussée, fusionnée) ; clone noyau `devenv/env-11` (poussée) | `handoff/env-11.md` |
 | ENV-12 | Extension VSCodium | terminée (2026-10-28) ; lots 1 à 6 (F0-F8, O5) ; validation Mac (QEMU, NUCLEO-F429ZI, NUCLEO-WL55JC1) et Debian (R12-1) ; bilan `rapports/env-12-bilan.md` ; renvoi R1 (D-b, O-r1, O-r2) terminé (2026-10-28) | lepton-tools `devenv/env-12` (depuis `main` 361b337, fusionnée dans `main`, poussée), `devenv/env-12-debian` (VM, poussée, fusionnée), `devenv/env-12-r1` (depuis `main` e8a9d9a, fusionnée dans `main`, poussée) | `handoff/env-12.md` |
-| ENV-13 | Graine de référence publiée | à faire | — | — |
+| ENV-13 | Graine de référence publiée | à faire (préparée le 2026-10-30) | — | `handoff/env-13.md` |
 
 Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), abandonnée (décision).
 
@@ -328,3 +328,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-28 | ENV-12 R1 | Ordre R12-2 (§2bis : ORDRE, ACCUSÉ, FIN-SUCCÈS ; session VM `debian-linux-vm-breezy-pnueli`, demande de l'utilisateur) : lepton réinstallé sur Debian depuis `main` dbd49f0 ; messages D-b, O-r1, O-r2 conformes ; `pytest` 198 sur Debian (`rapports/env-12-debian.md` §6) ; fusion dans `main` et push accordés (PA-P). |
 | 2026-10-30 | — (hors étape) | Greffons famille et BSP publiés sur GitHub (PA-P) : 5 dépôts créés, `master` poussé, `origin` configuré dans les 7 dépôts ; `git ls-remote` conforme pour les 7. |
 | 2026-10-30 | — (révision du plan) | Étape ENV-13 « Graine de référence publiée » ajoutée (skill `lepton-portage-instructions`) : `etapes/ENV-13-graine-publiee.md`, PA-13 et PA-14 (ORCHESTRATION §4), graphe §6, skills §5bis. |
+| 2026-10-30 | — (fin de session) | Session de préparation close : greffons publiés, ENV-13 ajoutée au plan ; passation `handoff/env-13.md` ; prochaine action inchangée (démarrer ENV-13). |
