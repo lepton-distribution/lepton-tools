@@ -1,0 +1,160 @@
+Preset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+  LEPTON_ISA="host"
+  LEPTON_KAL_BACKEND="static"
+
+-- The C compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- greffons : qemu-mps2;stm32f4xx;stm32wlxx;nucleo-f429zi;nucleo-wl55jc1;qemu-mps2-an386;qemu-mps2-an500;lepton-noyau
+-- bsp : aucune source pour la carte 
+-- Configuring done (0.3s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/lepton-user/lepton-tools-dev/essais/env-15-debian/build/host
+[0/2] Re-checking globbed directories...
+[1/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/bin.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/core/statvfs.h:32,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/core/bin.c:39:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[2/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/cpu.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/core/cpu.c:34:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[3/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/env.c.o
+[4/56] Building C object CMakeFiles/kernel_posix.dir/sys/root/src/kernel/dev/arch/host/common/host_posix.c.o
+[5/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/flock.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/core/flock.h:38,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/core/flock.c:38:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[6/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/heap.c.o
+[7/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kernel_io.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/core/kernel_io.c:40:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[8/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kernel_printk.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/core/kernel_printk.c:78:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[9/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kernel_ring_buffer.c.o
+[10/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/sysctl.c.o
+[11/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/malloc.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/core/malloc.c:38:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[12/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/pipe.c.o
+[13/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/systime.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/core/systime.c:42:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[14/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-static/kernel_static.c.o
+[15/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/time.c.o
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/core/time.c: In function ‘__difftime’:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/core/time.c:512:21: warning: left shift count >= width of type [-Wshift-count-overflow]
+  512 |    d = ((time_t) 1) << DBL_MANT_DIG;
+      |                     ^~
+[16/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/arch/host/static/dev_mkconf.c.o
+[17/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/arch/host/static/bin_mkconf.c.o
+[18/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_cpufs/dev_cpufs.c.o
+[19/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_head/dev_head.c.o
+[20/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_null/dev_null.c.o
+[21/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_tty/dev_tty.c.o
+[22/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_proc/dev_proc.c.o
+[23/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_tty/tty_font-8x8.c.o
+[24/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_part/dev_part.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/dev/dev_part/dev_part.c:43:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[25/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_tty/tty_font-8x16.c.o
+[26/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfsdev.c.o
+[27/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfscore.c.o
+[28/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfskernel.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfskernel.c:36:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[29/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/rootfs/rootfscore.c.o
+[30/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfs.c.o
+[31/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/rootfs/rootfs.c.o
+[32/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufscore.c.o
+[33/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/ufs/ufsdriver.c:34:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[34/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufs.c.o
+[35/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver_1_3.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/ufs/ufsdriver_1_3.c:38:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[36/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver_1_4.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/ufs/ufsdriver_1_4.c:39:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[37/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver_1_5.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/ufs/ufsdriver_1_5.c:37:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[38/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsx.c.o
+[39/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/host/dev_host_fileflash/dev_host_fileflash.c.o
+[40/56] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/host/dev_host_rtc/dev_host_rtc.c.o
+[41/56] Building C object CMakeFiles/lib.dir/sys/root/src/kernel/core/arch/host/libc_host.c.o
+[42/56] Building C object tests/host/CMakeFiles/test_stub_check_kernel.dir/stub_check_kernel.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/tests/host/stub_check_kernel.c:13:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[43/56] Linking C static library libkernel_posix.a
+[44/56] Linking C static library liblib.a
+[45/56] Building C object tests/host/CMakeFiles/test_vfs_ufs.dir/vfs_ufs.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/tests/host/vfs_ufs.c:14:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[46/56] Linking C static library libkernel.a
+[47/56] Building C object CMakeFiles/mklepton.dir/tools/mklepton/src/mklepton.c.o
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/tools/mklepton/src/mklepton.c: In function ‘_mk_conf’:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/tools/mklepton/src/mklepton.c:1443:18: warning: ‘XML_GetCurrentLineNumber’ is deprecated: please use XML_GetCurrentLineNumber64 instead [-Wdeprecated-declarations]
+ 1443 |                  (int)XML_GetCurrentLineNumber(p),
+      |                  ^
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/tools/mklepton/src/mklepton.c:44:
+/usr/include/expat.h:965:23: note: declared here
+  965 | XMLPARSEAPI(XML_Size) XML_GetCurrentLineNumber(XML_Parser parser);
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~
+[48/56] Building C object tests/host/CMakeFiles/test_ufs_check.dir/ufs_check.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/tests/host/ufs_check.c:15:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[49/56] Building C object tests/host/CMakeFiles/test_stub_check.dir/stub_check_main.c.o
+[50/56] Linking C executable mklepton
+[51/56] Linking C static library tests/host/libtest_stub_check_kernel.a
+[52/56] Building C object tests/host/CMakeFiles/test_ufs_format_host.dir/ufs_format.c.o
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/tests/host/ufs_format.c:12:
+/home/lepton-user/lepton-tools-dev/essais/env-15-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: ‘struct stat’ declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[53/56] Linking C executable tests/host/test_vfs_ufs
+[54/56] Linking C executable tests/host/test_stub_check
+[55/56] Linking C executable tests/host/test_ufs_check
