@@ -5,7 +5,7 @@ Dernière mise à jour : 2026-10-30 — ENV-14 terminée (nettoyage de l'arbre :
 
 ## Prochaine action
 
-Aucune étape restante au plan. Au choix de l'utilisateur : avancer les rootstocks d'essai (`essais/env-9`, `essais/env-11/*`, `essais/env-13-vierge`) sur `master` 118912a par `scion graft-update` (PA-P), ou réviser le plan (skill `lepton-portage-instructions`).
+Aucune étape restante au plan ; rootstocks d'essai à jour (`master` 118912a). Au choix de l'utilisateur : réviser le plan (skill `lepton-portage-instructions`).
 
 ## Étapes
 
@@ -350,3 +350,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-30 | ENV-14 | Oracle après : `comparer-oracle` code 0 sur 14 presets, mklepton identiques, fumée et banc KAL identiques ; E1 démontré (`env-14-preuve-empreintes.sh`, binaires identiques à `SOURCE_DATE_EPOCH` fixe) ; `lepton check` : seule anomalie connue ; rapport `rapports/env-14-nettoyage.md`. |
 | 2026-10-30 | ENV-14 | PA-16 : 3 branches `devenv/env-14` poussées ; ordre R14-1 (ORDRE, ACCUSÉ, AVANCEMENT ×2, FIN-SUCCÈS ; session VM `lepton-vm-debian`, consigne `consignes/env-14-debian.md`) : C1 à C7 conformes, `comparer-oracle` 0 contre R13-1 sur 14 presets ; `devenv/env-14-debian` f087340 fusionnée ; `master` du noyau (118912a) et de `family-stm32f4xx` (7694ad5) fusionnés et poussés. |
 | 2026-10-30 | ENV-14 | Fin de session : étape terminée ; passation `handoff/env-14.md` ; `devenv/env-14` de lepton-tools fusionnée dans `main`, poussées. |
+| 2026-10-30 | ENV-14 (après clôture) | Demande de l'utilisateur (PA-P) : `scion graft-update` des 6 rootstocks d'essai (`env-9`, `env-11/{f429zi,qemu,qemu-gra2,wl55jc1}`, `env-13-vierge`) ; pull en avance rapide (noyau → 118912a, `family-stm32f4xx` → 7694ad5) ; 15 `.DS_Store` réguliers des trunks `env-9`, `env-11/f429zi`, `env-11/wl55jc1` retirés au préalable par l'utilisateur. `env-11/qemu` : regreffe en échec (conflit de `.DS_Store` ignorés noyau / BSP an386, trunk laissé vide) → 15 `.DS_Store` des clones retirés, `scion graft` : 3347 liens. `qemu-gra2` : BSP an386 réinscrit par `sync`, retiré par `graft-remove` (sans `--purge`). `.DS_Store` ignorés des clones des 4 autres retirés (42), regreffe `original::tree` sans `--force`. Résultat : 0 lien cassé, 0 fichier régulier, 0 `.DS_Store` partout ; `env-13-vierge` 3929 liens, `qemu-mps2-an386-freertos` ctest 18/18 (fumée comprise). |
