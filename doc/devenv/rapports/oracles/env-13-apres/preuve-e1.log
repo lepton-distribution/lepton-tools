@@ -1,0 +1,23 @@
+== apres qemu-mps2-an386-embos
+f6b005f94043a8ca1b96054720c6c8df4a9d32ee18277eb8fbf2a380d5e1cb6f  lepton.elf
+056cd7c7b2cc73f53eb93408310b2a7096bdef810c2a52dfe1c10870a3606bc5  lepton.bin
+f350902e503777706655ad76e3209eddfbfadd36a529f023cef8b5d02e1022f1  lepton.hex
+== apres nucleo-wl55jc1-freertos
+6b446e1c13ab29cad76b371544452ffd70d56d504c58719c53ff25a482d61725  lepton.elf
+4fb467f42bd0b1aa934deaa0a74bba75217d3a99ada1edba26727eec02c51911  lepton.bin
+ede1452e7f15b8515efc0029d2e4399ce06717f183fdd7e12de8934e96f05b30  lepton.hex
+  sys/.DS_Store : déjà fourni par « lepton/original::tree », réclamé par « lepton/bsp::qemu-mps2-an500 »
+liens vers anciens clones : 0
+échec qemu-mps2-an386-embos avant
+depots/lepton-bsp/qemu-mps2-an500/scion/.DS_Store
+depots/lepton-bsp/qemu-mps2-an500/scion/sys/.DS_Store
+greffe partielle : 598 feuilles liées dans /Users/cle_d_anton/lepton-tools-dev/essais/env-13-preuve/trunk
+liens vers anciens clones : 598 ; cassés :        0
+== avant qemu-mps2-an386-embos
+f6b005f94043a8ca1b96054720c6c8df4a9d32ee18277eb8fbf2a380d5e1cb6f  lepton.elf
+056cd7c7b2cc73f53eb93408310b2a7096bdef810c2a52dfe1c10870a3606bc5  lepton.bin
+f350902e503777706655ad76e3209eddfbfadd36a529f023cef8b5d02e1022f1  lepton.hex
+== avant nucleo-wl55jc1-freertos
+6b446e1c13ab29cad76b371544452ffd70d56d504c58719c53ff25a482d61725  lepton.elf
+4fb467f42bd0b1aa934deaa0a74bba75217d3a99ada1edba26727eec02c51911  lepton.bin
+ede1452e7f15b8515efc0029d2e4399ce06717f183fdd7e12de8934e96f05b30  lepton.hex
