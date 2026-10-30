@@ -25,7 +25,7 @@ Démarrer ENV-14 (`etapes/ENV-14-nettoyage.md`) : skill `devenv-session`, mode p
 | ENV-11 | Validation de bout en bout | terminée (2026-10-15) | lepton-tools `devenv/env-11` (poussée jusqu'à 8cca1c0), `devenv/env-11-debian` (VM, poussée, fusionnée) ; clone noyau `devenv/env-11` (poussée) | `handoff/env-11.md` |
 | ENV-12 | Extension VSCodium | terminée (2026-10-28) ; lots 1 à 6 (F0-F8, O5) ; validation Mac (QEMU, NUCLEO-F429ZI, NUCLEO-WL55JC1) et Debian (R12-1) ; bilan `rapports/env-12-bilan.md` ; renvoi R1 (D-b, O-r1, O-r2) terminé (2026-10-28) | lepton-tools `devenv/env-12` (depuis `main` 361b337, fusionnée dans `main`, poussée), `devenv/env-12-debian` (VM, poussée, fusionnée), `devenv/env-12-r1` (depuis `main` e8a9d9a, fusionnée dans `main`, poussée) | `handoff/env-12.md` |
 | ENV-13 | Graine de référence publiée | terminée (2026-10-30) ; rapport `rapports/env-13-graine.md` | lepton-tools `devenv/env-13` (depuis `main` 14d64e9, fusionnée dans `main` cbfc562, poussée) ; graine `devenv/env-13` (depuis `original-tree` 43d12e6, fusionnée dans `original-tree` 0f1275a, poussée) ; `devenv/env-13-debian` (VM, ordre R13-1, poussée, fusionnée) | `handoff/env-13.md` |
-| ENV-14 | Nettoyage de l'arbre | à faire (ajoutée le 2026-10-30) | — | — |
+| ENV-14 | Nettoyage de l'arbre | en cours (depuis le 2026-10-30) | lepton-tools `devenv/env-14` (depuis `main` c2a1942) ; clone noyau `devenv/env-14` (depuis `master` 16a331b) | — |
 
 Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), abandonnée (décision).
 
