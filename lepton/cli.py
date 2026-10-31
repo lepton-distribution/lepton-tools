@@ -60,6 +60,10 @@ def _warn(message: str) -> None:
     print(f"lepton: attention: {message}", file=sys.stderr)
 
 
+def _note(message: str) -> None:
+    print(f"lepton: information: {message}", file=sys.stderr)
+
+
 def cmd_check(args) -> int:
     """FILE... : manifestes isolés (jalon 1) ; sans argument : rootstock entier (jalon 6, §3.9)."""
     anomalies, checked = [], []
@@ -70,7 +74,7 @@ def cmd_check(args) -> int:
                               "lepton check --stdin FILE < contenu", EXIT_USER)
         text = sys.stdin.read()
     if not args.files:
-        checked, anomalies = checks.check_rootstock(Rootstock.discover(args.rootstock), _warn)
+        checked, anomalies = checks.check_rootstock(Rootstock.discover(args.rootstock), _warn, _note)
     for name in args.files:
         path = Path(name)
         try:
