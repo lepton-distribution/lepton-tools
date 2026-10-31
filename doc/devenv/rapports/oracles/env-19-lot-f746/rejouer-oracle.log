@@ -1,0 +1,6 @@
+== stm32f746g-disco-embos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-19-lot-f746/stm32f746g-disco-embos (1624 symboles)
+== stm32f746g-disco-freertos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-19-lot-f746/stm32f746g-disco-freertos (1660 symboles)
+rejouer-oracle: échecs :
+  host:ctest

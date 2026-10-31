@@ -1,0 +1,6 @@
+== samd21-xplained-pro-embos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-19-lot-samd21/samd21-xplained-pro-embos (926 symboles)
+== samd21-xplained-pro-freertos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-19-lot-samd21/samd21-xplained-pro-freertos (976 symboles)
+rejouer-oracle: échecs :
+  host:ctest
