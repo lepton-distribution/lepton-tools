@@ -29,23 +29,23 @@ Jamais de répertoire de construction dans le trunk.
 | NUCLEO-F429ZI | `nucleo-f429zi-embos`, `nucleo-f429zi-freertos` (BSP `nucleo-f429zi`, ENV-6 ; `nucleo-f439zi-*` avant) | `<ROOTSTOCK>/build/<preset>/lepton.elf` |
 | NUCLEO-WL55JC1 (M4) | `nucleo-wl55jc1-embos`, `nucleo-wl55jc1-freertos` (ABI soft) | `<ROOTSTOCK>/build/<preset>/lepton.elf` |
 
-<!-- Sources : CMakePresets.json:41-103,165-186 ; cmake/components/firmware.cmake:66-86
-     (lepton.elf, lepton.bin, lepton.map, tests/kal/kal_bench.elf). Depuis ENV-5 : aussi lepton.hex et
-     lepton.occupation.txt (flash/RAM par bibliothèque) ; cibles kernel, lib, sbin, bin, bsp. -->
+<!-- Sources : CMakePresets.json (presets par nom) ; cmake/components/firmware.cmake (lepton.elf,
+     lepton.bin et lepton.hex par objcopy, lepton.map, lepton.occupation.txt : flash/RAM par
+     bibliothèque ; tests/kal/kal_bench.elf) ; cibles kernel, lib, sbin, bin, bsp. -->
 
 ## QEMU
 
 ```bash
 qemu-system-arm -M mps2-an386 -kernel <ROOTSTOCK>/build/<preset>/lepton.elf -nographic -monitor none -serial stdio -serial file:<tmp>/uart1.log
 ```
-<!-- Source : tests/smoke_lsh.py:143-144 ; qemu-system-arm = /opt/local/bin (MacPorts). -->
+<!-- Source : tests/smoke_lsh.py (commande QEMU de --transport qemu) ; qemu-system-arm = /opt/local/bin (MacPorts). -->
 Test de fumée : attendre l'invite `lepton#<n>$ `, taper `uname -a` (doit contenir
 `cortexM4-qemu-mps2-an386`), conserver la console complète. Automatisé :
-`ctest --preset <preset> -L smoke` (test `smoke.lsh`, `cmake/components/firmware.cmake:131-143`).
+`ctest --preset <preset> -L smoke` (test `smoke.lsh` de `cmake/components/firmware.cmake`).
 Banc KAL : `ctest --preset <preset> -L kal` (18 tests en hard, 14 en soft ; `tests/kal/CMakeLists.txt`,
-`ci/run.sh:111-113`). Un test isolé :
+`ci/run.sh`, étape « banc KAL »). Un test isolé :
 `qemu-system-arm -M mps2-an386 -kernel <build>/tests/kal/kal_bench.elf -nographic -monitor none -serial null -semihosting-config enable=on,target=native,arg=kal_bench,arg=<T>`
-(`tests/kal/CMakeLists.txt:44-45`).
+(variable `kal_run` de `tests/kal/CMakeLists.txt`).
 Débogage : QEMU avec `-s -S`, puis `arm-none-eabi-gdb <elf>` et `target remote :1234`.
 
 ## Cartes réelles
@@ -68,7 +68,7 @@ openocd -f <cfg> -c "init; targets; shutdown"
      dépendent du port USB) ; tests/smoke_lsh.py:126 (débit). Sondes : F429 ST-LINK/V2-1
      n° 0672FF495252717267243842 ; WL55 A 002700253431510837393937, B 004F003E3431510937393937
      (doc/migration/validation-nucleo-wl55jc1.md:7-10). Cible CMake équivalente : `cmake --build <build> --target flash`
-     (cmake/components/firmware.cmake:90-95). -->
+     (cible flash de cmake/components/firmware.cmake). -->
 
 Deux cartes ST-Link branchées : `interface/stlink.cfg` prend la première sonde trouvée ; toujours
 ajouter `-c "adapter serial <n°>"` après `-f <cfg>` (ENV-11 S2, O8). Console série en test :
@@ -78,9 +78,15 @@ Flash puis vérification :
 ```bash
 openocd -f <cfg> -c "program <elf> verify reset exit"
 ```
+Débogage par l'éditeur (Cortex-Debug) : l'image est écrite par `load` de gdb, sans « verified »
+dans la console. Preuve du flash, en lecture seule :
+`openocd -f <cfg> -c "init; reset halt; verify_image <elf>; shutdown"`. NUCLEO-F429ZI : 4 octets
+`0x080001ac-af` diffèrent (bourrage d'alignement entre `.isr_vector` et `.text`, non écrit par
+`load`) — attendu ; NUCLEO-WL55JC1 : aucun écart (`doc/devenv/rapports/env-12-lot6.md` §10, L6-10).
 Débogage : `openocd -f <cfg>` dans un terminal, puis
 depuis la racine du trunk, `arm-none-eabi-gdb -x <gdbinit de la carte> <elf> -ex "target extended-remote :3333" -ex "monitor reset halt"`
-(`doc/migration/debug-gcc.md:18-19`). gdbinit de carte : F429ZI `<BSP>/debug/gdbinit-nucleo-f439zi` ;
+(`doc/migration/debug-gcc.md:18-19` ; ce document figé cite les chemins `debug/…` de la migration :
+remplacer par ceux du BSP). gdbinit de carte : F429ZI `<BSP>/debug/gdbinit-nucleo-f439zi` ;
 WL55JC1 `<BSP-WL>/debug/gdbinit-nucleo-wl55jc1` ; tous sourcent `debug/gdbinit-lepton`
 (commandes communes, ENV-6 Q8).
 

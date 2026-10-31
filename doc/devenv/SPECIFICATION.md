@@ -7,7 +7,7 @@ spécification passe par l'utilisateur (point d'arrêt), puis par une mise à jo
 
 L'environnement doit permettre à un développeur de créer, configurer, construire, flasher et
 déboguer un logiciel embarqué Lepton composé de greffons, sous VSCodium, sur macOS (Intel puis
-Apple Silicon) et Debian. Il s'appuie sur l'outil `scion` existant au lieu de le réinventer : la
+Apple Silicon, ce dernier hors plan et non validé au 2026-10-31) et Debian. Il s'appuie sur l'outil `scion` existant au lieu de le réinventer : la
 graine et les greffons du besoin sont exactement le seed et les scions de scion.
 
 | Terme du besoin | Terme scion | Définition retenue |
@@ -64,11 +64,11 @@ P1 = nécessaire au premier projet utilisateur ; P2 = confort ou extension.
 
 | ID | Exigence | Vérification | Prio. |
 | --- | --- | --- | --- |
-| INS-1 | Un script `install-vscodium.sh` installe VSCodium sur macOS Intel, macOS Apple Silicon et Debian, sans passer par le Marketplace Microsoft (extensions depuis Open VSX). | Exécution sur les 3 hôtes ; `codium --version` | P1 |
+| INS-1 | Un script `install-vscodium.sh` installe VSCodium sur macOS Intel, macOS Apple Silicon et Debian, sans passer par le Marketplace Microsoft (extensions depuis Open VSX). | Exécution sur les 3 hôtes ; `codium --version` (Apple Silicon : hors plan, non validé — décision du 2026-10-31) | P1 |
 | INS-2 | Il installe une liste d'extensions épinglées par version, lue dans un fichier séparé (`extensions.lst`), pas codée dans le script. | `codium --list-extensions --show-versions` = liste | P1 |
 | INS-3 | Il réutilise `install-macos.sh` / `install-debian.sh` pour la chaîne (GCC, CMake, Ninja, QEMU, OpenOCD, GDB) au lieu de les dupliquer. | Aucune commande de paquet chaîne dans le nouveau script | P1 |
 | INS-4 | Il est idempotent et lisible : une fonction par étape, mode `--dry-run` qui affiche sans exécuter. | Deux exécutions successives sans erreur | P1 |
-| INS-5 | Gestionnaire de paquets par hôte : MacPorts sur Mac Intel (Homebrew ne fournit plus de binaires pour Intel), Homebrew sur Apple Silicon, APT sur Debian ; aucun préfixe codé en dur (`port`, `brew --prefix`). | Revue + exécution sur Mac Intel ; revue pour Apple Silicon | P1 |
+| INS-5 | Gestionnaire de paquets par hôte : MacPorts sur Mac Intel (Homebrew ne fournit plus de binaires pour Intel), Homebrew sur Apple Silicon, APT sur Debian ; aucun préfixe codé en dur (`port`, `brew --prefix`). | Revue + exécution sur Mac Intel ; revue pour Apple Silicon (Apple Silicon : hors plan, non validé — décision du 2026-10-31) | P1 |
 | INS-6 | Il installe les outils Lepton côté hôte : `scion` (version épinglée, `pipx`) et l'outil `lepton`. | `scion version`, `lepton --version` | P1 |
 
 Extensions de départ, à vérifier sur Open VSX : clangd, CMake Tools, Cortex-Debug et ses
@@ -166,7 +166,7 @@ L'extension C/C++ de Microsoft est exclue : sa licence l'interdit hors VS Code.
 | --- | --- |
 | NF-1 | Indépendance vis-à-vis de l'éditeur : toute opération (graine, greffon, fichier, configuration, construction, flash) est faisable en ligne de commande. VSCodium n'est qu'une interface. |
 | NF-2 | `scion` reste générique : aucune notion Lepton n'y entre. Ce qui est spécifique à Lepton vit dans l'outil `lepton`, client de scion. |
-| NF-3 | Hôtes : macOS Intel (MacPorts), Debian x86_64 dès la première version ; macOS Apple Silicon (Homebrew) prévu dès la conception (aucun binaire x86 imposé, aucun préfixe de gestionnaire de paquets codé en dur). |
+| NF-3 | Hôtes : macOS Intel (MacPorts), Debian x86_64 dès la première version ; macOS Apple Silicon (Homebrew) prévu dès la conception (aucun binaire x86 imposé, aucun préfixe de gestionnaire de paquets codé en dur). Apple Silicon : hors plan, non validé (décision du 2026-10-31). |
 | NF-4 | Exécution native par défaut (mklepton est 64 bits natif) ; le conteneur Debian reste une option pour la CI, avec montage du rootstock entier. |
 | NF-5 | Reproductibilité : versions épinglées des extensions, de scion, de la chaîne ; graine figeable (GRA-5). |
 | NF-6 | Lisibilité des scripts : en-tête d'usage, une fonction par étape, messages d'erreur indiquant l'action corrective, code de retour non nul en cas d'échec. |

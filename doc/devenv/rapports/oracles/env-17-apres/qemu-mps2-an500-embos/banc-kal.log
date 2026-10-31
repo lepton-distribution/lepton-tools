@@ -1,0 +1,48 @@
+Internal ctest changing into directory: /Users/cle_d_anton/lepton/build/qemu-mps2-an500-embos
+Test project /Users/cle_d_anton/lepton/build/qemu-mps2-an500-embos
+      Start  1: smoke.lsh
+ 1/18 Test  #1: smoke.lsh ........................   Passed    3.30 sec
+      Start  2: kal.T1
+ 2/18 Test  #2: kal.T1 ...........................   Passed    0.05 sec
+      Start  3: kal.T2
+ 3/18 Test  #3: kal.T2 ...........................   Passed    0.05 sec
+      Start  4: kal.T3
+ 4/18 Test  #4: kal.T3 ...........................   Passed    0.05 sec
+      Start  5: kal.T4
+ 5/18 Test  #5: kal.T4 ...........................   Passed    0.05 sec
+      Start  6: kal.T5
+ 6/18 Test  #6: kal.T5 ...........................   Passed    0.05 sec
+      Start  7: kal.T6
+ 7/18 Test  #7: kal.T6 ...........................   Passed    0.05 sec
+      Start  8: kal.T7
+ 8/18 Test  #8: kal.T7 ...........................   Passed    0.05 sec
+      Start  9: kal.T8
+ 9/18 Test  #9: kal.T8 ...........................   Passed    0.08 sec
+      Start 10: kal.T1F
+10/18 Test #10: kal.T1F ..........................   Passed    0.05 sec
+      Start 11: kal.T4F
+11/18 Test #11: kal.T4F ..........................   Passed    0.06 sec
+      Start 12: kal.T6F
+12/18 Test #12: kal.T6F ..........................   Passed    0.05 sec
+      Start 13: kal.T7F
+13/18 Test #13: kal.T7F ..........................   Passed    0.05 sec
+      Start 14: kal.TICI
+14/18 Test #14: kal.TICI .........................   Passed    0.05 sec
+      Start 15: kal.TCLK
+15/18 Test #15: kal.TCLK .........................   Passed    0.67 sec
+      Start 16: kal.TSBRK
+16/18 Test #16: kal.TSBRK ........................   Passed    0.05 sec
+      Start 17: kal.IRQ
+17/18 Test #17: kal.IRQ ..........................   Passed    0.06 sec
+      Start 18: kal.harness_fail
+18/18 Test #18: kal.harness_fail .................   Passed    0.05 sec
+
+100% tests passed, 0 tests failed out of 18
+
+Label Time Summary:
+arch:cortex-m7    =   4.85 sec*proc (18 tests)
+backend:embos     =   4.85 sec*proc (18 tests)
+kal               =   4.85 sec*proc (18 tests)
+smoke             =   3.30 sec*proc (1 test)
+
+Total Test time (real) =   4.86 sec
