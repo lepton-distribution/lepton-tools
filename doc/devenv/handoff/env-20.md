@@ -14,7 +14,7 @@ binaire F439 essayé sur NUCLEO-F429ZI (19/19). Pas de NUCLEO-F439ZI : démarrag
 | `depots/lepton/bsp-nucleo-f439zi/master` (nouveau) | `master` f866283 (poussé, `devenv/env-20` 7119dfd poussée) | Fusion de devenv/env-20 | oui |
 | graine `depots/lepton-seed.scions/original-tree` | `original-tree` 15740f9 (poussé, `devenv/env-20` d2adddf poussée) | Fusion de devenv/env-20 | oui |
 | `<ROOTSTOCK>` | trunk regreffé : 3941 feuilles, 0 fichier régulier, 0 lien cassé, 14 greffons ; `original-tree.code-workspace` régénéré (16 lancements) | | oui |
-| copie d'essai `~/lepton-tools-dev/essais/env-20` | conservée (trunk identique à `<ROOTSTOCK>`) ; à supprimer sur demande | | — |
+| copie d'essai `~/lepton-tools-dev/essais/env-20` | supprimée le 2026-10-31 à la demande de l'utilisateur | | — |
 | NUCLEO-F429ZI | image `nucleo-f429zi-embos` en flash (« Verified OK ») ; seule sonde branchée | | — |
 
 ## Fait pendant la session
@@ -27,7 +27,7 @@ binaire F439 essayé sur NUCLEO-F429ZI (19/19). Pas de NUCLEO-F439ZI : démarrag
 
 ## Reste à faire dans l'étape
 - Aucune tâche du fichier d'étape.
-- Hors étape : validation Debian (ENV-21) ; suppression éventuelle de `essais/env-20`.
+- Hors étape : validation Debian (ENV-21).
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
