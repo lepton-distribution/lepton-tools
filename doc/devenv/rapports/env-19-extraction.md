@@ -135,3 +135,92 @@ Q1, Q4, Q7 : validées telles que proposées. Q2 : noms proposés ; dépôts loc
 GitHub et push au PA-26. Q3 et Q5 : `LEPTON_MKCONF` ajouté aux 2 presets `-embos`, repli
 `cmake/boards` retiré. Q6 : STM32F746G-DISCO et SAMD21 Xplained Pro disponibles (flash, fumée,
 banc KAL sur carte).
+
+## 7. Mise en œuvre (2026-10-31)
+
+Aucun dépôt GitHub créé, rien poussé (PA-26). `origin` de chaque nouveau dépôt :
+`https://github.com/lepton-distribution/<dépôt>.git`, pushurl `ssh://git@github.com/…`.
+
+| Dépôt | Branche | Commits |
+| --- | --- | --- |
+| `depots/lepton/family-stm32f7xx/master` | `master` 7f3ecd0 (vide) ; `devenv/env-19` | 4fa8286 import (208 fichiers), a153a6c manifeste |
+| `depots/lepton/bsp-stm32f746g-disco/master` | `master` 207ca22 ; `devenv/env-19` | d9408ce import (7), 6a34488 manifeste + `CMakeLists.txt` + chemins, 5af4abe commentaire de `user_kernel_mkconf.h` |
+| `depots/lepton/family-samd21/master` | `master` ccdc704 ; `devenv/env-19` | d60b410 import (69), 02ac6d9 manifeste |
+| `depots/lepton/bsp-samd21-xplained-pro/master` | `master` 15a46b3 ; `devenv/env-19` | 693987f import (6), 0c09245 manifeste + `CMakeLists.txt` + chemins |
+| clone noyau | `devenv/env-19` depuis `master` 8ba904b | b9a301f `git rm` F746 (216 fichiers, mécanique), 4daeabc preset F746, 88d451c `git rm` SAMD21 (76, mécanique), fb53358 preset SAMD21, b956d41 repli retiré (Q5), a63c3fe référence d'empreintes mklepton, de89a5d `BUILDING.md` §5-§6 |
+| graine `original-tree` | `devenv/env-19` depuis 0f1275a | 0c251f3 (F746), 9b80273 (SAMD21) : 4 lignes dans `.scion.sources.list` et `.scion.ramifications` |
+
+Séquence : dépôts créés et commités dans `<ROOTSTOCK>/depots/lepton/<clé>/master` ; copie
+d'essai `~/lepton-tools-dev/essais/env-19` (`cp -RP depots trunk`, `third_party` lié) ; dans la
+copie, commits du noyau et de la graine, `scion seed-clone --seed depots/lepton-seed.scions/original-tree`
+(aucun clonage : `.git` présent, K11) puis `scion graft`, lot par lot ; oracles partiels ;
+commits rapatriés dans `<ROOTSTOCK>` par `git fetch <copie> devenv/env-19` ; même `seed-clone` et
+`graft` sur `<ROOTSTOCK>`. Trunk : 3935 feuilles (3929 avant), 0 fichier régulier, 0 lien cassé,
+arborescence identique à celle de la copie ; `.scion.grafted.list` : 13 greffons.
+
+Commentaires corrigés au retrait du repli (Q5), à nombre de lignes constant :
+`cmake/components/kernel.cmake`, `cmake/cpu/cortex-m7.cmake`, `cmake/kal/{embos,freertos}.cmake`,
+`debug/gdbinit-lepton`, `sys/root/src/kernel/core/kernelconf.h` (Latin-1 conservé). Laissés :
+`CLAUDE.md:57` du noyau (A-2 d'ENV-17), `tools/migration/mass_compile.py:94` (H-3), `doc/migration/` (figés).
+
+## 8. Contrôles (PA-26)
+
+Oracles : `oracles/env-19-avant/` (`<ROOTSTOCK>` avant toute modification, identique à
+`env-17-apres` : 14 × code 0, mklepton identique), `env-19-lot-f746/` et `env-19-lot-samd21/`
+(copie d'essai), `env-19-apres/` (`<ROOTSTOCK>`). Même commande `rejouer-oracle.sh`, mêmes outils.
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| `qemu-mps2-an386-{embos,freertos,embos-soft,freertos-soft}`, `qemu-mps2-an500-{embos,freertos}` | identiques (code 0) | différente (E-1) | identique (filtre E-4) | identique (18, 18, 14, 14, 18, 18) | E-1, E-4 |
+| `nucleo-f429zi-*`, `nucleo-wl55jc1-*` | identiques (code 0) | différente (E-1) | — | — | E-1 |
+| `stm32f746g-disco-embos` | symboles identiques ; `.bss` −2952 | différente | carte : verte | carte : 19/19 | E-1, E-2 |
+| `stm32f746g-disco-freertos` | symboles identiques ; `.bss` −2776, `.text` +4 | différente | carte : verte | carte : 19/19 | E-1, E-2, E-3 |
+| `samd21-xplained-pro-embos` | identiques (code 0) | différente | carte : verte | carte : 15/15 | E-1 |
+| `samd21-xplained-pro-freertos` | symboles identiques ; `.bss` −4, `.noinit` +4, `.text` +12 | différente | carte : écart accepté E-5 | carte : 14/14 (`-FS board_t0 -E board.smoke_lsh`) | E-1, E-2, E-3, E-5 |
+| `host` | — | — | — | `ctest` 7/7 | mklepton : E-6 |
+
+Écarts :
+- **E-1** empreintes : `__DATE__`/`__TIME__` dans l'image (`uname`, « kernel compilation date ») ;
+  elles diffèrent déjà entre `env-17-apres` et `env-19-avant` sans aucune modification.
+- **E-2** `.bss` : somme des tailles de symboles identique (97226 / 97633 / 3833 octets) ; seul
+  change le remplissage d'alignement devant le tampon aligné `eth_dma` (F746 : 15648 → 12700
+  octets embOS, 15072 → 12296 FreeRTOS) ou un trou de 4 octets (SAMD21, `_buf.0`), parce que
+  `*_board.c` passe de l'archive `bsp` à l'objet `bsp_demarrage` (ordre d'édition de liens, comme
+  ENV-6). SAMD21 FreeRTOS : les 4 octets passent dans `.noinit` (alignement), `__heap_start__`
+  inchangé (0x200047e8).
+- **E-3** `.text` : somme des symboles identique ; remplissage entre objets (F746 : `_fstat_r` →
+  `_close`, fin `_ctype_` ; SAMD21 : voisinage de `_ctype_`). Mesuré à chemin égal dans la copie
+  (avant reconstruit sur `master` 8ba904b et `original-tree`, après sur `devenv/env-19`) : +4 et
+  +12, égaux aux écarts de `<ROOTSTOCK>`. Les oracles partiels de la copie montraient +124 et +132 :
+  5 chaînes `__FILE__` de FreeRTOS contiennent le chemin absolu du trunk, plus long de 23
+  caractères dans la copie (artefact de chemin, absent de `<ROOTSTOCK>`).
+- **E-4** fumée QEMU : filtre d'ENV-13/14/17 (date de compilation, jeton `lepton-uart1-<n>`, chiffre
+  renvoyé devant l'invite, ligne asynchrone `rcv SIGCHLD`, lignes vides) ; 0 ligne d'écart sur 6 presets.
+- **E-5** SAMD21 sous FreeRTOS : `lsh` démarre, `uname -a`, `ls`, `ps` reviennent à l'invite sans
+  sortie ; écart accepté de la migration (`doc/migration/validation-macos.md:114`, RAM), symptôme
+  identique ; banc KAL 14/14 par la commande de l'étape 10 (`validation-macos.md:115`).
+- **E-6** mklepton : 44 sorties ; 42 identiques à l'octet après renommage `<xml>` → `<xml>-<carte>` ;
+  les 2 `kernel_mkconf.h` (F746, SAMD21) ne diffèrent que par la ligne `#include` de l'en-tête de
+  carte (`sys/root/src/kernel/dev/bsp/<carte>/include/user_kernel_mkconf.h`) ; nouvelle référence
+  `tests/host/mklepton_empreintes.sha256` (a63c3fe), `host.mklepton_empreintes` vert.
+
+Cartes (2026-10-31, PA-25 Q6) : STM32F746G-DISCO (ST-LINK/V2-1 0671FF495351885087181231,
+`/dev/cu.usbmodem1454303`, Cortex-M7 r0p1 relu), SAMD21 Xplained Pro (EDBG ATML2130021800003505,
+`/dev/cu.usbmodem145102`, Cortex-M0+ r0p1) ; `ctest --preset <P> -L board`
+avec `-DLEPTON_BOARD_SERIAL_PORT` ; journaux `env-19-apres/<P>/carte.log`, `fumee-carte.log`,
+`banc-kal-carte.log`. Mêmes nombres que l'étape 10 de la migration (F746 19/19, SAMD21 15/15).
+Fin : images embOS remises en flash sur les deux cartes (« Verified OK »).
+
+lepton : `check` code 0 sur `<ROOTSTOCK>` (18 fichiers conformes : 12 + 4 manifestes + 2 XML ;
+plus d'information « BSP non greffé ») ; `generate` code 0, 14 lancements dans
+`original-tree.code-workspace` (10 avant), dont les 4 presets F746 et SAMD21 ; trunk et graine
+inchangés. Aucun code ni test de lepton modifié (K12).
+
+BLD-6 : les 4 greffons s'ajoutent sans modification fonctionnelle du système de construction
+commun (`lepton_greffons.cmake`, `kernel.cmake`, `cpu/`, `kal/`, `isa/` : commentaires seuls).
+Les seules modifications communes sont celles décidées au PA-25 : `LEPTON_MKCONF` de 2 presets
+(Q3) et retrait du repli (Q5).
+
+Critères de l'étape : `cmake/boards/` absent du noyau ; 4 greffons inscrits dans
+`original-tree` (branche `devenv/env-19`), non publiés ; symboles identiques sur 14 presets ;
+empreintes mklepton identiques hors E-6 (Q7) ; trunk 0 fichier régulier, 0 lien cassé.
