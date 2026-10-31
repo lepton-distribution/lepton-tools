@@ -1,0 +1,36 @@
+Internal ctest changing into directory: /Users/cle_d_anton/lepton-tools-dev/essais/env-20/build/host
+Test project /Users/cle_d_anton/lepton-tools-dev/essais/env-20/build/host
+    Start 1: host.vfs_ufs
+1/7 Test #1: host.vfs_ufs .....................   Passed    0.43 sec
+    Start 2: host.ufs_format_host
+2/7 Test #2: host.ufs_format_host .............   Passed    0.21 sec
+    Start 3: host.ufs_format_arm
+3/7 Test #3: host.ufs_format_arm ..............   Passed    0.04 sec
+    Start 4: host.kernel_stub
+4/7 Test #4: host.kernel_stub .................   Passed    0.30 sec
+    Start 5: host.mklepton
+5/7 Test #5: host.mklepton ....................   Passed    2.24 sec
+    Start 6: host.mklepton_format
+6/7 Test #6: host.mklepton_format .............   Passed    0.79 sec
+    Start 7: host.mklepton_empreintes
+7/7 Test #7: host.mklepton_empreintes .........***Failed    4.36 sec
+mklepton_empreintes : écart avec /Users/cle_d_anton/lepton-tools-dev/essais/env-20/trunk/tests/host/mklepton_empreintes.sha256 (< référence, > cet hôte)
+14a15,20
+> ab96f83fa9a5cb6494d8694c97e892a3eb1ee1f4fdbb874719725c56c4291d44  mkconf_tauon_basic_nucleo_f439zi-nucleo-f439zi/.fsflash.o
+> d176b06ed7fd5dcb920b55bd212ef562871c616d3d363f37326ca7d5beeacb7e  mkconf_tauon_basic_nucleo_f439zi-nucleo-f439zi/bin_mkconf.c
+> 657ccede6fce8fbf15ee996b01e7a1f10e1d3caef9e8bb11ac1087d50fd4c55a  mkconf_tauon_basic_nucleo_f439zi-nucleo-f439zi/dev_dskimg.c
+> bb868f4143e864f1842fc719aedeb2101f32e15937ea1b28120f8744f5e74796  mkconf_tauon_basic_nucleo_f439zi-nucleo-f439zi/dev_dskimg.h
+> 23ad6260821f999bcd1aba6cdc9e01af4b7fd479c0cf97f03edc6aadf69846ab  mkconf_tauon_basic_nucleo_f439zi-nucleo-f439zi/dev_mkconf.c
+> 8ee7ca4daac7459a73b127b97151cbb00acd47f26722f8433cd80b42862b5d33  mkconf_tauon_basic_nucleo_f439zi-nucleo-f439zi/kernel_mkconf.h
+
+
+86% tests passed, 1 tests failed out of 7
+
+Label Time Summary:
+host    =   8.36 sec*proc (7 tests)
+
+Total Test time (real) =   8.37 sec
+
+The following tests FAILED:
+	  7 - host.mklepton_empreintes (Failed)                 host
+Errors while running CTest

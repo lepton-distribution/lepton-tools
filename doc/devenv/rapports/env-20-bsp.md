@@ -27,7 +27,7 @@ Deux liens `.DS_Store` dans le trunk, venus de la source non git `depots/generat
 | K7 | Table actuelle de la famille : relais forts `IRQ12/39/57/61_Handler` → `DMA1_Stream1_IRQHandler`, `USART3_IRQHandler`, `DMA2_Stream1_IRQHandler`, `ETH_IRQHandler` ; table étendue : 27 entrées `Default_Handler` sauf l'IRQ 71 → `USART6_IRQHandler`. | `fam:kernel/dev/arch/cortexm/stm32f4xx/vecteurs/stm32f429xx_vectors.c:23-38` | Base de la table complète. |
 | K8 | Définitions des 5 gestionnaires : 4 dans le BSP (`bsp:nucleo_f439zi_board.c:127-130`, `demarrage`, lié en OBJECT) ; `ETH_IRQHandler` dans `dev_stm32f4xx/dev_stm32f4xx_eth.c:101` (archive `libkernel.a`), membre tiré par `dev_stm32f4xx_eth_map` (table des périphériques mklepton, `lepton.map`). | `nm`, `lepton.map` de `build/nucleo-f429zi-embos` | Un nom CMSIS **faible** défini dans un objet n'entraîne plus l'extraction du membre d'archive qui le définit fort. Sans risque aujourd'hui (membre tiré par ailleurs) ; contrôle `nm` obligatoire après modification (chaque gestionnaire utilisé reste `T` à sa définition forte). |
 | K9 | Le lecteur CMake lie **tous** les fichiers `vecteurs` de la famille pour toute carte de la famille, sans sélection par MCU. | `noy:cmake/lepton_greffons.cmake:355-358` | Deux tables (F429, F439) dans la famille = symboles en double. Une table par MCU sélectionnée par le `mcu` du BSP demanderait de modifier le lecteur commun (contraire à BLD-6). Question Q1. |
-| K10 | Optimisation des cibles Cortex-M : `-Os` (Debug compris), surchargeable. | `noy:cmake/toolchains/arm-none-eabi.cmake:12-15` | À `-Os`, un relais `void IRQn_Handler(void){ X(); }` devient un saut `b.w X` (≈ 4 octets) : ≈ 60 relais × 4 octets ≈ 240 octets de `.text` en plus sur les binaires F4. |
+| K10 | Optimisation des cibles Cortex-M : `-Os` (Debug compris), surchargeable. | `noy:cmake/toolchains/arm-none-eabi.cmake:12-15` | Estimation de l'audit (saut `b.w`, ≈ +240 octets) **corrigée à la mise en œuvre** : l'appel d'un nom faible n'est pas remplacé par un saut, chaque relais fait `push/bl/pop` (8 octets) ; mesuré : `.text` +496 (embOS) et +512 octets (FreeRTOS), §6. |
 | K11 | BSP `nucleo-f429zi` : 8 fichiers suivis (`CMakeLists.txt`, `debug/{gdbinit,openocd}-nucleo-f439zi*`, `include/user_kernel_mkconf.h`, `ld/mem_nucleo-f439zi.ld`, `lepton-greffon.json`, `nucleo_f439zi.h`, `nucleo_f439zi_board.c`), tous UTF-8. Mentions de la destination `kernel/dev/bsp/nucleo-f429zi` : manifeste, `user_kernel_mkconf.h:28` (`#include`), `gdbinit:3-4` (commentaires). Mentions « nucleo-f429zi » hors chemin : `CMakeLists.txt:1-2`, `user_kernel_mkconf.h:2`, `gdbinit:1` (commentaires). | `git ls-files`, `grep` | Copie par `scion new --from` : chemins remplacés (S3-1), commentaires « nucleo-f429zi » / « NUCLEO-F429ZI » à retoucher à la main. |
 | K12 | `lepton scion new NAME --type bsp --from BSP` : copie les fichiers suivis du BSP greffé (S3-2), remplace la destination comme chemin entier dans les fichiers texte (S3-1), écrit le manifeste depuis `templates/bsp/` (version `0.1.0`, description « BSP NAME, dérivé de SRC. »), `git init -b master` et commit initial. `--repo DIR` fixe l'emplacement (défaut `depots/lepton-bsp/NAME`). Sur `<ROOTSTOCK>` (graine de référence), refus sans `--no-seed` (PA-23). | `lepton/scions.py:112-160`, `lepton/cli.py:200-210` | `--no-seed --repo <ROOTSTOCK>/depots/lepton/bsp-nucleo-f439zi/master` crée le dépôt directement à la convention d'ENV-13 : aucun déplacement. Question Q2. |
 | K13 | Mémoire : `ld/mem_nucleo-f439zi.ld` déclare déjà le STM32F439ZI (flash 2 Mo, SRAM 192 Ko, CCM 64 Ko) ; OpenOCD : `board/st_nucleo_f4.cfg` (cible `stm32f4x`, commune F42x/F43x) ; horloges (`nucleo_f439zi.h:16-22`) : PLL 168 MHz, communes. | lignes citées | Fichiers repris tels quels. |
@@ -80,3 +80,42 @@ BSP F439 ; `mcu` `STM32F439ZI`). Q5 : en conséquence, aucun fichier propre au F
 Q8 : validées telles que rédigées. Q7 : NUCLEO-F429ZI disponible, écriture flash autorisée (cœur
 M4, octets d'option non touchés) : flash, fumée et banc KAL de `nucleo-f429zi-*` après la table,
 puis du binaire `nucleo-f439zi-embos`.
+
+## 6. Mise en œuvre (2026-10-31)
+
+Aucun dépôt GitHub créé, rien poussé (PA-28).
+
+| Dépôt | Branche | Commits |
+| --- | --- | --- |
+| `depots/lepton/family-stm32f4xx/master` | `devenv/env-20` depuis `master` 7694ad5 | 2fb7cfe table de vecteurs complète (§2 ; tableau d'alias faibles vers un relais local `stm32f4xx_irq_default` → `Default_Handler`, un alias exigeant une cible de la même unité ; table étendue renommée `stm32f4xx_vector_table_ext`) |
+| `depots/lepton/bsp-nucleo-f439zi/master` (nouveau) | `master` 18135b0 (commit de `lepton scion new`) ; `devenv/env-20` | 7119dfd manifeste (version 1.0.0, `mcu` `STM32F439ZI`, description), commentaires F439 de `CMakeLists.txt`, `user_kernel_mkconf.h`, `gdbinit`, `openocd` ; `origin` `https://github.com/lepton-distribution/lepton-bsp-nucleo-f439zi.git`, pushurl SSH |
+| clone noyau | `devenv/env-20` depuis `master` 35b117b | cb7020d presets `nucleo-f439zi-{embos,freertos}` (configure, build, test) et `ci/run.sh:86` ; 2b78e3b `doc/BUILDING.md` (table des cartes, paragraphe NUCLEO-F439ZI en §4) ; f571d02 référence `tests/host/mklepton_empreintes.sha256` |
+| graine `original-tree` | `devenv/env-20` depuis f4ff07b | d2adddf : `bsp-nucleo-f439zi` dans `.scion.sources.list` et `.scion.ramifications` |
+
+Commande de création : `lepton scion new nucleo-f439zi --type bsp --from nucleo-f429zi --no-seed
+--repo <ROOTSTOCK>/depots/lepton/bsp-nucleo-f439zi/master` (code 0 ; 8 fichiers, destination
+remplacée dans le manifeste, `user_kernel_mkconf.h:28` et `gdbinit:3-4`). Manifeste validé par
+`check-jsonschema` (`schemas/greffon.schema.json`).
+
+Premier temps (table seule, oracle `env-20-lot-table`, construction à neuf sur `<ROOTSTOCK>`) :
+`comparer-oracle` contre `env-20-avant` sur `nucleo-f429zi-{embos,freertos}` : code 1, écarts
+classés mécaniquement (script de classement sur la liste des noms de `startup_stm32f439xx.s`) :
+86 noms CMSIS ajoutés (`W`, les 5 autres étaient déjà définis forts), 64 relais `IRQ<n>_Handler`
+modifiés (`W` de 4 octets → `T` de 8), `nucleo_f439zi_vector_table_ext` retiré,
+`stm32f4xx_vector_table_ext` et `stm32f4xx_irq_default` ajoutés ; **0 symbole hors de la table**.
+Sections : `.text` +496 (embOS) / +512 (FreeRTOS), `.isr_vector` inchangée, sections `.debug_*`.
+Gestionnaires utilisés : `USART3`, `USART6`, `DMA1_Stream1`, `DMA2_Stream1`, `ETH_IRQHandler` restent
+`T` (K8 : `ETH_IRQHandler` toujours tiré de `libkernel.a`).
+
+Second temps (BSP, copie d'essai `~/lepton-tools-dev/essais/env-20`, `cp -RP depots trunk`,
+`third_party` lié) : `scion seed-clone --seed depots/lepton-seed.scions/original-tree` (aucun
+clonage, `.git` présent) puis `scion graft --scion lepton@bsp-nucleo-f439zi` : 8 feuilles,
+3941 liens (3933 avant), 0 cassé, 0 fichier régulier, 14 greffons. Oracle `env-20-lot-bsp`
+(dans la copie, même longueur de chemin pour les deux BSP) : `comparer-oracle`
+`nucleo-f429zi-<b>` → `nucleo-f439zi-<b>` : **0 écart de sections ou de symboles** (embOS et
+FreeRTOS). `host.mklepton_empreintes` en échec avant la nouvelle référence (6 sorties
+`…-nucleo-f439zi/*` absentes) : 5 identiques à l'octet à celles de `…-nucleo-f429zi`,
+`kernel_mkconf.h` diffère par la seule ligne 15 (`#include` de
+`sys/root/src/kernel/dev/bsp/nucleo-f4{2,3}9zi/include/user_kernel_mkconf.h`) ; nouvelle référence
+(50 fichiers) : test vert. `lepton check` sur la copie : code 0, 19 fichiers conformes.
+Même `seed-clone` et `graft` sur `<ROOTSTOCK>` : arborescence du trunk identique à la copie.
