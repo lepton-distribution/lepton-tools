@@ -24,7 +24,7 @@ def _regenerate(rs: Rootstock, no_generate: bool) -> int:
 
 
 def config_add(args) -> int:
-    rs, seed_root, graine_path, graine = seed._seed_context(args)
+    rs, seed_root, graine_path, graine = seed._seed_context(args, "seed config add")
     configurations = graine["configurations"]
     if any(c["nom"] == args.name for c in configurations):
         raise LeptonError(f"configuration « {args.name} » déjà dans la graine",
@@ -47,7 +47,7 @@ def config_add(args) -> int:
 
 
 def config_remove(args) -> int:
-    rs, seed_root, graine_path, graine = seed._seed_context(args)
+    rs, seed_root, graine_path, graine = seed._seed_context(args, "seed config remove")
     configurations = graine["configurations"]
     names = [c["nom"] for c in configurations]
     if args.name not in names:

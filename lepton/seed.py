@@ -303,7 +303,7 @@ def declare_application(rs: Rootstock, graine: dict, name: str, add: bool) -> bo
 
 def seed_mkconf_import(args) -> int:
     """Migration d'une graine (O5) : XML du projet copié depuis `PATH`, applications déclarées."""
-    rs, seed_root, graine_path, graine = _seed_context(args)
+    rs, seed_root, graine_path, graine = _seed_context(args, "seed mkconf import")
     project = graine["projet"]["nom"]
     if in_project(rs, seed_root, graine["mklepton_xml"]) is not None:
         raise LeptonError(f"XML de la graine déjà fourni par le greffon du projet ({graine['mklepton_xml']})",
@@ -544,8 +544,20 @@ def _fmt_git(s: dict, bwidth: int = 16) -> str:
 # --------------------------------------------------------------------------
 # seed add / remove / replace (GRA-3, GRA-4)
 # --------------------------------------------------------------------------
-def _seed_context(args) -> tuple[Rootstock, Path, Path, dict]:
+REFERENCE_ACTION = "créer un projet par lepton seed new, ou modifier la graine de référence par scion dans son dépôt"
+
+
+def refuse_reference(rs: Rootstock, command: str, action: str = REFERENCE_ACTION) -> None:
+    """PA-23 d'ENV-18 : commande qui modifie la graine, refusée sur la graine de référence avant toute
+    action (code 1)."""
+    if rs.is_reference_seed():
+        raise LeptonError(f"graine de référence {rs.seed_root()} (ni {SEED_MANIFEST} ni {PROJECT_SUBPATH}/) : "
+                          f"lepton {command} modifie la graine, refusé", action)
+
+
+def _seed_context(args, command: str) -> tuple[Rootstock, Path, Path, dict]:
     rs = Rootstock.discover(args.rootstock)
+    refuse_reference(rs, command)
     seed_root = rs.seed_root()
     graine_path = rs.seed_manifest_path()
     return rs, seed_root, graine_path, load_graine(graine_path)
@@ -570,6 +582,7 @@ def check_new_scion(rs: Rootstock, name: str, kind: str) -> str:
 
 def seed_add(args) -> int:
     rs = Rootstock.discover(args.rootstock)
+    refuse_reference(rs, "seed add")
     origin = parse_location(args.location, args.version, args.path, rootstock=rs.path)
     return add_scion(rs, args.scion, args.type, origin, args.no_cmake)
 
@@ -617,8 +630,8 @@ def _undo_add(rs: Rootstock, seed_root: Path, key: str) -> None:
         _warn(f"annulation incomplète de {key} : {e.message}")
 
 
-def seed_remove(args) -> int:
-    rs, seed_root, graine_path, graine = _seed_context(args)
+def seed_remove(args, command: str = "seed remove") -> int:
+    rs, seed_root, graine_path, graine = _seed_context(args, command)
     name = args.scion
     key = rs.key_of(name)
     if key is None:
@@ -656,7 +669,7 @@ def seed_remove(args) -> int:
 
 
 def seed_replace(args) -> int:
-    rs, seed_root, _, _ = _seed_context(args)
+    rs, seed_root, _, _ = _seed_context(args, "seed replace")
     name = args.scion
     key = rs.key_of(name)
     old = {s.key: s for s in rs.sources()}.get(key) if key else None
@@ -767,6 +780,7 @@ def _load_lock(path: Path) -> list[dict]:
 
 def seed_lock(args) -> int:
     rs = Rootstock.discover(args.rootstock)
+    refuse_reference(rs, "seed lock")       # tous modes : le verrou s'écrit dans la graine (PA-23)
     lock_path = rs.seed_dot() / LOCK_FILE
     if args.verify:
         gaps = _lock_gaps(rs, _load_lock(lock_path))
