@@ -1,5 +1,6 @@
 """Jalon 6 d'ENV-8 : check sans argument (GRA-2, GRF-5, CFG-5, contrôles non exprimables) et
-seed lock (GRA-5) ; interface §3.5, §3.9, décisions S4-1 et S4-2."""
+seed lock (GRA-5) ; interface §3.5, §3.9, décisions S4-1 et S4-2 ; graine de référence (ENV-16,
+PA-19 C)."""
 
 import json
 import subprocess
@@ -7,9 +8,11 @@ from pathlib import Path
 
 import pytest
 
-from conftest import MKCONF, PROJECT_XML, assert_trunk_clean
+from conftest import MKCONF, PROJECT_XML, assert_trunk_clean, url
 from lepton.cli import main
-from lepton.rootstock import KERNEL_KEY, Rootstock
+from lepton.rootstock import KERNEL_KEY, Rootstock, scion_key
+from lepton.scion_runner import scion
+from lepton.seed import parse_location
 
 XML = """<?xml version="1.0" encoding="UTF-8"?>
 <mklepton version="2">
@@ -303,3 +306,100 @@ def test_gra5_seed_lock_refuse_clone_modifie(project, capsys):
     assert main(["seed", "lock", "-C", str(project)]) == 1
     assert "graine non figeable" in capsys.readouterr().err
     assert not (Rootstock(project).seed_dot() / "lepton-graine.lock.json").exists()
+
+
+# --- graine de référence (PA-19 C, ENV-16) -------------------------------------------------------
+Q_XML = "sys/user/ref/etc/mkconf_q.xml"     # XML du seul board-q
+
+
+def _reference(tmp_path: Path, repos: dict, presets: list[dict]) -> Path:
+    """Rootstock greffé par scion seul, comme original-tree : noyau (presets donnés), famille, deux
+    BSP ; graine sans lepton-graine.json ni project/."""
+    _commit_files(repos["kernel"], {"CMakePresets.json": json.dumps({"version": 6, "configurePresets": [
+        {"name": "base", "hidden": True}, {"name": "host", "inherits": "base"},
+        {"name": "cross", "hidden": True, "inherits": "base"}, *presets]})})
+    root, seed_repo = tmp_path / "reference", tmp_path / "graine"
+    (seed_repo / "scion" / ".scion").mkdir(parents=True)
+    _git(seed_repo, "init", "-q")
+    root.mkdir()
+    scion("rootstock-install", cwd=root)
+    for key, text in ((KERNEL_KEY, f"{url(repos['kernel'])}@master"),
+                      (scion_key("famille", "fam-test"), str(repos["family"])),
+                      (scion_key("bsp", "board-q"), str(repos["bsp"])),
+                      (scion_key("bsp", "board-c"), str(repos["bsp2"]))):
+        scion("seed-scion-add", "--seed", str(seed_repo), key,
+              *parse_location(text, rootstock=root).scion_args(), cwd=root)
+    scion("seed-add", str(seed_repo), str(root), cwd=root)
+    scion("graft", cwd=root)
+    return root
+
+
+def _preset(name: str, board: str, mkconf: str | None = None, inherits: str = "cross") -> dict:
+    variables = {"LEPTON_BOARD": board, **({"LEPTON_MKCONF": mkconf} if mkconf else {})}
+    return {"name": name, "inherits": inherits, "cacheVariables": variables}
+
+
+REFERENCE_PRESETS = [_preset("board-q-freertos", "board-q", MKCONF),
+                     {"name": "board-q-embos", "inherits": "board-q-freertos"},      # héritage résolu
+                     _preset("board-c-embos", "board-c", MKCONF),
+                     _preset("absente-embos", "absente", "sys/user/ref/etc/mkconf_absente.xml")]
+
+
+def test_check_graine_reference_conforme(tmp_path, repos, capsys):
+    root = _reference(tmp_path, repos, REFERENCE_PRESETS)
+    capsys.readouterr()
+    assert main(["check", "-C", str(root)]) == 0
+    out, err = capsys.readouterr()
+    assert "6 fichier(s) conforme(s)." in out      # 4 manifestes, presets du noyau, XML
+    assert "lepton: information: graine de référence" in err
+    assert "BSP « absente » non greffé : preset(s) absente-embos non contrôlé(s)" in err
+    assert "manifeste de graine absent" not in out + err
+
+    assert main(["check", "--json", "-C", str(root)]) == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["anomalies"] == []
+    assert {"trunk/CMakePresets.json", f"trunk/{MKCONF}"} <= set(report["files"])
+    assert not any(f.endswith("lepton-graine.json") for f in report["files"])
+
+
+def test_check_graine_reference_anomalies(tmp_path, repos, capsys):
+    """GRF-5 par BSP greffé ; CFG-5 limité aux BSP du XML et à leurs familles ; XML absent."""
+    _commit_files(repos["kernel"], {Q_XML: XML.format(extra_dev='<dev name="dev_board_c_map" use="on"/>',
+                                                      extra_bin="")})
+    _commit_files(repos["bsp2"], {"sys/root/src/kernel/dev/bsp/board-c/uart.c": "dev_map_t dev_board_c_map = {\n};\n"})
+    root = _reference(tmp_path, repos, [_preset("board-q-freertos", "board-q", Q_XML),
+                                        _preset("board-c-embos", "board-c", "sys/user/ref/etc/absent.xml")])
+    _edit_json(_manifest_path(root, "board-c"), coeur="cortex-m7", sources=[""])
+    code, out = _check(root, capsys)
+    assert code == 1, out
+    assert "/coeur: cœur « cortex-m7 » du BSP board-c absent des cœurs de fam-test (cortex-m4f) (GRF-5)" in out
+    assert f"trunk/{Q_XML}: devices/dev[@name='dev_board_c_map']: pilote déclaré dans le XML" in out
+    assert "trunk/CMakePresets.json: LEPTON_MKCONF « sys/user/ref/etc/absent.xml » absent du trunk" in out
+
+    # contre-épreuve : board-c cité par un preset du même XML → fournisseur, pilote trouvé
+    presets = (root / "trunk/CMakePresets.json").resolve()     # clone du noyau
+    data = json.loads(presets.read_text())
+    data["configurePresets"].append(_preset("board-c-q", "board-c", Q_XML))
+    presets.write_text(json.dumps(data))
+    code, out = _check(root, capsys)
+    assert "dev_board_c_map" not in out
+
+
+def test_check_graine_projet_sans_manifeste_refusee(project, capsys):
+    """Graine de projet (project/ présent) sans lepton-graine.json : anomalie conservée."""
+    _graine_path(project).unlink()
+    capsys.readouterr()
+    assert main(["check", "-C", str(project)]) == 1
+    out, err = capsys.readouterr()
+    assert "lepton-graine.json: manifeste de graine absent (graine hors lepton)" in out
+    assert "graine de référence" not in err
+
+
+def test_check_graine_projet_invalide_refusee(project, capsys):
+    graine = _graine_path(project)
+    data = json.loads(graine.read_text())
+    del data["bsp"]
+    graine.write_text(json.dumps(data))
+    code, out = _check(project, capsys)
+    assert code == 1
+    assert "lepton-graine.json: /: champ obligatoire absent : bsp" in out
