@@ -7,6 +7,9 @@ dont seul le chemin est recopié). Emplacements (décisions ENV-9 du 2026-10-14)
   trunk par le greffon local `lepton@project-<projet>` ; il hérite des presets cachés du noyau ;
 - `<ROOTSTOCK>/<projet>.code-workspace`, non versionné, avec `launch` et `tasks` intégrés.
 
+Graine de référence (PA-23 d'ENV-18) : aucun `CMakeUserPresets.json`, aucun greffon projet ; les
+presets de carte du noyau servent tels quels ; espace `<ROOTSTOCK>/<répertoire de la graine>.code-workspace`.
+
 Écriture seulement si le contenu change ; aucun horodatage : deux appels successifs ne changent rien.
 """
 
@@ -15,9 +18,10 @@ import os
 import re
 import shutil
 import subprocess
+from dataclasses import dataclass, field
 from pathlib import Path
 
-from lepton.checks import KERNEL_PRESETS, check_seed_options
+from lepton.checks import KERNEL_PRESETS, board_presets, check_seed_options
 from lepton.errors import EXIT_OK, EXIT_TOOL, LeptonError
 from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, project_key
 from lepton.scion_runner import run
@@ -151,13 +155,40 @@ def preset_name(project: str, configuration: dict) -> str:
     return f"{project}-{configuration['nom']}"
 
 
+@dataclass(frozen=True)
+class Configuration:
+    """Configuration de l'espace : un preset CMake et le BSP qu'il construit. Graine de projet : une
+    configuration de la graine, BSP de la graine ; graine de référence (PA-23 d'ENV-18) : un preset de
+    carte du noyau, BSP désigné par `LEPTON_BOARD`."""
+    name: str                    # nom de la configuration (graine de projet) ou du preset (référence)
+    preset: str
+    build_type: str
+    execution: str | None        # qemu | carte ; None : configurer et construire seulement
+    board: str                   # nom du BSP
+    bsp: dict = field(default_factory=dict)   # manifeste du BSP ; vide s'il n'est pas greffé
+
+
+def _execution(bsp: dict) -> str | None:
+    """Exécution d'un preset de la graine de référence : qemu si le BSP déclare une machine, sinon carte
+    s'il déclare openocd."""
+    if bsp.get("qemu", {}).get("machine"):
+        return "qemu"
+    return "carte" if bsp.get("openocd") else None
+
+
 class Context:
     def __init__(self, rs: Rootstock):
         self.rs = rs
         self.seed_root = rs.seed_root()
+        self.reference = rs.is_reference_seed()
+        self.ungrafted: dict[str, list[str]] = {}      # graine de référence : BSP non greffé → presets
+        by_name = {m.name: m for m in rs.manifests().values()}
+        if self.reference:
+            self._check_kernel_presets()
+            self._reference_seed(by_name)
+            return
         self.graine = load_graine(rs.seed_manifest_path())
         self.project = self.graine["projet"]["nom"]
-        by_name = {m.name: m for m in rs.manifests().values()}
         bsp = by_name.get(self.graine["bsp"])
         if bsp is None:
             raise LeptonError(f"BSP « {self.graine['bsp']} » de la graine non greffé", "lepton seed status")
@@ -166,14 +197,42 @@ class Context:
         if self.core not in ISA_OF_CORE:
             raise LeptonError(f"BSP {bsp.name} : cœur « {self.core} » inconnu de lepton generate",
                               f"cœurs pris en charge : {', '.join(ISA_OF_CORE)}")
-        self.configurations = self.graine["configurations"]
-        for c in self.configurations:
+        for c in self.graine["configurations"]:
             check_configuration(c, bsp.name, self.bsp, f"corriger « execution » dans {rs.seed_manifest_path()}")
+        self.configurations = [Configuration(c["nom"], preset_name(self.project, c), c["construction"],
+                                             c["execution"], bsp.name, self.bsp)
+                               for c in self.graine["configurations"]]
         anomalies = check_seed_options(self.graine, by_name, str(rs.seed_manifest_path()))
         if anomalies:
             raise LeptonError("valeurs d'options de la graine refusées (CFG-4) :\n"
                               + "\n".join(str(a) for a in anomalies), "corriger « options », puis lepton check")
         self._check_kernel_presets()
+
+    def _reference_seed(self, by_name: dict) -> None:
+        """PA-23 d'ENV-18 : espace nommé d'après le répertoire de la graine ; une configuration par preset
+        de carte du noyau, avec tâches et lancement si son BSP est greffé ; rien n'est écrit dans la graine."""
+        self.graine, self.bsp, self.core = None, None, None
+        self.project = self.seed_root.name
+        path = self.rs.trunk / KERNEL_PRESETS
+        try:
+            presets = board_presets(self.rs)
+        except (OSError, ValueError, AttributeError, TypeError) as e:
+            raise LeptonError(f"{path} illisible ({e})", "le greffon noyau doit fournir CMakePresets.json") from e
+        self.configurations = []
+        for name, variables in presets.items():
+            board = variables["LEPTON_BOARD"]
+            m = by_name.get(board)
+            bsp = m.data if m is not None and m.kind == "bsp" else {}
+            if not bsp:
+                self.ungrafted.setdefault(board, []).append(name)
+            execution = _execution(bsp)
+            if execution == "qemu" and bsp.get("coeur") not in QEMU_CPU_OF_CORE:
+                raise LeptonError(f"BSP {board} : cœur « {bsp.get('coeur')} » inconnu de lepton generate",
+                                  f"cœurs pris en charge : {', '.join(QEMU_CPU_OF_CORE)}")
+            self.configurations.append(Configuration(name, name, str(variables.get("CMAKE_BUILD_TYPE", "")),
+                                                     execution, board, bsp))
+        if not self.configurations:
+            raise LeptonError(f"{path} : aucun preset de carte (LEPTON_BOARD)", "greffon noyau d'ENV-5 ou plus récent")
 
     def _check_kernel_presets(self) -> None:
         path = self.rs.trunk / KERNEL_PRESETS
@@ -186,15 +245,12 @@ class Context:
             raise LeptonError(f"{path} : preset(s) {', '.join(sorted(missing))} absent(s)",
                               "greffon noyau d'ENV-5 ou plus récent")
 
-    def preset(self, configuration: dict) -> str:
-        return preset_name(self.project, configuration)
+    def bsp_file(self, c: Configuration, rel: str) -> Path:
+        """Fichier déclaré par le BSP de `c`, par le chemin du trunk (chemin canonique, PA-1)."""
+        return self.rs.trunk / SOURCE_ROOT / c.bsp["destination"] / rel
 
-    def bsp_file(self, rel: str) -> Path:
-        """Fichier déclaré par le BSP, par le chemin du trunk (chemin canonique, PA-1)."""
-        return self.rs.trunk / SOURCE_ROOT / self.bsp["destination"] / rel
-
-    def build_dir(self, configuration: dict) -> Path:
-        return self.rs.build / self.preset(configuration)
+    def build_dir(self, c: Configuration) -> Path:
+        return self.rs.build / c.preset
 
 
 # --------------------------------------------------------------------------
@@ -215,8 +271,8 @@ def option_cache(graine: dict) -> dict[str, str]:
 def render_presets(ctx: Context) -> dict:
     configure, build, test = [], [], []
     for c in ctx.configurations:
-        name = ctx.preset(c)
-        cache = {"CMAKE_BUILD_TYPE": c["construction"],
+        name = c.preset
+        cache = {"CMAKE_BUILD_TYPE": c.build_type,
                  "LEPTON_ISA": ISA_OF_CORE[ctx.core],
                  "LEPTON_CPU": ctx.core,
                  "LEPTON_BOARD": ctx.graine["bsp"],
@@ -225,10 +281,10 @@ def render_presets(ctx: Context) -> dict:
         if ctx.bsp.get("abi_flottante"):
             cache["LEPTON_FLOAT_ABI"] = ctx.bsp["abi_flottante"]
         cache.update(option_cache(ctx.graine))
-        where = f"QEMU {ctx.bsp['qemu']['machine']}" if c["execution"] == "qemu" else "carte"
+        where = f"QEMU {ctx.bsp['qemu']['machine']}" if c.execution == "qemu" else "carte"
         configure.append({"name": name,
-                          "displayName": f"{ctx.project} — {c['nom']} ({ctx.graine['bsp']}, {where}, "
-                                         f"{ctx.graine['backend']}, {c['construction']})",
+                          "displayName": f"{ctx.project} — {c.name} ({ctx.graine['bsp']}, {where}, "
+                                         f"{ctx.graine['backend']}, {c.build_type})",
                           "inherits": BASE_PRESET,
                           "cacheVariables": cache})
         build.append({"name": name, "configurePreset": name})
@@ -277,9 +333,9 @@ def schema_settings(ctx: Context) -> dict:
     l'extension Lepton signale en erreur (`lepton check --stdin`)."""
     schemas = schemas_dir()
     patterns = [MKCONF_PATTERN]
-    seed_xml = f"**/{ctx.graine['mklepton_xml']}"
-    if not Path(ctx.graine["mklepton_xml"]).match(MKCONF_PATTERN.removeprefix("**/")):
-        patterns.append(seed_xml)
+    # graine de référence : XML du noyau seuls, tous de la forme mkconf_*.xml
+    if ctx.graine is not None and not Path(ctx.graine["mklepton_xml"]).match(MKCONF_PATTERN.removeprefix("**/")):
+        patterns.append(f"**/{ctx.graine['mklepton_xml']}")
     return {
         "json.schemas": [{"fileMatch": [f"**/{name}"], "url": (schemas / SCHEMA_FILES[kind]).as_uri()}
                          for name, kind in ((SCION_MANIFEST, "scion"), (SEED_MANIFEST, "seed"))],
@@ -320,27 +376,29 @@ def workspace_settings(ctx: Context, tools: dict, probe_serial: str | None = Non
     return settings
 
 
-def _elf(ctx: Context, c: dict) -> str:
+def _elf(ctx: Context, c: Configuration) -> str:
     return str(ctx.build_dir(c) / "lepton.elf")
 
 
 def launch_configurations(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[dict]:
     configs = []
     for c in ctx.configurations:
-        preset = ctx.preset(c)
+        if c.execution not in ("qemu", "carte"):
+            continue                     # BSP non greffé (graine de référence) : aucun lancement
+        preset = c.preset
         common = {"type": "cortex-debug", "request": "launch", "cwd": str(ctx.rs.trunk),
                   "executable": _elf(ctx, c), "gdbPath": tools["gdb"], "runToEntryPoint": "main",
                   "preLaunchTask": f"lepton : construire {preset}"}
-        if ctx.bsp.get("svd"):
-            common["svdFile"] = str(ctx.bsp_file(ctx.bsp["svd"]))
-        if c["execution"] == "qemu":
-            configs.append({"name": f"Déboguer {preset} (QEMU {ctx.bsp['qemu']['machine']})", **common,
+        if c.bsp.get("svd"):
+            common["svdFile"] = str(ctx.bsp_file(c, c.bsp["svd"]))
+        if c.execution == "qemu":
+            configs.append({"name": f"Déboguer {preset} (QEMU {c.bsp['qemu']['machine']})", **common,
                             "servertype": "qemu", "serverpath": tools["qemu"],
-                            "cpu": QEMU_CPU_OF_CORE[ctx.core], "machine": ctx.bsp["qemu"]["machine"]})
+                            "cpu": QEMU_CPU_OF_CORE[c.bsp["coeur"]], "machine": c.bsp["qemu"]["machine"]})
         else:
             board = {"name": f"Déboguer {preset} (carte, OpenOCD)", **common,
                      "servertype": "openocd", "serverpath": tools["openocd"],
-                     "configFiles": [str(ctx.bsp_file(f)) for f in ctx.bsp["openocd"]]}
+                     "configFiles": [str(ctx.bsp_file(c, f)) for f in c.bsp["openocd"]]}
             if probe_serial:   # O8 : Cortex-Debug n'applique pas serialNumber à OpenOCD
                 board["openOCDLaunchCommands"] = [f"adapter serial {probe_serial}"]
             configs.append(board)
@@ -369,14 +427,14 @@ def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[di
     ]
     env = {"env": {"PYTHONDONTWRITEBYTECODE": "1"}}   # tests servis par le trunk : aucun __pycache__
     for c in ctx.configurations:
-        preset = ctx.preset(c)
+        preset = c.preset
         configure, build = f"lepton : configurer {preset}", f"lepton : construire {preset}"
         result.append(_task(configure, cmake, ["--preset", preset], trunk, dependsOn=[mk]))
         result.append(_task(build, cmake, ["--build", "--preset", preset], trunk,
                             dependsOn=[configure], group="build", problemMatcher=gcc))
-        if c["execution"] == "qemu":
+        if c.execution == "qemu":
             result.append(_task(f"lepton : QEMU {preset} (console série)", tools["qemu"],
-                                ["-M", ctx.bsp["qemu"]["machine"], "-kernel", _elf(ctx, c), "-nographic",
+                                ["-M", c.bsp["qemu"]["machine"], "-kernel", _elf(ctx, c), "-nographic",
                                  "-monitor", "none", "-serial", "stdio"], trunk,
                                 dependsOn=[build], isBackground=False,
                                 presentation={"panel": "dedicated", "focus": True}))
@@ -384,8 +442,8 @@ def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[di
                 result.append(_task(f"lepton : {label} {preset}", tools["ctest"],
                                     ["--preset", preset, "-L", test_label, "--output-on-failure"], trunk,
                                     dependsOn=[build], group="test", options={"cwd": str(trunk), **env}))
-        else:
-            cfgs = [a for f in ctx.bsp["openocd"] for a in ("-f", str(ctx.bsp_file(f)))]
+        elif c.execution == "carte":
+            cfgs = [a for f in c.bsp["openocd"] for a in ("-f", str(ctx.bsp_file(c, f)))]
             if probe_serial:
                 cfgs += ["-c", f"adapter serial {probe_serial}"]
             result.append(_task(f"lepton : flasher {preset}", tools["openocd"],
@@ -405,7 +463,7 @@ def render_workspace(ctx: Context, tools: dict, probe_serial: str | None = None)
 
 
 def host_tools(ctx: Context, clangd: str | None) -> dict:
-    executions = {c["execution"] for c in ctx.configurations}
+    executions = {c.execution for c in ctx.configurations}
     tools = {"cmake": require_tool("cmake", "presets"), "ctest": require_tool("ctest", "tests"),
              "gcc": require_tool("arm-none-eabi-gcc", "clangd --query-driver"),
              "gdb": find_gdb(),
@@ -467,9 +525,9 @@ def prime_active(ctx: Context) -> None:
         if source.is_file():
             active.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, active)
-            _info(f"amorcé    {active} (preset {ctx.preset(c)})")
+            _info(f"amorcé    {active} (preset {c.preset})")
             return
-    first = ctx.preset(ctx.configurations[0])
+    first = ctx.configurations[0].preset
     _warn(f"{active} absent, aucun preset configuré : clangd sans base à l'ouverture de l'espace ; "
           f"configurer {first} (tâche « lepton : configurer {first} » ou CMake Tools), "
           "puis « clangd: Restart language server », ou relancer lepton generate avant l'ouverture")
@@ -488,11 +546,13 @@ def generate(args) -> int:
     ctx = Context(rs)
     tools = host_tools(ctx, args.clangd)
 
-    presets = project_stem(ctx.seed_root) / PRESETS_FILE
-    presets_changed = _write_if_changed(presets, json.dumps(render_presets(ctx), ensure_ascii=False, indent=2) + "\n")
-    seed_changed = graft_project(rs, ctx.seed_root, ctx.project) or presets_changed
-    if presets_changed:
-        touch_link(rs.trunk / PRESETS_FILE)
+    seed_changed = False
+    if not ctx.reference:            # graine de référence : rien n'est écrit dans la graine (PA-23 Q3)
+        presets = project_stem(ctx.seed_root) / PRESETS_FILE
+        presets_changed = _write_if_changed(presets, json.dumps(render_presets(ctx), ensure_ascii=False, indent=2) + "\n")
+        seed_changed = graft_project(rs, ctx.seed_root, ctx.project) or presets_changed
+        if presets_changed:
+            touch_link(rs.trunk / PRESETS_FILE)
     workspace = rs.path / f"{ctx.project}.code-workspace"
     serial = probe_serial(ctx, workspace, args.probe_serial)
     ws_changed = _write_if_changed(workspace, render_workspace(ctx, tools, serial))
@@ -500,10 +560,17 @@ def generate(args) -> int:
     write_api_queries(ctx)
     finish(rs, no_cmake=True)
 
-    _info(f"{'écrit    ' if seed_changed else 'inchangé '} {presets} (greffé : {rs.trunk / PRESETS_FILE})")
+    if ctx.reference:
+        _info(f"graine de référence {ctx.seed_root} : presets du noyau ({rs.trunk / KERNEL_PRESETS}), "
+              f"aucun {PRESETS_FILE} écrit")
+    else:
+        _info(f"{'écrit    ' if seed_changed else 'inchangé '} {presets} (greffé : {rs.trunk / PRESETS_FILE})")
     _info(f"{'écrit    ' if ws_changed else 'inchangé '} {workspace}")
-    _info(f"presets : {', '.join(ctx.preset(c) for c in ctx.configurations)} (cmake --list-presets dans {rs.trunk})")
-    if any(c["execution"] == "carte" for c in ctx.configurations):
+    _info(f"presets : {', '.join(c.preset for c in ctx.configurations)} (cmake --list-presets dans {rs.trunk})")
+    for board, names in ctx.ungrafted.items():
+        _info(f"BSP « {board} » non greffé : preset(s) {', '.join(names)} : tâches configurer et construire "
+              "seulement, sans lancement")
+    if any(c.execution == "carte" for c in ctx.configurations):
         if serial:
             _info(f"sonde : adapter serial {serial} (lancement et tâche « flasher »)")
         else:
