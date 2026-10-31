@@ -18,9 +18,9 @@ chaque session, avec `DEVENV-STATUS.md`, le fichier de l'étape courante et la d
 
 | Élément | Emplacement | Rôle |
 | --- | --- | --- |
-| Dépôt `lepton-tools` | `<LEPTON_TOOLS>` — <À CONFIRMER en ENV-0> ; distant prévu `lepton-distribution/lepton-tools` | Outil `lepton`, schémas, modèles, scripts d'installation, ce dossier `doc/devenv/` |
-| Rootstock Lepton | `<ROOTSTOCK>` — <À CONFIRMER en ENV-0> (rootstock de la migration réutilisé ou nouveau) | `depots/`, `trunk/` ; clone noyau `depots/lepton/original/master` |
-| Dépôt `seed.scions` | clone à part, `<SEED_SCIONS>` — <À CONFIRMER> | Évolutions génériques de scion (ENV-7 uniquement) |
+| Dépôt `lepton-tools` | `<LEPTON_TOOLS>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements ; distant `lepton-distribution/lepton-tools` | Outil `lepton`, schémas, modèles, scripts d'installation, ce dossier `doc/devenv/` |
+| Rootstock Lepton | `<ROOTSTOCK>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements | `depots/`, `trunk/` ; clone noyau `depots/lepton/original/master` |
+| Dépôt `seed.scions` | clone à part, `<SEED_SCIONS>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements | Évolutions génériques de scion (ENV-7, ENV-15) |
 | Répertoire de construction | `<ROOTSTOCK>/build/<preset>` | Toujours hors du trunk |
 
 Claude Code est lancé à la racine de `<LEPTON_TOOLS>`. Les chemins `<…>` sont résolus une fois en
@@ -40,8 +40,7 @@ Règles de parallélisme Mac / VM :
 - Les deux sessions ne modifient jamais les mêmes fichiers. La session VM n'écrit que son rapport
   `doc/devenv/rapports/env-N-debian.md` et ses corrections strictement propres à Debian, sur une
   branche `devenv/env-N-debian`.
-- Échange par git uniquement : <À CONFIRMER en ENV-0 — dépôt nu local partagé ou distant GitHub
-  (push soumis à accord)>.
+- Échange par git uniquement : résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements (distant GitHub, push soumis à accord).
 - `DEVENV-STATUS.md` n'est modifié que par la session Mac ; la session VM y reporte via son
   rapport, que la session Mac intègre.
 

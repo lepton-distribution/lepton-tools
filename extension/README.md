@@ -41,6 +41,8 @@ Version 0.5.0 (lot 6) :
   trunk, et non sous le chemin du clone que rend gdb (`stem` et `trunk` de
   `lepton seed status --json`).
 
+Version 0.5.1 (lot 6 S2) : traceur F8 sans attente (L6-6).
+
 Réglages : `lepton.path` (vide : `~/.local/bin/lepton`, sinon `lepton` du `PATH`) ;
 `lepton.autoGraft.enabled`, `lepton.autoGraft.delay` (ms, défaut 1000) ;
 `lepton.redirectTrunkCreations` ; `lepton.confirmTrunkDeletions` ; `lepton.restartClangd` ;
