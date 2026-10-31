@@ -499,7 +499,10 @@ def seed_status(args) -> int:
 
     _info(f"rootstock : {rs.path}")
     _info(f"graine    : {seed_state['path']}  {_fmt_git(seed_state)}")
-    if graine is None:
+    if graine is None and rs.is_reference_seed():
+        _info(f"            graine de référence (ni {SEED_MANIFEST} ni {PROJECT_SUBPATH}/) : rôles d'après les "
+              "manifestes des greffons, presets du noyau")
+    elif graine is None:
         _info(f"            {SEED_MANIFEST} absent : rôles non déterminés (graine hors lepton)")
     else:
         _info(f"            projet {graine['projet']['nom']} {graine['projet']['version']}, "

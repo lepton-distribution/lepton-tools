@@ -14,6 +14,7 @@ import os
 import sys
 from pathlib import Path
 
+from lepton.checks import board_presets
 from lepton.errors import EXIT_OK, LeptonError
 from lepton.files import Owner, _owner_of, _owners
 from lepton.generate import ACTIVE_DIR, COMPILE_COMMANDS, preset_name
@@ -31,11 +32,17 @@ HEADER_SUFFIX = ".h"
 # preset et réponse de l'API fichier
 # --------------------------------------------------------------------------
 def _presets(rs: Rootstock) -> list[str]:
+    """Presets de la graine ; graine de référence : presets de carte du noyau (PA-23 d'ENV-18)."""
     path = rs.seed_manifest_path()
-    if not path.exists():
-        return []
-    graine = load_graine(path)
-    return [preset_name(graine["projet"]["nom"], c) for c in graine.get("configurations", [])]
+    if path.exists():
+        graine = load_graine(path)
+        return [preset_name(graine["projet"]["nom"], c) for c in graine.get("configurations", [])]
+    if rs.is_reference_seed():
+        try:
+            return list(board_presets(rs))
+        except (OSError, ValueError, AttributeError, TypeError):
+            return []                    # presets du noyau illisibles : signalés par lepton check
+    return []
 
 
 def _active_preset(rs: Rootstock) -> str | None:
