@@ -1,0 +1,1712 @@
+Preset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/Users/cle_d_anton/lepton/trunk/cmake/toolchains/arm-none-eabi.cmake"
+  LEPTON_BOARD="nucleo-f429zi"
+  LEPTON_CPU="cortex-m4f"
+  LEPTON_EMBOS_ROOT="/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0"
+  LEPTON_ISA="armv7m"
+  LEPTON_KAL_BACKEND="embos"
+  LEPTON_MKCONF="sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_f439zi.xml"
+  LEPTON_MKLEPTON="/Users/cle_d_anton/lepton/trunk/../build/host/mklepton"
+
+-- The C compiler identification is GNU 14.2.1
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- greffons : qemu-mps2;samd21;stm32f4xx;stm32f7xx;stm32wlxx;nucleo-f429zi;nucleo-wl55jc1;qemu-mps2-an386;qemu-mps2-an500;samd21-xplained-pro;stm32f746g-disco;lepton-noyau
+-- carte nucleo-f429zi : famille stm32f4xx, cœur cortex-m4f
+-- The ASM compiler identification is GNU
+-- Found assembler: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc
+-- greffon stm32f4xx : kernel (gpio.c;uart.c;eth.c;dev_stm32f4xx/dev_stm32f4xx_uart_x.c;dev_stm32f4xx/dev_stm32f4xx_eth.c;driverlib/misc.c;driverlib/stm32f4xx_rcc.c;driverlib/stm32f4xx_gpio.c;driverlib/stm32f4xx_usart.c;driverlib/stm32f4xx_dma.c;driverlib/stm32f4xx_syscfg.c;driverlib/stm32f4x7_eth.c)
+-- greffon nucleo-f429zi : aucune source
+-- Found Python3: /usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11 (found version "3.11.0") found components: Interpreter
+-- Configuring done (0.6s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Users/cle_d_anton/lepton/build/nucleo-f429zi-embos
+[0/2] Re-checking globbed directories...
+[1/176] mklepton sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_f439zi.xml -> /Users/cle_d_anton/lepton/build/nucleo-f429zi-embos/generated/board
+
+mklepton
+
+open xml file:/Users/cle_d_anton/lepton/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_f439zi.xml
+make kernel:kernel_mkconf.h ...
+make kernel:kernel_mkconf.h ok!
+make devices:dev_mkconf.c ...
+use devices dev_null_map
+use devices dev_proc_map
+use devices dev_cpufs_map
+use devices dev_head_map
+use devices dev_pipe_map
+use devices dev_lwip_core_socket_map
+use devices dev_lwip_stack_map
+use devices dev_nucleo_f439zi_board_map
+use devices dev_nucleo_f439zi_uart_3_map
+use devices dev_nucleo_f439zi_uart_6_map
+use devices dev_stm32f4xx_eth_map
+make devices:dev_mkconf.c ok!
+read xml binaries:bin_mkconf.c ...
+read xml binaries:bin_mkconf.c ok!
+read xml binaries:bin_mkconf.c ...
+read xml binaries:bin_mkconf.c ok!
+read xml binaries:bin_mkconf.c ...
+read xml binaries:bin_mkconf.c ok!
+
+_mk_conf ok!
+
+make dev: ...
+make dev ok
+
+_mk_dev ok!
+
+
+_mk_mount ok!
+
+
+_mk_boot ok!
+
+make binaries:bin_mkconf.c ...
+(0):sbin/initd
+(1):sbin/lsh
+(2):sbin/mount
+(3):sbin/umount
+(4):sbin/ls
+(5):sbin/ps
+(6):sbin/kill
+(7):sbin/cat
+(8):sbin/uname
+(9):sbin/pwd
+(10):sbin/echo
+(11):sbin/net/ifconfig
+(12):sbin/net/tsterrno
+(13):bin/net/ftpd
+makefs hdc
+mount /dev/hd/hdc on /usr
+mkdir /usr/sbin
+creat /usr/sbin/initd
+creat /usr/sbin/lsh
+creat /usr/sbin/mount
+creat /usr/sbin/umount
+creat /usr/sbin/ls
+creat /usr/sbin/ps
+creat /usr/sbin/kill
+creat /usr/sbin/cat
+creat /usr/sbin/uname
+creat /usr/sbin/pwd
+creat /usr/sbin/echo
+mkdir /usr/sbin/net
+creat /usr/sbin/net/ifconfig
+creat /usr/sbin/net/tsterrno
+mkdir /usr/bin/net
+creat /usr/bin/net/ftpd
+mkdir /usr/sbin
+mkdir /usr/sbin/net
+mkdir /usr/bin/net
+/usr free block:454 free size=116224 bytes
+umount /usr
+make binaries:bin_mkconf.c ok
+
+_mk_binaries ok!
+
+make files: ...
+mount /dev/hd/hdc on /usr
+mkdir /usr/etc
+creat /usr/etc/.boot
+creat /usr/etc/.init
+mkdir /usr/etc
+/usr free block:451 free size=115456 bytes
+umount /usr
+make files ok
+
+_mk_file ok!
+
+
+_mk_dir ok!
+
+.fsflash.o to dev_dskimg.c...(128000 bytes) ok.
+
+_mk_dskimg ok!
+
+
+mklepton success :)!
+[2/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/env.c.obj
+[3/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/heap.c.obj
+[4/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/cpu.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/cpu.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/cpu.c:34:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[5/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/bin.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/bin.c:36:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/statvfs.h:32,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/bin.c:39:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[6/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/sysctl.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/sysctl.c:32:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[7/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/malloc.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/malloc.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/malloc.c:38:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[8/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/systime.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/systime.c:37:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/systime.c:42:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[9/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kernel_ring_buffer.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_ring_buffer.c:38:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[10/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/flock.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/flock.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/flock.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/flock.c:38:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[11/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/dirent.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/dirent.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/dirent.c:38:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[12/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/fcntl.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/fcntl.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[13/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/lib.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/lib.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/lib.c:45:12: note: '#pragma message: use load lib'
+   45 |    #pragma message ("use load lib")
+      |            ^~~~~~~
+[14/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kernel_mqueue.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_mqueue.c:38:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[15/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/statvfs.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/statvfs.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/statvfs.h:32,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/statvfs.c:38:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[16/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/stat.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/stat.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/stat.c:38:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[17/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/truncate.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/truncate.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[18/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/timer.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/timer.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[19/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/wait.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/wait.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[20/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/core_rttimer.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core_rttimer.h:35,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/core_rttimer.c:31:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[21/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/pipe.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/pipe.c:59:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[22/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-generic/kernel_pthread_tsd.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-generic/kernel_pthread_tsd.c:38:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[23/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/posix_mqueue.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/posix_mqueue.c:35:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[24/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kernel_io.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_io.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_io.c:40:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[25/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/kernel_clock.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_clock.c:31:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[26/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/kernel_pthread_mutex.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_pthread_mutex.c:32:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[27/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/kernel_sem.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_sem.c:31:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[28/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/time.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/time.c:37:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[29/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/fork.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/fork.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[30/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/select.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/select.c:36:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/select.c:42:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[31/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kernel_printk.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_printk.c:69:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_printk.c:78:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[32/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/kernel_syscall_lock.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_syscall_lock.c:17:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[33/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/kernel_pthread.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_pthread.c:61:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_pthread.c:68:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[34/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/kernel_timer.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_timer.c:32:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[35/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/kernel_object.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread_mutex.h:36,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_object.h:36,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_object.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_object.c:30:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_object.c: In function 'kernel_object_constructor_timer':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_object.c:212:24: warning: 'clockid_t' {aka 'unsigned char'} is promoted to 'int' when passed through '...'
+  212 |    clockid= va_arg(ap, clockid_t);
+      |                        ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_object.c:212:24: note: (so you should pass 'int' not 'clockid_t' {aka 'unsigned char'} to 'va_arg')
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_object.c:212:24: note: if this code is reached, the program will abort
+[36/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/kernel_sigqueue.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread_mutex.h:36,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_object.h:36,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel_sigqueue.c:32:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[37/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_cpufs/dev_cpufs.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/dev_cpufs/dev_cpufs.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[38/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_null/dev_null.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_sem.h:49,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:39,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/dev_null/dev_null.c:40:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[39/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_tty/tty_font-8x8.c.obj
+[40/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/system.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/system.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/system.c:38:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[41/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_tty/tty_font-8x16.c.obj
+[42/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_head/dev_head.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_sem.h:49,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:39,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/dev_head/dev_head.c:40:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[43/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfsdev.c.obj
+[44/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_proc/dev_proc.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/dev_proc/dev_proc.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[45/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/signal.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/signal.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[46/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_tty/dev_tty.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/dev_tty/dev_tty.c:35:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[47/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/rootfs/rootfscore.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/rootfs/rootfscore.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[48/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver_1_3.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_sem.h:49,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:39,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/ufs/ufsdriver_1_3.c:38:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[49/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_sem.h:49,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:39,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/ufs/ufsdriver.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[50/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/kernel.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel.c:41:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/statvfs.h:32,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel.c:48:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[51/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_part/dev_part.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/dev_part/dev_part.c:39:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/dev_part/dev_part.c:43:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[52/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/rootfs/rootfs.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/rootfs/rootfs.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[53/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver_1_5.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_sem.h:49,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:39,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/ufs/ufsdriver_1_5.c:37:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[54/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsx.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/ufs/ufsx.c:61:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[55/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver_1_4.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_sem.h:49,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:39,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/ufs/ufsdriver_1_4.c:39:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[56/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfscore.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfscore.c:35:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[57/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfskernel.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfskernel.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfskernel.c:36:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[58/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/err.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/err.h:39,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/api/err.c:39:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[59/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufscore.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/ufs/ufscore.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[60/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/netifapi.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/api/netifapi.c:41:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[61/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/netbuf.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/api/netbuf.c:45:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[62/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/netdb.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/netdb.h:37,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/api/netdb.c:38:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[63/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/api_lib.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/api/api_lib.c:58:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[64/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/kofs/kofs.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/kofs/kofs.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[65/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufs.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/ufs/ufs.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[66/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/def.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/def.c:61:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[67/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/tcpip.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/api/tcpip.c:39:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[68/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/syscall.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c:32:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/flock.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c:39:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c: In function '_syscall_pthread_mutex_init':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c:1210:82: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+ 1210 |    if(pthread_mutex_init_dt->mutex && pthread_mutex_init_dt->mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED){
+      |                                                                                  ^~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c:1210:39: note: did you mean to dereference the pointer?
+ 1210 |    if(pthread_mutex_init_dt->mutex && pthread_mutex_init_dt->mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED){
+      |                                       ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c: In function '_syscall_pthread_mutex_destroy':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c:1237:88: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+ 1237 |    if(pthread_mutex_destroy_dt->mutex && pthread_mutex_destroy_dt->mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED){
+      |                                                                                        ^~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c:1237:42: note: did you mean to dereference the pointer?
+ 1237 |    if(pthread_mutex_destroy_dt->mutex && pthread_mutex_destroy_dt->mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED){
+      |                                          ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c: In function '_syscall_pthread_cond_init':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c:1266:78: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+ 1266 |    if(pthread_cond_init_dt->cond && pthread_cond_init_dt->cond->kernel_object==PTHREAD_COND_UNINITIALIZED){
+      |                                                                              ^~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c:1266:37: note: did you mean to dereference the pointer?
+ 1266 |    if(pthread_cond_init_dt->cond && pthread_cond_init_dt->cond->kernel_object==PTHREAD_COND_UNINITIALIZED){
+      |                                     ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c: In function '_syscall_pthread_cond_destroy':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c:1294:84: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+ 1294 |    if(pthread_cond_destroy_dt->cond && pthread_cond_destroy_dt->cond->kernel_object!=PTHREAD_COND_UNINITIALIZED){
+      |                                                                                    ^~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/syscall.c:1294:40: note: did you mean to dereference the pointer?
+ 1294 |    if(pthread_cond_destroy_dt->cond && pthread_cond_destroy_dt->cond->kernel_object!=PTHREAD_COND_UNINITIALIZED){
+      |                                        ^
+[69/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/init.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/init.c:38:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[70/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ip.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/ip.c:56:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[71/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/inet_chksum.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/inet_chksum.c:48:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[72/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/mem.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/mem.c:56:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[73/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/raw.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/raw.c:48:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[74/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/stats.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/stats.c:39:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[75/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/sys.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/sys.c:77:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[76/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/memp.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/memp.c:46:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[77/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/autoip.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/ipv4/autoip.c:59:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[78/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-segger/process.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/process.c:38:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[79/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/dhcp.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/ipv4/dhcp.c:63:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[80/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/netif.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/netif.c:51:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[81/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/dns.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/dns.c:85:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[82/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/timeouts.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/timeouts.c:42:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[83/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/api_msg.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/api/api_msg.c:39:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[84/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/icmp.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/ipv4/icmp.c:42:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[85/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/udp.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/udp.c:48:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[86/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/pbuf.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/pbuf.c:112:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[87/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/ip4_addr.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/ipv4/ip4_addr.c:39:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[88/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/netif/ethernetif.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/netif/ethernetif.c:46:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[89/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/netif/lowpan6.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/netif/lowpan6_opts.h:44,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/netif/lowpan6.h:45,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/netif/lowpan6.c:48:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[90/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/netif/ethernet.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/netif/ethernet.c:41:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[91/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/igmp.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/ipv4/igmp.c:83:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[92/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfs.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfs.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[93/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/ip4.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/ipv4/ip4.c:41:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[94/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/ip4_frag.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/ipv4/ip4_frag.c:41:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[95/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/etharp.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/ipv4/etharp.c:46:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[96/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/netif/slipif.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/netif/slipif.h:43,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/netif/slipif.c:62:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[97/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/tcp_out.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/tcp_out.c:41:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[98/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/ports/arm/sys_arch.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/sys_arch.c:152:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[99/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/sockets.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/api/sockets.c:47:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[100/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/gpio.c.obj
+[101/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/net/lwip_core/lwip_core.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/debug.h:41,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/net/lwip_core/lwip_core.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/net/lwip_core/lwip_core.c:42:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/include/arch/perf.h:23:30: warning: 'struct tms' declared inside parameter list will not be visible outside of this definition or declaration
+   23 | void perf_print_times(struct tms *start, struct tms *end, char *key);
+      |                              ^~~
+[102/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/net/kernel_net_core_socket.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/net/kernel_net_core_socket.c:36:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[103/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/net/lwip_core/ethif_core.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/debug.h:41,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/net/lwip_core/ethif_core.c:32:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/net/lwip_core/ethif_core.c:47:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[104/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c.obj
+[105/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/tcp.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/tcp.c:48:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[106/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/misc.c.obj
+[107/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/net/lwip_core/lwip_core_socket.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/net/lwip_core/lwip_core_socket.c:38:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[108/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/dev_stm32f4xx/dev_stm32f4xx_uart_x.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/dev_stm32f4xx/dev_stm32f4xx_uart_x.c:37:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/dev_stm32f4xx/dev_stm32f4xx_uart_x.c:43:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[109/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/crc.c.obj
+[110/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_syscfg.c.obj
+[111/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/libc.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/lib.h:37,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/libc.h:36,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/libc.c:31:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[112/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/dev_stm32f4xx/dev_stm32f4xx_eth.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/dev_stm32f4xx/dev_stm32f4xx_eth.c:37:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[113/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/ctype/ctype.c.obj
+[114/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_gpio.c.obj
+[115/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/itoa.c.obj
+[116/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/strto_ll.c.obj
+[117/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/tcp_in.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/ports/arm/lwipopts.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/opt.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/core/tcp_in.c:44:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[118/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/ltostr.c.obj
+[119/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_dma.c.obj
+[120/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/prsopt.c.obj
+[121/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/strto_l.c.obj
+[122/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_rcc.c.obj
+[123/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_usart.c.obj
+[124/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/dtostr.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/stdio/stdio.h:35,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/misc/dtostr.c:74:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[125/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/string/strerror.c.obj
+[126/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/uart.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/uart.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/uart.c:38:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[127/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/termios/tcgetattr.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/unistd.h:12,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/termios/tcgetattr.c:31:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[128/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/termios/tcsetattr.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/unistd.h:12,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/termios/tcsetattr.c:27:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[129/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/unistd/unistd.c.obj
+[130/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/string/string.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/string/string.c:41:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[131/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/ftoa.c.obj
+[132/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/termios/termios.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/termios/termios.c:31:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[133/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/net/htonl.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/net/htonl.c:40:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[134/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/pthread/pthread_mutex.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c: In function 'pthread_mutex_lock':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c:113:27: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  113 |    if(mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED) {
+      |                           ^~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c:113:7: note: did you mean to dereference the pointer?
+  113 |    if(mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED) {
+      |       ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c:119:27: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  119 |    if(mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |                           ^~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c:119:7: note: did you mean to dereference the pointer?
+  119 |    if(mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |       ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c: In function 'pthread_mutex_trylock':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c:136:27: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  136 |    if(mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED) {
+      |                           ^~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c:136:7: note: did you mean to dereference the pointer?
+  136 |    if(mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED) {
+      |       ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c:142:27: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  142 |    if(mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |                           ^~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c:142:7: note: did you mean to dereference the pointer?
+  142 |    if(mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |       ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c: In function 'pthread_mutex_unlock':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c:156:36: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  156 |    if(mutex && mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |                                    ^~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_mutex.c:156:16: note: did you mean to dereference the pointer?
+  156 |    if(mutex && mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |                ^
+[135/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/pthread/pthread.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[136/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/pthread/pthread_cond.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/pthread/pthread_cond.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[137/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/librt/sem.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/syscall.h:34,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/librt/sem.c:35:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[138/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/stdio/printf.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/stdio/printf.c:56:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[139/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/net/inet/inet_addr.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/net/inet/inet_addr.c:106:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[140/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/umount.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/umount.c:31:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[141/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/unistd/getopt.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/stdio/stdio.h:35,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/unistd/getopt.c:38:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[142/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/mount.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/mount.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[143/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/librt/mq.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/librt/mq.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[144/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/unistd/io.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/unistd/io.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/unistd/io.c:44:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[145/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/net/socket.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/net/socket.c:35:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[146/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/initd.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/initd.c:49:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[147/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/ls.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/ls.c:32:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[148/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/ps.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/ps.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[149/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/stdio/stdio.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/stdio/stdio.c:44:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[150/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/pwd.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/pwd.c:32:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[151/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/cat.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/cat.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[152/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/kill.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/kill.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[153/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/echo.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/echo.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[154/176] Building C object CMakeFiles/generated.dir/generated/board/dev_mkconf.c.obj
+[155/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/net/ifconfig.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/net/ifconfig.c:33:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[156/176] Building C object CMakeFiles/generated.dir/generated/board/bin_mkconf.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/bin.h:33,
+                 from /Users/cle_d_anton/lepton/build/nucleo-f429zi-embos/generated/board/bin_mkconf.c:32:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[157/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/uname.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/uname.c:32:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[158/176] Building C object CMakeFiles/kernel_demarrage.dir/sys/root/src/kernel/core/arch/cortexm/sbrk_cortexm.c.obj
+[159/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/net/tsterrno.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/net/tsterrno.c:39:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[160/176] Building C object CMakeFiles/kernel_demarrage.dir/sys/root/src/kernel/core/arch/cortexm/startup_armv7m.c.obj
+[161/176] Building C object CMakeFiles/bsp_objets.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/vecteurs/stm32f429xx_vectors.c.obj
+[162/176] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.c.obj
+[163/176] Building C object CMakeFiles/lepton.dir/sys/root/src/kernel/core/core-segger/arch/armv7m/embos_main.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/arch/armv7m/embos_main.c:8:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[164/176] Building C object CMakeFiles/lepton.dir/sys/root/src/kernel/core/core-segger/arch/armv7m/embos_init_hw.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/arch/armv7m/embos_init_hw.c:14:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[165/176] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/stdio/scanf.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/unistd.h:12,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/stdio/scanf.c:44:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[166/176] Building C object CMakeFiles/bsp_demarrage.dir/sys/root/src/kernel/dev/bsp/nucleo-f429zi/nucleo_f439zi_board.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/nucleo_f439zi_board.c:16:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[167/176] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/lsh.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/lsh.c:36:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/lsh.c:67:9: warning: "ARG_MAX" redefined
+   67 | #define ARG_MAX (20)
+      |         ^~~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/lsh.c:40:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:82:9: note: this is the location of the previous definition
+   82 | #define ARG_MAX   20
+      |         ^~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/lsh.c: In function 'parse_cmd':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/lsh.c:396:23: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  396 |             if(argv[1]=='\0') {
+      |                       ^~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/sbin/lsh.c:396:16: note: did you mean to dereference the pointer?
+  396 |             if(argv[1]=='\0') {
+      |                ^
+[168/176] Building C object CMakeFiles/bin.dir/sys/root/src/bin/net/ftpd/ls.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/process.h:52,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/wait.h:31,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/bin/net/ftpd/ls.c:37:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+[169/176] Building C object CMakeFiles/generated.dir/generated/board/dev_dskimg.c.obj
+[170/176] Linking C static library liblib.a
+[171/176] Linking C static library libsbin.a
+[172/176] Linking C static library libkernel.a
+[173/176] Building C object CMakeFiles/bin.dir/sys/root/src/bin/net/ftpd/ftpd.c.obj
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/bin/net/ftpd/ftpd.c:36:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/bin/net/ftpd/ftpd.c:61:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ioctl.h:39:9: warning: "FIONBIO" redefined
+   39 | #define FIONBIO                  (IOCTL_RESERVED_CMD_BASE|0x0004) //If arg is non-zero, set O_NONBLOCK, otherwise clear O_NONBLOCK.
+      |         ^~~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/net/socket.h:38,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/lib/libc/net/socket.h:36,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/bin/net/ftpd/ftpd.c:46:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/sockets.h:372:9: note: this is the location of the previous definition
+  372 | #define FIONBIO     _IOW('f', 126, unsigned long) /* set/clear non-blocking i/o */
+      |         ^~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ioctl.h:40:9: warning: "FIONREAD" redefined
+   40 | #define FIONREAD                 (IOCTL_RESERVED_CMD_BASE|0x0005) //not supported by all device driver. at this moment only supported by lwip_socket api.
+      |         ^~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/sockets.h:369:9: note: this is the location of the previous definition
+  369 | #define FIONREAD    _IOR('f', 127, unsigned long) /* get # bytes to read */
+      |         ^~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/bin/net/ftpd/ftpd.c:74:12: warning: "SHUT_RDWR" redefined
+   74 |    #define SHUT_RDWR 3
+      |            ^~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/net/lwip/include/lwip/sockets.h:404:11: note: this is the location of the previous definition
+  404 |   #define SHUT_RDWR 2
+      |           ^~~~~~~~~
+[174/176] Linking C static library libbin.a
+[175/176] Linking C executable lepton.elf
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-closer.o): in function `_close_r':
+closer.c:(.text._close_r+0xc): warning: _close is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-closer.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-fstatr.o): in function `_fstat_r':
+fstatr.c:(.text._fstat_r+0xe): warning: _fstat is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-fstatr.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-isattyr.o): in function `_isatty_r':
+isattyr.c:(.text._isatty_r+0xc): warning: _isatty is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-isattyr.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-lseekr.o): in function `_lseek_r':
+lseekr.c:(.text._lseek_r+0x10): warning: _lseek is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-lseekr.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-readr.o): in function `_read_r':
+readr.c:(.text._read_r+0x10): warning: _read is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-readr.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-writer.o): in function `_write_r':
+writer.c:(.text._write_r+0x10): warning: _write is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-writer.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: warning: lepton.elf has a LOAD segment with RWX permissions
+Memory region         Used Size  Region Size  %age Used
+           FLASH:      282936 B         2 MB     13.49%
+             RAM:       99624 B       192 KB     50.67%
+             CCM:       45256 B        64 KB     69.06%
+   text	   data	    bss	    dec	    hex	filename
+ 281868	   1064	 143824	 426756	  68304	/Users/cle_d_anton/lepton/build/nucleo-f429zi-embos/lepton.elf

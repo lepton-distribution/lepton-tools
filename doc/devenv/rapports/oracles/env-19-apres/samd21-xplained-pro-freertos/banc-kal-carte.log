@@ -1,0 +1,39 @@
+Test project /Users/cle_d_anton/lepton/build/samd21-xplained-pro-freertos
+      Start  1: kal.board_flash
+ 1/14 Test  #1: kal.board_flash ..................   Passed    4.71 sec
+      Start  2: kal.T1
+ 2/14 Test  #2: kal.T1 ...........................   Passed    0.99 sec
+      Start  3: kal.T2
+ 3/14 Test  #3: kal.T2 ...........................   Passed    1.20 sec
+      Start  4: kal.T3
+ 4/14 Test  #4: kal.T3 ...........................   Passed    0.90 sec
+      Start  5: kal.T4
+ 5/14 Test  #5: kal.T4 ...........................   Passed    0.90 sec
+      Start  6: kal.T5
+ 6/14 Test  #6: kal.T5 ...........................   Passed    0.90 sec
+      Start  7: kal.T6
+ 7/14 Test  #7: kal.T6 ...........................   Passed    0.90 sec
+      Start  8: kal.T7
+ 8/14 Test  #8: kal.T7 ...........................   Passed    0.90 sec
+      Start  9: kal.T8
+ 9/14 Test  #9: kal.T8 ...........................   Passed    1.21 sec
+      Start 10: kal.TICI
+10/14 Test #10: kal.TICI .........................   Passed    0.91 sec
+      Start 11: kal.TCLK
+11/14 Test #11: kal.TCLK .........................   Passed    2.11 sec
+      Start 12: kal.TSBRK
+12/14 Test #12: kal.TSBRK ........................   Passed    1.50 sec
+      Start 13: kal.IRQ
+13/14 Test #13: kal.IRQ ..........................   Passed    1.22 sec
+      Start 14: kal.harness_fail
+14/14 Test #14: kal.harness_fail .................   Passed    1.27 sec
+
+100% tests passed, 0 tests failed out of 14
+
+Label Time Summary:
+arch:cortex-m0plus    =  19.63 sec*proc (14 tests)
+backend:freertos      =  19.63 sec*proc (14 tests)
+board                 =  19.63 sec*proc (14 tests)
+kal                   =  19.63 sec*proc (14 tests)
+
+Total Test time (real) =  19.64 sec

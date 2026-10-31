@@ -1,0 +1,76 @@
+Test project /Users/cle_d_anton/lepton/build/samd21-xplained-pro-freertos
+      Start  1: board.smoke_lsh
+ 1/15 Test  #1: board.smoke_lsh ..................***Failed   25.58 sec
+ÉCHEC : uname -a : machine « cortexM0p-samd21 » absente de b''
+journal : /Users/cle_d_anton/lepton/build/samd21-xplained-pro-freertos/smoke_lsh_board.log
+
+      Start  2: kal.board_flash
+Failed test dependencies: board.smoke_lsh
+ 2/15 Test  #2: kal.board_flash ..................***Not Run   0.00 sec
+      Start  3: kal.T1
+Failed test dependencies: kal.board_flash
+ 3/15 Test  #3: kal.T1 ...........................***Not Run   0.00 sec
+      Start  4: kal.T2
+Failed test dependencies: kal.board_flash
+ 4/15 Test  #4: kal.T2 ...........................***Not Run   0.00 sec
+      Start  5: kal.T3
+Failed test dependencies: kal.board_flash
+ 5/15 Test  #5: kal.T3 ...........................***Not Run   0.00 sec
+      Start  6: kal.T4
+Failed test dependencies: kal.board_flash
+ 6/15 Test  #6: kal.T4 ...........................***Not Run   0.00 sec
+      Start  7: kal.T5
+Failed test dependencies: kal.board_flash
+ 7/15 Test  #7: kal.T5 ...........................***Not Run   0.00 sec
+      Start  8: kal.T6
+Failed test dependencies: kal.board_flash
+ 8/15 Test  #8: kal.T6 ...........................***Not Run   0.00 sec
+      Start  9: kal.T7
+Failed test dependencies: kal.board_flash
+ 9/15 Test  #9: kal.T7 ...........................***Not Run   0.00 sec
+      Start 10: kal.T8
+Failed test dependencies: kal.board_flash
+10/15 Test #10: kal.T8 ...........................***Not Run   0.00 sec
+      Start 11: kal.TICI
+Failed test dependencies: kal.board_flash
+11/15 Test #11: kal.TICI .........................***Not Run   0.00 sec
+      Start 12: kal.TCLK
+Failed test dependencies: kal.board_flash
+12/15 Test #12: kal.TCLK .........................***Not Run   0.00 sec
+      Start 13: kal.TSBRK
+Failed test dependencies: kal.board_flash
+13/15 Test #13: kal.TSBRK ........................***Not Run   0.00 sec
+      Start 14: kal.IRQ
+Failed test dependencies: kal.board_flash
+14/15 Test #14: kal.IRQ ..........................***Not Run   0.00 sec
+      Start 15: kal.harness_fail
+Failed test dependencies: kal.board_flash
+15/15 Test #15: kal.harness_fail .................***Not Run   0.00 sec
+
+0% tests passed, 15 tests failed out of 15
+
+Label Time Summary:
+arch:cortex-m0plus    =  25.58 sec*proc (15 tests)
+backend:freertos      =  25.58 sec*proc (15 tests)
+board                 =  25.58 sec*proc (15 tests)
+kal                   =  25.58 sec*proc (15 tests)
+
+Total Test time (real) =  25.58 sec
+
+The following tests FAILED:
+	  1 - board.smoke_lsh (Failed)                          arch:cortex-m0plus backend:freertos board kal
+	  2 - kal.board_flash (Not Run)                         arch:cortex-m0plus backend:freertos board kal
+	  3 - kal.T1 (Not Run)                                  arch:cortex-m0plus backend:freertos board kal
+	  4 - kal.T2 (Not Run)                                  arch:cortex-m0plus backend:freertos board kal
+	  5 - kal.T3 (Not Run)                                  arch:cortex-m0plus backend:freertos board kal
+	  6 - kal.T4 (Not Run)                                  arch:cortex-m0plus backend:freertos board kal
+	  7 - kal.T5 (Not Run)                                  arch:cortex-m0plus backend:freertos board kal
+	  8 - kal.T6 (Not Run)                                  arch:cortex-m0plus backend:freertos board kal
+	  9 - kal.T7 (Not Run)                                  arch:cortex-m0plus backend:freertos board kal
+	 10 - kal.T8 (Not Run)                                  arch:cortex-m0plus backend:freertos board kal
+	 11 - kal.TICI (Not Run)                                arch:cortex-m0plus backend:freertos board kal
+	 12 - kal.TCLK (Not Run)                                arch:cortex-m0plus backend:freertos board kal
+	 13 - kal.TSBRK (Not Run)                               arch:cortex-m0plus backend:freertos board kal
+	 14 - kal.IRQ (Not Run)                                 arch:cortex-m0plus backend:freertos board kal
+	 15 - kal.harness_fail (Not Run)                        arch:cortex-m0plus backend:freertos board kal
+Errors while running CTest
