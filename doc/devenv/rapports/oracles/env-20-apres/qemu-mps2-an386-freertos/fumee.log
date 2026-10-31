@@ -1,0 +1,37 @@
+lepton (tauon) posix os
+scion version
+
+
+version 4.10.0.2 kernel compilation date: Oct 31 2026 - 17:38:35
+
+Thu Jan 01 00:00:00 1970
+
+
+
+type ctrl-x: .init script not run or any key to continue
+
+lepton start!
+
+
+
+	lepton shell
+
+lepton#2$ 
+lepton#2$ uname -a
+lepton-cortexm4-32  4.10.0.2 Oct 31 2026-17:38:35 cortexM4-qemu-mps2-an386 
+
+rcv SIGCHLD
+5lepton#2$ ls
+dev  kernel  bin  usr  
+etc  var  mnt  
+total 7
+lepton#2$ ps
+   PID PPID PGID     STIME   COMMAND
+     1    0    1  00:00:00   initd
+     2    1    1  00:00:00   /usr/sbin/lsh
+     4    2    4  00:00:00   bin/net/ftpd
+     7    2    1  00:00:01   ps
+lepton#2$ echo lepton-uart1-46698 > /dev/ttys1
+
+rcv SIGCHLD
+8lepton#2$ 

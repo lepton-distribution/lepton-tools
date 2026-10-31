@@ -119,3 +119,56 @@ FreeRTOS). `host.mklepton_empreintes` en échec avant la nouvelle référence (6
 `sys/root/src/kernel/dev/bsp/nucleo-f4{2,3}9zi/include/user_kernel_mkconf.h`) ; nouvelle référence
 (50 fichiers) : test vert. `lepton check` sur la copie : code 0, 19 fichiers conformes.
 Même `seed-clone` et `graft` sur `<ROOTSTOCK>` : arborescence du trunk identique à la copie.
+
+## 7. Contrôles (PA-28)
+
+Oracle après `rapports/oracles/env-20-apres/` sur `<ROOTSTOCK>` (construction à neuf, `host`
+d'abord ; `rejouer-oracle.sh` avec les 14 presets d'`env-20-avant` et les 2 presets
+`nucleo-f439zi-*`) : « tout a réussi ».
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| `host` | — | — | — | `ctest` 7/7 | mklepton : E-3 |
+| `qemu-mps2-an386-{embos,freertos}` | identiques à `env-20-avant` | diffère (date) | identique | 18/18, même liste | E-4 |
+| `qemu-mps2-an386-{embos,freertos}-soft` | identiques | diffère (date) | identique | 14/14, même liste | E-4 |
+| `qemu-mps2-an500-{embos,freertos}` | identiques | diffère (date) | identique | 18/18, même liste | E-4 |
+| `nucleo-f429zi-{embos,freertos}` | identiques à `env-20-lot-table` ; écart à `env-20-avant` limité à la table (E-1) | diffère | carte : `cortexM4-stm32f4` | carte : 19/19 (×2) | E-1 |
+| `nucleo-f439zi-{embos,freertos}` | identiques à `nucleo-f429zi-*` (E-2) | diffère | carte F429 : `cortexM4-stm32f4` (embOS) | carte F429 : 19/19 (embOS) | E-2, E-5 |
+| `stm32f746g-disco-*`, `samd21-xplained-pro-*`, `nucleo-wl55jc1-*` (×2 chacun) | identiques à `env-20-avant` | diffère (date) | — | — | — |
+
+Écarts :
+- **E-1** Table de vecteurs (§6, premier temps) : 86 noms CMSIS `W` ajoutés, 64 relais `W` → `T`,
+  table étendue renommée, `stm32f4xx_irq_default` ; 0 symbole hors table ; `.text` +496 / +512.
+- **E-2** `nucleo-f439zi-*` = `nucleo-f429zi-*` aux sections et symboles près (Q3-a : même
+  définition de puce, mêmes identifiants C) ; seuls changent le manifeste et les chemins.
+- **E-3** mklepton : 50 sorties (44 avant) ; les 6 nouvelles `…-nucleo-f439zi/*` : 5 identiques à
+  `…-nucleo-f429zi/*`, `kernel_mkconf.h` diffère par la ligne 15 (chemin de l'en-tête de carte) ;
+  nouvelle référence f571d02 ; `host.mklepton_empreintes` vert.
+- **E-4** Fumée QEMU : seuls diffèrent la date de compilation (ligne de version et `uname`), le
+  jeton aléatoire de `echo lepton-uart1-<n>` et la position du message asynchrone `rcv SIGCHLD`
+  (an500, an386 soft) ; ignorés.
+- **E-5** Aucune NUCLEO-F439ZI : le binaire `nucleo-f439zi-embos` a été essayé sur la
+  NUCLEO-F429ZI (ST-LINK/V2-1 `0672FF495252717267243842`, seule sonde branchée, console
+  `/dev/cu.usbmodem145103`), 19/19 (fumée, `kal.board_flash`, 17 cas). **Rien ne prouve le
+  démarrage sur un STM32F439** ; l'essai montre que le binaire est correct sur un F429, conforme
+  à K16.
+
+Carte (PA-27 Q7, 2026-10-31) : `ctest --preset <P> -L board` avec
+`-DLEPTON_BOARD_SERIAL_PORT=/dev/cu.usbmodem145103` ; journaux `env-20-apres/<P>/carte.log`,
+`carte-detail.log`, `fumee-carte.log`. Fin : image `nucleo-f429zi-embos` remise en flash
+(`program … verify reset exit`, `adapter serial` explicite) : « Verified OK ».
+
+lepton : `check` code 0 sur `<ROOTSTOCK>` (19 fichiers conformes, 18 avant) ; `generate` code 0
+sur la copie `essais/env-20` et sur `<ROOTSTOCK>` : 16 lancements (14 avant), dont
+`Déboguer nucleo-f439zi-{embos,freertos} (carte, OpenOCD)`. Trunk : 3941 feuilles, 0 fichier
+régulier, 0 lien cassé, 14 greffons. Aucun code de lepton modifié.
+
+BLD-6 : clone noyau modifié dans `scion/CMakePresets.json` (2 presets), `ci/run.sh` (1 ligne),
+`doc/BUILDING.md`, `scion/tests/host/mklepton_empreintes.sha256` ; famille : le seul fichier de
+vecteurs ; graine : 2 lignes. Lecteur `lepton_greffons.cmake`, `kernel.cmake`, `cpu/`, `kal/`,
+`isa/`, démarrage générique, script de liens commun : inchangés. **Le BSP s'ajoute sans
+modification du système de construction commun.**
+
+Critères de l'étape : table F4 complète, écart F429 démontré et limité à la table (E-1) ; BSP
+`nucleo-f439zi` inscrit dans `original-tree` (branche `devenv/env-20`), **non publié** (PA-28) ;
+2 presets construits ; BLD-6 constaté.

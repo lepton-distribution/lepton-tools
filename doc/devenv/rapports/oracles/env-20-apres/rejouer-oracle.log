@@ -1,0 +1,39 @@
+== qemu-mps2-an386-embos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/qemu-mps2-an386-embos (1583 symboles)
+== qemu-mps2-an386-freertos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/qemu-mps2-an386-freertos (1623 symboles)
+== qemu-mps2-an386-embos-soft
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/qemu-mps2-an386-embos-soft (1580 symboles)
+== qemu-mps2-an386-freertos-soft
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/qemu-mps2-an386-freertos-soft (1622 symboles)
+== qemu-mps2-an500-embos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/qemu-mps2-an500-embos (1545 symboles)
+== qemu-mps2-an500-freertos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/qemu-mps2-an500-freertos (1585 symboles)
+== nucleo-f429zi-embos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/nucleo-f429zi-embos (1777 symboles)
+== nucleo-f429zi-freertos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/nucleo-f429zi-freertos (1817 symboles)
+== nucleo-f439zi-embos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/nucleo-f439zi-embos (1777 symboles)
+== nucleo-f439zi-freertos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/nucleo-f439zi-freertos (1817 symboles)
+== stm32f746g-disco-embos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/stm32f746g-disco-embos (1624 symboles)
+== stm32f746g-disco-freertos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/stm32f746g-disco-freertos (1660 symboles)
+== samd21-xplained-pro-embos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/samd21-xplained-pro-embos (926 symboles)
+== samd21-xplained-pro-freertos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/samd21-xplained-pro-freertos (976 symboles)
+== nucleo-wl55jc1-embos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/nucleo-wl55jc1-embos (1215 symboles)
+== nucleo-wl55jc1-freertos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-20-apres/nucleo-wl55jc1-freertos (1261 symboles)
+== qemu-mps2-an386-embos (ctest)
+== qemu-mps2-an386-freertos (ctest)
+== qemu-mps2-an386-embos-soft (ctest)
+== qemu-mps2-an386-freertos-soft (ctest)
+== qemu-mps2-an500-embos (ctest)
+== qemu-mps2-an500-freertos (ctest)
+rejouer-oracle: tout a réussi
