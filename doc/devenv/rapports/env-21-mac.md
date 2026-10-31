@@ -23,6 +23,19 @@ Session Mac `validation-debian-groupee-env21`. Rapport VM : `rapports/env-21-deb
 | 2026-10-31 | AVANCEMENT | §6.1 (graine `env11` relevée), lepton réinstallé, noyau 16a331b → 40d7197 ; attente des scripts (sudo) |
 | 2026-10-31 | AVANCEMENT | §6 : C1, C2 conformes ; `install-debian.sh` code 0 (scion 0.5.2.0 déjà installé) ; `install-vscodium.sh` 0 changement ×2 |
 | 2026-10-31 | AVANCEMENT | §7 : C3 conforme ; 14 entrées, 3941 liens, 0 cassé, 0 régulier |
+| 2026-10-31 | AVANCEMENT | §8 : C4 conforme ; `comparer_R14-1` = tableau du §8 ; nuances `.text`/`.noinit` propres à la chaîne Debian |
+| 2026-10-31 | FIN-SUCCÈS | C1-C5, C7 conformes ; C6 réserve E-1 ; `devenv/env-21-debian` 36d7a1f poussée (accord de l'utilisateur) |
+
+## 2bis. Vérification Mac du rapport VM (tâche 4)
+
+- `devenv/env-21-debian` 36d7a1f issue de 65b19f7 ; seuls `rapports/env-21-debian.md` et
+  `rapports/oracles/env-21-debian/` (96 fichiers) ajoutés.
+- Comparaisons recalculées au Mac sur l'oracle poussé : mklepton = `env-20-apres` ; host 7/7 ;
+  bancs 19/19 ×4, 15/15 ×2 ; `comparer_R14-1` 0 ×10 (QEMU ×6, WL ×2, SAMD21-embos), 1 ×5 (F429
+  ×2, F746 ×2, SAMD21-freertos) ; `f429→f439` 0 ×2 ; symboles Debian = R14-1 sauf F429 (+87,
+  comme au Mac 1690 → 1777). Identique au rapport VM.
+- C6 : réserve E-1 acceptée par l'utilisateur (PA-30) ; C7 : suppression faite par l'utilisateur
+  (E-2).
 
 ## 3. Rootstocks d'essai (tâche 3, PA-P)
 
