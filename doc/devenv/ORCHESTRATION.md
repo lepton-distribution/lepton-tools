@@ -20,7 +20,7 @@ chaque session, avec `DEVENV-STATUS.md`, le fichier de l'étape courante et la d
 | --- | --- | --- |
 | Dépôt `lepton-tools` | `<LEPTON_TOOLS>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements ; distant `lepton-distribution/lepton-tools` | Outil `lepton`, schémas, modèles, scripts d'installation, ce dossier `doc/devenv/` |
 | Rootstock Lepton | `<ROOTSTOCK>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements | `depots/`, `trunk/` ; clone noyau `depots/lepton/original/master` |
-| Dépôt `seed.scions` | clone à part, `<SEED_SCIONS>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements | Évolutions génériques de scion (ENV-7, ENV-15) |
+| Dépôt `seed.scions` | clone à part, `<SEED_SCIONS>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements | Évolutions génériques de scion (ENV-7, ENV-15, ENV-23) |
 | Répertoire de construction | `<ROOTSTOCK>/build/<preset>` | Toujours hors du trunk |
 
 Claude Code est lancé à la racine de `<LEPTON_TOOLS>`. Les chemins `<…>` sont résolus une fois en
@@ -32,7 +32,7 @@ Hôtes :
 | Hôte | Rôle | Étapes |
 | --- | --- | --- |
 | Mac mini Intel, macOS (hôte principal) | Développement, construction native, flash et débogage | Toutes |
-| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian), ENV-15 (partie Debian), ENV-21 |
+| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian), ENV-15 (partie Debian), ENV-21, ENV-28 |
 
 Règles de parallélisme Mac / VM :
 
@@ -155,6 +155,20 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | PA-28 | ENV-20 | Rapport : push du dépôt du BSP et des branches `devenv/env-20`, fusions | ouvert |
 | PA-29 | ENV-21 | Consigne `consignes/env-21-debian.md` et nettoyage de la VM ; push de `devenv/env-21`, ordre R21-1 | ouvert |
 | PA-30 | ENV-21 | Après `FIN-SUCCÈS R21-1` : fusions dans `main` (et fusions différées d'ENV-19 et ENV-20), push | ouvert |
+| PA-31 | ENV-22 | Contenu de `<ROOTSTOCK>/.scion.trunk.tolerated`, confirmation des propositions non validées d'ENV-17 à ENV-20, sort d'`essais/env-11/bout-en-bout`, emplacement des règles des consignes VM, avant toute modification | ouvert |
+| PA-32 | ENV-22 | Rapport : fusion de `devenv/env-22` dans `main`, push | ouvert |
+| PA-33 | ENV-23 | Forme de la mise à jour de la graine par `graft-update`, filtrage des fichiers étrangers des sources non git, numéro de version, effets sur lepton, avant toute modification | ouvert |
+| PA-34 | ENV-23 | Rapport : publication du tag et de `master` de `seed.scions`, branches `devenv/env-23`, fusions | ouvert |
+| PA-35 | ENV-24 | XML passés au cpufs automatique, contrôle `mklepton_format_check.cmake`, critère de non-régression, cartes disponibles, avant toute modification | ouvert |
+| PA-36 | ENV-24 | Rapport : fusion et push de `devenv/env-24` (lepton-tools, clone noyau) | ouvert |
+| PA-37 | ENV-25 | Lancements hôtes de `mklepton` (nombre, arguments, débogueur Debian, tâche préalable), avant toute modification | ouvert |
+| PA-38 | ENV-25 | Rapport : fusion et push de `devenv/env-25` | ouvert |
+| PA-39 | ENV-26 | Fichiers SVD (source, licence, emplacement, champ `svd`), vue des tâches (embOS, FreeRTOS), cartes disponibles, avant toute modification | ouvert |
+| PA-40 | ENV-26 | Rapport : push des greffons et des branches `devenv/env-26`, fusions | ouvert |
+| PA-41 | ENV-27 | Forme de la découverte des tests des greffons, schéma, types de tests, greffon d'essai, modèles de `scion new`, avant toute modification | ouvert |
+| PA-42 | ENV-27 | Rapport : push et fusions des branches `devenv/env-27` | ouvert |
+| PA-43 | ENV-28 | Consigne `consignes/env-28-debian.md` et nettoyage de la VM ; push de `devenv/env-28`, ordre R28-1 | ouvert |
+| PA-44 | ENV-28 | Après `FIN-SUCCÈS R28-1` : fusions dans `main`, push | ouvert |
 | PA-P | toutes | Tout `git push`, toute action `scion seed-update` / `graft-update` | permanent |
 
 ## 5. Règles de travail (rappel des acquis du portage)
@@ -175,9 +189,9 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | Élément | Rôle | Étapes |
 | --- | --- | --- |
 | skill `devenv-session` | Procédure de début et de fin de session, passation | toutes |
-| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15, 17, 19, 20, 21 |
-| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15, 17, 19, 20, 21 |
-| skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21 |
+| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24, 26, 27, 28 |
+| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15, 17, 19, 20, 21, 23, 24, 26, 27, 28 |
+| skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28 |
 | hook `proteger-trunk.py` | Refuse Write/Edit sous `<ROOTSTOCK>/trunk/` et les commandes shell d'écriture visant `trunk/` | toutes |
 
 Une skill se corrige comme le code : sur la branche de l'étape, commit dédié, ligne de journal
@@ -210,6 +224,15 @@ ce plan.
 | ENV-19 | Extraction des cartes STM32F746G-DISCO et SAMD21 Xplained Pro | ENV-14 ; ENV-17 conseillée avant |
 | ENV-20 | BSP `nucleo-f439zi` | ENV-19 (graine `original-tree` et presets du noyau partagés) |
 | ENV-21 | Validation Debian groupée | ENV-17, ENV-18, ENV-19, ENV-20 |
+| ENV-22 | Résidus d'ENV-17 à ENV-21 | ENV-21 |
+| ENV-23 | Évolutions de scion : mise à jour de la graine, sources non git | ENV-22 |
+| ENV-24 | Dimensionnement automatique du cpufs | ENV-22 ; ENV-23 conseillée avant |
+| ENV-25 | DBG-5 : déboguer `mklepton` sur l'hôte | ENV-22 |
+| ENV-26 | DBG-4 : vues des périphériques et des tâches | ENV-25 (`generate.py` partagé) |
+| ENV-27 | TST-2 : tests fournis par un greffon | ENV-26 (schéma du greffon partagé) |
+| ENV-28 | Validation Debian groupée | ENV-23, ENV-24, ENV-25, ENV-26, ENV-27 |
 
 Ordre conseillé : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12. ENV-1 et ENV-2 sont permutables ;
 ENV-4 et ENV-5 aussi ; ENV-7 peut suivre directement ENV-2 si l'audit le justifie.
+Révision du 2026-10-31 : 22, 23, 24, 25, 26, 27, 28 (consolidation, puis fonctions P2, puis
+validation Debian).
