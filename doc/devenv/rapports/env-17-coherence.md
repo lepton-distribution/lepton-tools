@@ -33,7 +33,7 @@ Identifiants `C-n` (documentation) et `M-n` (message CMake). Un commit par dép�
 | C-1 | `doc/BUILDING.md:13` | `NUCLEO-F439ZI (validée sur NUCLEO-F429ZI) \| nucleo-f439zi-embos` | `NUCLEO-F429ZI (BSP nucleo-f429zi) \| nucleo-f429zi-embos` | presets renommés en ENV-6 (PA-7 Q7) ; aucun preset `nucleo-f439zi-*` |
 | C-2 | `doc/BUILDING.md:10-18, 20` | table limitée aux presets `-embos` ; « Micro-noyau : embOS (port GCC Segger) sur toutes les cibles ARM » | colonne Preset : `…-embos`, `…-freertos` (et `-soft` an386) ; l. 20 : « Micro-noyau : embOS (port GCC Segger 5.20) ou FreeRTOS (V11.3.0), un preset par micro-noyau ; SAMD21 sous FreeRTOS : système complet non supporté (RAM) » | 7 presets `-freertos` dans `CMakePresets.json` ; décision migration 2026-10-06 (deux backends) |
 | C-3 | `doc/BUILDING.md:137` | `## 4. Carte NUCLEO-F439ZI (validée sur NUCLEO-F429ZI)` | `## 4. Carte NUCLEO-F429ZI` | idem C-1 ; ENV-20 ajoutera la NUCLEO-F439ZI |
-| C-4 | `doc/BUILDING.md:144-146, 154, 163-164, 180-183` | `--preset nucleo-f439zi-embos` (9 occurrences) | `--preset nucleo-f429zi-embos` | idem C-1 |
+| C-4 | `doc/BUILDING.md:144-146, 154, 163-164, 180-183` | `--preset nucleo-f439zi-embos` (10 occurrences ; 9 annoncées au PA-21, décompte corrigé à l'application) | `--preset nucleo-f429zi-embos` | idem C-1 |
 | C-5 | `doc/BUILDING.md:170` | « Débogage (gdb, OpenOCD, registres de faute) : `doc/migration/debug-gcc.md`. » | ajouter : « Fichiers OpenOCD et gdb de la carte : `sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/` (`openocd-nucleo-f439zi.cfg`, `gdbinit-nucleo-f439zi`) ; `debug-gcc.md` cite les chemins de la migration (`debug/…`). » | `debug/openocd-nucleo-f439zi.cfg` n'existe plus dans le trunk (déplacé dans le BSP en ENV-6) |
 | C-6 | `doc/BUILDING.md:258-259, 275` | `debug/openocd-nucleo-wl55jc1.cfg`, `debug/gdbinit-nucleo-wl55jc1` | `sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg`, `…/debug/gdbinit-nucleo-wl55jc1` | chemins absents du trunk (`test -e` : NON) ; présents dans le BSP |
 | C-7 | `scripts/install-debian.sh:51` | « Épinglé sur le tag 0.5.0.1 (la tête de master lui est postérieure). » | « Épinglé par défaut sur le tag 0.5.2.0 (`SCION_REF`). » | valeur réelle l. 55 (`SCION_REF:-0.5.2.0`, ENV-15) |
@@ -108,7 +108,69 @@ Restent :
 
 Proposition : confirmer P-1 à P-7 en bloc, comme le bilan d'ENV-12, sauf amendement.
 
-## 6. Suite (après PA-21)
+## 6. Décision PA-21 (utilisateur, 2026-10-31)
 
-Tâche 2 (oracle avant, 14 presets, `env-17-avant/`), puis corrections validées, regreffe
-`lepton@original::tree`, oracle après et contrôles (tâche 4, PA-22).
+C-1 à C-17, M-1 (condition) et M-2 validées ; A-1 à A-4 selon les propositions du §4 ; P-1 à
+P-7 confirmées en bloc (`DEVENV-STATUS.md` §Décisions).
+
+## 7. Corrections appliquées
+
+| Dépôt | Commit | Contenu |
+| --- | --- | --- |
+| clone noyau `devenv/env-17` | 350d914 | M-1, M-2 (`kernel.cmake`), C-8 (`lepton_greffons.cmake`) |
+| clone noyau `devenv/env-17` | 9ee9734 | C-1 à C-7 (`BUILDING.md`, `install-debian.sh`), A-1 (`BUILDING.md`, scripts d'installation), A-2 (`CLAUDE.md`), A-4 (`README.md`) |
+| lepton-tools `devenv/env-17` | 5a80a31 | C-9 à C-13, A-3, ce rapport (§1-§5) ; en plus, même nature : `ORCHESTRATION.md` §2, distant de lepton-tools (« prévu » retiré) et étapes de `seed.scions` (ENV-7, ENV-15) |
+| lepton-tools `devenv/env-17` | 9ced1e4 | C-14 à C-17 (skills) |
+
+Écart d'application : C-4 compte 10 occurrences (9 annoncées). Les deux scripts d'installation
+passent `bash -n` et `shellcheck -S warning`.
+
+Regreffe `scion graft --scion lepton@original::tree` : d'abord refusée (scion 0.5.2.0, E2
+d'ENV-15) par 14 `.DS_Store` du Finder dans le trunk (créés le 2026-10-31 à 12:48, hors git) ;
+supprimés sur décision de l'utilisateur, puis regreffe réussie (3 332 feuilles ; 11 chemins
+ignorés par git non greffés : `.DS_Store` des clones). Contrôles : aucun fichier régulier, aucun
+lien cassé dans le trunk, clone noyau propre, `lepton check` code 0.
+
+## 8. Non-régression (skill `lepton-oracle`)
+
+Mêmes commandes avant et après, répertoires de construction neufs :
+`scripts/oracle/rejouer-oracle.sh ~/lepton oracles/env-17-<avant|apres> --qemu …×6 --carte …×8`
+(host + 14 presets, liste d'ENV-13 §4) ; code 0 les deux fois. L'oracle avant est conforme à
+`env-14-apres` (`comparer-oracle` code 0 sur les 14 presets, empreintes mklepton identiques).
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| host | – | mklepton identiques | – | ctest 7/7 = 7/7 | – |
+| qemu-mps2-an386-embos | identiques | différente | identique (E2) | 18/18 = 18/18 | E1 |
+| qemu-mps2-an386-embos-soft | identiques | différente | identique (E2) | 14/14 = 14/14 | E1 |
+| qemu-mps2-an386-freertos | identiques | différente | identique (E2) | 18/18 = 18/18 | E1 |
+| qemu-mps2-an386-freertos-soft | identiques | différente | identique (E2) | 14/14 = 14/14 | E1 |
+| qemu-mps2-an500-embos | identiques | différente | identique (E2) | 18/18 = 18/18 | E1 |
+| qemu-mps2-an500-freertos | identiques | différente | identique (E2) | 18/18 = 18/18 | E1 |
+| nucleo-f429zi-embos, -freertos | identiques | différente | – | – | E1 |
+| nucleo-wl55jc1-embos, -freertos | identiques | différente | – | – | E1 |
+| stm32f746g-disco-embos, -freertos | identiques | différente | – | – | E1 |
+| samd21-xplained-pro-embos, -freertos | identiques | différente | – | – | E1 |
+
+- **E1** — date de construction embarquée (« kernel compilation date »), comme en ENV-13 et ENV-14
+  (`env-13-graine.md` §4) ; sections et symboles identiques (`comparer-oracle` code 0 sur les 14).
+- **E2** — `fumee.log` identiques après la normalisation d'ENV-13 : date de compilation (E1),
+  jeton `lepton-uart1-<n>` et chiffre renvoyé devant l'invite, ligne asynchrone `rcv SIGCHLD`,
+  lignes vides.
+
+Journal de configuration : seule différence, la ligne « `-- bsp : aucune source pour la carte …` »
+retirée pour `host` et les 10 presets à BSP par manifeste (11 occurrences avant, 0 après) ;
+inchangé pour les 4 presets à carte transitoire (`stm32f746g-disco-*`, `samd21-xplained-pro-*`,
+qui ont des `LEPTON_BSP_SOURCES`). Message « lib » : absent avant et après (branche inatteignable).
+
+`grep` de l'audit rejoué : aucune occurrence restante de `nucleo-f439zi-{embos,freertos}` dans
+les documents vivants et presets du noyau, des chemins `debug/…-nucleo-*` dans `BUILDING.md`, de
+0.5.0.1 dans les scripts, de `<À CONFIRMER>` dans `ORCHESTRATION.md`, des références par numéro
+de ligne du noyau dans `lepton-cibles`. Restent, exacts : « (étape 3) » dans deux commentaires
+historiques (`mklepton.cmake:15`, `isa/armv7m.cmake:1`), `smoke_lsh.py:126` (débit) dans la
+skill, et le renvoi volontaire à `MIGRATION-STATUS.md` (`BUILDING.md:8`).
+
+## 9. Suite (PA-22)
+
+Push de `devenv/env-17` (lepton-tools, clone noyau), fusion dans `main` et `master`, push (PA-P).
+Rien n'est poussé avant la décision.
