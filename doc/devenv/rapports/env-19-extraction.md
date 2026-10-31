@@ -48,7 +48,7 @@ carte = lus par ses 2 presets et par aucun des 11 autres builds. Listes brutes :
 | `src/kernel/core/ucore/cmsis-5/Device/ST/STM32F7xx/` (6 fichiers) | même chemin |
 | — | `lepton-greffon.json` (ci-dessous) |
 
-Manifeste : `sources` = les 8 fichiers du module (`dev_stm32f7xx_{uart_x,eth_x,hal_tick}.c`,
+Manifeste : `sources` = les 7 fichiers du module (`dev_stm32f7xx_{uart_x,eth_x,hal_tick}.c`,
 `hal_driver/Src/stm32f7xx_hal_{gpio,eth,rcc,cortex}.c`) ; `coeurs` `[cortex-m7]` ; `mcu`
 `[STM32F746xx]` ; `dependances` `[lepton-noyau]` ; publique : définition `USE_HAL_DRIVER`,
 inclusions `…/stm32f7xx/dev_stm32f7xx`, `…/stm32f7xx/hal_driver/Inc`,
