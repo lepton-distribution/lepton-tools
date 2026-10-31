@@ -168,6 +168,14 @@ isolé (`lepton-greffon.json`, `lepton-graine.json`, XML mklepton), type reconnu
 Sortie : une ligne par anomalie `fichier: chemin JSON: message` ; code 1 s'il y en a.
 Méthode de CFG-5 et détail des contrôles : §10 (S4-2).
 
+Graine de référence (ENV-16, PA-19 C) : graine sans `lepton-graine.json` ni `project/` (ex.
+`original-tree`). Information `lepton: information:` sur stderr, puis : GRF-5 de chaque BSP greffé
+(famille greffée, cœur ∈ `coeurs` de la famille et du noyau) ; XSD et CFG-5 de chaque XML cité par
+`LEPTON_MKCONF` dans les presets visibles du noyau (`CMakePresets.json`, héritage résolu) dont
+`LEPTON_BOARD` est un BSP greffé, CFG-5 contre les greffons hors BSP et famille plus les BSP du XML
+et leurs familles ; preset à BSP non greffé : information. Graine avec `project/` sans manifeste :
+anomalie « manifeste de graine absent », comme avant.
+
 ### 3.10 `lepton generate [--clangd PATH]` (ENV-9 : CFG-6, BLD-5, IDE-2 à IDE-5, DBG-1 à DBG-4, TST-1)
 Ajoutée en ENV-9. `CMakeUserPresets.json` dans le dépôt de la graine (`project/scion/`), greffé à
 la racine du trunk par le greffon local `lepton@project-<projet>` ; `<ROOTSTOCK>/<projet>.code-workspace`

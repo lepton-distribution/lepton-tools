@@ -9,6 +9,9 @@ d'un greffon : ceux de ses `sources` (répertoire non récursif, comme le lecteu
 fichiers objets (`demarrage`, `vecteurs`, `remplacants_forts`) ; sans `sources` (noyau, compilé
 par ses composants) ou avec un `CMakeLists.txt` à sa destination : tout l'arbre de sa destination.
 Une définition dans une macro par collage de lexèmes (`dev_cmsdk_uart_##n##_map`) vaut motif.
+
+Graine de référence (PA-19 C, ENV-16) : ni `lepton-graine.json` ni greffon local de projet ; les
+contrôles de graine sont déduits des greffons greffés et des presets du noyau.
 """
 
 import json
