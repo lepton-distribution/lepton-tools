@@ -32,6 +32,15 @@ python3 scripts/oracle/comparer-oracle.py \
   non expliqué bloque l'étape.
 - Code 2 : capture incomplète.
 
+Série complète (construction à neuf, `host` d'abord, fumée et banc KAL des presets QEMU,
+capture binaire de chaque preset) :
+```bash
+scripts/oracle/rejouer-oracle.sh <ROOTSTOCK> doc/devenv/rapports/oracles/env-N-avant \
+    --qemu <preset>... --carte <preset>...
+```
+Liste des 14 presets (6 QEMU, 8 carte) : `doc/devenv/rapports/env-13-graine.md` §4. Les mêmes
+arguments servent à l'oracle après.
+
 ## 2. Sorties de mklepton (ENV-4)
 
 Utiliser le script du portage `tests/host/mklepton_empreintes.sh` (dans le clone noyau ; vérifier
