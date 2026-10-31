@@ -112,6 +112,9 @@ def _copy_bsp(src_dir: Path, files: list[Path], target: Path, old_dest: str, new
 def scion_new(args) -> int:
     rs = Rootstock.discover(args.rootstock)
     name, kind = args.name, args.type
+    if not args.no_seed:             # PA-23 d'ENV-18 : l'ajout à la graine la modifie
+        seed.refuse_reference(rs, "scion new", f"lepton scion new {name} --type {kind} … --no-seed, "
+                                               "puis l'ajouter à une graine de projet")
     seed.check_new_scion(rs, name, kind)
     dest = args.destination or DEFAULT_DESTINATION[kind].format(name=name)
     _check_destination(dest)
@@ -186,4 +189,4 @@ def _left_state(rs: Rootstock, name: str, kind: str, repo: Path, add_cmd: str) -
 def scion_remove(args) -> int:
     """GRF-4 : comme `seed remove` sans `--purge` ; le dépôt du greffon n'est jamais touché."""
     args.purge = False
-    return seed.seed_remove(args)
+    return seed.seed_remove(args, "scion remove")

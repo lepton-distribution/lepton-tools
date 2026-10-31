@@ -192,6 +192,11 @@ class Rootstock:
     def seed_manifest_path(self) -> Path:
         return self.seed_dot() / SEED_MANIFEST
 
+    def is_reference_seed(self) -> bool:
+        """Graine de référence (PA-19 C d'ENV-16, PA-23 d'ENV-18) : ni `lepton-graine.json` ni greffon
+        local de projet (`project/`) ; une graine de projet abîmée garde `project/`."""
+        return not self.seed_manifest_path().exists() and not (self.seed_root() / PROJECT_SUBPATH).exists()
+
     def sources(self) -> list[SourceEntry]:
         return read_sources(self.seed_dot() / SOURCES_LIST)
 

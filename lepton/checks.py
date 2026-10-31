@@ -374,6 +374,12 @@ def kernel_presets(path: Path) -> dict[str, dict]:
     return {name: variables(name, frozenset()) for name, p in raw.items() if not p.get("hidden")}
 
 
+def board_presets(rs: Rootstock) -> dict[str, dict]:
+    """Presets visibles du noyau qui désignent une carte (`LEPTON_BOARD`), dans l'ordre du fichier :
+    configurations de la graine de référence (PA-23 d'ENV-18 : BSP greffé ou non)."""
+    return {name: v for name, v in kernel_presets(rs.trunk / KERNEL_PRESETS).items() if v.get("LEPTON_BOARD")}
+
+
 def check_reference_seed(rs: Rootstock, manifests: list[tuple[Manifest, str]], warn, info
                          ) -> tuple[list[str], list[Anomaly]]:
     """Contrôles déduits des greffons greffés : GRF-5 de chaque BSP ; XSD et CFG-5 des XML cités par
@@ -467,7 +473,7 @@ def check_rootstock(rs: Rootstock, warn, info) -> tuple[list[str], list[Anomaly]
 
     graine_path = rs.seed_manifest_path()
     label = _rel(rs, graine_path)
-    if not graine_path.exists() and not (rs.seed_root() / PROJECT_SUBPATH).exists():
+    if rs.is_reference_seed():
         info(f"graine de référence ({_rel(rs, rs.seed_root())} : ni {graine_path.name} ni {PROJECT_SUBPATH}/) : "
              "contrôles déduits des greffons greffés et des presets du noyau")
         found_checked, found = check_reference_seed(rs, list(manifests.values()), warn, info)
