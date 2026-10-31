@@ -32,7 +32,7 @@ Hôtes :
 | Hôte | Rôle | Étapes |
 | --- | --- | --- |
 | Mac mini Intel, macOS (hôte principal) | Développement, construction native, flash et débogage | Toutes |
-| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian), ENV-15 (partie Debian) |
+| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian), ENV-15 (partie Debian), ENV-21 |
 
 Règles de parallélisme Mac / VM :
 
@@ -146,6 +146,16 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | PA-18 | ENV-15 | Rapport : tag et push de `seed.scions`, push de `devenv/env-15` (lepton-tools), ordre R15-1 ; après `FIN-SUCCÈS R15-1`, fusion dans `main` et push | ouvert |
 | PA-19 | ENV-16 | Option retenue pour la graine de référence (manifeste dans `original-tree` avec schéma étendu, ou `lepton check` qui admet une graine de référence) avant toute modification | ouvert |
 | PA-20 | ENV-16 | Rapport : push de `devenv/env-16` et, le cas échéant, de la graine `original-tree` ; fusion dans `main` | ouvert |
+| PA-21 | ENV-17 | Liste des corrections (documents vivants, messages CMake, skill) ; confirmation des propositions en attente (ENV-8 S2-S4, `bsp_demarrage`, §2bis) avant toute modification | ouvert |
+| PA-22 | ENV-17 | Rapport : push de `devenv/env-17` (lepton-tools, clone noyau), fusion dans `main` et `master` | ouvert |
+| PA-23 | ENV-18 | Commandes de `lepton` acceptées et refusées sur la graine de référence, nom de l'espace, sort de `CMakeUserPresets.json`, presets offerts, comportement de l'extension, avant toute modification | ouvert |
+| PA-24 | ENV-18 | Rapport : push de `devenv/env-18`, fusion dans `main` | ouvert |
+| PA-25 | ENV-19 | Liste d'extraction F746 et SAMD21, noms des greffons et des dépôts GitHub, sort du repli `cmake/boards`, cartes disponibles, avant toute modification | ouvert |
+| PA-26 | ENV-19 | Rapport : push des nouveaux dépôts et des branches `devenv/env-19` ; fusion avant ou après la validation Debian d'ENV-21 | ouvert |
+| PA-27 | ENV-20 | Table de vecteurs F4 complète, mode de création du BSP `nucleo-f439zi`, fichiers propres au F439, XML, presets, essai éventuel sur NUCLEO-F429ZI, avant toute modification | ouvert |
+| PA-28 | ENV-20 | Rapport : push du dépôt du BSP et des branches `devenv/env-20`, fusions | ouvert |
+| PA-29 | ENV-21 | Consigne `consignes/env-21-debian.md` et nettoyage de la VM ; push de `devenv/env-21`, ordre R21-1 | ouvert |
+| PA-30 | ENV-21 | Après `FIN-SUCCÈS R21-1` : fusions dans `main` (et fusions différées d'ENV-19 et ENV-20), push | ouvert |
 | PA-P | toutes | Tout `git push`, toute action `scion seed-update` / `graft-update` | permanent |
 
 ## 5. Règles de travail (rappel des acquis du portage)
@@ -166,9 +176,9 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | Élément | Rôle | Étapes |
 | --- | --- | --- |
 | skill `devenv-session` | Procédure de début et de fin de session, passation | toutes |
-| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15 |
-| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15 |
-| skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14 |
+| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15, 17, 19, 20, 21 |
+| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15, 17, 19, 20, 21 |
+| skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21 |
 | hook `proteger-trunk.py` | Refuse Write/Edit sous `<ROOTSTOCK>/trunk/` et les commandes shell d'écriture visant `trunk/` | toutes |
 
 Une skill se corrige comme le code : sur la branche de l'étape, commit dédié, ligne de journal
@@ -196,6 +206,11 @@ ce plan.
 | ENV-14 | Nettoyage de l'arbre | ENV-13 |
 | ENV-15 | Fichiers ignorés et fichiers étrangers dans scion | ENV-14 |
 | ENV-16 | Graine de référence et `lepton check` | ENV-13 (indépendante d'ENV-15) |
+| ENV-17 | Cohérence de la documentation et des messages | ENV-16 |
+| ENV-18 | Graine de référence gérée par `lepton` | ENV-16 (indépendante d'ENV-17, ENV-19, ENV-20) |
+| ENV-19 | Extraction des cartes STM32F746G-DISCO et SAMD21 Xplained Pro | ENV-14 ; ENV-17 conseillée avant |
+| ENV-20 | BSP `nucleo-f439zi` | ENV-19 (graine `original-tree` et presets du noyau partagés) |
+| ENV-21 | Validation Debian groupée | ENV-17, ENV-18, ENV-19, ENV-20 |
 
 Ordre conseillé : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12. ENV-1 et ENV-2 sont permutables ;
 ENV-4 et ENV-5 aussi ; ENV-7 peut suivre directement ENV-2 si l'audit le justifie.

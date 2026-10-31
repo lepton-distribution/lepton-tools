@@ -1,11 +1,11 @@
 # État du chantier « environnement de développement Lepton »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-10-31 — ENV-16 terminée (`lepton check` reconnaît la graine de référence `original-tree` sans manifeste et la contrôle par ses greffons et les presets du noyau ; code 0 sur `<ROOTSTOCK>` ; graines de projet inchangées).
+Dernière mise à jour : 2026-10-31 — révision du plan (ENV-17 à ENV-21 ajoutées) ; ENV-16 terminée (`lepton check` reconnaît la graine de référence `original-tree` sans manifeste et la contrôle par ses greffons et les presets du noyau ; code 0 sur `<ROOTSTOCK>` ; graines de projet inchangées).
 
 ## Prochaine action
 
-Aucune étape planifiée après ENV-16 (ORCHESTRATION §6). Prochaine session : demander à l'utilisateur la suite du chantier ; toute nouvelle étape passe par la skill `lepton-portage-instructions` (révision du plan).
+Démarrer ENV-17 (`etapes/ENV-17-coherence-doc.md`) : skill `devenv-session`, mode plan, puis tâche 1 (audit, lecture seule) jusqu'au PA-21. ENV-18 (`etapes/ENV-18-graine-reference-lepton.md`) est indépendante et peut la précéder ; ENV-19, ENV-20 puis ENV-21 suivent dans cet ordre (ORCHESTRATION §6).
 
 ## Étapes
 
@@ -28,6 +28,11 @@ Aucune étape planifiée après ENV-16 (ORCHESTRATION §6). Prochaine session : 
 | ENV-14 | Nettoyage de l'arbre | terminée (2026-10-30) ; rapports `rapports/env-14-inventaire.md`, `rapports/env-14-nettoyage.md`, `rapports/env-14-debian.md` | lepton-tools `devenv/env-14` (depuis `main` c2a1942, fusionnée dans `main`, poussée) ; clone noyau `devenv/env-14` (depuis `master` 16a331b, fusionnée dans `master` 118912a, poussées) ; `family-stm32f4xx` `devenv/env-14` (depuis `master` 01b5528, fusionnée dans `master` 7694ad5, poussées) ; `devenv/env-14-debian` (VM, ordre R14-1, poussée, fusionnée) | `handoff/env-14.md` |
 | ENV-15 | Fichiers ignorés et fichiers étrangers dans scion | terminée (2026-10-30) ; rapports `rapports/env-15-scion.md`, `rapports/env-15-debian.md` | lepton-tools `devenv/env-15` (depuis `main` 44abf2c, fusionnée dans `main`, poussée) ; seed.scions `devenv/env-15` (depuis `master` f1d1f3c, fusionnée dans `master` 472c12e, tag 0.5.2.0, `master` et tag poussés, branche non poussée) ; clone noyau `devenv/env-15` (depuis `master` 118912a, fusionnée dans `master` 6f1801d, poussées) ; `devenv/env-15-debian` (VM, ordre R15-1, poussée, fusionnée) | `handoff/env-15.md` |
 | ENV-16 | Graine de référence et `lepton check` | terminée (2026-10-31) ; rapport `rapports/env-16-graine.md` | lepton-tools `devenv/env-16` (depuis `main` 08adee9, fusionnée dans `main`, poussée) ; graine `original-tree` inchangée (option C) | `handoff/env-16.md` |
+| ENV-17 | Cohérence de la documentation et des messages | à faire (ajoutée le 2026-10-31) | — | — |
+| ENV-18 | Graine de référence gérée par `lepton` | à faire (ajoutée le 2026-10-31) | — | — |
+| ENV-19 | Extraction des cartes STM32F746G-DISCO et SAMD21 Xplained Pro | à faire (ajoutée le 2026-10-31) | — | — |
+| ENV-20 | BSP `nucleo-f439zi` | à faire (ajoutée le 2026-10-31) | — | — |
+| ENV-21 | Validation Debian groupée | à faire (ajoutée le 2026-10-31) | — | — |
 
 Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), abandonnée (décision).
 
@@ -291,6 +296,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-30 | — (ENV-15, clôture) | Écart relevé : défaut scion 0.5.1.1 dans le clone noyau (`install-{macos,debian}.sh`, `BUILDING.md`, `README-PAQUET.md`) alors que lepton exige ≥ 0.5.2.0 ; aligné à 0.5.2.0 (clone noyau 0ad8a03, `master` 6f1801d), poussé, sans validation Debian (`rapports/env-15-scion.md` §9). Décision de l'utilisateur. |
 | 2026-10-31 | PA-19 | Option C (`rapports/env-16-graine.md` §1.5) : graine de référence reconnue par `lepton check` quand elle n'a ni `lepton-graine.json` ni `project/` ; information, puis contrôles déduits des greffons greffés : GRF-5 par BSP greffé (famille greffée, cœur dans les cœurs de la famille et du noyau), XSD et CFG-5 des XML cités par les presets du noyau dont le BSP est greffé ; presets à BSP non greffé (`stm32f746g-disco-*`, `samd21-xplained-pro-*`) : ligne d'information, code inchangé. Schéma et graine publiée inchangés ; graine de projet sans manifeste (avec `project/`) : anomalie conservée. Décision de l'utilisateur. |
 | 2026-10-31 | PA-20 | Rapport `rapports/env-16-graine.md` présenté (202 tests, `check` 0 sur `<ROOTSTOCK>` et `essais/env-13-vierge`, graines de projet identiques). État et passation commités sur `devenv/env-16`, fusion (`--no-ff`) dans `main`, push (PA-P) de `main` et `devenv/env-16`. Aucun push de graine (option C). Décision de l'utilisateur. |
+| 2026-10-31 | — (révision du plan, ENV-17 à ENV-21) | Étapes retenues d'après l'analyse des points en suspens : ENV-17 cohérence de la documentation et des messages (`BUILDING.md` du noyau, `kernel.cmake:167`, L6-10 dans `lepton-cibles`, propositions en attente) ; ENV-18 graine de référence gérée par `lepton` : commandes de lecture et `generate` acceptées, commandes qui modifient la graine refusées avec un message explicite ; ENV-19 STM32F746G-DISCO et SAMD21 Xplained Pro extraites en greffons famille et BSP (et non retirées) ; ENV-20 BSP `nucleo-f439zi`, sans carte NUCLEO-F439ZI (validation par construction et symboles) ; ENV-21 validation Debian groupée. Hors plan : Apple Silicon, cpufs automatique, DBG-4/DBG-5/TST-2, code non configuré, publication Open VSX, `.scion.trunk.tolerated`. Points d'arrêt PA-21 à PA-30. Décisions de l'utilisateur. |
 | 2026-10-12 | PA-1 | Débogage sans `-ffile-prefix-map` ni `substitute-path` ; écart accepté en phase 1 : à l'arrêt, source affiché sous le chemin du clone (`fullname` GDB) ; résorption éventuelle en ENV-12. |
 
 ## Journal
@@ -366,3 +372,4 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-10-30 | ENV-15 | R15-1 (ORDRE, ACCUSÉ, AVANCEMENT ×4, FIN-SUCCÈS ; consigne `consignes/env-15-debian.md`) : C1 à C8 conformes, `comparer-oracle` 0 contre R14-1 sur host + 6 presets QEMU, banc 19/15 (constat `net.ping_ftpd`) ; installations pipx et tests de scion lancés par l'utilisateur (permissions de la session VM) ; `devenv/env-15-debian` fusionnée ; PA-18 (2) : fusion dans `main` et push ; clone noyau : défaut `SCION_REF` 0.5.2.0 (`master` 6f1801d, poussé) ; étape terminée. |
 | 2026-10-30 | ENV-15 (après clôture) | Demande de l'utilisateur : répertoires d'essai du Mac `essais/env-15`, `essais/env-15-venv`, `essais/env-15-mesures` supprimés (~150 Mo) ; `<ROOTSTOCK>` inchangé (3929 liens, 0 cassé). Ceux de la VM sont conservés. |
 | 2026-10-31 | ENV-16 | Tâche 1 : audit (`rapports/env-16-graine.md` §1), relevé de référence de `check` et `seed status` sur `<ROOTSTOCK>` et 7 rootstocks d'essai ; PA-19 : option C. Tâche 2 : lepton-tools d7b814c (code), a0e58cb (4 tests), 6a40859 (interface §3.9) ; `pytest` 202 verts ; `valider-schemas.sh` conforme ; pipx. Tâche 3 : `check` 0 sur `<ROOTSTOCK>` et `env-13-vierge` (12 fichiers, 3 XML, 4 presets à BSP non greffé en information) ; graines de projet et `seed status` identiques à l'octet ; PA-20 : fusion dans `main` et push. |
+| 2026-10-31 | — (révision du plan) | Étapes ENV-17 à ENV-21 ajoutées (skill `lepton-portage-instructions`) : `etapes/ENV-17-coherence-doc.md`, `ENV-18-graine-reference-lepton.md`, `ENV-19-cartes-transitoires.md`, `ENV-20-bsp-f439zi.md`, `ENV-21-validation-debian.md` ; PA-21 à PA-30 (ORCHESTRATION §4), graphe §6, hôtes §2, skills §5bis. |
