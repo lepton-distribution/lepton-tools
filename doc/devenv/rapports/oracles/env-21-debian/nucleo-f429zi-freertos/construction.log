@@ -1,0 +1,570 @@
+Preset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/cmake/toolchains/arm-none-eabi.cmake"
+  LEPTON_BOARD="nucleo-f429zi"
+  LEPTON_CPU="cortex-m4f"
+  LEPTON_EMBOS_ROOT="/home/lepton-user/lepton/third_party/embos/cortexm-gcc/5.20.0.0"
+  LEPTON_ISA="armv7m"
+  LEPTON_KAL_BACKEND="freertos"
+  LEPTON_MKCONF="sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_f439zi.xml"
+  LEPTON_MKLEPTON="/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/../build/host/mklepton"
+
+-- The C compiler identification is GNU 14.2.1
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/arm-none-eabi-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- greffons : qemu-mps2;samd21;stm32f4xx;stm32f7xx;stm32wlxx;nucleo-f429zi;nucleo-f439zi;nucleo-wl55jc1;qemu-mps2-an386;qemu-mps2-an500;samd21-xplained-pro;stm32f746g-disco;lepton-noyau
+-- carte nucleo-f429zi : famille stm32f4xx, cœur cortex-m4f
+-- The ASM compiler identification is GNU
+-- Found assembler: /usr/bin/arm-none-eabi-gcc
+-- greffon stm32f4xx : kernel (gpio.c;uart.c;eth.c;dev_stm32f4xx/dev_stm32f4xx_uart_x.c;dev_stm32f4xx/dev_stm32f4xx_eth.c;driverlib/misc.c;driverlib/stm32f4xx_rcc.c;driverlib/stm32f4xx_gpio.c;driverlib/stm32f4xx_usart.c;driverlib/stm32f4xx_dma.c;driverlib/stm32f4xx_syscfg.c;driverlib/stm32f4x7_eth.c)
+-- greffon nucleo-f429zi : aucune source
+-- Found Python3: /usr/bin/python3 (found version "3.13.5") found components: Interpreter
+-- Configuring done (0.4s)
+-- Generating done (0.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    LEPTON_EMBOS_ROOT
+
+
+-- Build files have been written to: /home/lepton-user/lepton-tools-dev/essais/env-21-debian/build/nucleo-f429zi-freertos
+[0/2] Re-checking globbed directories...
+[1/183] mklepton sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_f439zi.xml -> /home/lepton-user/lepton-tools-dev/essais/env-21-debian/build/nucleo-f429zi-freertos/generated/board
+
+mklepton
+
+open xml file:/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_f439zi.xml
+make kernel:kernel_mkconf.h ...
+make kernel:kernel_mkconf.h ok!
+make devices:dev_mkconf.c ...
+use devices dev_null_map
+use devices dev_proc_map
+use devices dev_cpufs_map
+use devices dev_head_map
+use devices dev_pipe_map
+use devices dev_lwip_core_socket_map
+use devices dev_lwip_stack_map
+use devices dev_nucleo_f439zi_board_map
+use devices dev_nucleo_f439zi_uart_3_map
+use devices dev_nucleo_f439zi_uart_6_map
+use devices dev_stm32f4xx_eth_map
+make devices:dev_mkconf.c ok!
+read xml binaries:bin_mkconf.c ...
+read xml binaries:bin_mkconf.c ok!
+read xml binaries:bin_mkconf.c ...
+read xml binaries:bin_mkconf.c ok!
+read xml binaries:bin_mkconf.c ...
+read xml binaries:bin_mkconf.c ok!
+
+_mk_conf ok!
+
+make dev: ...
+make dev ok
+
+_mk_dev ok!
+
+
+_mk_mount ok!
+
+
+_mk_boot ok!
+
+make binaries:bin_mkconf.c ...
+(0):sbin/initd
+(1):sbin/lsh
+(2):sbin/mount
+(3):sbin/umount
+(4):sbin/ls
+(5):sbin/ps
+(6):sbin/kill
+(7):sbin/cat
+(8):sbin/uname
+(9):sbin/pwd
+(10):sbin/echo
+(11):sbin/net/ifconfig
+(12):sbin/net/tsterrno
+(13):bin/net/ftpd
+makefs hdc
+mount /dev/hd/hdc on /usr
+mkdir /usr/sbin
+creat /usr/sbin/initd
+creat /usr/sbin/lsh
+creat /usr/sbin/mount
+creat /usr/sbin/umount
+creat /usr/sbin/ls
+creat /usr/sbin/ps
+creat /usr/sbin/kill
+creat /usr/sbin/cat
+creat /usr/sbin/uname
+creat /usr/sbin/pwd
+creat /usr/sbin/echo
+mkdir /usr/sbin/net
+creat /usr/sbin/net/ifconfig
+creat /usr/sbin/net/tsterrno
+mkdir /usr/bin/net
+creat /usr/bin/net/ftpd
+mkdir /usr/sbin
+mkdir /usr/sbin/net
+mkdir /usr/bin/net
+/usr free block:454 free size=116224 bytes
+umount /usr
+make binaries:bin_mkconf.c ok
+
+_mk_binaries ok!
+
+make files: ...
+mount /dev/hd/hdc on /usr
+mkdir /usr/etc
+creat /usr/etc/.boot
+creat /usr/etc/.init
+mkdir /usr/etc
+/usr free block:451 free size=115456 bytes
+umount /usr
+make files ok
+
+_mk_file ok!
+
+
+_mk_dir ok!
+
+.fsflash.o to dev_dskimg.c...(128000 bytes) ok.
+
+_mk_dskimg ok!
+
+
+mklepton success :)!
+[2/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/env.c.obj
+[3/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/bin.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/statvfs.h:32,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/bin.c:39:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[4/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/cpu.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/cpu.c:34:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[5/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/heap.c.obj
+[6/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/flock.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/flock.h:38,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/flock.c:38:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[7/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kernel_ring_buffer.c.obj
+[8/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/malloc.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/malloc.c:38:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[9/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kernel_io.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/kernel_io.c:40:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[10/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kernel_printk.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/kernel_printk.c:78:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[11/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/sysctl.c.obj
+[12/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/pipe.c.obj
+[13/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/systime.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/systime.c:42:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[14/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/dirent.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/dirent.c:38:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[15/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/fcntl.c.obj
+[16/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kernel_mqueue.c.obj
+[17/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/lib.c.obj
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/lib.c:45:12: note: '#pragma message: use load lib'
+   45 |    #pragma message ("use load lib")
+      |            ^~~~~~~
+[18/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/time.c.obj
+[19/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/posix_mqueue.c.obj
+[20/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/stat.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/stat.c:38:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[21/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/select.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/select.c:42:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[22/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/statvfs.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/statvfs.h:32,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/statvfs.c:38:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[23/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/timer.c.obj
+[24/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/truncate.c.obj
+[25/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/wait.c.obj
+[26/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/core_rttimer.c.obj
+[27/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-generic/kernel_pthread_tsd.c.obj
+[28/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/system.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/system.c:38:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[29/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/fork.c.obj
+[30/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/kernel_clock.c.obj
+[31/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/kernel_object.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/kernel_object.c:33:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/kernel_object.c: In function 'kernel_object_constructor_timer':
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/kernel_object.c:215:24: warning: 'clockid_t' {aka 'unsigned char'} is promoted to 'int' when passed through '...'
+  215 |    clockid= va_arg(ap, clockid_t);
+      |                        ^
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/kernel_object.c:215:24: note: (so you should pass 'int' not 'clockid_t' {aka 'unsigned char'} to 'va_arg')
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/kernel_object.c:215:24: note: if this code is reached, the program will abort
+[32/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/kernel_pthread_mutex.c.obj
+[33/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/kernel_pthread.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/kernel_pthread.c:71:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[34/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/kernel_sem.c.obj
+[35/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/kernel.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/statvfs.h:32,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/kernel.c:48:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[36/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/kernel_sigqueue.c.obj
+[37/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/kernel_timer.c.obj
+[38/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/kernel_syscall_lock.c.obj
+[39/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/signal.c.obj
+[40/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/kal/backend/freertos/kal_freertos.c.obj
+[41/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/syscall.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/flock.h:38,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c:42:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c: In function '_syscall_pthread_mutex_init':
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c:1213:82: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+ 1213 |    if(pthread_mutex_init_dt->mutex && pthread_mutex_init_dt->mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED){
+      |                                                                                  ^~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c:1213:39: note: did you mean to dereference the pointer?
+ 1213 |    if(pthread_mutex_init_dt->mutex && pthread_mutex_init_dt->mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED){
+      |                                       ^
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c: In function '_syscall_pthread_mutex_destroy':
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c:1240:88: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+ 1240 |    if(pthread_mutex_destroy_dt->mutex && pthread_mutex_destroy_dt->mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED){
+      |                                                                                        ^~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c:1240:42: note: did you mean to dereference the pointer?
+ 1240 |    if(pthread_mutex_destroy_dt->mutex && pthread_mutex_destroy_dt->mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED){
+      |                                          ^
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c: In function '_syscall_pthread_cond_init':
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c:1269:78: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+ 1269 |    if(pthread_cond_init_dt->cond && pthread_cond_init_dt->cond->kernel_object==PTHREAD_COND_UNINITIALIZED){
+      |                                                                              ^~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c:1269:37: note: did you mean to dereference the pointer?
+ 1269 |    if(pthread_cond_init_dt->cond && pthread_cond_init_dt->cond->kernel_object==PTHREAD_COND_UNINITIALIZED){
+      |                                     ^
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c: In function '_syscall_pthread_cond_destroy':
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c:1297:84: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+ 1297 |    if(pthread_cond_destroy_dt->cond && pthread_cond_destroy_dt->cond->kernel_object!=PTHREAD_COND_UNINITIALIZED){
+      |                                                                                    ^~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/core-freertos/syscall.c:1297:40: note: did you mean to dereference the pointer?
+ 1297 |    if(pthread_cond_destroy_dt->cond && pthread_cond_destroy_dt->cond->kernel_object!=PTHREAD_COND_UNINITIALIZED){
+      |                                        ^
+[42/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/core-freertos/process.c.obj
+[43/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/ucore/freeRTOS_11-3-0/list.c.obj
+[44/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/ucore/freeRTOS_11-3-0/timers.c.obj
+[45/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/ucore/freeRTOS_11-3-0/queue.c.obj
+[46/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/ucore/freeRTOS_11-3-0/event_groups.c.obj
+[47/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/ucore/freeRTOS_11-3-0/tasks.c.obj
+[48/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/ucore/freeRTOS_11-3-0/portable/GCC/ARM_CM4F/port.c.obj
+[49/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_cpufs/dev_cpufs.c.obj
+[50/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_null/dev_null.c.obj
+[51/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_head/dev_head.c.obj
+[52/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_proc/dev_proc.c.obj
+[53/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_tty/dev_tty.c.obj
+[54/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_tty/tty_font-8x8.c.obj
+[55/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_tty/tty_font-8x16.c.obj
+[56/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/dev_part/dev_part.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/dev/dev_part/dev_part.c:43:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[57/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfsdev.c.obj
+[58/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfscore.c.obj
+[59/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfskernel.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfskernel.c:36:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[60/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/rootfs/rootfscore.c.obj
+[61/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/rootfs/rootfs.c.obj
+[62/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/vfs/vfs.c.obj
+[63/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/ufs/ufsdriver.c:34:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[64/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver_1_3.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/ufs/ufsdriver_1_3.c:38:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[65/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufs.c.obj
+[66/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufscore.c.obj
+[67/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver_1_4.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/ufs/ufsdriver_1_4.c:39:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[68/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsx.c.obj
+[69/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/ufs/ufsdriver_1_5.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/ufs/ufsdriver_1_5.c:37:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[70/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/fs/kofs/kofs.c.obj
+[71/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/api_lib.c.obj
+[72/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/err.c.obj
+[73/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/netdb.c.obj
+[74/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/netbuf.c.obj
+[75/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/netifapi.c.obj
+[76/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/tcpip.c.obj
+[77/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/def.c.obj
+[78/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/api_msg.c.obj
+[79/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/inet_chksum.c.obj
+[80/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/dns.c.obj
+[81/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/init.c.obj
+[82/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ip.c.obj
+[83/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/mem.c.obj
+[84/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/api/sockets.c.obj
+[85/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/netif.c.obj
+[86/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/memp.c.obj
+[87/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/raw.c.obj
+[88/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/stats.c.obj
+[89/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/sys.c.obj
+[90/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/pbuf.c.obj
+[91/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/tcp.c.obj
+[92/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/tcp_in.c.obj
+[93/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/timeouts.c.obj
+[94/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/tcp_out.c.obj
+[95/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/dhcp.c.obj
+[96/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/autoip.c.obj
+[97/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/icmp.c.obj
+[98/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/udp.c.obj
+[99/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/etharp.c.obj
+[100/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/igmp.c.obj
+[101/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/ip4.c.obj
+[102/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/ip4_addr.c.obj
+[103/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/netif/ethernet.c.obj
+[104/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/netif/ethernetif.c.obj
+[105/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/netif/lowpan6.c.obj
+[106/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/ports/freertos/sys_arch.c.obj
+[107/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/netif/slipif.c.obj
+[108/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/net/lwip/core/ipv4/ip4_frag.c.obj
+[109/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/net/kernel_net_core_socket.c.obj
+[110/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/net/lwip_core/ethif_core.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/net/lwip_core/ethif_core.c:47:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[111/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/net/lwip_core/lwip_core.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/net/lwip_core/lwip_core.c:42:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/net/lwip/ports/arm/include/arch/perf.h:23:30: warning: 'struct tms' declared inside parameter list will not be visible outside of this definition or declaration
+   23 | void perf_print_times(struct tms *start, struct tms *end, char *key);
+      |                              ^~~
+[112/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/core/net/lwip_core/lwip_core_socket.c.obj
+[113/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/gpio.c.obj
+[114/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c.obj
+[115/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/dev_stm32f4xx/dev_stm32f4xx_uart_x.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/dev_stm32f4xx/dev_stm32f4xx_uart_x.c:43:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[116/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/dev_stm32f4xx/dev_stm32f4xx_eth.c.obj
+[117/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/uart.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/uart.c:38:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[118/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/misc.c.obj
+[119/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_gpio.c.obj
+[120/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_rcc.c.obj
+[121/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_usart.c.obj
+[122/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_dma.c.obj
+[123/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_syscfg.c.obj
+[124/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/libc.c.obj
+[125/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/ctype/ctype.c.obj
+[126/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/crc.c.obj
+[127/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/dtostr.c.obj
+[128/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/itoa.c.obj
+[129/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/ftoa.c.obj
+[130/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/prsopt.c.obj
+[131/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/ltostr.c.obj
+[132/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/strto_ll.c.obj
+[133/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/misc/strto_l.c.obj
+[134/183] Building C object CMakeFiles/kernel.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.c.obj
+[135/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/stdio/printf.c.obj
+[136/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/string/string.c.obj
+[137/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/string/strerror.c.obj
+[138/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/stdio/stdio.c.obj
+[139/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/termios/tcgetattr.c.obj
+[140/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/termios/tcsetattr.c.obj
+[141/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/stdio/scanf.c.obj
+[142/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/termios/termios.c.obj
+[143/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/unistd/unistd.c.obj
+[144/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/unistd/getopt.c.obj
+[145/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/pthread/pthread.c.obj
+[146/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/pthread/pthread_mutex.c.obj
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c: In function 'pthread_mutex_lock':
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c:113:27: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  113 |    if(mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED) {
+      |                           ^~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c:113:7: note: did you mean to dereference the pointer?
+  113 |    if(mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED) {
+      |       ^
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c:119:27: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  119 |    if(mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |                           ^~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c:119:7: note: did you mean to dereference the pointer?
+  119 |    if(mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |       ^
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c: In function 'pthread_mutex_trylock':
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c:136:27: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  136 |    if(mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED) {
+      |                           ^~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c:136:7: note: did you mean to dereference the pointer?
+  136 |    if(mutex->kernel_object==PTHREAD_MUTEX_UNINITIALIZED) {
+      |       ^
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c:142:27: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  142 |    if(mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |                           ^~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c:142:7: note: did you mean to dereference the pointer?
+  142 |    if(mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |       ^
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c: In function 'pthread_mutex_unlock':
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c:156:36: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  156 |    if(mutex && mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |                                    ^~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/pthread/pthread_mutex.c:156:16: note: did you mean to dereference the pointer?
+  156 |    if(mutex && mutex->kernel_object!=PTHREAD_MUTEX_UNINITIALIZED)
+      |                ^
+[147/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/pthread/pthread_cond.c.obj
+[148/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/unistd/io.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfs.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/libc/unistd/io.c:44:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+[149/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/net/htonl.c.obj
+[150/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/librt/mq.c.obj
+[151/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/librt/sem.c.obj
+[152/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/net/socket.c.obj
+[153/183] Building C object CMakeFiles/lib.dir/sys/root/src/lib/libc/net/inet/inet_addr.c.obj
+[154/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/initd.c.obj
+[155/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/mount.c.obj
+[156/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/umount.c.obj
+[157/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/ls.c.obj
+[158/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/ps.c.obj
+[159/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/kill.c.obj
+[160/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/lsh.c.obj
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/sbin/lsh.c:67:9: warning: "ARG_MAX" redefined
+   67 | #define ARG_MAX (20)
+      |         ^~~~~~~
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/libstd.h:31,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/sbin/lsh.c:40:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/process.h:82:9: note: this is the location of the previous definition
+   82 | #define ARG_MAX   20
+      |         ^~~~~~~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/sbin/lsh.c: In function 'parse_cmd':
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/sbin/lsh.c:396:23: warning: comparison between pointer and zero character constant [-Wpointer-compare]
+  396 |             if(argv[1]=='\0') {
+      |                       ^~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/sbin/lsh.c:396:16: note: did you mean to dereference the pointer?
+  396 |             if(argv[1]=='\0') {
+      |                ^
+[161/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/cat.c.obj
+[162/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/uname.c.obj
+[163/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/pwd.c.obj
+[164/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/echo.c.obj
+[165/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/net/ifconfig.c.obj
+[166/183] Building C object CMakeFiles/sbin.dir/sys/root/src/sbin/net/tsterrno.c.obj
+[167/183] Linking C static library libkernel.a
+[168/183] Building C object CMakeFiles/bin.dir/sys/root/src/bin/net/ftpd/ls.c.obj
+[169/183] Building C object CMakeFiles/generated.dir/generated/board/dev_mkconf.c.obj
+[170/183] Linking C static library liblib.a
+[171/183] Building C object CMakeFiles/generated.dir/generated/board/bin_mkconf.c.obj
+[172/183] Building C object CMakeFiles/kernel_demarrage.dir/sys/root/src/kernel/core/arch/cortexm/startup_armv7m.c.obj
+[173/183] Building C object CMakeFiles/bin.dir/sys/root/src/bin/net/ftpd/ftpd.c.obj
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/bin/net/ftpd/ftpd.c:61:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/ioctl.h:39:9: warning: "FIONBIO" redefined
+   39 | #define FIONBIO                  (IOCTL_RESERVED_CMD_BASE|0x0004) //If arg is non-zero, set O_NONBLOCK, otherwise clear O_NONBLOCK.
+      |         ^~~~~~~
+In file included from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/net/socket.h:38,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/lib/libc/net/socket.h:36,
+                 from /home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/bin/net/ftpd/ftpd.c:46:
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/net/lwip/include/lwip/sockets.h:372:9: note: this is the location of the previous definition
+  372 | #define FIONBIO     _IOW('f', 126, unsigned long) /* set/clear non-blocking i/o */
+      |         ^~~~~~~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/core/ioctl.h:40:9: warning: "FIONREAD" redefined
+   40 | #define FIONREAD                 (IOCTL_RESERVED_CMD_BASE|0x0005) //not supported by all device driver. at this moment only supported by lwip_socket api.
+      |         ^~~~~~~~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/net/lwip/include/lwip/sockets.h:369:9: note: this is the location of the previous definition
+  369 | #define FIONREAD    _IOR('f', 127, unsigned long) /* get # bytes to read */
+      |         ^~~~~~~~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/bin/net/ftpd/ftpd.c:74:12: warning: "SHUT_RDWR" redefined
+   74 |    #define SHUT_RDWR 3
+      |            ^~~~~~~~~
+/home/lepton-user/lepton-tools-dev/essais/env-21-debian/trunk/sys/root/src/kernel/net/lwip/include/lwip/sockets.h:404:11: note: this is the location of the previous definition
+  404 |   #define SHUT_RDWR 2
+      |           ^~~~~~~~~
+[174/183] Building C object CMakeFiles/kernel_demarrage.dir/sys/root/src/kernel/core/arch/cortexm/sbrk_cortexm.c.obj
+[175/183] Building C object CMakeFiles/bsp_demarrage.dir/sys/root/src/kernel/dev/bsp/nucleo-f429zi/nucleo_f439zi_board.c.obj
+[176/183] Building C object CMakeFiles/bsp_objets.dir/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/vecteurs/stm32f429xx_vectors.c.obj
+[177/183] Building C object CMakeFiles/generated.dir/generated/board/dev_dskimg.c.obj
+[178/183] Building C object CMakeFiles/lepton.dir/sys/root/src/kernel/core/core-freertos/arch/armv7m/freertos_main.c.obj
+[179/183] Linking C static library libbin.a
+[180/183] Linking C static library libsbin.a
+[181/183] Building C object CMakeFiles/lepton.dir/sys/root/src/kernel/core/core-freertos/arch/armv7m/freertos_hooks.c.obj
+[182/183] Linking C executable lepton.elf
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-closer.o): in function `_close_r':
+/build/reproducible-path/newlib-4.5.0.20241231/build_nano/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib/libc/reent/closer.c:47:(.text+0xc): warning: _close is not implemented and will always fail
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-closer.o): note: the message above does not take linker garbage collection into account
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-fstatr.o): in function `_fstat_r':
+/build/reproducible-path/newlib-4.5.0.20241231/build_nano/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib/libc/reent/fstatr.c:55:(.text+0x12): warning: _fstat is not implemented and will always fail
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-fstatr.o): note: the message above does not take linker garbage collection into account
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-isattyr.o): in function `_isatty_r':
+/build/reproducible-path/newlib-4.5.0.20241231/build_nano/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib/libc/reent/isattyr.c:52:(.text+0xc): warning: _isatty is not implemented and will always fail
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-isattyr.o): note: the message above does not take linker garbage collection into account
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-lseekr.o): in function `_lseek_r':
+/build/reproducible-path/newlib-4.5.0.20241231/build_nano/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib/libc/reent/lseekr.c:49:(.text+0x14): warning: _lseek is not implemented and will always fail
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-lseekr.o): note: the message above does not take linker garbage collection into account
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-readr.o): in function `_read_r':
+/build/reproducible-path/newlib-4.5.0.20241231/build_nano/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib/libc/reent/readr.c:49:(.text+0x14): warning: _read is not implemented and will always fail
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-readr.o): note: the message above does not take linker garbage collection into account
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-writer.o): in function `_write_r':
+/build/reproducible-path/newlib-4.5.0.20241231/build_nano/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/../../../../../../newlib/libc/reent/writer.c:49:(.text+0x14): warning: _write is not implemented and will always fail
+/usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/14.2.1/../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libg_nano.a(libc_a-writer.o): note: the message above does not take linker garbage collection into account
+Memory region         Used Size  Region Size  %age Used
+           FLASH:      295400 B         2 MB     14.09%
+             RAM:      100152 B       192 KB     50.94%
+             CCM:       56400 B        64 KB     86.06%
+   text	   data	    bss	    dec	    hex	filename
+ 294192	   1188	 155372	 450752	  6e0c0	/home/lepton-user/lepton-tools-dev/essais/env-21-debian/build/nucleo-f429zi-freertos/lepton.elf

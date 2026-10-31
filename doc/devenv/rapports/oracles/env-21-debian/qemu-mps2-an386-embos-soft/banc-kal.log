@@ -1,0 +1,43 @@
+Internal ctest changing into directory: /home/lepton-user/lepton-tools-dev/essais/env-21-debian/build/qemu-mps2-an386-embos-soft
+Test project /home/lepton-user/lepton-tools-dev/essais/env-21-debian/build/qemu-mps2-an386-embos-soft
+      Start  1: smoke.lsh
+ 1/15 Test  #1: smoke.lsh ........................   Passed    3.17 sec
+      Start  2: net.ping_ftpd
+ 2/15 Test  #2: net.ping_ftpd ....................   Passed    3.76 sec
+      Start  3: kal.T1
+ 3/15 Test  #3: kal.T1 ...........................   Passed    0.05 sec
+      Start  4: kal.T2
+ 4/15 Test  #4: kal.T2 ...........................   Passed    0.05 sec
+      Start  5: kal.T3
+ 5/15 Test  #5: kal.T3 ...........................   Passed    0.06 sec
+      Start  6: kal.T4
+ 6/15 Test  #6: kal.T4 ...........................   Passed    0.05 sec
+      Start  7: kal.T5
+ 7/15 Test  #7: kal.T5 ...........................   Passed    0.05 sec
+      Start  8: kal.T6
+ 8/15 Test  #8: kal.T6 ...........................   Passed    0.06 sec
+      Start  9: kal.T7
+ 9/15 Test  #9: kal.T7 ...........................   Passed    0.06 sec
+      Start 10: kal.T8
+10/15 Test #10: kal.T8 ...........................   Passed    0.08 sec
+      Start 11: kal.TICI
+11/15 Test #11: kal.TICI .........................   Passed    0.06 sec
+      Start 12: kal.TCLK
+12/15 Test #12: kal.TCLK .........................   Passed    0.56 sec
+      Start 13: kal.TSBRK
+13/15 Test #13: kal.TSBRK ........................   Passed    0.06 sec
+      Start 14: kal.IRQ
+14/15 Test #14: kal.IRQ ..........................   Passed    0.07 sec
+      Start 15: kal.harness_fail
+15/15 Test #15: kal.harness_fail .................   Passed    0.05 sec
+
+100% tests passed, 0 tests failed out of 15
+
+Label Time Summary:
+arch:cortex-m4f    =   8.19 sec*proc (15 tests)
+backend:embos      =   8.19 sec*proc (15 tests)
+kal                =   4.43 sec*proc (14 tests)
+net                =   3.76 sec*proc (1 test)
+smoke              =   3.17 sec*proc (1 test)
+
+Total Test time (real) =   8.20 sec
