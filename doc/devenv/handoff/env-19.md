@@ -16,7 +16,7 @@ repli `cmake/boards` retiré ; symboles identiques sur 14 presets ; cartes verte
 | `depots/lepton/family-samd21/master` | `master` a389592 (poussé) | Fusion de devenv/env-19 | oui |
 | `depots/lepton/bsp-samd21-xplained-pro/master` | `master` 46337d1 (poussé) | Fusion de devenv/env-19 | oui |
 | `<ROOTSTOCK>` | trunk regreffé : 3935 feuilles, 0 fichier régulier, 0 lien cassé, 13 greffons ; `original-tree.code-workspace` régénéré (14 lancements) | | oui |
-| copie d'essai `~/lepton-tools-dev/essais/env-19` | clones sur `devenv/env-19` ; `build-lots/`, `build-avant/`, `build-apres/` (220 Mo) | | à supprimer sur demande |
+| copie d'essai `~/lepton-tools-dev/essais/env-19` | supprimée le 2026-10-31 à la demande de l'utilisateur | | — |
 
 ## Fait pendant la session
 - Tâche 1 : audit `rapports/env-19-extraction.md` §1-§5 (`ninja -t deps/inputs` des 15 builds) ; PA-25 (§6).
