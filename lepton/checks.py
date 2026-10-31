@@ -21,6 +21,7 @@ from lepton.errors import EXIT_TOOL, LeptonError
 from lepton.rootstock import PROJECT_SUBPATH, SOURCE_ROOT, STEM_DIR, Manifest, Rootstock
 from lepton.validation import Anomaly, locate, validate_data, validate_json, validate_xml
 
+KERNEL_PRESETS = "CMakePresets.json"   # presets du greffon noyau, à la racine du trunk
 # Champs de manifeste qui désignent des fichiers relatifs à la destination
 FILE_FIELDS = ("vecteurs", "remplacants_forts", "demarrage", "openocd")
 SINGLE_FILE_FIELDS = ("script_liens", "entete_config_noyau", "svd")
@@ -108,15 +109,8 @@ def check_seed(graine: dict, by_name: dict[str, Manifest], label: str) -> list[A
     for field, kind in (("applications", "application"), ("bibliotheques", "bibliotheque")):
         for i, n in enumerate(graine.get(field, [])):
             role(kind, n, kind, f"/{field}/{i}")
-    family = None
     if bsp is not None:
-        fam_name = bsp.data.get("famille")
-        family = by_name.get(fam_name)
-        if family is None:
-            found.append(Anomaly(label, "/bsp", f"famille « {fam_name} » du BSP {bsp.name} non greffée (GRA-2)"))
-        elif family.kind != "famille":
-            found.append(Anomaly(label, "/bsp", f"famille « {fam_name} » du BSP de type « {family.kind} »"))
-            family = None
+        found.extend(Anomaly(label, "/bsp", message) for _, message in check_bsp(bsp, kernel, by_name))
         for i, conf in enumerate(graine.get("configurations", [])):
             mode = conf.get("execution") if isinstance(conf, dict) else None
             if mode == "qemu" and "qemu" not in bsp.data:
@@ -128,17 +122,30 @@ def check_seed(graine: dict, by_name: dict[str, Manifest], label: str) -> list[A
                     found.append(Anomaly(label, f"/configurations/{i}/execution",
                                          f"exécution carte : le BSP {bsp.name} ne déclare pas {', '.join(missing)}"))
 
-    # GRF-5 : cœur, backend
-    if bsp is not None:
-        core = bsp.data.get("coeur")
-        for owner in (kernel, family):
-            if owner is not None and core not in owner.data.get("coeurs", []):
-                found.append(Anomaly(label, "/bsp", f"cœur « {core} » du BSP {bsp.name} absent des cœurs de "
-                                     f"{owner.name} ({', '.join(owner.data.get('coeurs', []))}) (GRF-5)"))
+    # GRF-5 : backend (cœur : check_bsp)
     if kernel is not None and graine.get("backend") not in kernel.data.get("backends", []):
         found.append(Anomaly(label, "/backend", f"backend « {graine.get('backend')} » non fourni par "
                              f"{kernel.name} ({', '.join(kernel.data.get('backends', []))}) (GRF-5)"))
     found.extend(check_seed_options(graine, by_name, label))
+    return found
+
+
+def check_bsp(bsp: Manifest, kernel: Manifest | None, by_name: dict[str, Manifest]) -> list[tuple[str, str]]:
+    """GRA-2, GRF-5 d'un BSP : famille greffée, cœur dans les cœurs de la famille et du noyau ;
+    (champ du manifeste du BSP, message)."""
+    found = []
+    fam_name = bsp.data.get("famille")
+    family = by_name.get(fam_name)
+    if family is None:
+        found.append(("/famille", f"famille « {fam_name} » du BSP {bsp.name} non greffée (GRA-2)"))
+    elif family.kind != "famille":
+        found.append(("/famille", f"famille « {fam_name} » du BSP de type « {family.kind} »"))
+        family = None
+    core = bsp.data.get("coeur")
+    for owner in (kernel, family):
+        if owner is not None and core not in owner.data.get("coeurs", []):
+            found.append(("/coeur", f"cœur « {core} » du BSP {bsp.name} absent des cœurs de "
+                          f"{owner.name} ({', '.join(owner.data.get('coeurs', []))}) (GRF-5)"))
     return found
 
 
@@ -326,6 +333,94 @@ def _manifest_label(rs: Rootstock, m: Manifest) -> str:
     return _rel(rs, m.path)
 
 
+def _xml_anomalies(xml: Path, xml_label: str, manifests: list[Manifest], warn) -> list[Anomaly]:
+    """XSD (xmllint absent : avertissement) puis CFG-5 d'un XML mklepton du trunk."""
+    found = []
+    try:
+        # ligne de xmllint gardée (D-a, ENV-12 lot 6 S3)
+        found.extend(replace(a, file=xml_label) for a in validate_xml(xml))
+    except LeptonError as e:
+        if e.code != EXIT_TOOL:
+            raise
+        warn(f"{xml_label} : {e.message}" + (f" ({e.action})" if e.action else ""))
+    found.extend(check_mkconf_provided(xml, xml_label, manifests))
+    return found
+
+
+# --------------------------------------------------------------------------
+# graine de référence (PA-19, ENV-16) : ni lepton-graine.json ni greffon local de projet
+# --------------------------------------------------------------------------
+def kernel_presets(path: Path) -> dict[str, dict]:
+    """Presets de configuration visibles du noyau → variables de cache, héritage résolu (le premier
+    parent l'emporte, comme CMake)."""
+    raw = {p["name"]: p for p in json.loads(path.read_text(encoding="utf-8")).get("configurePresets", [])
+           if isinstance(p, dict) and isinstance(p.get("name"), str)}
+
+    def variables(name: str, seen: frozenset) -> dict:
+        p = raw.get(name)
+        if p is None or name in seen:
+            return {}
+        parents = p.get("inherits", [])
+        merged = {}
+        for parent in reversed([parents] if isinstance(parents, str) else parents):
+            merged.update(variables(parent, seen | {name}))
+        merged.update({k: v.get("value") if isinstance(v, dict) else v
+                       for k, v in p.get("cacheVariables", {}).items()})
+        return merged
+
+    return {name: variables(name, frozenset()) for name, p in raw.items() if not p.get("hidden")}
+
+
+def check_reference_seed(rs: Rootstock, manifests: list[tuple[Manifest, str]], warn, info
+                         ) -> tuple[list[str], list[Anomaly]]:
+    """Contrôles déduits des greffons greffés : GRF-5 de chaque BSP ; XSD et CFG-5 des XML cités par
+    les presets du noyau dont le BSP est greffé (CFG-5 : greffons hors BSP et famille, plus les BSP
+    du XML et leurs familles)."""
+    checked, found = [], []
+    by_name = {m.name: m for m, _ in manifests}
+    kernels = [m for m, _ in manifests if m.kind == "noyau"]
+    if len(kernels) != 1:
+        found.append(Anomaly(_rel(rs, rs.seed_root()), "", f"{len(kernels)} greffon(s) noyau greffé(s), "
+                             "un attendu (GRA-2)"))
+        return checked, found
+    for m, label in manifests:
+        if m.kind == "bsp":
+            found.extend(Anomaly(label, where, message) for where, message in check_bsp(m, kernels[0], by_name))
+
+    path = rs.trunk / KERNEL_PRESETS
+    presets_label = _rel(rs, path)
+    checked.append(presets_label)
+    try:
+        presets = kernel_presets(path)
+    except (OSError, ValueError, AttributeError, TypeError) as e:
+        found.append(Anomaly(presets_label, "", f"presets du noyau illisibles ({e})"))
+        return checked, found
+    xmls, ungrafted = {}, {}
+    for name, variables in presets.items():
+        board, rel = variables.get("LEPTON_BOARD"), variables.get("LEPTON_MKCONF")
+        if not board:
+            continue
+        if board not in by_name or by_name[board].kind != "bsp":
+            ungrafted.setdefault(board, []).append(name)
+        elif rel:
+            xmls.setdefault(rel, set()).add(board)
+        else:
+            info(f"preset {name} : LEPTON_MKCONF absent, XML non contrôlé")
+    for board, names in sorted(ungrafted.items()):
+        info(f"BSP « {board} » non greffé : preset(s) {', '.join(names)} non contrôlé(s)")
+    for rel, boards in sorted(xmls.items()):
+        xml = rs.trunk / rel
+        xml_label = _rel(rs, xml)
+        checked.append(xml_label)
+        if not xml.exists():
+            found.append(Anomaly(presets_label, "", f"LEPTON_MKCONF « {rel} » absent du trunk"))
+            continue
+        families = {by_name[b].data.get("famille") for b in boards}
+        providers = [m for m, _ in manifests if m.kind not in ("bsp", "famille") or m.name in boards | families]
+        found.extend(_xml_anomalies(xml, xml_label, providers, warn))
+    return checked, found
+
+
 # --------------------------------------------------------------------------
 # lepton check sans argument
 # --------------------------------------------------------------------------
@@ -345,8 +440,9 @@ def _located(rs: Rootstock, anomalies: list[Anomaly]) -> list[Anomaly]:
     return anomalies
 
 
-def check_rootstock(rs: Rootstock, warn) -> tuple[list[str], list[Anomaly]]:
-    """Fichiers contrôlés et anomalies ; `warn` reçoit les contrôles impossibles (xmllint absent)."""
+def check_rootstock(rs: Rootstock, warn, info) -> tuple[list[str], list[Anomaly]]:
+    """Fichiers contrôlés et anomalies ; `warn` reçoit les contrôles impossibles (xmllint absent),
+    `info` les constats sans anomalie (graine de référence)."""
     checked, anomalies = [], []
     report = rs.check_trunk()             # FIC-3 : un fichier régulier bloque aussi toute regreffe
     anomalies.extend(Anomaly(_rel(rs, p), "", "fichier régulier dans le trunk (FIC-3), regreffe bloquée : "
@@ -368,6 +464,13 @@ def check_rootstock(rs: Rootstock, warn) -> tuple[list[str], list[Anomaly]]:
 
     graine_path = rs.seed_manifest_path()
     label = _rel(rs, graine_path)
+    if not graine_path.exists() and not (rs.seed_root() / PROJECT_SUBPATH).exists():
+        info(f"graine de référence ({_rel(rs, rs.seed_root())} : ni {graine_path.name} ni {PROJECT_SUBPATH}/) : "
+             "contrôles déduits des greffons greffés et des presets du noyau")
+        found_checked, found = check_reference_seed(rs, list(manifests.values()), warn, info)
+        checked.extend(found_checked)
+        anomalies.extend(found)
+        return checked, _located(rs, anomalies)
     checked.append(label)
     if not graine_path.exists():
         anomalies.append(Anomaly(label, "", "manifeste de graine absent (graine hors lepton)"))
@@ -390,12 +493,5 @@ def check_rootstock(rs: Rootstock, warn) -> tuple[list[str], list[Anomaly]]:
         # O5 (CFG-1) : XML du projet versionné dans la graine ; ici XML d'un greffon partagé
         warn(f"{xml_label} : XML fourni par un greffon partagé, pas par la graine (CFG-1, O5) ; "
              f"lepton seed mkconf import {graine['mklepton_xml']}")
-    try:
-        # ligne de xmllint gardée (D-a, ENV-12 lot 6 S3)
-        anomalies.extend(replace(a, file=xml_label) for a in validate_xml(xml))
-    except LeptonError as e:
-        if e.code != EXIT_TOOL:
-            raise
-        warn(f"{xml_label} : {e.message}" + (f" ({e.action})" if e.action else ""))
-    anomalies.extend(check_mkconf_provided(xml, xml_label, [m for m, _ in manifests.values()]))
+    anomalies.extend(_xml_anomalies(xml, xml_label, [m for m, _ in manifests.values()], warn))
     return checked, _located(rs, anomalies)

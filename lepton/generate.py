@@ -17,7 +17,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-from lepton.checks import check_seed_options
+from lepton.checks import KERNEL_PRESETS, check_seed_options
 from lepton.errors import EXIT_OK, EXIT_TOOL, LeptonError
 from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, project_key
 from lepton.scion_runner import run
@@ -25,7 +25,6 @@ from lepton.seed import _info, _remind_commit, _warn, finish, graft_project, loa
 from lepton.validation import SCHEMA_FILES, SCION_MANIFEST, SEED_MANIFEST, schemas_dir
 
 PRESETS_FILE = "CMakeUserPresets.json"
-KERNEL_PRESETS = "CMakePresets.json"
 BASE_PRESET = "cross"              # preset caché du CMakePresets.json du noyau (chaîne croisée)
 HOST_PRESET = "host"               # preset du noyau qui construit mklepton (LEPTON_MKLEPTON de cross)
 NOTE = "généré par lepton generate, ne pas éditer"
