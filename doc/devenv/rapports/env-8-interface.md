@@ -441,3 +441,15 @@ Propositions appliquées pendant la session S1 du lot 6 (essai VSCodium conforme
 | F8 (extension seule) | correspondance clone → trunk des sources de l'arrêt d'après `stem` et `trunk` de `seed status --json` ; aucune option de lepton ajoutée |
 | `generate` (S2, L6-5) | presets réécrits (`generate`, et `seed config add/remove` qui l'appellent ; `seed mkconf import` et `seed new` invitent à lancer `generate`) : date du lien `trunk/CMakeUserPresets.json` avancée (`os.utime(…, follow_symlinks=False)`) ; l'observateur de VSCodium ne suit pas les liens, CMake Tools relit alors ses presets sans rechargement ; presets inchangés : lien intact. Décision de l'utilisateur (2026-10-27) |
 | `generate` (S2, L6-7) | tâches « construire » et « mklepton » : matcher écrit dans la tâche (`GCC_MATCHER` : `fichier:ligne:colonne: [fatal ]error\|warning: message`, `fileLocation` autoDetect sur le trunk) au lieu de `$gcc`, fourni par l'extension C/C++ de Microsoft, absente (clangd, Open VSX) : « référence de problemMatcher non valide : $gcc ». Décision de l'utilisateur (2026-10-27) |
+
+## 16. Amendements d'ENV-18 (2026-10-31 ; graine de référence, PA-23)
+Graine de référence : critère d'ENV-16 (ni `lepton-graine.json` ni `project/`, `Rootstock.is_reference_seed`).
+Décisions de l'utilisateur, `rapports/env-18-graine.md` §3.
+
+| Sujet | Règle |
+| --- | --- |
+| Commandes acceptées | `check`, `seed status`, `seed tree`, `file owner`, `generate` ; sans changement : `graft`, `file add/remove/mv`, `dir add/remove`, `scion new --no-seed` (n'écrivent pas dans la graine) |
+| Commandes refusées | `seed add`, `seed remove`, `seed replace`, `seed lock` (tous modes), `seed mkconf import`, `seed config add`, `seed config remove`, `scion new` sans `--no-seed`, `scion remove` : avant toute action, code 1, `graine de référence <graine> (ni lepton-graine.json ni project/) : lepton <commande> modifie la graine, refusé` → `créer un projet par lepton seed new, ou modifier la graine de référence par scion dans son dépôt` (`scion new` : `… --no-seed, puis l'ajouter à une graine de projet`) |
+| `seed status` | ligne `graine de référence (ni lepton-graine.json ni project/) : rôles d'après les manifestes des greffons, presets du noyau` au lieu de « graine hors lepton » ; `--json` inchangé (`seed.manifest` nul, `configurations` vide) |
+| `seed tree` | presets lus : presets visibles du noyau dont `LEPTON_BOARD` est renseigné, ordre du fichier |
+| `generate` | aucun `CMakeUserPresets.json`, aucun greffon projet ; espace `<ROOTSTOCK>/<répertoire de la graine>.code-workspace` (`original-tree.code-workspace`) ; une configuration par preset de carte du noyau : BSP greffé → tâches et `launch` (qemu si le BSP déclare `qemu.machine`, carte s'il déclare `openocd`), BSP non greffé → tâches configurer et construire seules, ligne d'information ; `host` : tâches mklepton ; associations XML `**/mkconf_*.xml` seules |
