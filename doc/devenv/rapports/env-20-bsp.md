@@ -172,3 +172,11 @@ modification du système de construction commun.**
 Critères de l'étape : table F4 complète, écart F429 démontré et limité à la table (E-1) ; BSP
 `nucleo-f439zi` inscrit dans `original-tree` (branche `devenv/env-20`), **non publié** (PA-28) ;
 2 presets construits ; BLD-6 constaté.
+
+## 8. Réponse du PA-28 (2026-10-31, utilisateur)
+
+Dépôt `lepton-distribution/lepton-bsp-nucleo-f439zi` créé public par `gh` (branche par défaut
+`master`, poussée la première) ; `devenv/env-20` fusionnée (`--no-ff`) maintenant, avant ENV-21 :
+`family-stm32f4xx` `master` 2b21340, `bsp-nucleo-f439zi` `master` f866283, clone noyau `master`
+40d7197, graine `original-tree` 15740f9, lepton-tools `main` ; push des branches fusionnées et des
+`devenv/env-20`.
