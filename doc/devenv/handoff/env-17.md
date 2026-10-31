@@ -10,7 +10,7 @@ binaires et images mklepton inchangés (oracle `env-17`, 14 presets).
 | lepton-tools | `main` (fusion `--no-ff` de `devenv/env-17`, poussées toutes deux) | commit d'état et passation, puis « Fusion de devenv/env-17 » | oui |
 | clone noyau `depots/lepton/original/master` | `master` (fusion `--no-ff` de `devenv/env-17` : 350d914, 9ee9734 ; poussées toutes deux) | « Fusion de devenv/env-17 » | oui (`.DS_Store` ignorés par git seulement) |
 | 7 greffons famille/BSP, graine `original-tree` | `master` / `original-tree`, inchangés | | oui |
-| `<ROOTSTOCK>` trunk | regreffé (`lepton@original::tree`) | | oui : aucun fichier régulier, aucun lien cassé |
+| `<ROOTSTOCK>` trunk | regreffé (`lepton@original::tree`) | | oui : aucun fichier régulier, aucun lien cassé (après une seconde suppression de `.DS_Store`, voir Pièges) |
 
 ## Fait pendant la session
 - Tâche 1 : audit, `rapports/env-17-coherence.md` §1-§5 (C-1 à C-17, M-1, M-2, arbitrages A-1 à
@@ -45,7 +45,9 @@ binaires et images mklepton inchangés (oracle `env-17`, 14 presets).
 ## Pièges rencontrés
 - `scion graft` refuse toute regreffe tant que le trunk contient un fichier régulier (Finder :
   `.DS_Store`) → les lister (`find trunk -type f ! -name .scion.grafted.list`), décider, puis
-  regreffer. Ne pas ouvrir le trunk dans le Finder.
+  regreffer. Ne pas ouvrir le trunk dans le Finder. Ils reviennent : 14 à 12:48, puis 32 à
+  13:32 après la regreffe (processus macOS, pas les scripts). Contrôler le trunk en début de
+  session suivante, avant toute regreffe.
 - Décompte d'occurrences fait à l'œil dans l'audit (9 au lieu de 10) → les remplacements par
   script vérifient le nombre exact avant d'écrire.
 - zsh : `echo =====` interprété comme `=cmd` (rappel d'ENV-16).
