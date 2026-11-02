@@ -7,7 +7,7 @@ script d'installation de VSCodium.
 État : outil `lepton` 0.1.0 (ENV-8 à ENV-16 ; interface : `doc/devenv/rapports/env-8-interface.md`) ;
 extension Lepton 0.5.1 (`extension/`). Voir `doc/devenv/`.
 
-Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée par pipx ; scion ≥ 0.5.2.0
+Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée par pipx ; scion ≥ 0.5.3.0
 requis). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`, puis
 `pip install -e '.[test]'` et `python -m pytest`.
 
@@ -28,7 +28,7 @@ lepton seed new demo -C ~/demo --bsp qemu-mps2-an386 \
     --mkconf sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml \
     --origin qemu-mps2=<dépôt de la famille> --origin qemu-mps2-an386=<dépôt du BSP>
 cd ~/demo/trunk
-lepton scion new ma-carte --type bsp --from qemu-mps2-an386   # dépôt depots/lepton-bsp/ma-carte
+lepton scion new ma-carte --type bsp --from qemu-mps2-an386   # dépôt depots/lepton/bsp-ma-carte/master
 lepton file add sys/root/src/kernel/dev/bsp/ma-carte/gpio.c    # créé dans le clone, regreffé
 lepton file owner sys/root/src/kernel/dev/bsp/ma-carte/spi.c   # greffon propriétaire (--json)
 lepton check                                                   # GRA-2, GRF-5, CFG-5

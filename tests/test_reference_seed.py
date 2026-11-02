@@ -120,7 +120,7 @@ def test_reference_refus(reference, capsys, argv, command):
     assert ("--no-seed" if command == "scion new" else "lepton seed new") in err
     assert _seed_state(reference) == before
     assert (reference / "trunk" / ".scion.grafted.list").read_text() == grafted
-    assert not (reference / "depots" / "lepton-application").exists()
+    assert not (reference / "depots" / "lepton" / "application-demo-app").exists()
 
 
 def test_reference_scion_new_no_seed(reference, tmp_path, capsys):

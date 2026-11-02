@@ -118,7 +118,7 @@ def scion_new(args) -> int:
     seed.check_new_scion(rs, name, kind)
     dest = args.destination or DEFAULT_DESTINATION[kind].format(name=name)
     _check_destination(dest)
-    repo = Path(args.repo).resolve() if args.repo else rs.depots / f"lepton-{SCION_KIND[kind]}" / name
+    repo = Path(args.repo).resolve() if args.repo else rs.depots / "lepton" / f"{SCION_KIND[kind]}-{name}" / "master"
     _check_repo(repo)
     target = repo / STEM_DIR / SOURCE_ROOT / dest
 
