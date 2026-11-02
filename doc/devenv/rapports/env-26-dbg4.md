@@ -144,3 +144,59 @@ QEMU et permet un essai sans carte.
 
 P-1 à P-5 retenues ; cartes de l'essai : NUCLEO-F429ZI, NUCLEO-WL55JC1, STM32F746G-DISCO,
 SAMD21 Xplained Pro.
+
+## 2. Implémentation
+
+| Dépôt | Branche (depuis) | Commit | Contenu |
+| --- | --- | --- | --- |
+| lepton-tools | `devenv/env-26` (`main` 65da9d8) | 13633f5 | schéma : `svd` = chemin ou `{"famille": chemin}` ; `checks.check_family_files` ; `Context.svd_file` de `generate.py` ; exemple `greffon-bsp-nucleo-f429zi.json` (forme famille), invalides `bsp-svd-famille-remonte.json`, `bsp-svd-cle-inconnue.json` ; tests `test_svd_file_of_bsp_or_family`, `test_check_svd_bsp_ou_famille` ; `env-8-interface.md` §18 |
+| `family-stm32f4xx` | `devenv/env-26` (`master` 2b21340) | 1f3f8bd | `svd/STM32F429.svd`, `svd/STM32F439.svd`, `LICENSE-Apache-2.0`, `README.md` (provenance, SHA-256) |
+| `family-stm32f7xx` | `devenv/env-26` (`master` 34ccaf8) | 4893540 | `svd/STM32F746.svd`, licence, README |
+| `family-stm32wlxx` | `devenv/env-26` (`master` 1eccc2f) | 714b725 | `svd/STM32WL5x_CM4.svd`, licence, README |
+| `family-samd21` | `devenv/env-26` (`master` a389592) | 11e85ad | `svd/ATSAMD21J18A.svd`, licence, README |
+| `bsp-nucleo-f429zi` | `devenv/env-26` (`master` 8ea7ee5) | cd9862c | `"svd": {"famille": "svd/STM32F429.svd"}` |
+| `bsp-nucleo-f439zi` | `devenv/env-26` (`master` f866283) | 34a0291 | `svd/STM32F439.svd` |
+| `bsp-stm32f746g-disco` | `devenv/env-26` (`master` 9f81c1b) | 88456c7 | `svd/STM32F746.svd` |
+| `bsp-nucleo-wl55jc1` | `devenv/env-26` (`master` a329f4d) | 92612b0 | `svd/STM32WL5x_CM4.svd` |
+| `bsp-samd21-xplained-pro` | `devenv/env-26` (`master` 46337d1) | c267463 | `svd/ATSAMD21J18A.svd` |
+
+Fichiers SVD copiés sans modification (empreintes du §1.2, relevées dans les README).
+`LICENSE-Apache-2.0` : texte du pack F4 (identique, SHA-256 `c71d239d…`, à ceux des packs F7 et
+WL ; le pack SAMD21 ne joint qu'une notice de 569 o). Graine `original-tree` et clone noyau non
+touchés. Champ `rtos` non écrit (P-3).
+
+`pytest` : 222 verts (218 + 2 tests + 2 exemples invalides). `check-jsonschema` : 5 manifestes BSP
+et 4 manifestes famille conformes au schéma modifié. lepton réinstallé par `pipx install --force`
+depuis 13633f5.
+
+## 3. Contrôles
+
+### 3.1 Greffe
+
+- Copie d'essai `~/lepton-tools-dev/essais/env-26-copie` (`cp -RP` hors `build/`, `third_party/`),
+  `scion graft` : 13 feuilles ajoutées (les fichiers `svd/` des 4 familles), rien d'autre ; chemins
+  ignorés : 11 `.DS_Store` (inchangé) ; `lepton check` code 0 (19 fichiers).
+- `<ROOTSTOCK>` : même résultat (13 feuilles ajoutées, aucun fichier régulier, aucun lien cassé,
+  clone noyau propre) ; `lepton check` code 0, 19 fichier(s) conforme(s) ; `lepton generate`
+  code 0 : `svdFile` présent et existant dans les 10 lancements de carte, absent des 6 lancements
+  QEMU ; aucun champ `rtos`.
+
+### 3.2 Oracle partiel (presets de carte)
+
+Avant : clones famille et BSP repassés sur `master` (état de départ, trunk sans `svd`), puis
+`scripts/oracle/rejouer-oracle.sh <ROOTSTOCK> rapports/oracles/env-26-avant --carte …` (10 presets,
+`host` d'abord) ; après : clones sur `devenv/env-26`, regreffe, mêmes commandes vers
+`rapports/oracles/env-26-apres`. Tout a réussi.
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| nucleo-f429zi-embos / -freertos | identiques | différente | — (carte) | — | E-1 |
+| nucleo-f439zi-embos / -freertos | identiques | différente | — | — | E-1 |
+| stm32f746g-disco-embos / -freertos | identiques | différente | — | — | E-1 |
+| nucleo-wl55jc1-embos / -freertos | identiques | différente | — | — | E-1 |
+| samd21-xplained-pro-embos / -freertos | identiques | différente | — | — | E-1 |
+| host (mklepton) | — | `mklepton-empreintes.sha256` identiques | — | ctest | — |
+
+- **E-1** (connu, `env-19-extraction.md` E-1) : `__TIME__` dans l'image. Vérifié : reconstruction à
+  neuf de `nucleo-f429zi-embos` sans modification → 3 octets différents, tous dans la chaîne
+  `14:42:52` / `14:44:35` (`.rodata`, à côté de `Nov  2 2026`).

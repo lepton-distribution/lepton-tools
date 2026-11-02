@@ -1,0 +1,3 @@
+4c72eb3eda1239d27a457a42a47c105ccf89c936bd451a022a91bfd3947a7ba3  lepton.elf
+893e80bd01b621a4c3abc71dc7f8bebccaaf2dccffa453c49db048fc95d3f8d5  lepton.bin
+6a917d524ae42f22b7fccd6f4cc3c37e2a544e082ddf92f5a2171faca7aee0b8  lepton.hex
