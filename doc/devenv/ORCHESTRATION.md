@@ -77,6 +77,19 @@ Règles :
 - Chaque consigne VM (`consignes/*.md`) contient un paragraphe « Communication » qui renvoie à ce
   paragraphe et fixe les `ID` et le nom de la session principale.
 
+Règles des consignes VM (décision PA-31 d'ENV-22, 2026-11-02 ; leçons de R15-1 et R21-1) :
+- **Régénérer avant de relever** (E-1 de `rapports/env-21-debian.md`) : l'empreinte « avant » d'un
+  fichier généré (espace de travail, presets, verrou) se relève juste après l'avoir régénéré par la
+  commande qui le produit, jamais sur un fichier écrit lors d'une étape antérieure. Sinon la
+  comparaison mesure les changements de l'outil ou de l'hôte survenus entre-temps.
+- **Commandes confiées d'emblée à l'utilisateur** (E-2 de `rapports/env-21-debian.md`,
+  `rapports/env-15-scion.md` §8) : le classifieur de permissions de la session VM peut refuser les
+  suppressions (`rm -rf`), les installations `pipx install`, les clonages et les lancements de
+  tests, même accordés au point d'arrêt. La consigne les attribue à l'utilisateur dès sa rédaction
+  (colonne « Autorisé » du §2 et étape concernée), avec la commande exacte à lancer. La session VM
+  annonce l'attente par un `AVANCEMENT`, vérifie ensuite l'effet (absence, version, code de
+  retour) et le consigne. Un refus n'est jamais contourné.
+
 ## 3. Cycle d'une session
 
 ### Début de session (obligatoire, dans cet ordre)
