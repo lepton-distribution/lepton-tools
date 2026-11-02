@@ -97,3 +97,34 @@ chaque exécution, donc suivra le noyau à la prochaine relance).
 - P-4, P-5, P-6 retenues ; P-7 (`blocksz` inchangé) implicite dans la question des XML.
 - Cartes accordées (écriture flash) : NUCLEO-F429ZI, NUCLEO-WL55JC1, STM32F746G-DISCO,
   SAMD21 Xplained Pro.
+- Amendement (utilisateur, 2026-11-02, après le lot 1) : l'écart admis comprend aussi les
+  sections `.debug_*` lorsque leur écart est exactement celui de `dev_dskimg.o`.
+
+## 4. Modification par lots
+
+Contrôle de format : clone noyau 1d1db90 (`mklepton_format_check.cmake`, contrôle de cohérence) ;
+essayé sur le XML actuel (conforme), une copie sans `size`/`node` (conforme) et une copie avec
+`node` seul (refus « avec size et node, dans cet ordre, ou sans aucun des deux attendu »).
+
+Pour chaque lot : un commit du XML, un commit de génération de `mklepton_empreintes.sha256`
+(`mklepton_empreintes.sh --out`), puis `rejouer-oracle.sh` des presets du lot
+(`rapports/oracles/env-24-lot-<xml>/`) et `comparer-oracle.py` contre `env-24-avant`. Écart
+DWARF attendu : `dev_dskimg.c` imposé et automatique compilés seuls avec la commande du preset
+(`compile_commands.json`), `arm-none-eabi-size -A`.
+
+### Lot 1 — `qemu_mps2` (7f3dd51, empreintes 0788892)
+
+Empreintes mklepton : seuls `.fsflash.o` et `dev_dskimg.c` des sorties an386 et an500 changent.
+host `ctest` 7/7 ; banc KAL (fumée comprise) 18/18 (an386, an500) et 14/14 (`-soft`).
+
+| Preset | `.text` | `filecpu_memory` | `.debug_info` / `.debug_abbrev` | Autres | Classement |
+| --- | --- | --- | --- | --- | --- |
+| `qemu-mps2-an386-embos` | 274716 → 152652 (−122064) | 0x1f401 → 0x1734 | −7 / −17 | aucun | cpufs |
+| `qemu-mps2-an386-freertos` | 281464 → 159400 (−122064) | idem | −7 / −17 | aucun | cpufs |
+| `qemu-mps2-an386-embos-soft` | 274428 → 152364 (−122064) | idem | −7 / −17 | aucun | cpufs |
+| `qemu-mps2-an386-freertos-soft` | 281128 → 159064 (−122064) | idem | −7 / −17 | aucun | cpufs |
+| `qemu-mps2-an500-embos` | 271916 → 149852 (−122064) | idem | −7 / −17 | aucun | cpufs |
+| `qemu-mps2-an500-freertos` | 278664 → 156600 (−122064) | idem | −7 / −17 | aucun | cpufs |
+
+`.text` : −122061 (image) −3 (alignement). DWARF : `dev_dskimg.o` seul, `.debug_info` 123 → 116,
+`.debug_abbrev` 90 → 73 (`DW_AT_upper_bound` 0x1f400 → 5939).
