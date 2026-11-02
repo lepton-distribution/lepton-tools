@@ -15,8 +15,9 @@ rootstocks d'essai du Mac. Elle reprend la forme d'ENV-21. Archétype : infrastr
 - VM Debian 13 et sa session Claude Code (ORCHESTRATION §2) ; protocole §2bis.
 - Consigne de référence : `consignes/env-21-debian.md`. Rapports de référence :
   `rapports/env-21-debian.md`, `rapports/env-21-mac.md`.
-- Règles des consignes VM écrites en ENV-22 (régénérer avant de relever ; suppressions et
-  installations `pipx` confiées à l'utilisateur).
+- Règles des consignes VM : `ORCHESTRATION.md` §2bis, « Règles des consignes VM » (ENV-22,
+  PA-31 : régénérer avant de relever ; suppressions, installations `pipx`, clonages et tests
+  confiés à l'utilisateur).
 - Branches lepton-tools : `devenv/env-28` (Mac), `devenv/env-28-debian` (VM).
 
 ## Tâches
