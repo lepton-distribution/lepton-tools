@@ -10,5 +10,6 @@
   ],
   "dependances": [
     {{kernel}}
-  ]
+  ],
+  "tests": "tests"
 }

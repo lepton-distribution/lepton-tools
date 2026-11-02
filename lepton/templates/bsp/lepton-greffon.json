@@ -19,6 +19,7 @@
   "sonde": {{probe}},
   "svd": {{svd}},
   "qemu": {{qemu}},
+  "tests": {{tests}},
   "compilation": {{compilation}},
   "options": {{options}}
 }
