@@ -211,3 +211,15 @@ Arbre composé identique : aucune reconstruction requise (raisonnement d'ENV-15 
 - Clone noyau : fusion `--no-ff` dans `master`, push de `master` et `devenv/env-23`.
 - lepton-tools : état et passation commités, fusion `--no-ff` dans `main`, push de `main` et
   `devenv/env-23`.
+
+## 7. Décisions PA-34 et clôture (2026-11-02, utilisateur)
+
+- Points signalés (§6) acceptés.
+- `<SEED_SCIONS>` : fusion `--no-ff` dans `master` e4d76b2 (contenu = tag `0.5.3.0`) ; push de
+  `master` et du tag par `git@github.com:lepton-distribution/seed.scions.git` (l'`origin` HTTPS
+  sans identifiants a échoué : « could not read Username ») ; `devenv/env-23` non poussée.
+- Clone noyau : fusion `--no-ff` dans `master` 0a6df02 ; push de `master` et `devenv/env-23`.
+- lepton-tools : état et passation commités sur `devenv/env-23`, fusion `--no-ff` dans `main`, push
+  de `main` et `devenv/env-23`.
+- Copie `essais/env-23` (14 dépôts propres, aucun commit non publié) et venv `essais/env-23-venv`
+  supprimés ; `essais/env-23-mesures` conservé (listes de liens).
