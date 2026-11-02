@@ -128,3 +128,42 @@ host `ctest` 7/7 ; banc KAL (fumée comprise) 18/18 (an386, an500) et 14/14 (`-s
 
 `.text` : −122061 (image) −3 (alignement). DWARF : `dev_dskimg.o` seul, `.debug_info` 123 → 116,
 `.debug_abbrev` 90 → 73 (`DW_AT_upper_bound` 0x1f400 → 5939).
+
+### Lots 2 à 5 — cartes (construction et capture)
+
+| Lot | XML (commit, empreintes) | Presets | `.text` | `filecpu_memory` | DWARF (`.debug_info` / `.debug_abbrev`) = `dev_dskimg.o` | Classement |
+| --- | --- | --- | --- | --- | --- | --- |
+| 2 | `nucleo_f439zi` (3194f19, 977da08) | `nucleo-f429zi-{embos,freertos}`, `nucleo-f439zi-{embos,freertos}` | −122064 | 0x1f401 → 0x1734 | −7 / −17 (oui) | cpufs |
+| 3 | `stm32f746g_disco` (46f3e02, 792c188) | `stm32f746g-disco-{embos,freertos}` | −122064 | 0x1f401 → 0x1734 | −7 / −17 (oui) | cpufs |
+| 4 | `nucleo_wl55jc1` (233ec3c, 324d2eb) | `nucleo-wl55jc1-{embos,freertos}` | −6248 (image −6245, alignement −3) | 0x1f41 → 0x6dc | −5 / −17 (oui : 121 → 116, 90 → 73) | cpufs |
+| 5 | `samd21_xplained_pro` (9db0630, 816715b) | `samd21-xplained-pro-{embos,freertos}` | −1368 (image −1366, alignement −2) | 0xc01 → 0x6ab | aucun (oui : 116 et 73 inchangés) | cpufs |
+
+Chaque lot : seuls `.fsflash.o` et `dev_dskimg.c` des sorties du XML changent dans les empreintes
+mklepton ; host `ctest` 7/7 ; aucun écart « autre ».
+
+Documentation : `doc/migration/mklepton.md` (7a32352, P-6) ; commentaire du contrôle précisé
+(f3ecf8c) : mklepton accepte `size` ou `node` seul (l'autre est calculé), la règle « tous deux ou
+aucun » ne vaut que pour le mkconf de base du test.
+
+## 5. Contrôles (PA-36)
+
+Oracle après `rapports/oracles/env-24-apres/` (construction à neuf, host d'abord, mêmes arguments
+que l'oracle avant) : « tout a réussi ». `comparer-oracle.py` `env-24-avant` → `env-24-apres` :
+sur les 16 presets, écarts identiques à ceux des lots (§4), tous classés cpufs. Empreintes
+mklepton : 14 lignes changées (`.fsflash.o` et `dev_dskimg.c` des 7 sorties de presets) ;
+Olimex inchangé ; `mklepton-empreintes.sha256` de l'oracle = référence du clone (816715b).
+
+Fumée QEMU : filtre E-4 d'ENV-19 (date de compilation, jeton `lepton-uart1-<n>`, chiffre devant
+l'invite, `rcv SIGCHLD`, lignes vides) : 0 ligne d'écart sur 6 presets. Banc KAL QEMU : même
+liste de cas, mêmes résultats (18/18 an386 et an500, 14/14 `-soft`).
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| `host` | — | — | — | `ctest` 7/7 | empreintes mklepton (§4) |
+| `qemu-mps2-an386-{embos,freertos}` | cpufs seul | diffère | identique | 18/18, même liste | lot 1 |
+| `qemu-mps2-an386-{embos,freertos}-soft` | cpufs seul | diffère | identique | 14/14, même liste | lot 1 |
+| `qemu-mps2-an500-{embos,freertos}` | cpufs seul | diffère | identique | 18/18, même liste | lot 1 |
+| `nucleo-f429zi-*`, `nucleo-f439zi-*` | cpufs seul | diffère | carte : voir §6 | carte : voir §6 | lot 2 |
+| `stm32f746g-disco-*` | cpufs seul | diffère | carte : voir §6 | carte : voir §6 | lot 3 |
+| `nucleo-wl55jc1-*` | cpufs seul | diffère | carte : voir §6 | carte : voir §6 | lot 4 |
+| `samd21-xplained-pro-*` | cpufs seul | diffère | carte : voir §6 | carte : voir §6 | lot 5 |
