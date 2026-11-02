@@ -31,7 +31,7 @@ BSP_QEMU = {
     "kernel_config_header": "include/user_kernel_mkconf.h", "link_script": "ld/mem_my-board.ld",
     "startup": ["qemu_mps2_board.c"], "sources": None, "dependencies": None,
     "openocd": None, "probe": None, "svd": None, "qemu": {"machine": "mps2-an386"},
-    "compilation": None, "options": None,
+    "compilation": None, "options": None, "tests": "tests",
 }
 BSP_BOARD = dict(BSP_QEMU, qemu=None, openocd=["openocd/my-board.cfg"], probe="stlink", float_abi="soft")
 
@@ -98,3 +98,25 @@ def test_existing_file_not_overwritten(tmp_path):
         render_tree("application", tmp_path, dict(SCION_VALUES, destination="bin/my-app"))
     assert (tmp_path / "lepton-greffon.json").read_text() == "{}"
 
+
+
+@pytest.mark.parametrize("kind,values", [("application", dict(SCION_VALUES, destination="bin/my-app")),
+                                         ("bsp", BSP_QEMU)])
+def test_tst2_template_tests_skeleton(tmp_path, kind, values):
+    """TST-2 (PA-41 d'ENV-27) : squelette tests/CMakeLists.txt dans les modèles application et bsp,
+    désigné par le champ `tests` du manifeste ; QEMU et carte par lepton_greffon_test."""
+    written = render_tree(kind, tmp_path, values)
+    skeleton = tmp_path / "tests" / "CMakeLists.txt"
+    assert skeleton in written
+    text = skeleton.read_text()
+    assert "{{" not in text and "lepton_greffon_test(" in text
+    assert "LEPTON_QEMU_MACHINE" in text and "LEPTON_BOARD_SERIAL_PORT" in text
+    assert "FIXTURES_REQUIRED kal_t0" in text and "FIXTURES_REQUIRED board_t0" in text
+    assert json.loads((tmp_path / "lepton-greffon.json").read_text())["tests"] == "tests"
+    assert validate_file(tmp_path / "lepton-greffon.json") == []
+
+
+def test_tst2_library_template_without_tests(tmp_path):
+    render_tree("library", tmp_path, dict(SCION_VALUES, destination="lib/my-app"))
+    assert not (tmp_path / "tests").exists()
+    assert "tests" not in json.loads((tmp_path / "lepton-greffon.json").read_text())

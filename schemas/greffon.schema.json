@@ -181,6 +181,11 @@
         }
       },
       "additionalProperties": false
+    },
+    "tests": {
+      "description": "Répertoire des tests du greffon, relatif à destination, contenant un CMakeLists.txt ajouté par le lecteur CMake (add_subdirectory) quand le greffon est actif ; tests déclarés par lepton_greffon_test (QEMU, carte).",
+      "$comment": "TST-2 ; ENV-27 PA-41 (champ du manifeste ; noyau exclu : ses tests restent déclarés par ses composants).",
+      "$ref": "#/$defs/chemin_relatif"
     }
   },
   "allOf": [
@@ -193,7 +198,7 @@
           "bibliotheque": false, "mcu": false, "vecteurs": false, "remplacants_forts": false,
           "famille": false, "coeur": false, "abi_flottante": false, "frequence_cpu": false,
           "entete_config_noyau": false, "script_liens": false, "demarrage": false,
-          "openocd": false, "sonde": false, "svd": false, "qemu": false
+          "openocd": false, "sonde": false, "svd": false, "qemu": false, "tests": false
         }
       }
     },

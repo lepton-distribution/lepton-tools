@@ -84,6 +84,12 @@ def check_declared_files(m: Manifest, label: str) -> list[Anomaly]:
         rel = m.data.get(field)
         if isinstance(rel, str) and not (base / rel).is_file():
             found.append(Anomaly(label, f"/{field}", f"fichier « {rel} » introuvable dans {base}"))
+    rel = m.data.get("tests")      # TST-2 (PA-41 d'ENV-27) : répertoire ajouté par le lecteur CMake
+    if isinstance(rel, str):
+        if not (base / rel).is_dir():
+            found.append(Anomaly(label, "/tests", f"répertoire « {rel} » introuvable dans {base}"))
+        elif not (base / rel / "CMakeLists.txt").is_file():
+            found.append(Anomaly(label, "/tests", f"« {rel}/CMakeLists.txt » introuvable dans {base}"))
     return found
 
 

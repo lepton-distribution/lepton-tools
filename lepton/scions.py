@@ -26,8 +26,10 @@ BSP_FIELDS = {
     "frequence_cpu": "cpu_frequency", "entete_config_noyau": "kernel_config_header",
     "script_liens": "link_script", "demarrage": "startup", "sources": "sources",
     "dependances": "dependencies", "openocd": "openocd", "sonde": "probe", "svd": "svd",
-    "qemu": "qemu", "compilation": "compilation", "options": "options",
+    "qemu": "qemu", "compilation": "compilation", "options": "options", "tests": "tests",
 }
+# Squelette de test du modèle BSP (TST-2, PA-41 d'ENV-27), écrit si le BSP source n'a pas de tests
+BSP_TESTS_SKELETON = Path("tests/CMakeLists.txt")
 
 
 def _destination_pattern(old: str) -> re.Pattern:
@@ -87,6 +89,8 @@ def _bsp_values(name: str, dest: str, src) -> dict:
     values = {token: _replace_in(src.data.get(field), pattern, dest) for field, token in BSP_FIELDS.items()}
     values.update(name=name, version="0.1.0", destination=dest,
                   description=f"BSP {name}, dérivé de {src.name}.")
+    if values["tests"] is None:      # BSP source sans tests : squelette du modèle (TST-2)
+        values["tests"] = str(BSP_TESTS_SKELETON.parent)
     return values
 
 
@@ -128,7 +132,8 @@ def scion_new(args) -> int:
             raise LeptonError("--from BSP obligatoire pour un BSP (copie d'un BSP greffé, renommée)",
                               f"lepton scion new {name} --type bsp --from <BSP greffé>")
         src, src_dir, files = _bsp_source(rs, args.from_bsp)
-        manifest = _validated(_manifest_from_template("bsp", _bsp_values(name, dest, src)), SCION_MANIFEST)
+        values = _bsp_values(name, dest, src)
+        manifest = _validated(_manifest_from_template("bsp", values), SCION_MANIFEST)
     else:
         if args.from_bsp:
             raise LeptonError("--from réservé au type bsp", "retirer --from")
@@ -140,6 +145,8 @@ def scion_new(args) -> int:
     # dépôt : fichiers, commit initial
     if kind == "bsp":
         _copy_bsp(src_dir, files, target, src.data["destination"], dest)
+        if "tests" not in src.data and not (target / BSP_TESTS_SKELETON).exists():
+            render_tree("bsp", target, values, only={BSP_TESTS_SKELETON})
         target.mkdir(parents=True, exist_ok=True)
         (target / SCION_MANIFEST).write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
                                              encoding="utf-8")

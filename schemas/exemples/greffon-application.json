@@ -13,6 +13,7 @@
     "lepton-noyau",
     "capteurs"
   ],
+  "tests": "tests",
   "options": [
     {
       "nom": "MESURE_PERIODE_MS",

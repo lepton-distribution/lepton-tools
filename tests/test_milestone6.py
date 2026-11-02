@@ -279,6 +279,23 @@ def test_check_svd_bsp_ou_famille(project, capsys):
     assert code == 0, out
 
 
+def test_check_tests_greffon(project, capsys):
+    """TST-2 (PA-41 d'ENV-27) : `tests` désigne un répertoire de la destination qui contient un
+    CMakeLists.txt ; anomalie située sur le champ."""
+    bsp = _manifest_path(project, "board-q")
+    _edit_json(bsp, tests="tests")
+    code, out = _check(project, capsys)
+    assert code == 1
+    assert "/tests: répertoire « tests » introuvable" in out
+    (bsp.parent / "tests").mkdir()
+    code, out = _check(project, capsys)
+    assert code == 1
+    assert "/tests: « tests/CMakeLists.txt » introuvable" in out
+    (bsp.parent / "tests" / "CMakeLists.txt").write_text("# tests\n")
+    code, out = _check(project, capsys)
+    assert code == 0, out
+
+
 def test_check_fichiers_isoles_inchanges(project, capsys):
     code, out = _check(project, capsys, str(_graine_path(project)))
     assert code == 0 and "1 fichier(s) conforme(s)." in out

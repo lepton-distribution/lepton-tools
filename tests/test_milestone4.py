@@ -35,6 +35,10 @@ def test_grf1_scion_new_application(project, capsys):
     assert '#include "kernel/core/libstd.h"' in source and '#include "lib/libc/stdio/stdio.h"' in source
     assert _git(repo, "status", "--porcelain") == "" and _git(repo, "rev-parse", "--abbrev-ref", "HEAD").strip() == "master"
     assert (project / "trunk/sys/root/src/bin/hello/hello.c").is_symlink()
+    # TST-2 (PA-41 d'ENV-27) : squelette de test greffé avec le greffon
+    assert json.loads(manifest.read_text())["tests"] == "tests"
+    assert "--command hello" in (repo / "scion/sys/root/src/bin/hello/tests/CMakeLists.txt").read_text()
+    assert (project / "trunk/sys/root/src/bin/hello/tests/CMakeLists.txt").is_symlink()
     assert _graine(project)["applications"] == ["hello"]
     src = {s.key: s for s in Rootstock(project).sources()}[scion_key("application", "hello")]
     assert (src.version, src.location) == ("*", "depots/lepton/application-hello/master")
@@ -67,7 +71,7 @@ def test_grf1_scion_new_bsp_from(project, repos, capsys):
     repo = project / "depots/lepton/bsp-board-n/master"
     new = repo / BSP_DIR / "board-n"
     assert sorted(str(p.relative_to(new)) for p in new.rglob("*") if p.is_file()) == \
-        ["blob.bin", "board.c", "board.h", "include/config.h", "lepton-greffon.json"]
+        ["blob.bin", "board.c", "board.h", "include/config.h", "lepton-greffon.json", "tests/CMakeLists.txt"]
     assert (new / "include/config.h").read_text() == ('#include "kernel/dev/bsp/board-n/board.h"\n'
                                                       '/* kernel/dev/bsp/board-q-other inchangé */\n')
     assert (new / "blob.bin").read_bytes() == b"\xff\xfe\x00kernel/dev/bsp/board-q"
@@ -78,6 +82,7 @@ def test_grf1_scion_new_bsp_from(project, repos, capsys):
         ("board-n", "kernel/dev/bsp/board-n", "0.1.0")
     for field in ("famille", "coeur", "mcu", "frequence_cpu", "script_liens", "demarrage", "qemu"):
         assert manifest[field] == old[field], field
+    assert manifest["tests"] == "tests" and "tests" not in old   # squelette : BSP source sans tests
     assert _git(repo, "status", "--porcelain") == ""
     assert _graine(project)["bsp"] == "board-n"
     assert "reste greffé" in capsys.readouterr().err
@@ -94,6 +99,26 @@ def test_grf1_scion_new_bsp_rewrites_manifest_paths(project, repos):
                  "--no-seed"]) == 0
     manifest = json.loads((project / "depots/lepton/bsp-board-n/master" / BSP_DIR / "board-n/lepton-greffon.json").read_text())
     assert manifest["compilation"] == {"publique": {"inclusions": ["kernel/dev/bsp/board-n/include"]}}
+
+
+def test_tst2_scion_new_bsp_copies_source_tests(project, repos):
+    """TST-2 (PA-41 d'ENV-27) : tests du BSP source copiés (destination réécrite), champ `tests`
+    repris ; pas de squelette."""
+    src = repos["bsp"] / BSP_DIR / "board-q"
+    (src / "essais").mkdir()
+    (src / "essais/CMakeLists.txt").write_text("# kernel/dev/bsp/board-q\nlepton_greffon_test(NAME a COMMAND true)\n")
+    data = json.loads((src / "lepton-greffon.json").read_text())
+    data["tests"] = "essais"
+    (src / "lepton-greffon.json").write_text(json.dumps(data))
+    _git(repos["bsp"], "add", "-A")
+    _git(repos["bsp"], "commit", "-q", "-m", "tests")
+    assert main(["scion", "new", "board-n", "--type", "bsp", "--from", "board-q", "-C", str(project),
+                 "--no-seed"]) == 0
+    new = project / "depots/lepton/bsp-board-n/master" / BSP_DIR / "board-n"
+    assert json.loads((new / "lepton-greffon.json").read_text())["tests"] == "essais"
+    assert (new / "essais/CMakeLists.txt").read_text() == \
+        "# kernel/dev/bsp/board-n\nlepton_greffon_test(NAME a COMMAND true)\n"
+    assert not (new / "tests").exists()
 
 
 def test_grf1_scion_new_no_seed(project, capsys):
