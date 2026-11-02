@@ -1,0 +1,32 @@
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+Info : clock speed 500 kHz
+Info : STLINK V3J7M3 (API v3) VID:PID 0483:374E
+Info : Target voltage: 3.274035
+Info : [stm32wlx.cpu0] Cortex-M4 r0p1 processor detected
+Info : [stm32wlx.cpu0] target has 6 breakpoints, 4 watchpoints
+Info : starting gdb server for stm32wlx.cpu0 on 3333
+Info : Listening on port 3333 for gdb connections
+Info : Unable to match requested speed 500 kHz, using 200 kHz
+Info : Unable to match requested speed 500 kHz, using 200 kHz
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20010000
+** Programming Started **
+Info : device idcode = 0x10036497 (STM32WLE/WL5x - Rev 'unknown' : 0x1003)
+Info : RDP level 0 (0xAA)
+Info : flash size = 256 KiB
+Info : flash mode : single-bank
+Info : Padding image section 1 at 0x080194dc with 4 bytes (bank write end alignment)
+Warn : Adding extra erase range, 0x080194e0 .. 0x080197ff
+** Programming Finished **
+** Verify Started **
+** Verified OK **
+** Resetting Target **
+Info : Unable to match requested speed 500 kHz, using 200 kHz
+Info : Unable to match requested speed 500 kHz, using 200 kHz
+shutdown command invoked

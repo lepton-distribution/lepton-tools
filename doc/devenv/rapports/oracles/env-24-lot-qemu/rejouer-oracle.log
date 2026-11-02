@@ -1,0 +1,19 @@
+== qemu-mps2-an386-embos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-24-lot-qemu/qemu-mps2-an386-embos (1583 symboles)
+== qemu-mps2-an386-freertos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-24-lot-qemu/qemu-mps2-an386-freertos (1623 symboles)
+== qemu-mps2-an386-embos-soft
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-24-lot-qemu/qemu-mps2-an386-embos-soft (1580 symboles)
+== qemu-mps2-an386-freertos-soft
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-24-lot-qemu/qemu-mps2-an386-freertos-soft (1622 symboles)
+== qemu-mps2-an500-embos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-24-lot-qemu/qemu-mps2-an500-embos (1545 symboles)
+== qemu-mps2-an500-freertos
+oracle capturé dans /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-24-lot-qemu/qemu-mps2-an500-freertos (1585 symboles)
+== qemu-mps2-an386-embos (ctest)
+== qemu-mps2-an386-freertos (ctest)
+== qemu-mps2-an386-embos-soft (ctest)
+== qemu-mps2-an386-freertos-soft (ctest)
+== qemu-mps2-an500-embos (ctest)
+== qemu-mps2-an500-freertos (ctest)
+rejouer-oracle: tout a réussi
