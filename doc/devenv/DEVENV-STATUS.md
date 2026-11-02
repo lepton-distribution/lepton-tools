@@ -36,7 +36,7 @@ Démarrer ENV-25 (`etapes/ENV-25-dbg5-mklepton.md`) : skill `devenv-session`, mo
 | ENV-22 | Résidus d'ENV-17 à ENV-21 | terminée (2026-11-02) ; rapport `rapports/env-22-residus.md` | lepton-tools `devenv/env-22` (depuis `main` eec7b60, fusionnée dans `main`, poussée) | `handoff/env-22.md` |
 | ENV-23 | Évolutions de scion : mise à jour de la graine, sources non git | terminée (2026-11-02) ; rapport `rapports/env-23-scion.md` | lepton-tools `devenv/env-23` (depuis `main` 5aa0882, fusionnée dans `main`, poussée) ; seed.scions `devenv/env-23` (depuis `master` 472c12e, fusionnée dans `master` e4d76b2, tag 0.5.3.0 sur ad292ee ; `master` et tag poussés, branche non poussée) ; clone noyau `devenv/env-23` (depuis `master` 40d7197, fusionnée dans `master` 0a6df02, poussées) | `handoff/env-23.md` |
 | ENV-24 | Dimensionnement automatique du cpufs | terminée (2026-11-02) ; rapport `rapports/env-24-cpufs.md` | lepton-tools `devenv/env-24` (depuis `main` 26c3149, fusionnée dans `main`, poussée) ; clone noyau `devenv/env-24` (depuis `master` 0a6df02, fusionnée dans `master` 0bdce87, poussées) | `handoff/env-24.md` |
-| ENV-25 | DBG-5 : déboguer `mklepton` sur l'hôte | à faire | — | — |
+| ENV-25 | DBG-5 : déboguer `mklepton` sur l'hôte | en cours (2026-11-02) | lepton-tools `devenv/env-25` (depuis `main` 95f30e3) | — |
 | ENV-26 | DBG-4 : vues des périphériques et des tâches | à faire | — | — |
 | ENV-27 | TST-2 : tests fournis par un greffon | à faire | — | — |
 | ENV-28 | Validation Debian groupée (ENV-22 à ENV-27) | à faire | — | — |
@@ -331,6 +331,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-11-02 | PA-35 (amendement) | Critère P-4 étendu après le lot 1 : l'écart admis comprend aussi les sections `.debug_*` lorsque leur écart est exactement celui de `dev_dskimg.o` (borne DWARF de `filecpu_memory`, vérifiée par compilation isolée de `dev_dskimg.c`) ; sections non chargées. |
 | 2026-11-02 | — (ENV-24, ajout au plan) | Essais carte : `board.net` sur F429 et F746 (Mac 192.168.2.10 sur `en0`, câble direct) et `board.radio` sur les deux NUCLEO-WL55JC1, en plus de la fumée et du banc KAL (décision de l'utilisateur). |
 | 2026-11-02 | PA-36 | Rapport `rapports/env-24-cpufs.md` §4-§7 présenté (écarts limités au cpufs, cartes conformes, `lepton check` 0) ; fusion `--no-ff` de `devenv/env-24` dans `main` (lepton-tools) et `master` (clone noyau, 0bdce87), push de `main`, `master` et des deux branches `devenv/env-24`. |
+| 2026-11-02 | PA-37 | Propositions de `rapports/env-25-dbg5.md` §1.5 retenues : un lancement hôte par combinaison (BSP, XML) distincte des configurations dont le BSP est greffé (1 par graine de projet, 7 pour `<ROOTSTOCK>`), nom `Déboguer mklepton <BSP> (<XML>)` ; arguments de la construction (`-s`, `--cpu-freq`, `--kernel-config-header`, XML, `SOURCE_DATE_EPOCH=0`) sauf `-o` et `cwd` = `<ROOTSTOCK>/build/.mklepton/<BSP>/` ; CodeLLDB (`type` `lldb`) sur le Mac et sur Debian, `extensions.lst` inchangé, CodeLLDB ajouté aux recommandations de l'espace ; tâche `lepton : préparer le débogage de mklepton` (`cmake -E make_directory`, après `lepton : mklepton (preset host)`) en `preLaunchTask` ; lancement écrit même si `build/host/mklepton` est absent, sans ligne d'information. Clone noyau non touché. |
 
 ## Journal
 
