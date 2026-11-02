@@ -24,7 +24,8 @@ arm=${ARM_GCC_BIN:-$HOME/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-
 preset=qemu-mps2-an386-freertos
 mkconf=sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml
 xml_projet=sys/user/bout-en-bout/etc/mkconf_bout-en-bout.xml     # copie de $mkconf dans la graine (O5)
-depots_ref=(lepton/original/master lepton-famille/qemu-mps2 lepton-bsp/qemu-mps2-an386)
+# Clones du rootstock de référence (convention d'ENV-13 : depots/lepton/<clé>/master)
+depots_ref=(lepton/original/master lepton/family-qemu-mps2/master lepton/bsp-qemu-mps2-an386/master)
 
 export PATH="$arm:$PATH"
 export PYTHONDONTWRITEBYTECODE=1      # smoke_lsh.py est servi par le trunk : aucun __pycache__
