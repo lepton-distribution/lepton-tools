@@ -19,7 +19,7 @@ import re
 import shutil
 import subprocess
 from dataclasses import dataclass, field
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from lepton.checks import KERNEL_PRESETS, board_presets, check_seed_options
 from lepton.errors import EXIT_OK, EXIT_TOOL, LeptonError
@@ -37,6 +37,11 @@ OPTION_PREFIX = "LEPTON_OPTION_"   # + <greffon>_<NOM> : valeur d'option de la g
 COMPILE_COMMANDS = "compile_commands.json"
 PROBE_SERIAL_SETTING = "lepton.probeSerial"   # réglage de l'espace : série de sonde conservée (O8)
 MKCONF_PATTERN = "**/mkconf_*.xml"            # XML mklepton du noyau (xml.fileAssociations, CFG-7)
+# DBG-5 (PA-37 d'ENV-25) : débogage hôte de mklepton par CodeLLDB, sorties hors de celles des presets
+MKLEPTON_DIR = ".mklepton"                    # build/.mklepton/<BSP> : sortie (-o) et cwd du lancement
+MKLEPTON_TASK = "lepton : mklepton (preset host)"
+MKLEPTON_PREPARE = "lepton : préparer le débogage de mklepton"
+CODELLDB = "vadimcn.vscode-lldb"
 # Sortie de `lepton check` (« <fichier>: [<ligne xmllint>: ]<emplacement et message> ») → panneau Problems,
 # en erreur (CFG-7 : le service JSON intégré signale les fautes de schéma en avertissement seulement)
 CHECK_MATCHER = {"owner": "lepton", "source": "lepton check", "severity": "error",
@@ -166,6 +171,7 @@ class Configuration:
     execution: str | None        # qemu | carte ; None : configurer et construire seulement
     board: str                   # nom du BSP
     bsp: dict = field(default_factory=dict)   # manifeste du BSP ; vide s'il n'est pas greffé
+    mkconf: str | None = None    # XML mklepton relatif au trunk (`mklepton_xml`, `LEPTON_MKCONF`)
 
 
 def _execution(bsp: dict) -> str | None:
@@ -200,7 +206,7 @@ class Context:
         for c in self.graine["configurations"]:
             check_configuration(c, bsp.name, self.bsp, f"corriger « execution » dans {rs.seed_manifest_path()}")
         self.configurations = [Configuration(c["nom"], preset_name(self.project, c), c["construction"],
-                                             c["execution"], bsp.name, self.bsp)
+                                             c["execution"], bsp.name, self.bsp, self.graine["mklepton_xml"])
                                for c in self.graine["configurations"]]
         anomalies = check_seed_options(self.graine, by_name, str(rs.seed_manifest_path()))
         if anomalies:
@@ -230,7 +236,7 @@ class Context:
                 raise LeptonError(f"BSP {board} : cœur « {bsp.get('coeur')} » inconnu de lepton generate",
                                   f"cœurs pris en charge : {', '.join(QEMU_CPU_OF_CORE)}")
             self.configurations.append(Configuration(name, name, str(variables.get("CMAKE_BUILD_TYPE", "")),
-                                                     execution, board, bsp))
+                                                     execution, board, bsp, variables.get("LEPTON_MKCONF")))
         if not self.configurations:
             raise LeptonError(f"{path} : aucun preset de carte (LEPTON_BOARD)", "greffon noyau d'ENV-5 ou plus récent")
 
@@ -402,7 +408,40 @@ def launch_configurations(ctx: Context, tools: dict, probe_serial: str | None = 
             if probe_serial:   # O8 : Cortex-Debug n'applique pas serialNumber à OpenOCD
                 board["openOCDLaunchCommands"] = [f"adapter serial {probe_serial}"]
             configs.append(board)
+    configs.extend(mklepton_launch(ctx, c) for c in mklepton_runs(ctx))
     return configs
+
+
+def mklepton_runs(ctx: Context) -> list[Configuration]:
+    """DBG-5 (PA-37 d'ENV-25) : une configuration par combinaison (BSP, XML) distincte, BSP greffé et
+    XML renseigné, dans l'ordre des configurations."""
+    seen, runs = set(), []
+    for c in ctx.configurations:
+        if c.bsp and c.mkconf and (c.board, c.mkconf) not in seen:
+            seen.add((c.board, c.mkconf))
+            runs.append(c)
+    return runs
+
+
+def _mklepton_out(ctx: Context, c: Configuration) -> Path:
+    return ctx.rs.build / MKLEPTON_DIR / c.board
+
+
+def mklepton_launch(ctx: Context, c: Configuration) -> dict:
+    """Lancement hôte de mklepton (CodeLLDB) : arguments de lepton_generate() du noyau
+    (cmake/mklepton.cmake), sauf -o et cwd, hors des sorties du preset ; le binaire peut manquer :
+    la tâche préalable le construit."""
+    out = _mklepton_out(ctx, c)
+    args = ["-s", str(ctx.rs.trunk), "-o", str(out)]
+    if c.bsp.get("frequence_cpu"):
+        args += ["--cpu-freq", str(c.bsp["frequence_cpu"])]
+    if c.bsp.get("entete_config_noyau"):           # relatif au trunk, comme LEPTON_BOARD_KERNEL_CONFIG_HEADER
+        header = SOURCE_ROOT / c.bsp["destination"] / c.bsp["entete_config_noyau"]
+        args += ["--kernel-config-header", header.as_posix()]
+    return {"name": f"Déboguer mklepton {c.board} ({PurePosixPath(c.mkconf).name})", "type": "lldb",
+            "request": "launch", "program": str(ctx.rs.build / HOST_PRESET / "mklepton"),
+            "args": [*args, c.mkconf], "cwd": str(out), "env": {"SOURCE_DATE_EPOCH": "0"},
+            "preLaunchTask": MKLEPTON_PREPARE}
 
 
 def _task(label: str, command: str, args: list[str], cwd: Path, **extra) -> dict:
@@ -415,7 +454,7 @@ def _task(label: str, command: str, args: list[str], cwd: Path, **extra) -> dict
 def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[dict]:
     trunk = ctx.rs.trunk
     cmake = tools["cmake"]
-    mk = "lepton : mklepton (preset host)"
+    mk = MKLEPTON_TASK
     gcc = {**GCC_MATCHER, "fileLocation": ["autoDetect", str(trunk)]}
     result = [
         _task("lepton : regreffer", tools["lepton"], ["graft", "-C", str(ctx.rs.path)], ctx.rs.path),
@@ -425,6 +464,9 @@ def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[di
         _task(mk, cmake, ["--build", "--preset", HOST_PRESET, "--target", "mklepton"], trunk,
               dependsOn=["lepton : configurer host"], dependsOrder="sequence", problemMatcher=gcc),
     ]
+    outs = [str(_mklepton_out(ctx, c)) for c in mklepton_runs(ctx)]
+    if outs:                                       # DBG-5 : répertoires de sortie des lancements hôtes
+        result.append(_task(MKLEPTON_PREPARE, cmake, ["-E", "make_directory", *outs], trunk, dependsOn=[mk]))
     env = {"env": {"PYTHONDONTWRITEBYTECODE": "1"}}   # tests servis par le trunk : aucun __pycache__
     for c in ctx.configurations:
         preset = c.preset
@@ -453,12 +495,14 @@ def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[di
 
 
 def render_workspace(ctx: Context, tools: dict, probe_serial: str | None = None) -> str:
+    recommendations = ["llvm-vs-code-extensions.vscode-clangd", "ms-vscode.cmake-tools", "marus25.cortex-debug"]
+    if mklepton_runs(ctx):
+        recommendations.append(CODELLDB)
     data = {"folders": workspace_folders(ctx),
             "settings": workspace_settings(ctx, tools, probe_serial),
             "launch": {"version": "0.2.0", "configurations": launch_configurations(ctx, tools, probe_serial)},
             "tasks": {"version": "2.0.0", "tasks": tasks(ctx, tools, probe_serial)},
-            "extensions": {"recommendations": ["llvm-vs-code-extensions.vscode-clangd",
-                                               "ms-vscode.cmake-tools", "marus25.cortex-debug"]}}
+            "extensions": {"recommendations": recommendations}}
     return f"// {NOTE}\n" + json.dumps(data, ensure_ascii=False, indent=2) + "\n"
 
 

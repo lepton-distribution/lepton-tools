@@ -64,6 +64,17 @@ def _workspace(root: Path, project: str = "demo") -> dict:
     return json.loads(rest)
 
 
+def _target_launches(ws: dict) -> list[dict]:
+    """Lancements de la cible (Cortex-Debug), hors lancements hôtes de mklepton (DBG-5)."""
+    return [c for c in ws["launch"]["configurations"] if c["type"] == "cortex-debug"]
+
+
+def _set_bsp(root: Path, name: str, **fields) -> None:
+    """Champs ajoutés au manifeste du BSP greffé `name` (dans son clone)."""
+    m = next(m for m in Rootstock(root).manifests().values() if m.name == name)
+    m.path.write_text(json.dumps({**m.data, **fields}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def _seed(root: Path) -> Path:
     return root / "depots" / "lepton-seed" / "demo"
 
@@ -183,7 +194,7 @@ def test_workspace_folders_settings_launch_tasks(project, tools):
     assert s["clangd.arguments"] == [f"--compile-commands-dir={active}", "--background-index",
                                      f"--query-driver={tools / 'arm-none-eabi-gcc'}"]
 
-    [launch] = ws["launch"]["configurations"]
+    [launch] = _target_launches(ws)
     assert launch["type"] == "cortex-debug" and launch["servertype"] == "qemu"
     assert launch["machine"] == "mps2-an386" and launch["cpu"] == "cortex-m4"
     assert launch["serverpath"] == str(tools / "qemu-system-arm")
@@ -208,7 +219,7 @@ def test_board_configuration_uses_bsp_openocd(project, repos, tools):
                  "--no-cmake"]) == 0
     _set_graine(project, configurations=[{"nom": "debug-board", "construction": "Debug", "execution": "carte"}])
     assert main(["generate", "-C", str(project)]) == 0
-    [launch] = _workspace(project)["launch"]["configurations"]
+    [launch] = _target_launches(_workspace(project))
     cfg = project / "trunk" / "sys/root/src/kernel/dev/bsp/board-c/openocd/board-c.cfg"
     assert launch["servertype"] == "openocd" and launch["configFiles"] == [str(cfg)]
     assert launch["serverpath"] == str(tools / "openocd")
@@ -217,6 +228,42 @@ def test_board_configuration_uses_bsp_openocd(project, repos, tools):
     assert flash["args"][:2] == ["-f", str(cfg)] and "verify reset exit" in flash["args"][-1]
     presets = json.loads((project / "trunk" / gen.PRESETS_FILE).read_text(encoding="utf-8"))
     assert presets["configurePresets"][0]["cacheVariables"]["LEPTON_BOARD"] == "board-c"
+
+
+def test_mklepton_host_launch(project, tools):
+    """DBG-5 (PA-37 d'ENV-25) : un lancement CodeLLDB de mklepton par combinaison (BSP, XML), arguments
+    de la construction sauf la sortie (build/.mklepton/<BSP>) ; tâche préalable après la construction
+    de mklepton ; rien n'est exécuté ni créé par generate."""
+    _set_graine(project, configurations=[
+        {"nom": "debug-qemu", "construction": "Debug", "execution": "qemu"},
+        {"nom": "release-qemu", "construction": "Release", "execution": "qemu"}])
+    assert main(["generate", "-C", str(project)]) == 0
+    ws = _workspace(project)
+    out = project / "build" / gen.MKLEPTON_DIR / "board-q"
+    prep = {"name": "Déboguer mklepton board-q (mkconf_demo.xml)", "type": "lldb", "request": "launch",
+            "program": str(project / "build" / "host" / "mklepton"),
+            "args": ["-s", str(project / "trunk"), "-o", str(out), "--cpu-freq", "25000000", PROJECT_XML],
+            "cwd": str(out), "env": {"SOURCE_DATE_EPOCH": "0"},
+            "preLaunchTask": "lepton : préparer le débogage de mklepton"}
+    host = [c for c in ws["launch"]["configurations"] if c["type"] == "lldb"]
+    assert host == [prep]                                    # BSP sans entete_config_noyau : option omise
+    assert len(_target_launches(ws)) == 2
+    assert ws["launch"]["configurations"][-1] == prep        # après les lancements de la cible
+    tasks = {t["label"]: t for t in ws["tasks"]["tasks"]}
+    mk = tasks["lepton : mklepton (preset host)"]
+    task = tasks["lepton : préparer le débogage de mklepton"]
+    assert task["command"] == mk["command"] and task["args"] == ["-E", "make_directory", str(out)]
+    assert task["dependsOn"] == ["lepton : mklepton (preset host)"]
+    assert "vadimcn.vscode-lldb" in ws["extensions"]["recommendations"]
+    assert not (project / "build" / gen.MKLEPTON_DIR).exists()
+
+    _set_bsp(project, "board-q", entete_config_noyau="include/user_kernel_mkconf.h")
+    assert main(["generate", "-C", str(project)]) == 0
+    [host] = [c for c in _workspace(project)["launch"]["configurations"] if c["type"] == "lldb"]
+    assert host["args"] == ["-s", str(project / "trunk"), "-o", str(out), "--cpu-freq", "25000000",
+                            "--kernel-config-header",
+                            "sys/root/src/kernel/dev/bsp/board-q/include/user_kernel_mkconf.h", PROJECT_XML]
+    assert_trunk_clean(project)
 
 
 def _board_project(project, repos) -> None:
@@ -231,7 +278,7 @@ def test_probe_serial_kept_in_workspace(project, repos, tools, capsys):
     _board_project(project, repos)
     assert main(["generate", "-C", str(project)]) == 0
     assert "sans --probe-serial" in capsys.readouterr().err
-    [launch] = _workspace(project)["launch"]["configurations"]
+    [launch] = _target_launches(_workspace(project))
     assert "openOCDLaunchCommands" not in launch
 
     assert main(["generate", "-C", str(project), "--probe-serial", "066DFF3A"]) == 0
@@ -240,7 +287,7 @@ def test_probe_serial_kept_in_workspace(project, repos, tools, capsys):
     assert "sans --probe-serial" not in capsys.readouterr().err
     ws = _workspace(project)
     assert ws["settings"][gen.PROBE_SERIAL_SETTING] == "066DFF3A"
-    [launch] = ws["launch"]["configurations"]
+    [launch] = _target_launches(ws)
     assert launch["openOCDLaunchCommands"] == ["adapter serial 066DFF3A"]
     flash = {t["label"]: t for t in ws["tasks"]["tasks"]}["lepton : flasher demo-debug-board"]
     cfg = project / "trunk" / "sys/root/src/kernel/dev/bsp/board-c/openocd/board-c.cfg"
@@ -250,7 +297,7 @@ def test_probe_serial_kept_in_workspace(project, repos, tools, capsys):
     assert main(["generate", "-C", str(project), "--probe-serial", ""]) == 0
     ws = _workspace(project)
     assert gen.PROBE_SERIAL_SETTING not in ws["settings"]
-    assert "openOCDLaunchCommands" not in ws["launch"]["configurations"][0]
+    assert "openOCDLaunchCommands" not in _target_launches(ws)[0]
 
     before = _snapshot(project)
     capsys.readouterr()
@@ -305,7 +352,7 @@ def test_build_tasks_gcc_matcher(project, tools):
     assert main(["generate", "-C", str(project)]) == 0
     tasks = _workspace(project)["tasks"]["tasks"]
     assert "$gcc" not in json.dumps(tasks)
-    builds = [t for t in tasks if t["label"].startswith("lepton : construire") or "mklepton" in t["label"]]
+    builds = [t for t in tasks if t["label"].startswith("lepton : construire") or t["label"] == gen.MKLEPTON_TASK]
     assert len(builds) == 2
     for task in builds:
         matcher = task["problemMatcher"]
@@ -425,7 +472,7 @@ def test_gdb_multiarch_when_no_arm_gdb(project, tools, monkeypatch):
     monkeypatch.setattr(gen.shutil, "which", lambda n, *a, **k: None if n == "arm-none-eabi-gdb" else which(n, *a, **k))
     assert main(["generate", "-C", str(project)]) == 0
     ws = _workspace(project)
-    [launch] = ws["launch"]["configurations"]
+    [launch] = _target_launches(ws)
     assert launch["gdbPath"] == str(tools / "gdb-multiarch")
     assert ws["settings"]["cortex-debug.gdbPath"] == str(tools / "gdb-multiarch")
 
