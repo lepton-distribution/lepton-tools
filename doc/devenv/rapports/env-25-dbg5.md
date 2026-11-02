@@ -124,3 +124,25 @@ lignes retirées sont `"marus25.cortex-debug"` (6), réécrite avec une virgule.
   cible inchangés par construction.
 - `<ROOTSTOCK>` : `lepton check` code 0 (19 fichiers) ; trunk : seul fichier régulier
   `.scion.grafted.list` (scion), 0 lien cassé.
+
+### 3.3 Essai VSCodium (Mac, fait par l'utilisateur, 2026-11-02)
+Espace `<ROOTSTOCK>/original-tree.code-workspace`, lancement « Déboguer mklepton qemu-mps2-an386
+(mkconf_tauon_basic_qemu_mps2.xml) », point d'arrêt dans `main` de
+`trunk/tools/mklepton/src/mklepton.c`.
+
+| Critère | Résultat |
+| --- | --- |
+| Arrêt dans `mklepton` (DBG-5) | atteint |
+| Variables `argc`, `argv` | lisibles |
+| Fichier source ouvert à l'arrêt | par le trunk (DWARF en chemins du trunk, §1.2 ; aucun `sourceMap`) |
+| Exécution de la tâche préalable | non rapportée |
+
+## 4. Bilan (PA-38)
+| Critère du fichier d'étape | État |
+| --- | --- |
+| PA-37 et PA-38 tranchés et consignés | PA-37 oui ; PA-38 : ce rapport |
+| `pytest` vert, nouveaux tests compris | oui, 218 |
+| Fichiers générés : diff limité au lancement et à la tâche ajoutés | oui (+ recommandation CodeLLDB, décidée au PA-37) |
+| Arrêt dans `mklepton` constaté sous VSCodium (Mac) | oui |
+
+Reporté à ENV-28 : essai Debian (CodeLLDB `linux-x64`, DWARF de gcc).
