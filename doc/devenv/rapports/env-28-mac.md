@@ -89,6 +89,8 @@ Toutes égales aux têtes locales des clones de `<ROOTSTOCK>` : lepton-tools `ma
 | AVANCEMENT R28-1 | 2026-11-02 | VM → Mac | §11 conforme (C8) : `env-21-debian` 363M, `~/env-21-journaux` 1,2M, supprimés par l'utilisateur, absence vérifiée ; `$R`, `$U`, `$J` conservés ; §8 (`rejouer-oracle.sh`) en cours sur `devenv/env-28-debian`, non refusé |
 | AVANCEMENT R28-1 | 2026-11-02 | VM → Mac | §8 conforme (C4, C6) : `rejouer-oracle` code 0 ; host 7/7 ; 16 presets ; fumée ; banc an386 20/20, soft 16/16, an500 19/19 ; `peripheriques` listé, `-L greffon:` = 2, Passed dans les 4 an386, absent d'an500 ; mklepton = `env-27-apres`, 14 lignes contre R21-1 ; `comparer_R21-1` 1 ×16, écarts du tableau seuls (deltas vérifiés), symboles en nombre identique à R21-1 ; `comparer_Mac` 1 ; f429→f439 0 |
 | AVANCEMENT R28-1 | 2026-11-02 | VM → Mac | §9 forme A et §10 conformes (C7) : `check` 0 (19), `generate` 0 ; 23 request, 10 svdFile, 7 lldb, SVD aux sommes ; `mklepton` hors débogueur = construction (6 fichiers) ; lldb 1.12.3 : breakpoint 1.1, `main(argc=10)` à `mklepton.c:2383`, unité de compilation sous `$R/trunk` ; `env-11/qemu` : diff limité aux ajouts DBG-5 ; attente de la forme B |
+| AVANCEMENT R28-1 | 2026-11-02 | VM → Mac | §9 forme B (utilisateur) conforme (C5) : arrêt dans `main`, `argc`/`argv` lisibles, source par le trunk ; tâche préalable exécutée (répertoires `build/.mklepton/<BSP>` créés, `.ninja_log` du host écrit) ; rapport et oracle (97 fichiers) commités 1904c83 sur `devenv/env-28-debian`, non poussé ; QUESTION du push à l'utilisateur |
+| FIN-SUCCÈS R28-1 | 2026-11-02 | VM → Mac | C1 à C8 conformes (C3 sur le 2e `graft-update`, E-1) ; `devenv/env-28-debian` 1904c83 (depuis b8ff911), poussée avec l'accord de l'utilisateur ; rapport `rapports/env-28-debian.md`, oracle `oracles/env-28-debian/` ; écarts E-1, E-2 ; proposition : branche des clones au §5 des consignes ; non fait : flashage |
 
 Constat pour la tâche 3 : avant tout `graft-update` d'un rootstock d'essai du Mac, relever la
 branche courante de chaque clone (`git -C <clone> branch --show-current`) ; un clone hors de sa
@@ -136,3 +138,28 @@ Clones : tous sur `master`, propres, aux têtes du §1.3. Graines inchangées ; 
 le script (s'ajoute au `lepton-graine.lock.json` non suivi déjà connu) : constat, sans effet.
 
 ## 4. Vérification du rapport VM (tâche 4)
+
+`git fetch` : `origin/devenv/env-28-debian` 1904c83, descendante de b8ff911 ; 97 fichiers ajoutés,
+tous sous `rapports/env-28-debian.md` et `rapports/oracles/env-28-debian/` (périmètre du §2 de la
+consigne respecté).
+
+Comparaisons refaites au Mac sur l'oracle poussé :
+- `mklepton-empreintes.sha256` : identique à `env-27-apres` ; 14 lignes différentes contre
+  `env-21-debian`.
+- `ctest.log` host 7/7 ; `banc-kal.log` : 20/20 ×2, 16/16 ×2, 19/19 ×2 ; `peripheriques` Passed
+  dans les 4 an386.
+- `comparer-oracle.py` `env-21-debian` → `env-28-debian` : code 1 sur les 16 presets ; pour chaque
+  preset, l'ensemble des écarts (sections avec leur delta, `filecpu_memory` avant → après) est
+  **identique** à celui du Mac `env-20-apres` → `env-27-apres` (comparaison par script) ; bilans :
+  14 × 4 écarts, 2 × 2 (SAMD21).
+- `f429→f439` : 0 en embOS et FreeRTOS.
+
+Rapport VM (`rapports/env-28-debian.md`) : table des critères C1-C8 conforme à la consigne, chaque
+constat chiffré ; E-1 (cause, correction PA-43 (2), deux constats scion) et E-2 décrits ; journal
+§2bis conforme aux messages reçus. Verdict : `FIN-SUCCÈS R28-1` vérifié, C1 à C8 conformes.
+
+Propositions non validées issues de R28-1 :
+- P-1 : règle des consignes VM (ORCHESTRATION §2bis) : relever au §5 la branche courante de chaque
+  clone d'un rootstock existant ; un clone hors de sa version déclarée est un arrêt.
+- P-2 : étape scion ultérieure : (a) `graft-update` ramène un clone existant à la version déclarée
+  (ou refuse s'il n'y est pas), (b) une regreffe en échec ne laisse pas le trunk vide.
