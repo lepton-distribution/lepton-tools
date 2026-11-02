@@ -200,3 +200,38 @@ Avant : clones famille et BSP repassés sur `master` (état de départ, trunk sa
 - **E-1** (connu, `env-19-extraction.md` E-1) : `__TIME__` dans l'image. Vérifié : reconstruction à
   neuf de `nucleo-f429zi-embos` sans modification → 3 octets différents, tous dans la chaîne
   `14:42:52` / `14:44:35` (`.rodata`, à côté de `Nov  2 2026`).
+
+## 4. Essai VSCodium (utilisateur, 2026-11-02)
+
+Espace `<ROOTSTOCK>/original-tree.code-workspace` régénéré par lepton 13633f5 ; une carte branchée
+à la fois.
+
+| Carte | Preset | Registres (XPERIPHERALS) | Tâches (xRTOS) |
+| --- | --- | --- | --- |
+| NUCLEO-F429ZI | `nucleo-f429zi-embos` | lisibles | non relevé (défaut O-1 attendu) |
+| NUCLEO-WL55JC1 | `nucleo-wl55jc1-embos` | lisibles | non relevé (défaut O-1 attendu) |
+| STM32F746G-DISCO | `stm32f746g-disco-embos` | lisibles | non relevé (défaut O-1 attendu) |
+| SAMD21 Xplained Pro | `samd21-xplained-pro-embos` | lisibles | vide au format naturel (O-1) ; **liste des tâches affichée en mode hexadécimal** |
+| NUCLEO-WL55JC1 | `nucleo-wl55jc1-freertos` | — | **liste des tâches affichée**, mode hexadécimal actif ou non ; taille et usage de pile « ??? » (O-2) |
+
+Premier lancement SAMD21 : arrêt d'OpenOCD (« GDB Server Quit Unexpectedly ») dû au mauvais
+connecteur USB de la carte (utilisateur), sans suite après branchement sur l'EDBG.
+
+### Observations
+
+- **O-1** (rtos-views 0.0.16 ; même code sur `main` amont, `src/rtos/rtos-embos.ts`) : la liste
+  embOS n'est lue que si `!isNaN(OS_Global.IsRunning)` ; `IsRunning` est un `unsigned char`
+  (`RTOS.h` 5.20), que gdb rend `1 '\001'` (MI, `-var-evaluate-expression`) → `isNaN` vrai → liste
+  vide (« No embOS threads detected »). Sur la carte SAMD21, lu par OpenOCD et gdb hors éditeur :
+  `IsRunning` 1, `pTask` 0x20003670 (`kernel_thread`, priorité 150, pile 2048), `Time` 5350 puis
+  10776 (5 s). Contournement : bouton « Enable Hex mode » de la vue VARIABLES
+  (`cortex-debug.varHexModeTurnOn`), puis un nouvel arrêt (`0x01` passe le test). Décision de
+  l'utilisateur : contournement documenté (skill `lepton-cibles` §Vues, bf25879), `generate`
+  inchangé, pas de signalement amont.
+- **O-2** (FreeRTOS) : TCB sans `pxEndOfStack` ni `uxTCBNumber` (`ptype *pxCurrentTCB`, image
+  `nucleo-wl55jc1-freertos`) : `kal/backend/freertos/FreeRTOSConfig.h` ne définit pas
+  `configRECORD_STACK_HIGH_ADDRESS` et pose `configUSE_TRACE_FACILITY` 0 ; rtos-views ne peut
+  calculer ni taille ni usage de pile. Proposition non validée : les activer dans une étape qui
+  accepte un changement des binaires FreeRTOS (structure du TCB modifiée), hors ENV-26.
+- Arrêt initial dans `main` (`runToEntryPoint`) : antérieur à `OS_Start` ; la vue des tâches se lit
+  après une *Pause* en cours d'exécution.
