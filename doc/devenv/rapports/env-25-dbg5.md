@@ -76,3 +76,51 @@ cible `mklepton`), dont dépendent déjà les tâches `configurer <preset>`.
 | Débogueur | CodeLLDB (`type` `lldb`) sur le Mac et sur Debian ; `extensions.lst` inchangé ; CodeLLDB ajouté aux recommandations de l'espace |
 | Tâche préalable | Une tâche `lepton : préparer le débogage de mklepton` : `cmake -E make_directory` des répertoires de sortie, `dependsOn` `lepton : mklepton (preset host)` ; `preLaunchTask` de chaque lancement |
 | `build/host/mklepton` absent | Lancement écrit quand même (la tâche préalable le construit), sans ligne d'information |
+
+PA-37 tranché le 2026-11-02 : propositions §1.5 retenues en bloc (`DEVENV-STATUS.md` §Décisions).
+
+## 2. Implémentation (lepton-tools, `devenv/env-25` ac0cfc1)
+- `lepton/generate.py` : `Configuration.mkconf` (graine de projet : `mklepton_xml` ; graine de
+  référence : `LEPTON_MKCONF`) ; `mklepton_runs()` (combinaisons (BSP, XML) distinctes, BSP greffé),
+  `mklepton_launch()` (CodeLLDB), tâche `lepton : préparer le débogage de mklepton`,
+  recommandation `vadimcn.vscode-lldb`. Règle : `rapports/env-8-interface.md` §17.
+- Tests écrits d'abord : `test_mklepton_host_launch` (graine de projet ; option
+  `--kernel-config-header` absente puis présente selon le BSP) et
+  `test_reference_mklepton_host_launches` (graine de référence ; BSP non greffé sans lancement).
+- Tests existants ajustés, sans changement de ce qu'ils vérifient : sélection des lancements
+  Cortex-Debug (`_target_launches`, 6 lignes de `test_generate.py`, 1 de `test_reference_seed.py`) ;
+  `test_build_tasks_gcc_matcher` sélectionne la tâche mklepton par son libellé exact (le libellé de
+  la tâche ajoutée contient « mklepton »).
+- `pytest` : 218 passés (216 + 2), 387,9 s.
+- `pipx install --force <LEPTON_TOOLS>` depuis `devenv/env-25` ac0cfc1 (`lepton 0.1.0`).
+
+## 3. Contrôles
+### 3.1 Fichiers générés
+Relevés `~/lepton-tools-dev/essais/env-25-releve/{avant,apres}/<rootstock>/` (script : régénération
+par `lepton generate` juste avant chaque relevé, E-1 ; avant : lepton installé de `devenv/env-23`
+5e03b27, code de `lepton/` identique à `main` 95f30e3) ; diff : `diff-avant-apres.txt`.
+
+| Rootstock | `generate` avant / après | Lancements hôtes ajoutés | `CMakeUserPresets.json` |
+| --- | --- | --- | --- |
+| `<ROOTSTOCK>` (`original-tree`) | 0 / 0 | 7 | — (graine de référence) |
+| `essais/env-13-vierge` | 0 / 0 | 7 | — |
+| `essais/env-9` | 0 / 0 | 1 (`qemu-mps2-an386`, `mkconf_env9.xml`) | identique |
+| `essais/env-11/qemu` | 0 / 0 | 1 | identique |
+| `essais/env-11/f429zi` | 0 / 0 | 1 | identique |
+| `essais/env-11/wl55jc1` | 0 / 0 | 1 | identique |
+| `essais/env-11/qemu-gra2` | 1 / 1 (attendu : BSP retiré, essai GRA-2, comme en ENV-18 et ENV-21) | — | identique |
+
+Diff : uniquement les lancements hôtes (en fin de `launch`), la tâche préalable (après
+`lepton : mklepton (preset host)`) et `vadimcn.vscode-lldb` dans les recommandations ; les seules
+lignes retirées sont `"marus25.cortex-debug"` (6), réécrite avec une virgule.
+
+### 3.2 Arguments et exécution hors débogueur
+- Arguments des 7 lancements de `<ROOTSTOCK>` comparés à `ninja -t commands` du preset embOS de
+  chaque BSP : identiques hors `-o`.
+- `mklepton` exécuté avec `program`, `args`, `cwd`, `env` des lancements an386 et f429zi : code 0 ;
+  les 6 fichiers produits dans `build/.mklepton/<BSP>/` sont identiques octet pour octet à
+  `build/<preset>/generated/board/` ; ces derniers ne sont pas touchés (date 11:32 inchangée).
+- Aucun fichier de construction modifié (CMake, presets du noyau, clone noyau propre) : binaires de
+  cible inchangés par construction.
+- `<ROOTSTOCK>` : `lepton check` code 0 (19 fichiers) ; trunk : seul fichier régulier
+  `.scion.grafted.list` (scion), 0 lien cassé.
