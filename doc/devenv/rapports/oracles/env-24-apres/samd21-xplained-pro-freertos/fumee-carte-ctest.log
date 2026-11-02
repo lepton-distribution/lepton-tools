@@ -1,0 +1,20 @@
+Test project /Users/cle_d_anton/lepton/build/samd21-xplained-pro-freertos
+    Start 1: board.smoke_lsh
+1/1 Test #1: board.smoke_lsh ..................***Failed   24.86 sec
+ÉCHEC : uname -a : machine « cortexM0p-samd21 » absente de b''
+journal : /Users/cle_d_anton/lepton/build/samd21-xplained-pro-freertos/smoke_lsh_board.log
+
+
+0% tests passed, 1 tests failed out of 1
+
+Label Time Summary:
+arch:cortex-m0plus    =  24.86 sec*proc (1 test)
+backend:freertos      =  24.86 sec*proc (1 test)
+board                 =  24.86 sec*proc (1 test)
+kal                   =  24.86 sec*proc (1 test)
+
+Total Test time (real) =  24.87 sec
+
+The following tests FAILED:
+	  1 - board.smoke_lsh (Failed)                          arch:cortex-m0plus backend:freertos board kal
+Errors while running CTest

@@ -1,0 +1,26 @@
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport "swd". To override use 'transport select <transport>'.
+Info : CMSIS-DAP: SWD supported
+Info : CMSIS-DAP: FW Version = 01.1A.00FB
+Info : CMSIS-DAP: Serial# = ATML2130021800003505
+Info : CMSIS-DAP: Interface Initialised (SWD)
+Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 1 TDO = 1 nTRST = 0 nRESET = 1
+Info : CMSIS-DAP: Interface ready
+Info : clock speed 400 kHz
+Info : SWD DPIDR 0x0bc11477
+Info : [at91samd21j18.cpu] Cortex-M0+ r0p1 processor detected
+Info : [at91samd21j18.cpu] target has 4 breakpoints, 2 watchpoints
+Info : starting gdb server for at91samd21j18.cpu on 3333
+Info : Listening on port 3333 for gdb connections
+[at91samd21j18.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x61000000 pc: 0x0000015c msp: 0x20008000
+** Programming Started **
+Info : SAMD MCU: SAMD21J18A (256KB Flash, 32KB RAM)
+** Programming Finished **
+** Verify Started **
+** Verified OK **
+** Resetting Target **
+shutdown command invoked

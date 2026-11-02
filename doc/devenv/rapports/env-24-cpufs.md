@@ -234,3 +234,34 @@ Référence : 15/15 sans radio, 16/16 avec (`doc/migration/validation-nucleo-wl5
 remise en flash désignant la cfg OpenOCD par le trunk, avec redirection de sortie, a été refusée
 par le hook `proteger-trunk.py` (aucune écriture visée dans le trunk) ; refaite avec le chemin réel
 du clone `depots/lepton/bsp-nucleo-wl55jc1/master/…`, sans contournement.
+
+### SAMD21 Xplained Pro (EDBG ATML2130021800003505, `/dev/cu.usbmodem1454302`)
+
+| Binaire | `lepton.elf` / oracle après | Résultat | Fumée |
+| --- | --- | --- | --- |
+| `samd21-xplained-pro-embos` | 0 écart | 15/15 | `cortexM0p-samd21` |
+| `samd21-xplained-pro-freertos` | 0 écart | banc 14/14 (`-FS board_t0 -E board.smoke_lsh`) | échec hérité E-5 d'ENV-19 (`uname -a`, `ls`, `ps` reviennent à l'invite sans sortie) ; console identique à `env-19-apres` (date filtrée) |
+
+Fin : image `samd21-xplained-pro-embos` remise en flash (« Verified OK »).
+
+## 7. Bilan (PA-36)
+
+- `lepton check` sur `<ROOTSTOCK>` : code 0, 19 fichiers conformes. Trunk : 0 fichier régulier,
+  0 lien cassé. Clones du noyau, des familles, des BSP et de la graine : propres.
+- Critères du fichier d'étape :
+  - PA-35 tranché et consigné (avec l'amendement de P-4) ; PA-36 : ce point d'arrêt.
+  - 5 XML sans `size` ni `node` ; `host.mklepton_empreintes` vert avec la nouvelle référence
+    (816715b), `host.mklepton_format` vert (host 7/7).
+  - Écarts de l'oracle limités à l'image cpufs, chacun classé (§4, §5).
+  - Fumée et banc KAL identiques sur QEMU (§5) et sur les 4 cartes accordées (§6) ; en plus,
+    réseau (F429, F746 : `board.net`) et radio (WL55 : `board.radio`) verts.
+- Gains de flash : 122061 octets d'image sur qemu, F429/F439, F746 ; 6245 sur WL55 ; 1366 sur
+  SAMD21. RAM inchangée (image `const` en `.text`).
+- Images remises en flash : celles d'ENV-24 (`*-embos`) ; l'image d'avant ENV-24 n'existe plus.
+- Non fait : validation Debian (ENV-28) ; graines des rootstocks d'essai (hors périmètre, P-5).
+
+Branches (non poussées) :
+- lepton-tools `devenv/env-24` (depuis `main` 26c3149) : rapport, oracles `env-24-avant`,
+  `env-24-lot-{qemu,f439zi,f746,wl55jc1,samd21}`, `env-24-apres`, état.
+- Clone noyau `devenv/env-24` (depuis `master` 0a6df02) : 1d1db90, 7f3dd51, 0788892, 3194f19,
+  977da08, 46f3e02, 792c188, 233ec3c, 324d2eb, 9db0630, 816715b, 7a32352, f3ecf8c.
