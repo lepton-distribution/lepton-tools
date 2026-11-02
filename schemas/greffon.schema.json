@@ -156,9 +156,17 @@
       "enum": ["stlink", "jlink", "cmsis-dap"]
     },
     "svd": {
-      "description": "Fichier SVD du MCU, relatif à destination (vue des périphériques au débogage).",
-      "$comment": "GRF-3 ; ENV-3 (svd).",
-      "$ref": "#/$defs/chemin_relatif"
+      "description": "Fichier SVD du MCU (vue des périphériques au débogage) : chemin relatif à destination (fichier du BSP), ou {\"famille\": chemin relatif à la destination de la famille du BSP}.",
+      "$comment": "GRF-3 ; ENV-3 (svd) ; ENV-26 PA-39 (SVD du MCU dans le greffon famille, désigné par le BSP).",
+      "anyOf": [
+        { "$ref": "#/$defs/chemin_relatif" },
+        {
+          "type": "object",
+          "required": ["famille"],
+          "properties": { "famille": { "$ref": "#/$defs/chemin_relatif" } },
+          "additionalProperties": false
+        }
+      ]
     },
     "qemu": {
       "description": "Exécution sous QEMU, si la carte est émulée.",

@@ -189,6 +189,7 @@ class Context:
         self.reference = rs.is_reference_seed()
         self.ungrafted: dict[str, list[str]] = {}      # graine de référence : BSP non greffé → presets
         by_name = {m.name: m for m in rs.manifests().values()}
+        self.families = {n: m.data for n, m in by_name.items() if m.kind == "famille"}   # svd (PA-39)
         if self.reference:
             self._check_kernel_presets()
             self._reference_seed(by_name)
@@ -254,6 +255,17 @@ class Context:
     def bsp_file(self, c: Configuration, rel: str) -> Path:
         """Fichier déclaré par le BSP de `c`, par le chemin du trunk (chemin canonique, PA-1)."""
         return self.rs.trunk / SOURCE_ROOT / c.bsp["destination"] / rel
+
+    def svd_file(self, c: Configuration) -> Path | None:
+        """SVD du MCU (DBG-4, PA-39 d'ENV-26) : chaîne = fichier du BSP ; {"famille": …} = fichier de la
+        famille du BSP, par le trunk ; None si non déclaré ou famille non greffée."""
+        svd = c.bsp.get("svd")
+        if isinstance(svd, str):
+            return self.bsp_file(c, svd)
+        family = self.families.get(c.bsp.get("famille"))
+        if isinstance(svd, dict) and family is not None:
+            return self.rs.trunk / SOURCE_ROOT / family["destination"] / svd["famille"]
+        return None
 
     def build_dir(self, c: Configuration) -> Path:
         return self.rs.build / c.preset
@@ -395,8 +407,9 @@ def launch_configurations(ctx: Context, tools: dict, probe_serial: str | None = 
         common = {"type": "cortex-debug", "request": "launch", "cwd": str(ctx.rs.trunk),
                   "executable": _elf(ctx, c), "gdbPath": tools["gdb"], "runToEntryPoint": "main",
                   "preLaunchTask": f"lepton : construire {preset}"}
-        if c.bsp.get("svd"):
-            common["svdFile"] = str(ctx.bsp_file(c, c.bsp["svd"]))
+        svd = ctx.svd_file(c)
+        if svd is not None:
+            common["svdFile"] = str(svd)
         if c.execution == "qemu":
             configs.append({"name": f"Déboguer {preset} (QEMU {c.bsp['qemu']['machine']})", **common,
                             "servertype": "qemu", "serverpath": tools["qemu"],

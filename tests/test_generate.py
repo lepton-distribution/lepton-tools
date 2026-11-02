@@ -230,6 +230,36 @@ def test_board_configuration_uses_bsp_openocd(project, repos, tools):
     assert presets["configurePresets"][0]["cacheVariables"]["LEPTON_BOARD"] == "board-c"
 
 
+def test_svd_file_of_bsp_or_family(project, repos, tools):
+    """DBG-4 (PA-39 d'ENV-26) : `svd` chaîne = fichier du BSP ; `{"famille": …}` = fichier de la famille
+    du BSP ; svdFile par le chemin du trunk, sur les lancements QEMU et carte ; aucun champ rtos
+    (vue des tâches par rtos-views)."""
+    assert main(["seed", "add", "board-c", str(repos["bsp2"]), "--type", "bsp", "-C", str(project),
+                 "--no-cmake"]) == 0
+    _set_graine(project, bsp="board-q",       # seed add --type bsp a remplacé le BSP de la graine
+                configurations=[{"nom": "debug-qemu", "construction": "Debug", "execution": "qemu"}])
+    src = project / "trunk" / "sys/root/src"
+    _set_bsp(project, "board-q", svd="debug/ARMCM4.svd")
+    assert main(["generate", "-C", str(project)]) == 0
+    [launch] = _target_launches(_workspace(project))
+    assert launch["svdFile"] == str(src / "kernel/dev/bsp/board-q/debug/ARMCM4.svd")
+    assert "rtos" not in launch
+
+    _set_bsp(project, "board-q", svd={"famille": "svd/ARMCM4.svd"})
+    assert main(["generate", "-C", str(project)]) == 0
+    [launch] = _target_launches(_workspace(project))
+    assert launch["svdFile"] == str(src / "kernel/dev/arch/cortexm/fam-test/svd/ARMCM4.svd")
+
+    _set_bsp(project, "board-c", svd={"famille": "svd/ARMCM4.svd"})
+    _set_graine(project, bsp="board-c",
+                configurations=[{"nom": "debug-board", "construction": "Debug", "execution": "carte"}])
+    assert main(["generate", "-C", str(project)]) == 0
+    [launch] = _target_launches(_workspace(project))
+    assert launch["servertype"] == "openocd"
+    assert launch["svdFile"] == str(src / "kernel/dev/arch/cortexm/fam-test/svd/ARMCM4.svd")
+    assert "rtos" not in launch
+
+
 def test_mklepton_host_launch(project, tools):
     """DBG-5 (PA-37 d'ENV-25) : un lancement CodeLLDB de mklepton par combinaison (BSP, XML), arguments
     de la construction sauf la sortie (build/.mklepton/<BSP>) ; tâche préalable après la construction

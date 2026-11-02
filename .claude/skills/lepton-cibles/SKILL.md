@@ -90,6 +90,18 @@ remplacer par ceux du BSP). gdbinit de carte : F429ZI `<BSP>/debug/gdbinit-nucle
 WL55JC1 `<BSP-WL>/debug/gdbinit-nucleo-wl55jc1` ; tous sourcent `debug/gdbinit-lepton`
 (commandes communes, ENV-6 Q8).
 
+## Vues des périphériques et des tâches (DBG-4, ENV-26)
+
+- Périphériques : vue *XPERIPHERALS* (peripheral-viewer), SVD désigné par le BSP
+  (`"svd": {"famille": "svd/<MCU>.svd"}`, fichiers dans `svd/` du greffon famille), écrit en
+  `svdFile` par `lepton generate` ; pas de SVD pour QEMU.
+- Tâches : onglet *xRTOS* du panneau inférieur (rtos-views), relu à chaque arrêt ; faire une
+  *Pause* après le démarrage du RTOS (l'arrêt initial dans `main` précède `OS_Start`).
+- embOS : avec rtos-views 0.0.16, la liste reste vide (« No embOS threads detected ») tant que les
+  variables sont au format naturel : `OS_Global.IsRunning` (`unsigned char`) est rendu `1 '\001'`
+  et refusé par `isNaN`. Contournement : bouton « Enable Hex mode » de la vue VARIABLES (à l'arrêt),
+  puis un nouvel arrêt (`rapports/env-26-dbg4.md` §4).
+
 ## Pièges
 
 - NUCLEO-WL55JC1 : Lepton tourne sur le cœur M4 ; ne jamais modifier les octets d'option ni le

@@ -22,7 +22,9 @@
     "debug/openocd-nucleo-f429zi.cfg"
   ],
   "sonde": "stlink",
-  "svd": "debug/STM32F429.svd",
+  "svd": {
+    "famille": "svd/STM32F429.svd"
+  },
   "compilation": {
     "publique": {
       "definitions": [
