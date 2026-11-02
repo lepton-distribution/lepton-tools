@@ -216,3 +216,21 @@ Incidents :
 Fin : image `stm32f746g-disco-embos` remise en flash (« Verified OK »). Incident : premier
 lancement sur l'ancien port (`1454403`, réénumération USB) : `smoke_lsh` en échec à l'ouverture
 du port, avant tout reset ou flash ; relancé sur `1454303`.
+
+### NUCLEO-WL55JC1 (cœur M4) — cartes A et B
+
+Carte A (testée) : STLINK-V3 002700253431510837393937, `/dev/cu.usbmodem145103` ; carte B
+(paire du test radio) : STLINK-V3 004F003E3431510937393937, `/dev/cu.usbmodem1454303`.
+Options : `-DLEPTON_BOARD_STLINK_SERIAL`, `-DLEPTON_RADIO_PEER_STLINK_SERIAL`,
+`-DLEPTON_RADIO_PEER_SERIAL_PORT` ; `board.radio` (label `board`) flashe la même image sur A et B.
+
+| Binaire | `lepton.elf` / oracle après | Résultat | Fumée | Radio (`radio-carte.log`) |
+| --- | --- | --- | --- | --- |
+| `nucleo-wl55jc1-embos` | 0 écart | 16/16 | `cortexM4-stm32wlxx` | A→B 20/20, B→A 20/20, ping/pong 20/20, 0 perdu |
+| `nucleo-wl55jc1-freertos` | 0 écart | 16/16 | `cortexM4-stm32wlxx` | idem |
+
+Référence : 15/15 sans radio, 16/16 avec (`doc/migration/validation-nucleo-wl55jc1.md`). Fin : image
+`nucleo-wl55jc1-embos` remise en flash sur A et B (« Verified OK » ×2). Incident : une commande de
+remise en flash désignant la cfg OpenOCD par le trunk, avec redirection de sortie, a été refusée
+par le hook `proteger-trunk.py` (aucune écriture visée dans le trunk) ; refaite avec le chemin réel
+du clone `depots/lepton/bsp-nucleo-wl55jc1/master/…`, sans contournement.
