@@ -60,7 +60,7 @@ Toutes égales aux têtes locales des clones de `<ROOTSTOCK>` : lepton-tools `ma
   `SOURCE_DATE_EPOCH=0` ; sorties de `build/.mklepton/qemu-mps2-an386` (6 fichiers, `.fsflash.o`
   compris) identiques à `build/qemu-mps2-an386-embos/generated/board/`.
 
-### 1.5 Choix de la consigne (à valider au PA-43)
+### 1.5 Choix de la consigne (validés au PA-43, 2026-11-02 : consigne telle quelle, C5 forme A puis B, C8 accordé, push et ordre)
 
 - C3 : la graine en retard est celle de `essais/env-14-debian` de la VM (0f1275a, ENV-14) ;
   `graft-update` y est accordé au titre de PA-P, seul `graft-update` de l'ordre. Rootstock neuf :

@@ -82,7 +82,7 @@ attendre.
 - `ACCUSÉ` avant toute commande autre que les lectures du §5 : ordre reformulé en une phrase, tête
   réelle de `devenv/env-28` après `fetch`, résultats de `git ls-remote` du §5, tête de la graine
   de `essais/env-14-debian`, étapes prévues (§6 à §11), écarts déjà visibles.
-- `AVANCEMENT` : quand l'utilisateur doit lancer une commande (§6.2, §11), après §6, §7, §8, §9,
+- `AVANCEMENT` : quand l'utilisateur doit agir (§6.2, §9.1 forme B, §11), après §6, §7, §8, §9,
   §10, et à chaque arrêt.
 - `FIN-SUCCÈS` / `FIN-ÉCHEC` : résultat par critère du §12, commits et branche (poussée ou non),
   chemin du rapport, versions relevées, écarts, ce qui n'a pas été fait.
@@ -353,7 +353,8 @@ diff -r "$CWD" "$R/build/qemu-mps2-an386-embos/generated/board" && echo "sorties
 ```
 Attendu : code 0 ; fichiers identiques octet pour octet à ceux de la construction (6 au Mac).
 
-Arrêt dans `main` : **<forme tranchée au PA-43, reportée dans l'ordre R28-1>**.
+Arrêt dans `main` (PA-43, 2026-11-02) : **forme A par la session, puis forme B par
+l'utilisateur** (`AVANCEMENT` pour la demander).
 - Forme A (session, lldb embarqué par CodeLLDB) :
   ```bash
   LLDB=$(ls -d ~/.vscode-oss/extensions/vadimcn.vscode-lldb-1.12.3*/lldb/bin/lldb | head -1); echo "$LLDB"
@@ -413,7 +414,7 @@ Le rootstock `$R`, `$U` et `$J` sont conservés.
 | C2 Scripts d'installation | `install-debian.sh` du noyau (0c0cc4f, défaut `SCION_REF` 0.5.3.0) code 0 ; `install-vscodium.sh` code 0 deux fois, `changements 0` à la seconde ; CodeLLDB 1.12.3 présent |
 | C3 Graine et rootstock | §7.1 : graine de `$U` avancée par `graft-update` (0f1275a → 15740f9), 14 entrées, clones au §1, 3956 liens, 0 cassé, 0 régulier ; §7.2 : rootstock neuf, 14 entrées, 3956 liens, 0 cassé, 0 régulier, liste identique à `$U` |
 | C4 Constructions | host ctest 7/7, empreintes mklepton = `env-27-apres` ; 16 presets construits ; QEMU fumée et banc 20/20, 16/16, 19/19 ; `comparer_R21-1` limité au tableau du §8.2 ; `f429→f439` 0 |
-| C5 DBG-5 et DBG-4 | `check`, `generate` code 0 sur `$R` ; 23 lancements, 7 `lldb`, 10 `svdFile`, SVD aux sommes du §9 ; `mklepton` du lancement : sorties = construction ; arrêt dans `main` constaté (forme du PA-43) |
+| C5 DBG-5 et DBG-4 | `check`, `generate` code 0 sur `$R` ; 23 lancements, 7 `lldb`, 10 `svdFile`, SVD aux sommes du §9 ; `mklepton` du lancement : sorties = construction ; arrêt dans `main` constaté par lldb (forme A) et sous VSCodium (forme B) |
 | C6 Tests du greffon | `qemu-mps2-an386.peripheriques` listé et réussi dans les 4 presets an386 ; absent d'an500 |
 | C7 Graine de projet `env11` | `check`, `generate` code 0 ; `check`, presets et graine identiques ; espace : ajouts DBG-5 seuls |
 | C8 Nettoyage | selon l'ordre : `env-21-debian` et `~/env-21-journaux` supprimés par l'utilisateur (taille relevée), ou « non demandé » |
