@@ -201,6 +201,18 @@ Incidents :
   `<ROOTSTOCK>/build/env-24-temoin`, même code qu'`env-24-avant` à `.debug_line`/`.debug_str`
   près) a échoué de même, d'où une conclusion erronée (« défaut antérieur ») retirée depuis.
   Correction par l'utilisateur (`sudo ifconfig en17 -alias 192.168.2.10`) ; route par `en0`,
-  ping 3/3, puis 20/20. Répertoires du témoin supprimés.
+  ping 3/3, puis 20/20. Répertoires du témoin supprimés. Précision de l'utilisateur : le câble
+  Ethernet n'était pas non plus branché lors du premier essai.
 - `ls /usr/bin/net` : erreur, dette connue de la migration (`MIGRATION-STATUS.md:272`, `/usr/bin/net`
   créé sans `/usr/bin`) ; sans lien avec ENV-24.
+
+### STM32F746G-DISCO (ST-LINK/V2-1, `/dev/cu.usbmodem1454303`)
+
+| Binaire | `lepton.elf` / oracle après | Résultat | Fumée | Réseau |
+| --- | --- | --- | --- | --- |
+| `stm32f746g-disco-embos` | 0 écart | 20/20 | `cortexM7-stm32f7` | ping 3/3, LIST 13 entrées, RETR 57 octets identique, ECONNRESET=15 |
+| `stm32f746g-disco-freertos` | 0 écart | 20/20 | `cortexM7-stm32f7` | idem |
+
+Fin : image `stm32f746g-disco-embos` remise en flash (« Verified OK »). Incident : premier
+lancement sur l'ancien port (`1454403`, réénumération USB) : `smoke_lsh` en échec à l'ouverture
+du port, avant tout reset ou flash ; relancé sur `1454303`.
