@@ -167,3 +167,40 @@ liste de cas, mêmes résultats (18/18 an386 et an500, 14/14 `-soft`).
 | `stm32f746g-disco-*` | cpufs seul | diffère | carte : voir §6 | carte : voir §6 | lot 3 |
 | `nucleo-wl55jc1-*` | cpufs seul | diffère | carte : voir §6 | carte : voir §6 | lot 4 |
 | `samd21-xplained-pro-*` | cpufs seul | diffère | carte : voir §6 | carte : voir §6 | lot 5 |
+
+## 6. Cartes (PA-35 : F429, WL55, F746, SAMD21)
+
+Procédure (forme d'ENV-20) : reconfiguration de `<ROOTSTOCK>/build/<P>` avec
+`-DLEPTON_BOARD_SERIAL_PORT` (et `-DLEPTON_NET_TEST_HOST_IP` pour le réseau), `cmake --build`
+(construit `tests/kal/kal_bench.elf`, absent des constructions `--carte` de l'oracle),
+recapture de `lepton.elf` comparée à `env-24-apres/<P>` (code 0 exigé), puis
+`ctest --preset <P> -L board`. Journaux : `env-24-apres/<P>/carte.log`, `carte-detail.log`
+(`LastTest.log`), `fumee-carte.log`, `reseau-carte.log`, `carte-config.log`.
+
+Réseau (ajout au plan, décision de l'utilisateur, 2026-11-02) : `board.net` (ping, FTP `LIST`,
+`RETR /usr/etc/.boot` comparé à la source, errno) lit le cpufs ; Mac en 192.168.2.10 sur `en0`
+(câble direct), carte en 192.168.2.5 (`.init`).
+
+### NUCLEO-F429ZI (ST-LINK/V2-1 0672FF495252717267243842, `/dev/cu.usbmodem1454403`)
+
+| Binaire | `lepton.elf` / oracle après | Résultat | Fumée | Réseau |
+| --- | --- | --- | --- | --- |
+| `nucleo-f429zi-embos` | 0 écart | 20/20 | `cortexM4-stm32f4` | ping 3/3, LIST 13 entrées, RETR 57 octets identique, ECONNRESET=15 |
+| `nucleo-f429zi-freertos` | 0 écart | 20/20 | `cortexM4-stm32f4` | idem |
+| `nucleo-f439zi-embos` (sur F429, comme ENV-20 E-5) | 0 écart | 20/20 | `cortexM4-stm32f4` | idem |
+
+Fin : image `nucleo-f429zi-embos` d'ENV-24 remise en flash (« Verified OK ») ; l'image d'avant
+ENV-24 n'existe plus (oracle construit à neuf).
+
+Incidents :
+- Premier passage : `kal.board_flash` en échec (« couldn't open … kal_bench.elf ») :
+  `kal_bench` non construit ; aucun écrit en flash du banc ; construction ajoutée au script.
+- Réseau, premier essai en échec (ARP « incomplete ») : erreur de la session. L'adresse avait été
+  ajoutée en alias sur `en17` (adaptateur à lien actif, sans rapport avec la carte) au lieu de
+  `en0` ; la route /24 d'`en17` l'emportait. Un essai témoin (XML d'avant ENV-24, construit dans
+  `<ROOTSTOCK>/build/env-24-temoin`, même code qu'`env-24-avant` à `.debug_line`/`.debug_str`
+  près) a échoué de même, d'où une conclusion erronée (« défaut antérieur ») retirée depuis.
+  Correction par l'utilisateur (`sudo ifconfig en17 -alias 192.168.2.10`) ; route par `en0`,
+  ping 3/3, puis 20/20. Répertoires du témoin supprimés.
+- `ls /usr/bin/net` : erreur, dette connue de la migration (`MIGRATION-STATUS.md:272`, `/usr/bin/net`
+  créé sans `/usr/bin`) ; sans lien avec ENV-24.
