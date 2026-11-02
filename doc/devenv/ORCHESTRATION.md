@@ -88,7 +88,15 @@ Règles des consignes VM (décision PA-31 d'ENV-22, 2026-11-02 ; leçons de R15-
   tests, même accordés au point d'arrêt. La consigne les attribue à l'utilisateur dès sa rédaction
   (colonne « Autorisé » du §2 et étape concernée), avec la commande exacte à lancer. La session VM
   annonce l'attente par un `AVANCEMENT`, vérifie ensuite l'effet (absence, version, code de
-  retour) et le consigne. Un refus n'est jamais contourné.
+  retour) et le consigne. Un refus n'est jamais contourné. R28-1 : `scion graft-update` a été
+  refusé à la session VM (« Untrusted Code Integration ») ; `rootstock-install`, `seed-add`,
+  `graft` et `rejouer-oracle.sh` acceptés.
+- **Branche des clones d'un rootstock existant** (P-1 d'ENV-28, E-1 de `rapports/env-28-debian.md`,
+  décision du 2026-11-02) : avant tout `graft-update` ou toute lecture d'un rootstock existant, les
+  vérifications préalables de la consigne relèvent la branche courante de chaque clone
+  (`git -C <clone> branch --show-current`) ; un clone hors de la version déclarée dans
+  `.scion.grafted.list` est un arrêt. `graft-update` (scion 0.5.3.0) tire la branche courante sans
+  revenir à la version déclarée, et vide le trunk si la regreffe échoue sur un conflit.
 
 ## 3. Cycle d'une session
 
