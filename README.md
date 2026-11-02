@@ -28,7 +28,7 @@ lepton seed new demo -C ~/demo --bsp qemu-mps2-an386 \
     --mkconf sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml \
     --origin qemu-mps2=<dépôt de la famille> --origin qemu-mps2-an386=<dépôt du BSP>
 cd ~/demo/trunk
-lepton scion new ma-carte --type bsp --from qemu-mps2-an386   # dépôt depots/lepton-bsp/ma-carte
+lepton scion new ma-carte --type bsp --from qemu-mps2-an386   # dépôt depots/lepton/bsp-ma-carte/master
 lepton file add sys/root/src/kernel/dev/bsp/ma-carte/gpio.c    # créé dans le clone, regreffé
 lepton file owner sys/root/src/kernel/dev/bsp/ma-carte/spi.c   # greffon propriétaire (--json)
 lepton check                                                   # GRA-2, GRF-5, CFG-5

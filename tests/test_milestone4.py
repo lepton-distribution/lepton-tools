@@ -25,7 +25,7 @@ def _git(repo: Path, *args: str) -> str:
 # --- GRF-1 ---------------------------------------------------------------------------------------
 def test_grf1_scion_new_application(project, capsys):
     assert main(["scion", "new", "hello", "--type", "application", "-C", str(project), "--no-cmake"]) == 0
-    repo = project / "depots/lepton-application/hello"
+    repo = project / "depots/lepton/application-hello/master"
     manifest = repo / "scion/sys/root/src/bin/hello/lepton-greffon.json"
     assert validate_file(manifest) == []
     assert json.loads(manifest.read_text())["nom"] == "hello"
@@ -37,7 +37,7 @@ def test_grf1_scion_new_application(project, capsys):
     assert (project / "trunk/sys/root/src/bin/hello/hello.c").is_symlink()
     assert _graine(project)["applications"] == ["hello"]
     src = {s.key: s for s in Rootstock(project).sources()}[scion_key("application", "hello")]
-    assert (src.version, src.location) == ("*", "depots/lepton-application/hello")
+    assert (src.version, src.location) == ("*", "depots/lepton/application-hello/master")
     assert_trunk_clean(project)
 
 
@@ -64,7 +64,7 @@ def test_grf1_scion_new_bsp_from(project, repos, capsys):
 
     assert main(["scion", "new", "board-n", "--type", "bsp", "--from", "board-q", "-C", str(project),
                  "--no-cmake"]) == 0
-    repo = project / "depots/lepton-bsp/board-n"
+    repo = project / "depots/lepton/bsp-board-n/master"
     new = repo / BSP_DIR / "board-n"
     assert sorted(str(p.relative_to(new)) for p in new.rglob("*") if p.is_file()) == \
         ["blob.bin", "board.c", "board.h", "include/config.h", "lepton-greffon.json"]
@@ -92,7 +92,7 @@ def test_grf1_scion_new_bsp_rewrites_manifest_paths(project, repos):
     (src / "lepton-greffon.json").write_text(json.dumps(data))
     assert main(["scion", "new", "board-n", "--type", "bsp", "--from", "board-q", "-C", str(project),
                  "--no-seed"]) == 0
-    manifest = json.loads((project / "depots/lepton-bsp/board-n" / BSP_DIR / "board-n/lepton-greffon.json").read_text())
+    manifest = json.loads((project / "depots/lepton/bsp-board-n/master" / BSP_DIR / "board-n/lepton-greffon.json").read_text())
     assert manifest["compilation"] == {"publique": {"inclusions": ["kernel/dev/bsp/board-n/include"]}}
 
 
@@ -100,13 +100,14 @@ def test_grf1_scion_new_no_seed(project, capsys):
     before = (Rootstock(project).seed_dot() / ".scion.sources.list").read_text()
     assert main(["scion", "new", "hello", "--type", "application", "-C", str(project), "--no-seed",
                  "--destination", "bin/demos/hello"]) == 0
-    assert (project / "depots/lepton-application/hello/scion/sys/root/src/bin/demos/hello/hello.c").is_file()
+    assert (project / "depots/lepton/application-hello/master/scion/sys/root/src/bin/demos/hello/hello.c").is_file()
     assert "lepton seed add hello" in capsys.readouterr().out
     assert (Rootstock(project).seed_dot() / ".scion.sources.list").read_text() == before
     assert not (project / "trunk/sys/root/src/bin/demos").exists()
 
 
 def test_grf1_scion_new_refusals(project, tmp_path, capsys):
+    depots_before = sorted(p.name for p in (project / "depots/lepton").iterdir())
     cases = [
         (["board-n", "--type", "bsp"], "--from BSP obligatoire"),
         (["board-n", "--type", "bsp", "--from", "unknown"], "aucun BSP greffé"),
@@ -124,7 +125,7 @@ def test_grf1_scion_new_refusals(project, tmp_path, capsys):
         capsys.readouterr()
         assert main(["scion", "new", *argv, "-C", str(project), "--no-cmake"]) == 1, argv
         assert message in capsys.readouterr().err, argv
-    assert not (project / "depots/lepton-bsp").exists() and not (project / "depots/lepton-application").exists()
+    assert sorted(p.name for p in (project / "depots/lepton").iterdir()) == depots_before
     assert_trunk_clean(project)
 
 
@@ -167,7 +168,7 @@ def test_o3_scion_new_failure_after_add(project, monkeypatch, capsys):
 # --- GRF-4 ---------------------------------------------------------------------------------------
 def test_grf4_remove(project):
     assert main(["scion", "new", "hello", "--type", "application", "-C", str(project), "--no-cmake"]) == 0
-    repo = project / "depots/lepton-application/hello"
+    repo = project / "depots/lepton/application-hello/master"
     head = _git(repo, "rev-parse", "HEAD")
     assert main(["scion", "remove", "hello", "-C", str(project), "--no-cmake"]) == 0
     assert not (project / "trunk/sys/root/src/bin/hello").exists()

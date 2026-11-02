@@ -202,7 +202,7 @@ def _add_scion_parser(sub, common) -> None:
     p.add_argument("name", metavar="NAME", help="nom du greffon")
     p.add_argument("--type", required=True, choices=["bsp", "application", "bibliotheque"])
     p.add_argument("--from", dest="from_bsp", metavar="BSP", help="BSP greffé à copier (obligatoire pour un BSP)")
-    p.add_argument("--repo", metavar="DIR", help="dépôt git à créer (défaut : depots/lepton-<kind>/NAME)")
+    p.add_argument("--repo", metavar="DIR", help="dépôt git à créer (défaut : depots/lepton/<kind>-NAME/master)")
     p.add_argument("--destination", metavar="D",
                    help="chemin sous sys/root/src (défaut : kernel/dev/bsp/NAME, bin/NAME, lib/NAME)")
     p.add_argument("--no-seed", action="store_true", help="créer le dépôt sans l'ajouter à la graine")
