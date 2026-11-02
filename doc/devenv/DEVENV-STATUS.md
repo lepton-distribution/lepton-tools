@@ -39,7 +39,7 @@ Démarrer ENV-28 (`etapes/ENV-28-validation-debian.md`) : skill `devenv-session`
 | ENV-25 | DBG-5 : déboguer `mklepton` sur l'hôte | terminée (2026-11-02) ; rapport `rapports/env-25-dbg5.md` | lepton-tools `devenv/env-25` (depuis `main` 95f30e3, fusionnée dans `main`, poussée) ; clone noyau non touché | `handoff/env-25.md` |
 | ENV-26 | DBG-4 : vues des périphériques et des tâches | terminée (2026-11-02) ; rapport `rapports/env-26-dbg4.md` | lepton-tools `devenv/env-26` (depuis `main` 65da9d8, fusionnée dans `main`, poussée) ; `family-{stm32f4xx,stm32f7xx,stm32wlxx,samd21}` et `bsp-{nucleo-f429zi,nucleo-f439zi,stm32f746g-disco,nucleo-wl55jc1,samd21-xplained-pro}` `devenv/env-26` (depuis `master`, fusionnées dans `master`, poussées) ; graine et clone noyau non touchés | `handoff/env-26.md` |
 | ENV-27 | TST-2 : tests fournis par un greffon | terminée (2026-11-02) ; rapport `rapports/env-27-tst2.md` | lepton-tools `devenv/env-27` (depuis `main` 606ebd0, fusionnée dans `main`, poussée) ; clone noyau `devenv/env-27` (depuis `master` 0bdce87, fusionnée dans `master` 0c0cc4f, poussées) ; `bsp-qemu-mps2-an386` `devenv/env-27` (depuis `master` 046779e, fusionnée dans `master` 09f4943, poussées) | `handoff/env-27.md` |
-| ENV-28 | Validation Debian groupée (ENV-22 à ENV-27) | à faire | — | — |
+| ENV-28 | Validation Debian groupée (ENV-22 à ENV-27) | en cours (2026-11-02) | lepton-tools `devenv/env-28` (depuis `main` d4351bc) | — |
 
 Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), abandonnée (décision).
 
