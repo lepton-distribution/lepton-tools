@@ -87,6 +87,23 @@ def check_declared_files(m: Manifest, label: str) -> list[Anomaly]:
     return found
 
 
+def check_family_files(manifests: dict[str, tuple[Manifest, str]]) -> list[Anomaly]:
+    """`svd` = {"famille": …} d'un BSP (PA-39 d'ENV-26) : fichier présent dans le clone de sa famille ;
+    famille non greffée : signalée par GRA-2, rien ici."""
+    by_name, found = {m.name: m for m, _ in manifests.values()}, []
+    for m, label in manifests.values():
+        svd = m.data.get("svd") if m.kind == "bsp" else None
+        family = by_name.get(m.data.get("famille"))
+        if not isinstance(svd, dict) or not isinstance(svd.get("famille"), str) \
+                or family is None or family.kind != "famille":
+            continue
+        base = family.path.parent
+        if not (base / svd["famille"]).is_file():
+            found.append(Anomaly(label, "/svd/famille", f"fichier « {svd['famille']} » introuvable dans la "
+                                 f"famille {family.name} ({base})"))
+    return found
+
+
 # --------------------------------------------------------------------------
 # contrôles de la graine : GRA-2, GRF-5
 # --------------------------------------------------------------------------
@@ -470,6 +487,7 @@ def check_rootstock(rs: Rootstock, warn, info) -> tuple[list[str], list[Anomaly]
         if e.key not in manifests and (rs.clone(e) / "scion" / "sys" / "root" / "src").is_dir():
             warn(f"{e.key} greffé sans lepton-greffon.json : non contrôlé")
     anomalies.extend(check_dependencies(manifests))
+    anomalies.extend(check_family_files(manifests))
 
     graine_path = rs.seed_manifest_path()
     label = _rel(rs, graine_path)

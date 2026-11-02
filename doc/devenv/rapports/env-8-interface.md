@@ -465,3 +465,13 @@ Débogage hôte de `mklepton` par `lepton generate`. Décisions de l'utilisateur
 | Arguments | Ceux de `lepton_generate()` du noyau : `-s <trunk>`, `-o <ROOTSTOCK>/build/.mklepton/<BSP>`, `--cpu-freq <frequence_cpu>` et `--kernel-config-header sys/root/src/<destination>/<entete_config_noyau>` (chacun si le BSP le déclare), XML relatif au trunk ; `cwd` = répertoire de sortie ; `env` `SOURCE_DATE_EPOCH=0` |
 | Tâche préalable | `lepton : préparer le débogage de mklepton` : `cmake -E make_directory` des répertoires de sortie, après `lepton : mklepton (preset host)` ; `preLaunchTask` de chaque lancement hôte ; absente sans lancement hôte |
 | Sorties des presets | Jamais touchées : `build/<preset>/generated/board` reste réservé à la construction |
+
+## 18. Amendements d'ENV-26 (2026-11-02 ; DBG-4, PA-39)
+Vues des périphériques et des tâches. Décisions de l'utilisateur, `rapports/env-26-dbg4.md` §1.7-§1.8.
+
+| Sujet | Règle |
+| --- | --- |
+| Champ `svd` du BSP | Chaîne : fichier du BSP, relatif à sa destination (inchangé) ; objet `{"famille": "<chemin>"}` : fichier de la famille du BSP, relatif à la destination de la famille (SVD par MCU dans `svd/` du greffon famille) ; aucune autre clé |
+| `check` | Forme objet : fichier contrôlé dans le clone de la famille, anomalie `/svd/famille: fichier « … » introuvable dans la famille <nom> (<répertoire>)` sur le manifeste du BSP ; famille non greffée : GRA-2 seul |
+| `generate` | `svdFile` par le chemin du trunk (`sys/root/src/<destination de la famille>/<chemin>`), lancements QEMU et carte ; omis si la famille n'est pas greffée |
+| Vue des tâches | Extension rtos-views (embOS, FreeRTOS), détection par gdb ; aucun champ `rtos` écrit (OpenOCD 0.12.0 ne connaît pas embOS) |

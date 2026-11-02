@@ -255,6 +255,30 @@ def test_cfg5_scion_remove_sans_declaration(project, capsys):
     assert "CFG-5" not in capsys.readouterr().err
 
 
+def test_check_svd_bsp_ou_famille(project, capsys):
+    """DBG-4 (PA-39 d'ENV-26) : `svd` chaîne contrôlé dans le BSP ; `{"famille": …}` contrôlé dans la
+    destination de la famille du BSP, anomalie située sur le manifeste du BSP."""
+    bsp = _manifest_path(project, "board-q")
+    family = _manifest_path(project, "fam-test").parent
+    _edit_json(bsp, svd="debug/absent.svd")
+    code, out = _check(project, capsys)
+    assert code == 1
+    assert "/svd: fichier « debug/absent.svd » introuvable" in out
+
+    _edit_json(bsp, svd={"famille": "svd/ARMCM4.svd"})
+    code, out = _check(project, capsys)
+    assert code == 1
+    assert (f"/svd/famille: fichier « svd/ARMCM4.svd » introuvable dans la famille fam-test ({family})"
+            in out)
+    assert next(line for line in out.splitlines() if "/svd/famille" in line).startswith(
+        str(Path("trunk/sys/root/src/kernel/dev/bsp/board-q/lepton-greffon.json")))
+
+    (family / "svd").mkdir()
+    (family / "svd" / "ARMCM4.svd").write_text("<device/>\n")
+    code, out = _check(project, capsys)
+    assert code == 0, out
+
+
 def test_check_fichiers_isoles_inchanges(project, capsys):
     code, out = _check(project, capsys, str(_graine_path(project)))
     assert code == 0 and "1 fichier(s) conforme(s)." in out
