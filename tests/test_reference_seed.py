@@ -73,7 +73,7 @@ def test_reference_generate(reference, tools, capsys):  # noqa: F811
 
     ws = _workspace(reference)
     assert ws["folders"][1]["name"] == "git · graine graine"   # nom du répertoire de la graine (Q2)
-    launch = {c["name"]: c for c in ws["launch"]["configurations"]}
+    launch = {c["name"]: c for c in ws["launch"]["configurations"] if c["type"] == "cortex-debug"}
     assert set(launch) == {"Déboguer board-q-freertos (QEMU mps2-an386)", "Déboguer board-q-embos (QEMU mps2-an386)",
                            "Déboguer board-c-embos (carte, OpenOCD)"}
     q = launch["Déboguer board-q-embos (QEMU mps2-an386)"]
@@ -94,6 +94,27 @@ def test_reference_generate(reference, tools, capsys):  # noqa: F811
 
     assert main(["generate", "-C", str(reference)]) == 0           # deux appels : rien ne change
     assert f"inchangé  {reference / 'graine.code-workspace'}" in capsys.readouterr().out
+
+
+def test_reference_mklepton_host_launches(reference, tools):  # noqa: F811
+    """DBG-5 (PA-37 d'ENV-25) : un lancement de mklepton par combinaison (BSP, XML) des presets dont le
+    BSP est greffé, dans l'ordre des presets ; BSP non greffé : aucun."""
+    assert main(["generate", "-C", str(reference)]) == 0
+    ws = _workspace(reference)
+    host = [c for c in ws["launch"]["configurations"] if c["type"] == "lldb"]
+    assert [c["name"] for c in host] == ["Déboguer mklepton board-q (mkconf_ref.xml)",
+                                         "Déboguer mklepton board-c (mkconf_ref.xml)"]
+    outs = [reference / "build" / ".mklepton" / b for b in ("board-q", "board-c")]
+    for c, out in zip(host, outs):
+        assert c["program"] == str(reference / "build" / "host" / "mklepton")
+        assert c["args"] == ["-s", str(reference / "trunk"), "-o", str(out), "--cpu-freq", "25000000", MKCONF]
+        assert c["cwd"] == str(out) and c["env"] == {"SOURCE_DATE_EPOCH": "0"}
+        assert c["preLaunchTask"] == "lepton : préparer le débogage de mklepton"
+    task = next(t for t in ws["tasks"]["tasks"] if t["label"] == "lepton : préparer le débogage de mklepton")
+    assert task["args"] == ["-E", "make_directory", *map(str, outs)]
+    assert task["dependsOn"] == ["lepton : mklepton (preset host)"]
+    assert not (reference / "build" / ".mklepton").exists()
+    assert_trunk_clean(reference)
 
 
 @pytest.mark.parametrize("argv, command", [

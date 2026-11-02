@@ -453,3 +453,15 @@ Décisions de l'utilisateur, `rapports/env-18-graine.md` §3.
 | `seed status` | ligne `graine de référence (ni lepton-graine.json ni project/) : rôles d'après les manifestes des greffons, presets du noyau` au lieu de « graine hors lepton » ; `--json` inchangé (`seed.manifest` nul, `configurations` vide) |
 | `seed tree` | presets lus : presets visibles du noyau dont `LEPTON_BOARD` est renseigné, ordre du fichier |
 | `generate` | aucun `CMakeUserPresets.json`, aucun greffon projet ; espace `<ROOTSTOCK>/<répertoire de la graine>.code-workspace` (`original-tree.code-workspace`) ; une configuration par preset de carte du noyau : BSP greffé → tâches et `launch` (qemu si le BSP déclare `qemu.machine`, carte s'il déclare `openocd`), BSP non greffé → tâches configurer et construire seules, ligne d'information ; `host` : tâches mklepton ; associations XML `**/mkconf_*.xml` seules |
+
+## 17. Amendements d'ENV-25 (2026-11-02 ; DBG-5, PA-37)
+Débogage hôte de `mklepton` par `lepton generate`. Décisions de l'utilisateur, `rapports/env-25-dbg5.md` §1.5.
+
+| Sujet | Règle |
+| --- | --- |
+| Lancements | Un par combinaison (BSP, XML) distincte des configurations dont le BSP est greffé et le XML renseigné (`mklepton_xml` de la graine de projet, `LEPTON_MKCONF` des presets du noyau), dans l'ordre des configurations, après les lancements de la cible ; nom `Déboguer mklepton <BSP> (<fichier XML>)` |
+| Débogueur | CodeLLDB (`type` `lldb`, `request` `launch`), Mac et Debian ; `vadimcn.vscode-lldb` ajouté aux recommandations de l'espace s'il y a au moins un lancement hôte |
+| Programme | `<ROOTSTOCK>/build/host/mklepton` ; écrit même absent (construit par la tâche préalable), sans ligne d'information |
+| Arguments | Ceux de `lepton_generate()` du noyau : `-s <trunk>`, `-o <ROOTSTOCK>/build/.mklepton/<BSP>`, `--cpu-freq <frequence_cpu>` et `--kernel-config-header sys/root/src/<destination>/<entete_config_noyau>` (chacun si le BSP le déclare), XML relatif au trunk ; `cwd` = répertoire de sortie ; `env` `SOURCE_DATE_EPOCH=0` |
+| Tâche préalable | `lepton : préparer le débogage de mklepton` : `cmake -E make_directory` des répertoires de sortie, après `lepton : mklepton (preset host)` ; `preLaunchTask` de chaque lancement hôte ; absente sans lancement hôte |
+| Sorties des presets | Jamais touchées : `build/<preset>/generated/board` reste réservé à la construction |
