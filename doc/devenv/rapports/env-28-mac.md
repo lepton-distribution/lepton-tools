@@ -79,7 +79,60 @@ Toutes égales aux têtes locales des clones de `<ROOTSTOCK>` : lepton-tools `ma
 
 | ID | Date | Sens | Résumé |
 | --- | --- | --- | --- |
+| ORDRE R28-1 | 2026-11-02 | Mac → VM (`debian-linux-vm`) | consigne `env-28-debian.md` @ b8ff911 (blob 61a35cc, SHA-256 d40a5136…) ; décisions PA-43 ; texte de la consigne résumé, référence au fichier poussé avec sa somme (écart à la règle « texte tel quel », signalé à l'utilisateur) |
+| ACCUSÉ R28-1 | 2026-11-02 | VM → Mac | `devenv/env-28` b8ff911, SHA-256 de la consigne identique ; `ls-remote` conformes au §1 ; graine d'`env-14-debian` 0f1275a, propre, amont `origin/original-tree`, 9 entrées ; hôte Debian 13.7, scion 0.5.2.0, lepton 0.1.0 (ancien), embOS présent, 19 Go libres ; `env-21-debian` et `~/env-21-journaux` présents ; CodeLLDB 1.12.3 ; aucun écart |
+| AVANCEMENT R28-1 | 2026-11-02 | VM → Mac | §6.1 : `env-11/qemu` régénéré (ancien lepton, « inchangé »), `check` 0 (5 fichiers), graine propre, presets d5ee81e4…, espace 0c06a5f7… (= valeur de R21-1) ; noyau 40d7197 → 0c0cc4f, `SCION_REF` 0.5.3.0 ; attente des 4 commandes de l'utilisateur (§6.2) |
+| AVANCEMENT R28-1 | 2026-11-02 | VM → Mac | §6 conforme (C1, C2) : 4 codes 0 ; scion 0.5.2.0 → 0.5.3.0 par `install-debian.sh` ; lepton 0.1.0 accepte scion 0.5.3.0 ; `changements 0` aux deux exécutions d'`install-vscodium.sh` ; codium 1.135.06055, CodeLLDB 1.12.3. §7.1 : 3929 liens avant ; `scion graft-update -v` refusé par le classifieur de la VM (« Untrusted Code Integration »), non contourné, remis à l'utilisateur |
+| QUESTION R28-1 | 2026-11-02 | VM → Mac | §7.1 lancé par l'utilisateur : `graft-update` code 1 ; graine avancée 0f1275a → 15740f9, 14 entrées, 5 greffons clonés sur `master` ; mais clones `original` (e5a5689) et `family-stm32f4xx` (af964c6) restés sur `devenv/env-14` (checkout de la validation ENV-14 Debian, 2026-10-30) : `pull` sans retour à la version déclarée `master` ; 277 conflits (208 `family-stm32f7xx`, 69 `family-samd21`) ; trunk vidé (0 lien, 3929 avant) ; clones propres. Options A (`switch master` des 2 clones, puis relance par l'utilisateur) ou B (échec partiel consigné) |
+| RÉPONSE R28-1 | 2026-11-02 | Mac → VM | option A (PA-43 (2), utilisateur) : `switch master` des 2 clones propres (`merge --ff-only` si besoin), relance par l'utilisateur (`7.1-graft-update-2.log`), §7.2 poursuivi ; écart E-x et 2 constats scion au rapport VM |
+| AVANCEMENT R28-1 | 2026-11-02 | VM → Mac | §7 conforme (C3) : clones propres, `switch master`, HEAD 16a331b / 01b5528 (le `pull` n'avait avancé que `origin/master`) → `merge --ff-only` 0c0cc4f / 8364493 ; 2e `graft-update` (utilisateur) code 0, 0 conflit, 14 entrées, 13 clones au §1, 3956 liens, 0 cassé, 0 régulier ; §7.2 par la session (pas de refus) : codes 0, 14 entrées, 3956 liens, 0 cassé, 0 régulier, 0 `.DS_Store`, liste = `$U` ; §8 lancé |
+| AVANCEMENT R28-1 | 2026-11-02 | VM → Mac | §11 conforme (C8) : `env-21-debian` 363M, `~/env-21-journaux` 1,2M, supprimés par l'utilisateur, absence vérifiée ; `$R`, `$U`, `$J` conservés ; §8 (`rejouer-oracle.sh`) en cours sur `devenv/env-28-debian`, non refusé |
+| AVANCEMENT R28-1 | 2026-11-02 | VM → Mac | §8 conforme (C4, C6) : `rejouer-oracle` code 0 ; host 7/7 ; 16 presets ; fumée ; banc an386 20/20, soft 16/16, an500 19/19 ; `peripheriques` listé, `-L greffon:` = 2, Passed dans les 4 an386, absent d'an500 ; mklepton = `env-27-apres`, 14 lignes contre R21-1 ; `comparer_R21-1` 1 ×16, écarts du tableau seuls (deltas vérifiés), symboles en nombre identique à R21-1 ; `comparer_Mac` 1 ; f429→f439 0 |
+| AVANCEMENT R28-1 | 2026-11-02 | VM → Mac | §9 forme A et §10 conformes (C7) : `check` 0 (19), `generate` 0 ; 23 request, 10 svdFile, 7 lldb, SVD aux sommes ; `mklepton` hors débogueur = construction (6 fichiers) ; lldb 1.12.3 : breakpoint 1.1, `main(argc=10)` à `mklepton.c:2383`, unité de compilation sous `$R/trunk` ; `env-11/qemu` : diff limité aux ajouts DBG-5 ; attente de la forme B |
+
+Constat pour la tâche 3 : avant tout `graft-update` d'un rootstock d'essai du Mac, relever la
+branche courante de chaque clone (`git -C <clone> branch --show-current`) ; un clone hors de sa
+version déclarée reproduit l'échec du §7.1.
 
 ## 3. Rootstocks d'essai (tâche 3)
+
+### 3.1 Inventaire avant (lecture seule, 2026-11-02)
+
+Tous les clones de greffons sont sur `master`, propres, amont `origin/master` (aucun clone hors de
+sa version déclarée, contrairement à `env-14-debian` de la VM).
+
+| Rootstock | Entrées | Liens | Cassés / réguliers | `.scion.trunk.tolerated` | Graine | Clones (têtes) |
+| --- | --- | --- | --- | --- | --- | --- |
+| `env-9` | 5 | 3055 | 0 / 0 | oui | `env9` dc343d8, locale sans amont | noyau 40d7197, qemu-mps2 3954357, an386 046779e |
+| `env-11/f429zi` | 5 | 3366 | 0 / 0 | oui | `env11f4` e4129d2, sans amont | noyau 40d7197, f429zi 8ea7ee5, stm32f4xx 2b21340 |
+| `env-11/qemu` | 5 | 3055 | 0 / 0 | oui | `env11` 124db52, sans amont ; application `salut` 4e1df4c | noyau 40d7197, qemu-mps2 3954357, an386 046779e |
+| `env-11/qemu-gra2` | 4 | 3049 | 0 / 0 | oui | `env11` d7e3a55, sans amont | noyau 40d7197, qemu-mps2 3954357, an386 046779e (BSP retiré, GRA-2) |
+| `env-11/wl55jc1` | 5 | 3302 | 0 / 0 | oui | `env11wl` aec1483, sans amont | noyau 40d7197, stm32wlxx 1eccc2f, wl55jc1 a329f4d |
+| `env-11/bout-en-bout/rootstock` (recréé en ENV-22) | 5 | 3054 | 0 / 0 | oui | `bout-en-bout` 393e945, sans amont, 1 fichier non suivi (`lepton-graine.lock.json`, connu) | noyau 40d7197, qemu-mps2 3954357, an386 046779e (amont `file://` vers `<ROOTSTOCK>/depots`) |
+| `env-13-vierge` | 14 | 3941 | 0 / 0 | oui | `original-tree` 15740f9 = publiée (pas d'avance attendue) | 13 clones aux têtes d'ENV-20/21 (noyau 40d7197…) |
+
+Têtes attendues après `graft-update` : celles du §1.3.
+
+### 3.2 Regreffe (décision de l'utilisateur : les 7, PA-P) et contrôles
+
+Journaux : `~/lepton-tools-dev/essais/env-28-mac/` (`<rootstock>-{liens-avant,liens-apres}.txt`,
+`-graft-update.log`, `-check.log`, `-generate.log`). `scion graft-update -v` : code 0 partout ;
+graines locales « sans amont, laissée telle quelle » ; `env-13-vierge` : graine déjà à 15740f9.
+`qemu-gra2` : BSP an386 réinscrit par `sync` (comme en ENV-14 et ENV-21) →
+`scion graft-remove lepton@bsp-qemu-mps2-an386` sans `--purge` (8 feuilles), code 0.
+
+| Rootstock | Liens avant → après | Liens ajoutés / retirés | Entrées | Cassés / réguliers | `check` | `generate` | Lancements (`request` / `lldb` / `svdFile`) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-9` | 3055 → 3057 | +2 (`tests/` an386) / 0 | 5 | 0 / 0 | 0 | 0 | 3 / 1 / 0 |
+| `env-11/f429zi` | 3366 → 3370 | +4 (`svd/` stm32f4xx) / 0 | 5 | 0 / 0 | 0 | 0 | 2 / 1 / 1 |
+| `env-11/qemu` | 3055 → 3057 | +2 / 0 | 5 | 0 / 0 | 0 | 0 | 3 / 1 / 0 |
+| `env-11/qemu-gra2` | 3049 → 3049 | 0 / 0 | 4 | 0 / 0 | 1 (attendu, CFG-5) | 1 (attendu : BSP non greffé) | 1 / 0 / 0 (inchangé) |
+| `env-11/wl55jc1` | 3302 → 3305 | +3 (`svd/` stm32wlxx) / 0 | 5 | 0 / 0 | 0 | 0 | 2 / 1 / 1 |
+| `env-11/bout-en-bout/rootstock` | 3054 → 3056 | +2 / 0 | 5 | 0 / 0 | 0 | 0 | 2 / 1 / 0 |
+| `env-13-vierge` | 3941 → 3956 | +15 (5 SVD, 4 × LICENSE/README, `tests/` an386) / 0 | 14 | 0 / 0 | 0 | 0 | 23 / 7 / 10 (= `<ROOTSTOCK>`) |
+
+Clones : tous sur `master`, propres, aux têtes du §1.3. Graines inchangées ; `bout-en-bout` :
+`project/scion/CMakeUserPresets.json` écrit par `generate`, non suivi dans cette graine créée par
+le script (s'ajoute au `lepton-graine.lock.json` non suivi déjà connu) : constat, sans effet.
 
 ## 4. Vérification du rapport VM (tâche 4)
