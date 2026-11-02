@@ -98,7 +98,9 @@ créent aucun `CMakeLists.txt`.
 Observation O-1 : `lepton/templates/.DS_Store` existe dans le dépôt de travail (ignoré par
 `.gitignore`, non suivi) ; `template_files()` le prendrait en exécution depuis le dépôt (venv de
 développement, `pip install -e`). L'installation pipx (roue hatchling, qui suit `.gitignore`)
-n'est pas concernée : à vérifier, sans effet sur ENV-27.
+n'est pas concernée. Vérifié après réinstallation (§8) : `.DS_Store` est à la racine de
+`templates/`, hors des répertoires de modèle lus par `template_files()`, et absent de la roue ;
+sans effet.
 
 ## 6. PA-41 (2026-11-02, décisions de l'utilisateur)
 
@@ -108,3 +110,59 @@ n'est pas concernée : à vérifier, sans effet sur ENV-27.
 | Types de tests | QEMU (`LEPTON_QEMU_MACHINE`, fixture `kal_t0`) et carte (`LEPTON_BOARD_SERIAL_PORT`, fixture `board_t0`) ; hôte hors périmètre ; étiquettes `greffon:<nom>`, `arch:<cœur>`, `backend:<b>` ajoutées par la fonction |
 | Greffon d'essai | test QEMU neuf dans le BSP `qemu-mps2-an386` (4 presets an386) ; `board.radio` non déplacé |
 | Modèles de `scion new` | squelette de test dans `application` et `bsp` |
+
+## 7. Oracle avant et implémentation
+
+Oracle avant `oracles/env-27-avant/` (`rejouer-oracle.sh`, host + 6 QEMU + 10 carte, constructions
+à neuf) : « tout a réussi » ; host 7/7, QEMU 18/18 (ABI hard) et 14/14 (soft). Listes `ctest -N`
+de chaque preset (`ctest-N.txt`) ; presets de carte : aussi configurés à part
+(`<ROOTSTOCK>/build/env-27-port/<P>`, `-DLEPTON_BOARD_SERIAL_PORT=/dev/cu.fictif`, WL55 : carte
+paire fictive) → `ctest-N-port.txt` (F429/F439/F746 19, WL55 16, SAMD21 15 tests).
+
+| Dépôt | Branche | Commit | Contenu |
+| --- | --- | --- | --- |
+| clone noyau | `devenv/env-27` (depuis `master` 0bdce87) | 62ff71a | `lepton_greffons.cmake` : lecture de `tests` ; `_lepton_greffon_actif` (condition de `lepton_greffons_appliquer` mise en fonction, inchangée) ; `lepton_greffons_tests()` ; `lepton_greffon_test()` ; `CMakeLists.txt` racine : un appel après `components/firmware` |
+| BSP `qemu-mps2-an386` | `devenv/env-27` (depuis `master` 046779e) | 902b557 | `"tests": "tests"` ; `tests/CMakeLists.txt` (test `peripheriques`, QEMU, fixture `kal_t0`) ; `tests/peripheriques.py` (`ls /dev` contient `ttys0`, `ttys1`, `eth0` ; console de `smoke_lsh.py` par `--tests-noyau`) |
+| lepton-tools | `devenv/env-27` | 6880f61 | schéma (`tests` = `chemin_relatif`, interdit au noyau), exemples valides (application, an386) et invalides (`noyau-tests`, `bsp-tests-remonte`) ; `check_declared_files` (répertoire, `CMakeLists.txt`) ; modèles `application` et `bsp` (squelette `tests/CMakeLists.txt`, champ) ; `scion new --from` (tests du BSP source copiés, sinon squelette) ; 7 tests, écrits d'abord (5 rouges constatés), `pytest` 229 verts |
+
+Constat BLD-6 : le système de construction commun ne change que par la découverte : lecture d'un
+champ, trois fonctions dans le lecteur, un appel dans le `CMakeLists.txt` racine. La condition
+« greffon actif » est partagée avec `lepton_greffons_appliquer` sans changement de comportement
+(sections et symboles des 16 presets croisés identiques, §8). Aucun composant, aucun preset,
+aucun test existant modifié.
+
+## 8. Contrôles (PA-42)
+
+| Preset | Sections/symboles | Empreinte | Fumée | Tests (`ctest`) | `ctest -N` | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- | --- |
+| `host` | sans ELF ; empreintes mklepton identiques | — | — | 7/7 | identique | — |
+| `qemu-mps2-an386-embos`, `-freertos` | code 0 | — | verte | 19/19 | + `qemu-mps2-an386.peripheriques` (#19) | test du greffon d'essai |
+| `qemu-mps2-an386-embos-soft`, `-freertos-soft` | code 0 | — | verte | 15/15 | + `qemu-mps2-an386.peripheriques` (#15) | idem |
+| `qemu-mps2-an500-embos`, `-freertos` | code 0 | — | verte | 18/18 | identique | — |
+| 10 presets de carte | code 0 | — | — | (aucun accès matériel) | identique, et identique avec port fictif | — |
+
+- `comparer-oracle.py` `env-27-avant` → `env-27-apres` : code 0 sur les 16 presets croisés ;
+  `host` (code 2, aucun ELF par construction) comparé par ses empreintes mklepton et `ctest`.
+- Tests du greffon exécutés et verts : `qemu-mps2-an386.peripheriques` dans les 4 presets an386
+  (`banc-kal.log` de l'oracle après) ; étiquettes `greffon:qemu-mps2-an386;qemu;arch:cortex-m4f;
+  backend:<b>` ; `ctest -L greffon:` sélectionne le test et sa fixture `smoke.lsh` ; `-L kal`
+  ne le sélectionne pas (banc KAL inchangé). Cas d'échec volontaire (`--expect absent0`) : code 1,
+  nom manquant listé.
+- Copie d'essai `~/lepton-tools-dev/essais/env-27-copie` (dépôts et trunk copiés par `cp -RP`,
+  `third_party` lié) : greffe du BSP (8 feuilles), construction et test verts ; puis
+  `scion graft-remove lepton@bsp-qemu-mps2-an386` (sans `--purge`) : listes `ctest -N` d'an500
+  (×2) et de F429, WL55, SAMD21 avec port fictif identiques à l'oracle avant ; an386 refusé
+  par le message O1 attendu. La copie reste sans le BSP an386.
+- `<ROOTSTOCK>` : `scion graft --scion lepton@bsp-qemu-mps2-an386` (8 feuilles) ; trunk : seul
+  `.scion.grafted.list` régulier, 0 lien cassé, aucun `__pycache__` ; clones propres.
+- lepton réinstallé par `pipx install --force` depuis 6880f61 ; `lepton check` code 0
+  (19 fichiers) ; `check-jsonschema` du manifeste an386 conforme ; squelettes présents dans la
+  roue installée. `lepton generate` non relancé : `generate.py` inchangé.
+- Squelettes rendus (`application`, `bsp`) évalués par `cmake -P` avec une `lepton_greffon_test`
+  simulée, en mode QEMU et carte : arguments et propriétés reçus tels qu'attendus.
+
+## 9. Propositions non validées
+
+- P-1 : tâche de l'éditeur « tests des greffons » (`ctest --preset <P> -L greffon:`) écrite par
+  `lepton generate` pour les configurations QEMU, à côté de « test de fumée » et « banc KAL ».
+- P-2 : validation Debian (champ `tests`, découverte, test d'essai sous QEMU Linux) dans ENV-28.

@@ -475,3 +475,14 @@ Vues des périphériques et des tâches. Décisions de l'utilisateur, `rapports/
 | `check` | Forme objet : fichier contrôlé dans le clone de la famille, anomalie `/svd/famille: fichier « … » introuvable dans la famille <nom> (<répertoire>)` sur le manifeste du BSP ; famille non greffée : GRA-2 seul |
 | `generate` | `svdFile` par le chemin du trunk (`sys/root/src/<destination de la famille>/<chemin>`), lancements QEMU et carte ; omis si la famille n'est pas greffée |
 | Vue des tâches | Extension rtos-views (embOS, FreeRTOS), détection par gdb ; aucun champ `rtos` écrit (OpenOCD 0.12.0 ne connaît pas embOS) |
+
+## 19. Amendements d'ENV-27 (2026-11-02 ; TST-2, PA-41)
+Tests fournis par un greffon. Décisions de l'utilisateur, `rapports/env-27-tst2.md` §6.
+
+| Sujet | Règle |
+| --- | --- |
+| Champ `tests` | Chemin relatif à la destination d'un répertoire qui contient un `CMakeLists.txt` ; famille, BSP, application, bibliothèque ; interdit au noyau (ses tests restent déclarés par ses composants) |
+| Lecteur CMake | `lepton_greffons_tests()` (presets croisés, après `components/firmware`) : `add_subdirectory` du répertoire de chaque greffon actif (famille et BSP de la carte, applications, bibliothèques) ; `lepton_greffon_test(NAME … COMMAND … [LABELS …] [PROPERTIES …])` : test `<greffon>.<nom>`, étiquettes `greffon:<greffon>`, `arch:<cœur>`, `backend:<b>` ajoutées ; QEMU (`LEPTON_QEMU_MACHINE`, fixture `kal_t0`), carte (`LEPTON_BOARD_SERIAL_PORT`, fixture `board_t0`) ; hôte non pris en charge |
+| `check` | Répertoire absent : `/tests: répertoire « … » introuvable dans <répertoire>` ; `CMakeLists.txt` absent : `/tests: « …/CMakeLists.txt » introuvable dans <répertoire>` |
+| `scion new` | Modèles `application` et `bsp` : squelette `tests/CMakeLists.txt` (test `commande`, QEMU et carte, par `smoke_lsh.py` du noyau) et `"tests": "tests"` ; `--from` d'un BSP qui a des tests : tests copiés, champ repris, pas de squelette ; `bibliotheque` : aucun squelette |
+| Sélection | `ctest --preset <P> -L greffon:` : tests de tous les greffons ; `-L greffon:<nom>` : d'un greffon |
