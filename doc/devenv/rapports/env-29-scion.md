@@ -253,3 +253,27 @@ Hook :
 - `proteger-trunk.py` a refusé une commande de mesure, parce qu'elle contenait
   `cp trunk/.scion.grafted.list …` (trunk en source seulement).
 - La commande a été refaite par `shasum` en lecture seule, sans contourner le hook.
+
+## 4. Version, lepton, `<ROOTSTOCK>` (tâche 4)
+
+| Élément | Action | Résultat |
+| --- | --- | --- |
+| seed.scions | tag annoté local `0.5.4.0` sur 99aa973 ; `pipx install --force "git+file://<SEED_SCIONS>@0.5.4.0"` | `scion version` 0.5.4.0 (point de retour : `@0.5.3.0`) |
+| lepton-tools | a1716f9 : `SCION_MIN_VERSION` (0, 5, 4, 0), `SCION_REF` d'`install-vscodium.sh`, `README.md` ; `pipx install --force <LEPTON_TOOLS>` | `pytest` : 229 verts ; `lepton --version` : « scion 0.5.4.0 (requis ≥ 0.5.4.0) » |
+| clone noyau | branche `devenv/env-29` (depuis `master` 0c0cc4f), c1af6c3 : `SCION_REF` d'`install-{macos,debian}.sh`, `doc/BUILDING.md`, `README-PAQUET.md`, `README.md` | shellcheck sans remarque ; aucune référence restante à 0.5.3.0 |
+| `<ROOTSTOCK>` | `scion graft` (0.5.4.0) ; aucun fichier nouveau | code 0, 3956 liens, liste = référence (`a7afbc1d…`), 0 fichier régulier, 0 lien cassé ; `lepton check` code 0 (19 fichiers) |
+| ORCHESTRATION §2bis | règle « branche des clones » allégée (Q5) | relevé conservé ; arrêt manuel retiré, sauf sur un hôte encore en scion 0.5.3.0 (VM jusqu'à ENV-33) |
+
+Regreffe de `<ROOTSTOCK>` :
+- Faite par `scion graft`, qui n'est pas soumis à PA-P. Aucun `graft-update` n'a été lancé sur
+  `<ROOTSTOCK>`.
+- Le clone noyau est désormais sur `devenv/env-29`. `graft-update` le refuserait jusqu'à la fusion
+  dans `master` : c'est le comportement voulu.
+
+Exclusions :
+- 12 chemins ignorés exclus, contre 11 dans la copie.
+- L'écart est un `.DS_Store` du Finder apparu dans la source non git `building` de `<ROOTSTOCK>`
+  après la copie, exclu par le filtre E1.
+
+Références de version : toutes désignent 0.5.4.0 (lepton, `install-vscodium.sh`, scripts et
+documentation du noyau, README de seed.scions).
