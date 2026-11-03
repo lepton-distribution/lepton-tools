@@ -177,6 +177,7 @@ et leurs familles ; preset à BSP non greffé : information. Graine avec `projec
 anomalie « manifeste de graine absent », comme avant.
 
 ### 3.10 `lepton generate [--clangd PATH]` (ENV-9 : CFG-6, BLD-5, IDE-2 à IDE-5, DBG-1 à DBG-4, TST-1)
+Tâche « tests des greffons » (ENV-30) : §20.
 Ajoutée en ENV-9. `CMakeUserPresets.json` dans le dépôt de la graine (`project/scion/`), greffé à
 la racine du trunk par le greffon local `lepton@project-<projet>` ; `<ROOTSTOCK>/<projet>.code-workspace`
 (dossiers, réglages, `launch`, `tasks`). Contenu, règles et propositions :
@@ -486,3 +487,13 @@ Tests fournis par un greffon. Décisions de l'utilisateur, `rapports/env-27-tst2
 | `check` | Répertoire absent : `/tests: répertoire « … » introuvable dans <répertoire>` ; `CMakeLists.txt` absent : `/tests: « …/CMakeLists.txt » introuvable dans <répertoire>` |
 | `scion new` | Modèles `application` et `bsp` : squelette `tests/CMakeLists.txt` (test `commande`, QEMU et carte, par `smoke_lsh.py` du noyau) et `"tests": "tests"` ; `--from` d'un BSP qui a des tests : tests copiés, champ repris, pas de squelette ; `bibliotheque` : aucun squelette |
 | Sélection | `ctest --preset <P> -L greffon:` : tests de tous les greffons ; `-L greffon:<nom>` : d'un greffon |
+
+## 20. Amendements d'ENV-30 (2026-11-03 ; TST-1 pour TST-2, PA-47)
+Tâche de l'éditeur « tests des greffons ». Décisions de l'utilisateur, `rapports/env-30-taches.md` §6.
+
+| Sujet | Règle |
+| --- | --- |
+| Tâche | `lepton : tests des greffons <P>` : `ctest --preset <P> -L greffon: --output-on-failure` (sélectionne aussi la fixture `smoke.lsh`) ; `group` `test`, `cwd` trunk, `env` `PYTHONDONTWRITEBYTECODE=1`, `dependsOn` `lepton : construire <P>` ; écrite après `lepton : banc KAL <P>` |
+| Configurations | `execution` `qemu` seules ; aucune tâche pour la carte (`LEPTON_BOARD_SERIAL_PORT` posé par aucun preset) |
+| Présence | Seulement si un greffon actif de la configuration déclare `tests` : BSP de la configuration, sa famille, applications, bibliothèques (règle `_lepton_greffon_actif` du lecteur CMake) ; lu dans les manifestes greffés, jamais par `ctest -N` ; relancer `generate` après l'ajout de tests à un greffon |
+| Test | `tests/test_tasks_greffons.py` (6 tests) |

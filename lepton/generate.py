@@ -189,6 +189,7 @@ class Context:
         self.reference = rs.is_reference_seed()
         self.ungrafted: dict[str, list[str]] = {}      # graine de référence : BSP non greffé → presets
         by_name = {m.name: m for m in rs.manifests().values()}
+        self.greffons = by_name
         self.families = {n: m.data for n, m in by_name.items() if m.kind == "famille"}   # svd (PA-39)
         if self.reference:
             self._check_kernel_presets()
@@ -251,6 +252,17 @@ class Context:
         if missing:
             raise LeptonError(f"{path} : preset(s) {', '.join(sorted(missing))} absent(s)",
                               "greffon noyau d'ENV-5 ou plus récent")
+
+    def greffon_tests(self, c: Configuration) -> bool:
+        """TST-2 (PA-47 d'ENV-30) : un greffon actif de `c` déclare `tests`. Règle _lepton_greffon_actif
+        du lecteur CMake : BSP de la configuration, sa famille, applications et bibliothèques ; noyau exclu."""
+        def active(m) -> bool:
+            if m.kind == "bsp":
+                return m.name == c.board
+            if m.kind == "famille":
+                return m.name == c.bsp.get("famille")
+            return m.kind in ("application", "bibliotheque")
+        return any(m.data.get("tests") and active(m) for m in self.greffons.values())
 
     def bsp_file(self, c: Configuration, rel: str) -> Path:
         """Fichier déclaré par le BSP de `c`, par le chemin du trunk (chemin canonique, PA-1)."""
@@ -493,7 +505,10 @@ def tasks(ctx: Context, tools: dict, probe_serial: str | None = None) -> list[di
                                  "-monitor", "none", "-serial", "stdio"], trunk,
                                 dependsOn=[build], isBackground=False,
                                 presentation={"panel": "dedicated", "focus": True}))
-            for label, test_label in (("test de fumée", "smoke"), ("banc KAL", "kal")):
+            suites = [("test de fumée", "smoke"), ("banc KAL", "kal")]
+            if ctx.greffon_tests(c):                   # TST-2 : étiquette greffon:<nom> (PA-47 d'ENV-30)
+                suites.append(("tests des greffons", "greffon:"))
+            for label, test_label in suites:
                 result.append(_task(f"lepton : {label} {preset}", tools["ctest"],
                                     ["--preset", preset, "-L", test_label, "--output-on-failure"], trunk,
                                     dependsOn=[build], group="test", options={"cwd": str(trunk), **env}))
