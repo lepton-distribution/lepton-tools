@@ -100,3 +100,52 @@ Décision de l'utilisateur : § 6.
 - Q2 : option 1. La tâche n'est présente que si un greffon actif de la configuration déclare
   `tests` (BSP de la configuration, sa famille, applications, bibliothèques ; noyau exclu).
 - Q3-Q5 : propositions retenues telles quelles. Une seule tâche par configuration.
+
+## 7. Implémentation (lepton-tools `devenv/env-30`)
+
+| Commit | Contenu |
+| --- | --- |
+| 63d3642 | Audit (§1-§5), décision PA-47 (§6) |
+| c3811b3 | `generate.py` : `Context.greffons`, `Context.greffon_tests(c)` (règle `_lepton_greffon_actif`), tâche ajoutée aux suites QEMU après « banc KAL » ; `tests/test_tasks_greffons.py` (6 tests, écrits d'abord : 4 rouges constatés, les 2 cas sans tâche verts) ; `rapports/env-8-interface.md` §20 |
+
+`pytest` : 235 verts (229 + 6). lepton réinstallé par `pipx install --force` depuis c3811b3.
+
+## 8. Contrôles (PA-48)
+
+### 8.1 Fichiers générés
+Relevés `~/lepton-tools-dev/essais/env-30-releve/{avant,apres}/<rootstock>/`, régénérés par
+`lepton generate` juste avant chaque relevé (avant : lepton installé de a1716f9, code de `lepton/`
+identique à `main` deaa5ff) ; diff : `diff-avant-apres.txt` (276 lignes ajoutées, 0 retirée).
+
+| Rootstock | `generate` avant / après | Tâches ajoutées |
+| --- | --- | --- |
+| `<ROOTSTOCK>` (`original-tree`) | 0 / 0 | 4 : `qemu-mps2-an386-{embos,embos-soft,freertos,freertos-soft}` ; aucune pour an500 ni les 10 presets de carte |
+| `essais/env-13-vierge` | 0 / 0 | 4 (mêmes presets) |
+| `essais/env-9` | 0 / 0 | 2 : `env9-debug-qemu`, `env9-release-qemu` |
+| `essais/env-11/qemu` | 0 / 0 | 2 : `env11-debug-qemu`, `env11-release-qemu` |
+| `essais/env-11/f429zi` | 0 / 0 | 0 (carte), espace identique |
+| `essais/env-11/wl55jc1` | 0 / 0 | 0 (carte), espace identique |
+| `essais/env-11/qemu-gra2` | 1 / 1 (attendu : BSP retiré, essai GRA-2) | — |
+
+`CMakeUserPresets.json` identiques partout. Forme de la tâche conforme au PA-47 (`command`
+`/opt/local/bin/ctest`, `args`, `cwd` trunk, `env`, `dependsOn`, `group`).
+
+### 8.2 Exécution en ligne de commande
+- `qemu-mps2-an386-embos` (`<ROOTSTOCK>`), même `command`, `args`, `cwd`, `env` que la tâche :
+  `smoke.lsh` (fixture) et `qemu-mps2-an386.peripheriques` réussis, 2/2, code 0.
+- Preset sans test de greffon (`qemu-mps2-an500-embos`) : tâche absente (option 1) ; pour mémoire,
+  `ctest -L greffon:` y affiche « No tests were found!!! », code 0 (§2).
+- `lepton check` code 0 ; trunk : seul fichier régulier `.scion.grafted.list`, 0 lien cassé,
+  aucun `__pycache__`. Aucune reconstruction ni oracle (binaires non touchés).
+
+### 8.3 Essai VSCodium (Mac, fait par l'utilisateur, 2026-11-03)
+Espace `<ROOTSTOCK>/original-tree.code-workspace`, tâche `lepton : tests des greffons
+qemu-mps2-an386-embos` : visible dans « Exécuter la tâche », exécutée après la construction,
+`smoke.lsh` et `qemu-mps2-an386.peripheriques` réussis, résultat lisible.
+
+## 9. Bilan (PA-48)
+- Critères de l'étape : PA-47 tranché ; `pytest` 235 verts dont 6 nouveaux ; diff des relevés
+  limité à la nouvelle tâche, dans les configurations QEMU dont un greffon actif déclare des tests ;
+  test du greffon d'essai réussi par la tâche (ligne de commande et VSCodium).
+- Extension Lepton non touchée (K6). Validation Debian : ENV-33 (C5).
+- Propositions non validées : aucune.
