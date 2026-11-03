@@ -25,6 +25,7 @@
   ],
   "sonde": "stlink",
   "svd": "debug/STM32WL5x_CM4.svd",
+  "tests": "tests",
   "compilation": {
     "publique": {
       "definitions": [

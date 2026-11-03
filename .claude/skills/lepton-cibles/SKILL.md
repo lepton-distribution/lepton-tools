@@ -70,6 +70,19 @@ openocd -f <cfg> -c "init; targets; shutdown"
      (doc/migration/validation-nucleo-wl55jc1.md:7-10). Cible CMake équivalente : `cmake --build <build> --target flash`
      (cible flash de cmake/components/firmware.cmake). -->
 
+Test radio entre les deux NUCLEO-WL55JC1 (seules branchées) : `nucleo-wl55jc1.radio`, fourni par le
+BSP (`<BSP-WL>/tests/`, champ `tests` ; `board.radio` du noyau jusqu'à ENV-32). Créé si
+`LEPTON_BOARD_SERIAL_PORT`, `LEPTON_RADIO_PEER_STLINK_SERIAL` et `LEPTON_RADIO_PEER_SERIAL_PORT`
+sont posés ; la même image est flashée sur B (`<build>/openocd-nucleo-wl55jc1-paire.cfg`) :
+```bash
+cmake --preset nucleo-wl55jc1-<embos|freertos> -DLEPTON_BOARD_SERIAL_PORT=<console A> \
+    -DLEPTON_BOARD_STLINK_SERIAL=<n° A> -DLEPTON_RADIO_PEER_SERIAL_PORT=<console B> \
+    -DLEPTON_RADIO_PEER_STLINK_SERIAL=<n° B>
+caffeinate -i ctest --preset nucleo-wl55jc1-<embos|freertos> -L board   # 16 tests, radio en dernier
+ctest --preset nucleo-wl55jc1-<embos|freertos> -L radio                 # test radio seul
+```
+Journal : `<build>/board_radio.log`. Consoles relevées en ENV-31 : A `/dev/cu.usbmodem145103`.
+
 Deux cartes ST-Link branchées : `interface/stlink.cfg` prend la première sonde trouvée ; toujours
 ajouter `-c "adapter serial <n°>"` après `-f <cfg>` (ENV-11 S2, O8). Console série en test :
 `tests/smoke_lsh.py --transport serial --port <port> --reset-command "openocd -f <cfg> -c 'adapter serial <n°>' -c 'init; reset run; shutdown'" --expect-machine <machine>`.
