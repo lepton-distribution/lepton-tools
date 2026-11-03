@@ -1,0 +1,44 @@
+Test project /Users/cle_d_anton/lepton/build/nucleo-wl55jc1-freertos
+      Start  1: board.radio
+ 1/16 Test  #1: board.radio ......................   Passed   81.65 sec
+      Start  2: board.smoke_lsh
+ 2/16 Test  #2: board.smoke_lsh ..................   Passed    8.77 sec
+      Start  3: kal.board_flash
+ 3/16 Test  #3: kal.board_flash ..................   Passed    1.45 sec
+      Start  4: kal.T1
+ 4/16 Test  #4: kal.T1 ...........................   Passed    1.19 sec
+      Start  5: kal.T2
+ 5/16 Test  #5: kal.T2 ...........................   Passed    1.49 sec
+      Start  6: kal.T3
+ 6/16 Test  #6: kal.T3 ...........................   Passed    1.18 sec
+      Start  7: kal.T4
+ 7/16 Test  #7: kal.T4 ...........................   Passed    1.19 sec
+      Start  8: kal.T5
+ 8/16 Test  #8: kal.T5 ...........................   Passed    1.19 sec
+      Start  9: kal.T6
+ 9/16 Test  #9: kal.T6 ...........................   Passed    1.18 sec
+      Start 10: kal.T7
+10/16 Test #10: kal.T7 ...........................   Passed    1.18 sec
+      Start 11: kal.T8
+11/16 Test #11: kal.T8 ...........................   Passed    1.73 sec
+      Start 12: kal.TICI
+12/16 Test #12: kal.TICI .........................   Passed    1.19 sec
+      Start 13: kal.TCLK
+13/16 Test #13: kal.TCLK .........................   Passed    2.31 sec
+      Start 14: kal.TSBRK
+14/16 Test #14: kal.TSBRK ........................   Passed    2.37 sec
+      Start 15: kal.IRQ
+15/16 Test #15: kal.IRQ ..........................   Passed    1.57 sec
+      Start 16: kal.harness_fail
+16/16 Test #16: kal.harness_fail .................   Passed    1.57 sec
+
+100% tests passed, 0 tests failed out of 16
+
+Label Time Summary:
+arch:cortex-m4f     = 111.20 sec*proc (16 tests)
+backend:freertos    = 111.20 sec*proc (16 tests)
+board               = 111.20 sec*proc (16 tests)
+kal                 =  29.56 sec*proc (15 tests)
+radio               =  81.65 sec*proc (1 test)
+
+Total Test time (real) = 111.21 sec

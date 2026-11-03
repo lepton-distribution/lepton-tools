@@ -1,0 +1,50 @@
+Preset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/Users/cle_d_anton/lepton/trunk/cmake/toolchains/arm-none-eabi.cmake"
+  LEPTON_BOARD="nucleo-wl55jc1"
+  LEPTON_CPU="cortex-m4f"
+  LEPTON_EMBOS_ROOT="/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0"
+  LEPTON_FLOAT_ABI="soft"
+  LEPTON_ISA="armv7m"
+  LEPTON_KAL_BACKEND="freertos"
+  LEPTON_MKCONF="sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_wl55jc1.xml"
+  LEPTON_MKLEPTON="/Users/cle_d_anton/lepton/trunk/../build/host/mklepton"
+
+-- greffons : qemu-mps2;samd21;stm32f4xx;stm32f7xx;stm32wlxx;nucleo-f429zi;nucleo-f439zi;nucleo-wl55jc1;qemu-mps2-an386;qemu-mps2-an500;samd21-xplained-pro;stm32f746g-disco;lepton-noyau
+-- carte nucleo-wl55jc1 : famille stm32wlxx, cœur cortex-m4f
+-- greffon stm32wlxx : kernel (dev_stm32wlxx/dev_stm32wlxx_uart_x.c;dev_stm32wlxx/dev_stm32wlxx_bsp_radio_if.c;dev_stm32wlxx/dev_stm32wlxx_util_timer.c;radio_subghz_phy/stm32_radio_driver/radio.c;radio_subghz_phy/stm32_radio_driver/radio_driver.c;radio_subghz_phy/stm32_radio_driver/radio_fw.c;radio_subghz_phy/stm32_radio_driver/lr_fhss_mac.c;radio_subghz_phy/stm32_radio_driver/wl_lr_fhss.c;Utilities/misc/stm32_mem.c;cubemx_hal_driver/src/stm32wlxx_hal.c;cubemx_hal_driver/src/stm32wlxx_hal_cortex.c;cubemx_hal_driver/src/stm32wlxx_hal_gpio.c;cubemx_hal_driver/src/stm32wlxx_hal_rcc.c;cubemx_hal_driver/src/stm32wlxx_hal_rcc_ex.c;cubemx_hal_driver/src/stm32wlxx_hal_pwr.c;cubemx_hal_driver/src/stm32wlxx_hal_pwr_ex.c;cubemx_hal_driver/src/stm32wlxx_hal_dma.c;cubemx_hal_driver/src/stm32wlxx_hal_dma_ex.c;cubemx_hal_driver/src/stm32wlxx_hal_uart.c;cubemx_hal_driver/src/stm32wlxx_hal_uart_ex.c;cubemx_hal_driver/src/stm32wlxx_hal_subghz.c)
+-- greffon nucleo-wl55jc1 : bsp (dev_stm32wl55jci_nucleo_peripherals/dev_stm32wl55jci_nucleo_usart_2.c;dev_stm32wl55jci_nucleo_radio/dev_stm32wl55jci_nucleo_radio.c;dev_stm32wl55jci_nucleo_radio/stm32wlxx_nucleo_radio.c;stm32_radio_target/radio_board_if.c)
+-- Configuring done (0.5s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Users/cle_d_anton/lepton/build/nucleo-wl55jc1-freertos
+[0/2] Re-checking globbed directories...
+[1/7] Building ASM object tests/kal/CMakeFiles/kal_bench.dir/arch/armv7m/kal_regs_armv7m.S.obj
+[2/7] Building ASM object tests/kal/CMakeFiles/kal_bench.dir/arch/armv7m/kal_regs_read_armv7m.S.obj
+[3/7] Building C object tests/kal/CMakeFiles/kal_bench.dir/__/__/sys/root/src/kernel/core/core-freertos/arch/armv7m/freertos_hooks.c.obj
+[4/7] Building C object tests/kal/CMakeFiles/kal_bench.dir/kal_semihost.c.obj
+[5/7] Building C object tests/kal/CMakeFiles/kal_bench.dir/arch/armv7m/kal_bench.c.obj
+[6/7] Linking C executable tests/kal/kal_bench.elf
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-closer.o): in function `_close_r':
+closer.c:(.text._close_r+0xc): warning: _close is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-closer.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-fstatr.o): in function `_fstat_r':
+fstatr.c:(.text._fstat_r+0xe): warning: _fstat is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-fstatr.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-isattyr.o): in function `_isatty_r':
+isattyr.c:(.text._isatty_r+0xc): warning: _isatty is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-isattyr.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-lseekr.o): in function `_lseek_r':
+lseekr.c:(.text._lseek_r+0x10): warning: _lseek is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-lseekr.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-readr.o): in function `_read_r':
+readr.c:(.text._read_r+0x10): warning: _read is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-readr.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-writer.o): in function `_write_r':
+writer.c:(.text._write_r+0x10): warning: _write is not implemented and will always fail
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libg_nano.a(libc_a-writer.o): note: the message above does not take linker garbage collection into account
+/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: warning: tests/kal/kal_bench.elf has a LOAD segment with RWX permissions
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       17072 B       256 KB      6.51%
+             RAM:       16184 B        64 KB     24.69%

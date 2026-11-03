@@ -1,0 +1,12 @@
+empreinte .bin : différente
+empreinte .elf : différente
+empreinte .hex : différente
+section modifié  : .ccm_bss ['56400'] -> ['56408']
+section modifié  : .debug_info ['888392'] -> ['889348']
+section modifié  : .debug_line ['354155'] -> ['354164']
+section modifié  : .debug_loclists ['198953'] -> ['198997']
+section modifié  : .debug_str ['78316'] -> ['78338']
+symbole modifié  : xIdleTaskTCB.3 ['b 00000054'] -> ['b 00000058']
+symbole modifié  : xTaskCreateStatic ['T 000001f8'] -> ['T 000001fc']
+symbole modifié  : xTimerTaskTCB.1 ['b 00000054'] -> ['b 00000058']
+bilan : 8 écart(s) de sections ou de symboles

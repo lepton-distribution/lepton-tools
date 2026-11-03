@@ -104,3 +104,73 @@ Lecture de `~/.vscode-oss/extensions/mcu-debug.rtos-views-0.0.16-universal/dist/
 | Critère, par preset FreeRTOS | admis : `xTaskCreateStatic` +4, `xIdleTaskTCB` et `xTimerTaskTCB` 84 → 88, `.ccm_bss` +8, `.text` 0 ou +4, sections `.debug_*`, empreintes ; tout le reste identique (aucun symbole ajouté ou retiré ; `.data`, `.bss`, `.noinit` inchangés). Écart hors critère = arrêt |
 | embOS (8) et host | `comparer-oracle.py` code 0 |
 | Cartes | NUCLEO-WL55JC1 (banc 16/16, essai rtos-views) et STM32F746G-DISCO (20/20) ; NUCLEO-F429ZI et SAMD21 non essayées |
+
+## 7. Oracle avant et implémentation
+
+Oracle avant `oracles/env-31-avant/` (`rejouer-oracle.sh`, host + 6 QEMU + 10 carte, constructions
+à neuf, journal `env-31-avant/rejouer-oracle.log`) : « tout a réussi ». Contre `env-27-apres` :
+`comparer-oracle.py` code 0 sur les 16 presets (empreintes seules différentes), host 7/7,
+empreintes mklepton identiques, bancs QEMU 19/19/15/15/18/18 identiques.
+
+| Dépôt | Branche | Commit | Contenu |
+| --- | --- | --- | --- |
+| clone noyau | `devenv/env-31` (depuis `master` be25cd0) | fc71632 | `FreeRTOSConfig.h` : `configRECORD_STACK_HIGH_ADDRESS` 1 sous `#ifndef` ; en-tête complété (exigences de l'étape 7, ENV-31) |
+
+## 8. Contrôles
+
+Oracle après `oracles/env-31-apres/` (mêmes arguments) : « tout a réussi ». Comparaisons
+`env-31-avant` → `env-31-apres` : `env-31-apres/comparaisons/<preset>.txt`.
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| `host` | — | mklepton identiques | — | `ctest` 7/7 | — |
+| 8 presets embOS | code 0 | diffère | QEMU : verte | QEMU : 19/15/18, identiques | aucun |
+| `qemu-mps2-an386-freertos` | code 1 : 9 écarts | diffère | verte | 19/19 | E-1, E-2 |
+| `qemu-mps2-an386-freertos-soft` | code 1 : 8 écarts | diffère | verte | 15/15 | E-1 |
+| `qemu-mps2-an500-freertos` | code 1 : 8 écarts | diffère | verte | 18/18 | E-1 |
+| `nucleo-f429zi-freertos`, `nucleo-f439zi-freertos` | code 1 : 8 écarts | diffère | non essayée (PA-49) | non essayé | E-1 |
+| `stm32f746g-disco-freertos` | code 1 : 8 écarts | diffère | `cortexM7-stm32f7` | 20/20 | E-1 |
+| `samd21-xplained-pro-freertos` | code 1 : 8 écarts | diffère | non essayée (PA-49) | non essayé | E-1 |
+| `nucleo-wl55jc1-freertos` | code 1 : 8 écarts | diffère | `cortexM4-stm32wlxx` | 16/16 | E-1 |
+
+- **E-1** (8 presets FreeRTOS, dans le critère du PA-49) : `xTaskCreateStatic` +4 (0x1f8 → 0x1fc ;
+  SAMD21 0x1f0 → 0x1f4), `xIdleTaskTCB.3` et `xTimerTaskTCB.1` 0x54 → 0x58, `.ccm_bss` +8,
+  sections `.debug_info`, `.debug_line`, `.debug_loclists`, `.debug_str`. Aucun symbole ajouté ou
+  retiré ; `.data`, `.bss`, `.noinit` inchangés.
+- **E-2** (`qemu-mps2-an386-freertos` seul) : `.text` 159400 → 159416 (+16), hors du critère
+  initial (0 ou +4) : arrêt. Cause vérifiée par une construction témoin
+  (`-DconfigRECORD_STACK_HIGH_ADDRESS=0`, scratchpad) : le code décale de +4 à partir de
+  `vTaskDelete`, de +8 à `__vfscanf` (objet newlib aligné sur 8), de +16 à `_close` (aligné sur 16) ;
+  aucune autre taille de symbole changée. Critère amendé par l'utilisateur (PA-49 (2)) : +4 de code
+  plus le bourrage d'alignement qui en résulte. Les 7 autres presets FreeRTOS : `.text` inchangé.
+- Test du greffon `qemu-mps2-an386.peripheriques` : vert dans les 4 presets an386.
+
+Cartes (procédure d'ENV-24 §6 : reconfiguration de `<ROOTSTOCK>/build/<P>` avec les options de
+carte, construction, recapture de `lepton.elf` comparée à `env-31-apres/<P>` : code 0, puis
+`ctest --preset <P> -L board` ; journaux `carte.log`, `carte-detail.log`, `carte-config.log`) :
+
+| Carte | Sondes, ports | Résultat | Détail |
+| --- | --- | --- | --- |
+| NUCLEO-WL55JC1 (A testée, B paire radio) | A STLINK-V3 002700253431510837393937 `/dev/cu.usbmodem145103` ; B 004F003E3431510937393937 `/dev/cu.usbmodem1454403` | 16/16 | radio A→B 20/20, B→A 20/20, ping/pong 20/20, 0 perdu (comme ENV-24) |
+| STM32F746G-DISCO | ST-LINK/V2-1 0671FF495351885087181231 `/dev/cu.usbmodem1454303` ; Mac 192.168.2.10 sur `en0` | 20/20 | ping 3/3, `LIST` 13 entrées, `RETR /usr/etc/.boot` 57 octets, ECONNRESET=15 (comme ENV-24) |
+
+Incidents :
+- La cfg OpenOCD du F746 n'a pas de numéro de sonde (`set` simple de `lepton_greffons.cmake`,
+  non surchargeable) et `interface/stlink.cfg` accepte aussi les STLINK-V3 : essai F746 fait avec
+  les WL55 débranchées (à la demande de la session), après celui des WL55 (qui désignent leur sonde).
+- Premier essai F746 : `board.smoke_lsh` en échec en 0,63 s. OpenOCD a rendu le code 1 avant toute
+  écriture, car un OpenOCD de Cortex-Debug (session VSCodium F746) tenait la sonde. L'utilisateur
+  l'a arrêté ; le second essai est vert.
+- Images laissées en flash : `nucleo-wl55jc1-freertos` d'ENV-31 sur A et B, `stm32f746g-disco-freertos`
+  d'ENV-31 sur le F746.
+
+VSCodium (utilisateur, NUCLEO-WL55JC1 A, `nucleo-wl55jc1-freertos`, onglet *xRTOS*) : taille, usage
+et pic de pile affichés pour chaque tâche ; constat « fonctionne ». O-2 d'ENV-26 levé.
+
+`lepton check` (`<ROOTSTOCK>`) : code 0, 19 fichiers conformes. Trunk : aucun fichier régulier hors
+`.DS_Store` tolérés, aucun lien cassé.
+
+## 9. PA-50
+
+Nouvel oracle de référence Mac : `oracles/env-31-apres/`. Fusion de `devenv/env-31` dans `master` du
+clone noyau et dans `main` de lepton-tools, push (PA-P) : voir `DEVENV-STATUS.md` §Décisions.
