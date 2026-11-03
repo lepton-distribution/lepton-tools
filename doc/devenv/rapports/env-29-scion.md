@@ -202,3 +202,54 @@ Toutes les propositions du §1.5 sont retenues :
 - P-1 à P-4 validées en bloc.
 
 Consigné dans `DEVENV-STATUS.md` §Décisions.
+
+## 2. Implémentation (tâche 2, `<SEED_SCIONS>` `devenv/env-29`)
+
+Tests écrits d'abord : `tests/test_clone_versions.py`, 22 tests. Au premier lancement, 17 étaient
+rouges ; les 5 verts portaient sur des comportements déjà corrects (avance nominale, clone
+seulement en avance, modifications sur un clone à jour, etc.).
+
+| Commit | Contenu |
+| --- | --- |
+| 045b250 | Q1, P-1, P-2, PA-45 (2) : `graft.update_sources` (graines, puis clones, contrôlés avant tout changement), `clone_updates` / `_check_clone` (branche ou tag déclaré, amont, divergence, retard avec modifications ; tous les clones fautifs listés), `advance_clones` (`fetch` + `merge --ff-only @{u}`) ; `sync` ne fait plus que cloner ; `gitops.pull` supprimé ; `seed-add`, `seed-update` et `graft-update` passent par `update_sources` ; 19 tests |
+| ad99094 | Q2 : `graft.regraft`, qui relève liens, répertoires et `.scion.grafted.list`, puis les remet en place si la résolution des graines, `ungraft` ou `graft` échoue (message complété, liens devenus cassés comptés) ; `scion graft` et `graft-update` l'utilisent ; 3 tests |
+| 99aa973 | Version 0.5.4.0 : `__version__`, `CHANGELOG.md`, `README.md`, `tests/test_cli.py` |
+
+Résultats :
+- 159 tests verts (137 + 22), 1 ignoré, comme avant.
+- `grep -ri lepton scion/` : seulement les 2 lignes de métadonnées (`__url__`, `__email__`),
+  tolérées par PA-2 Q7.
+- État intermédiaire après 045b250 : 156 tests verts.
+
+## 3. Essai sur la copie (tâche 3)
+
+scion de la branche est installé dans le venv `~/lepton-tools-dev/essais/env-29-venv`
+(`pip install <SEED_SCIONS>`, `scion version` 0.5.4.0), **au lieu du `pipx install --force`** du
+fichier d'étape. Le scion global reste ainsi en 0.5.3.0 jusqu'à la tâche 4 (procédure d'ENV-23 ;
+proposition de la session, signalée à l'utilisateur).
+
+PA-P accordé le 2026-11-03 pour les trois `graft-update`, sur la copie seule.
+
+| Essai | Action | Résultat |
+| --- | --- | --- |
+| `graft` sur conflit | clones `original` et `family-stm32f4xx` sur `devenv/env-14`, puis `scion graft` (0.5.4.0) | code 1, 277 conflits, « trunk rétabli dans son état antérieur (3956 lien(s)) » ; liste = référence (`a7afbc1d…`) ; `.scion.grafted.list` identique (SHA-256 `39713cec…`) ; 4 liens cassés le temps que les clones restent sur `devenv/env-14`, 0 après leur retour sur `master` |
+| (a) clone hors version | mêmes 2 clones sur `devenv/env-14`, puis `graft-update` | code 1, « 2 clone(s) à remettre à leur version déclarée … (trunk et clones inchangés) », chaque clone nommé avec `git -C … switch master` ; aucun dégreffage ; liste et `.scion.grafted.list` identiques ; clones restés à e5a5689 et af964c6 |
+| (b) conflit dans `graft-update` | commit local 2c63e95 dans `bsp-nucleo-f429zi` (`sys/root/src/kernel/core/arch/cortexm/lepton_irq.h`, déjà fourni par le noyau), puis `graft-update` | clone « 1 commit(s) non publié(s), laissé tel quel » ; code 1, 1 conflit, trunk rétabli ; liste = référence ; `.scion.grafted.list` identique ; commit annulé (`reset --hard HEAD~1`, copie seule) |
+| (c) nominal | clones à leur version, graine à jour, puis `graft-update` | code 0, 3956 feuilles ; liste = référence (`a7afbc1d…`) ; `.scion.grafted.list` = celle de `<ROOTSTOCK>` ; 14 dépôts propres |
+
+E-1 se reproduit avant le correctif (§1.3) et ne se produit plus après (a). L'arbre composé est
+identique (même liste de liens et de cibles) : aucune reconstruction n'est requise (raisonnement
+d'ENV-15 §6).
+
+Observation O-1 :
+- Des `.DS_Store` sont apparus dans les trunks de la copie et de `<ROOTSTOCK>` (5 à 7 dans la
+  copie, 6 dans `<ROOTSTOCK>` à 08:45).
+- Ils datent de quelques secondes **après** chaque commande. Ce sont des fichiers du Finder (6148
+  octets), recréés par une fenêtre ouverte sur le trunk.
+- Ils sont tolérés par `.scion.trunk.tolerated` (ENV-22) et retirés au dégreffage.
+- Sans effet sur la liste des liens.
+
+Hook :
+- `proteger-trunk.py` a refusé une commande de mesure, parce qu'elle contenait
+  `cp trunk/.scion.grafted.list …` (trunk en source seulement).
+- La commande a été refaite par `shasum` en lecture seule, sans contourner le hook.
