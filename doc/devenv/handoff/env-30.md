@@ -7,7 +7,7 @@ QEMU dont un greffon actif déclare `tests` ; tâche verte en ligne de commande 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `main` (fusion `--no-ff` de `devenv/env-30`, poussées toutes deux, PA-48) | fond : « devenv(env-30): état et passation » | oui |
+| lepton-tools | `main` : fusion `--no-ff` de `devenv/env-30` (43bdeec, PA-48), puis dfba965 (second essai VSCodium) ; `main` et `devenv/env-30` poussées ; commit de cette passation non poussé | « devenv(env-30): état et passation » | oui |
 | clone noyau `depots/lepton/original/master` | `master` be25cd0, non touché | — | oui |
 | autres (seed.scions, graine, greffons) | non touchés | — | oui |
 
@@ -30,7 +30,8 @@ Hors dépôts :
     an386 de `<ROOTSTOCK>` et d'`env-13-vierge`, 2 configurations d'`env-9` et d'`env-11/qemu`) ;
   - tâche exécutée sur `qemu-mps2-an386-embos` : `smoke.lsh` et `qemu-mps2-an386.peripheriques`
     réussis ;
-  - VSCodium : visible et verte (utilisateur) ; `lepton check` code 0.
+  - VSCodium : visible et verte (utilisateur), essai refait après la fusion avec le même résultat ;
+    `lepton check` code 0.
 - PA-48 : fusion et push.
 
 ## Reste à faire dans l'étape
