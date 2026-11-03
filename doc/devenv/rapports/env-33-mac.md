@@ -52,3 +52,47 @@ Code de lepton (`lepton/`, `pyproject.toml`, `scripts/`) inchangé depuis c3811b
 | ID | Date | Sens | Résumé |
 | --- | --- | --- | --- |
 | ORDRE R33-1 | 2026-11-03 | Mac (`validation-debian-env-33`) → VM (`debian-linux-vm`) | consigne `env-33-debian.md` @ e47bc11 ; accords du PA-53 ; texte des §1-§3 recopié, §4-§12 renvoyés au fichier poussé (variables recopiées) |
+| ACCUSÉ R33-1 | 2026-11-03 | VM → Mac | non remis (ECONNRESET), journalisé sur la VM `~/env-33-journaux/0-messages-R33-1.md` ; résumé reçu avec l'AVANCEMENT suivant : §5 conforme au §1, `devenv/env-33` e47bc11, `$U` conforme (13 clones sur `master`, 3956 liens), BSP an386 de `$P` à 046779e sans `tests` (espace attendu identique au §9.2), scion 0.5.3.0 ; l'utilisateur a décidé de poursuivre |
+| AVANCEMENT R33-1 | 2026-11-03 | VM → Mac | §6.1 fait (`generate`/`check` code 0, presets d5ee81e4…, espace b2c7b8a4…) ; clone noyau b3a5415, `SCION_REF` 0.5.4.0 ; commandes du §6.2 à l'utilisateur |
+
+## 5. Rootstocks d'essai du Mac (tâche 3)
+
+Accord de l'utilisateur (PA-P) : les 7, 2026-11-03. Journaux : `~/lepton-tools-dev/essais/env-33-mac/`
+(`inventaire-{avant,apres}.txt`, `<rootstock>-{liens-avant,liens-apres}.txt`, `-graft-update.log`,
+`-check.log`, `-generate.log`, `-espace.diff`). scion 0.5.4.0.
+
+### 5.1 Inventaire avant (P-1)
+Les 13 + 9 × 3 clones : sur `master`, amont `origin/master`, propres, aux têtes de R28-1 (noyau
+0c0cc4f, `bsp-nucleo-wl55jc1` c9183de). 0 lien cassé. Fichiers réguliers : 5 `.DS_Store` du Finder
+par trunk (3 nov. 08:45, tolérés par `.scion.trunk.tolerated` sauf dans `bout-en-bout`).
+
+### 5.2 Regreffe et contrôles
+
+| Rootstock | `graft-update` | Liens avant → après | Liens retirés / ajoutés | Entrées | Cassés | `check` | `generate` | Espace | `request` / `lldb` / `svdFile` / tâches « tests des greffons » |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-9` | 0 | 3057 → 3056 | `tests/board_radio.py` / — | 5 | 0 | 0 | 0 | identique | 3 / 1 / 0 / 2 |
+| `env-11/f429zi` | 0 | 3370 → 3369 | idem / — | 5 | 0 | 0 | 0 | identique | 2 / 1 / 1 / 0 |
+| `env-11/qemu` | 0 | 3057 → 3056 | idem / — | 5 | 0 | 0 | 0 | identique | 3 / 1 / 0 / 2 |
+| `env-11/qemu-gra2` | 0, puis `graft-remove lepton@bsp-qemu-mps2-an386` sans `--purge` (8 feuilles), code 0 | 3049 → 3048 | idem / — | 4 | 0 | 1 (attendu, CFG-5) | 1 (attendu) | identique | 1 / 0 / 0 / 0 |
+| `env-11/wl55jc1` | 0 | 3305 → 3306 | idem / BSP `tests/CMakeLists.txt`, `tests/radio.py` | 5 | 0 | 0 | 0 | identique | 2 / 1 / 1 / 0 |
+| `env-11/bout-en-bout/rootstock` | **1** (E-1, §5.3), puis `scion graft` code 0 | 3057 → 3056 | idem / — | 5 | 0 | 0 | 0 | +23 lignes : tâche `lepton : tests des greffons bout-en-bout-debug-qemu` (ENV-30 ; ce rootstock n'était pas dans le relevé d'ENV-30) | 2 / 1 / 0 / 1 |
+| `env-13-vierge` | 0 | 3956 → 3957 | idem / BSP `tests/CMakeLists.txt`, `tests/radio.py` | 14 | 0 | 0 | 0 | identique | 23 / 7 / 10 / 4 (= `<ROOTSTOCK>`) |
+
+Clones après : tous sur `master`, propres, aux têtes publiées (noyau b3a5415, `bsp-nucleo-wl55jc1`
+ef51ec1). Graines locales « sans amont, laissée telle quelle » ; `env-13-vierge` : graine déjà à
+15740f9. Les espaces identiques le sont parce qu'ils avaient été régénérés en ENV-30 avec le même lepton
+(c3811b3) ; le champ `tests` du BSP WL55 ne crée pas de tâche (configurations de carte, PA-47).
+
+### 5.3 Écarts et constats
+- **E-1 (`bout-en-bout/rootstock`)** : `graft-update` code 1, « le trunk … contient des fichiers
+  qui ne sont pas des greffes » (5 `.DS_Store`) ; son `.scion.trunk.tolerated` n'avait que des
+  commentaires (rootstock recréé en ENV-22 par le script). scion 0.5.4.0 a avancé le clone noyau
+  (0c0cc4f → b3a5415), refusé le dégreffage et rétabli le trunk (3057 liens, 1 lien cassé
+  `tests/board_radio.py`) : comportement d'ENV-29. Décision de l'utilisateur : motifs `.DS_Store`
+  et `._*` ajoutés à ce fichier (comme les 6 autres, décision d'ENV-21), puis `scion graft` :
+  code 0, 3056 liens, 0 cassé.
+- **O-1 (`.DS_Store`)** : après regreffe, le Finder a recréé 6 à 7 `.DS_Store` par trunk
+  (17:50-17:52). Tolérés, ils ne bloquent pas scion et disparaissent au dégreffage ; aucun autre
+  fichier régulier, aucun `__pycache__`. Le critère « 0 fichier régulier » se lit ici « aucun fichier
+  régulier hors fichiers tolérés ».
+
