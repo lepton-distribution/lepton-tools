@@ -1,0 +1,227 @@
+Test project /Users/cle_d_anton/lepton/build/nucleo-wl55jc1-freertos
+      Start  1: board.smoke_lsh
+ 1/16 Test  #1: board.smoke_lsh ..................   Passed    8.92 sec
+      Start  2: kal.board_flash
+ 2/16 Test  #2: kal.board_flash ..................   Passed    1.74 sec
+      Start  3: kal.T1
+ 3/16 Test  #3: kal.T1 ...........................***Failed   45.18 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+Info : clock speed 500 kHz
+Info : STLINK V3J7M3 (API v3) VID:PID 0483:374E
+Info : Target voltage: 3.278400
+Info : [stm32wlx.cpu0] Cortex-M4 r0p1 processor detected
+Info : [stm32wlx.cpu0] target has 6 breakpoints, 4 watchpoints
+Info : gdb port disabled
+[stm32wlx.cpu0] halted due to breakpoint, current mode: Thread 
+xPSR: 0x61000000 pc: 0x2000802e msp: 0x20010000
+Info : Unable to match requested speed 500 kHz, using 200 kHz
+Info : Unable to match requested speed 500 kHz, using 200 kHz
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench T1]
+
+Info : tcl server disabled
+Info : telnet server disabled
+Polling target stm32wlx.cpu0 failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 100ms
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32wlx.cpu0 failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 300ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32wlx.cpu0 failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 700ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32wlx.cpu0 failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 1500ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32wlx.cpu0 failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 3100ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32wlx.cpu0 failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 6300ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32wlx.cpu0 failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 6300ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32wlx.cpu0 failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 6300ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32wlx.cpu0 failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 6300ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32wlx.cpu0 failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 6300ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32wlx.cpu0 failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 6300ms
+ÉCHEC : OpenOCD n'a pas rendu la main en 45 s (pas de SYS_EXIT)
+
+      Start  4: kal.T2
+ 4/16 Test  #4: kal.T2 ...........................***Failed    0.09 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Error: open failed
+
+
+
+      Start  5: kal.T3
+ 5/16 Test  #5: kal.T3 ...........................***Failed    0.09 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Error: open failed
+
+
+
+      Start  6: kal.T4
+ 6/16 Test  #6: kal.T4 ...........................***Failed    0.09 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Error: open failed
+
+
+
+      Start  7: kal.T5
+ 7/16 Test  #7: kal.T5 ...........................***Failed    0.09 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Error: open failed
+
+
+
+      Start  8: kal.T6
+ 8/16 Test  #8: kal.T6 ...........................***Failed    0.08 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Error: open failed
+
+
+
+      Start  9: kal.T7
+ 9/16 Test  #9: kal.T7 ...........................***Failed    0.09 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Error: open failed
+
+
+
+      Start 10: kal.T8
+10/16 Test #10: kal.T8 ...........................***Failed    0.09 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Error: open failed
+
+
+
+      Start 11: kal.TICI
+11/16 Test #11: kal.TICI .........................***Failed    0.09 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Error: open failed
+
+
+
+      Start 12: kal.TCLK
+12/16 Test #12: kal.TCLK .........................***Failed    0.09 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Error: open failed
+
+
+
+      Start 13: kal.TSBRK
+13/16 Test #13: kal.TSBRK ........................***Failed    0.09 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Error: open failed
+
+
+
+      Start 14: kal.IRQ
+14/16 Test #14: kal.IRQ ..........................***Failed    0.09 sec
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Error: open failed
+
+
+
+      Start 15: kal.harness_fail
+15/16 Test #15: kal.harness_fail .................   Passed    0.09 sec
+      Start 16: nucleo-wl55jc1.radio
+16/16 Test #16: nucleo-wl55jc1.radio .............***Failed    0.07 sec
+Traceback (most recent call last):
+  File "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/tests/radio.py", line 126, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/tests/radio.py", line 104, in main
+    la, lb = SerialLink(a.port_a, a.baud), SerialLink(a.port_b, a.baud)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cle_d_anton/lepton/trunk/tests/smoke_lsh.py", line 86, in __init__
+    fd = os.open(port, os.O_RDWR | os.O_NOCTTY)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/cu.usbmodem145103'
+
+
+19% tests passed, 13 tests failed out of 16
+
+Label Time Summary:
+arch:cortex-m4f           =  56.97 sec*proc (16 tests)
+backend:freertos          =  56.97 sec*proc (16 tests)
+board                     =  56.97 sec*proc (16 tests)
+greffon:nucleo-wl55jc1    =   0.07 sec*proc (1 test)
+kal                       =  56.90 sec*proc (15 tests)
+radio                     =   0.07 sec*proc (1 test)
+
+Total Test time (real) =  56.99 sec
+
+The following tests FAILED:
+	  3 - kal.T1 (Failed)                                   arch:cortex-m4f backend:freertos board kal
+	  4 - kal.T2 (Failed)                                   arch:cortex-m4f backend:freertos board kal
+	  5 - kal.T3 (Failed)                                   arch:cortex-m4f backend:freertos board kal
+	  6 - kal.T4 (Failed)                                   arch:cortex-m4f backend:freertos board kal
+	  7 - kal.T5 (Failed)                                   arch:cortex-m4f backend:freertos board kal
+	  8 - kal.T6 (Failed)                                   arch:cortex-m4f backend:freertos board kal
+	  9 - kal.T7 (Failed)                                   arch:cortex-m4f backend:freertos board kal
+	 10 - kal.T8 (Failed)                                   arch:cortex-m4f backend:freertos board kal
+	 11 - kal.TICI (Failed)                                 arch:cortex-m4f backend:freertos board kal
+	 12 - kal.TCLK (Failed)                                 arch:cortex-m4f backend:freertos board kal
+	 13 - kal.TSBRK (Failed)                                arch:cortex-m4f backend:freertos board kal
+	 14 - kal.IRQ (Failed)                                  arch:cortex-m4f backend:freertos board kal
+	 16 - nucleo-wl55jc1.radio (Failed)                     arch:cortex-m4f backend:freertos board greffon:nucleo-wl55jc1 radio
+Errors while running CTest

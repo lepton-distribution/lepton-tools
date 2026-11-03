@@ -129,3 +129,69 @@ moment du banc.
 | Q9 | Documents vivants | noyau `BUILDING.md` §7 et `CLAUDE.md` ; skill `lepton-cibles` : ligne « test radio » ; archives de la migration inchangées |
 
 **PA-51 (2026-11-03, décision de l'utilisateur)** : recommandations Q1 à Q9 retenues telles quelles.
+
+## 8. Oracle avant (tâche 2)
+
+`rapports/oracles/env-32-avant/` : `rejouer-oracle.sh … --carte nucleo-wl55jc1-embos --carte
+nucleo-wl55jc1-freertos` (host + 2 presets, construction à neuf). Par rapport à `env-31-apres` :
+code 0 ×2 (empreintes seules différentes, horodatage), host 7/7, empreintes mklepton identiques,
+compilateur identique (`outils.txt`, date seule). Listes `ctest -N` : `env-32-avant/ctest-N/`
+(script `relever-ctest-N.sh` joint, 4 variantes × 2 backends, configurations neuves hors de
+`<ROOTSTOCK>/build`).
+
+## 9. Implémentation (tâche 3)
+
+| Dépôt (`devenv/env-32`) | Commit | Contenu |
+| --- | --- | --- |
+| `bsp-nucleo-wl55jc1` | e9fc2b9 | mécanique : `tests/radio.py` = copie octet pour octet de `tests/board_radio.py` du noyau @ 7fe3757 |
+| `bsp-nucleo-wl55jc1` | cefd09d | `"tests": "tests"` ; `tests/CMakeLists.txt` (variables et cfg de la paire, `lepton_greffon_test(NAME radio … LABELS board radio PROPERTIES TIMEOUT 300 RUN_SERIAL TRUE ENVIRONMENT PYTHONDONTWRITEBYTECODE=1)`) ; `radio.py` : `--tests-noyau`, import de `smoke_lsh` dans `main` (`global`) ; `CMakeLists.txt` de carte : l. 30-53 retirées |
+| clone noyau | 57cee41 | `git rm scion/tests/board_radio.py` |
+| clone noyau | c19d05b | `doc/BUILDING.md` §7, `CLAUDE.md` |
+| lepton-tools | b3eb0f8 | skill `lepton-cibles` (test radio), `schemas/exemples/greffon-bsp-nucleo-wl55jc1.json` (`tests`) |
+
+Lecteur `lepton_greffons.cmake` inchangé (BLD-6). Aucune copie de `smoke_lsh.py`.
+`valider-schemas.sh` conforme ; pytest de lepton-tools 235/235 ; `check-jsonschema` du manifeste ok.
+
+Regreffe : copie d'essai `~/lepton-tools-dev/essais/env-32-copie` (dépôts, trunk et fichiers cachés
+de la racine copiés, `third_party` lié), `scion graft --scion lepton@original::tree` puis
+`--scion lepton@bsp-nucleo-wl55jc1` ; puis même séquence sur `<ROOTSTOCK>` (accord de
+l'utilisateur). Trunk : 3957 liens (3956 − `board_radio.py` + `tests/CMakeLists.txt`, `tests/radio.py`),
+0 lien cassé, aucun fichier régulier hors `.scion.grafted.list` et `.DS_Store` tolérés ;
+`lepton check` code 0 (19 fichiers), sur la copie et sur `<ROOTSTOCK>`.
+
+Incident (erreur de la session) : un contrôle d'import lancé par `python3 -I` (qui ignore
+`PYTHONDONTWRITEBYTECODE`) a écrit `trunk/tests/__pycache__/smoke_lsh.cpython-311.pyc` dans
+`<ROOTSTOCK>` à 16:51:28 ; `scion graft` l'a refusé sur la copie ; supprimé par l'utilisateur dans
+les deux trunks avant la regreffe.
+
+## 10. Contrôles (tâche 4)
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL / tests | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| `host` | sans ELF ; empreintes mklepton identiques | — | — | 7/7 | — |
+| 6 QEMU (an386 ×4, an500 ×2) | code 0 | différente (horodatage) | comprise | 19/15/19/15/18/18, lignes de test identiques à `env-31-apres` | — |
+| 10 carte (F429 ×2, F439 ×2, WL55 ×2, SAMD21 ×2, F746 ×2) | code 0 | différente (horodatage) | — | — | — |
+
+Comparaisons : `env-32-apres/comparaisons/<preset>.txt` (référence `env-31-apres`) ; WL55 également
+code 0 contre `env-32-avant`.
+
+Listes `ctest -N` (`env-32-apres/ctest-N/`, mêmes commandes) : identiques à celles d'avant, une fois
+`board.radio` renommé `nucleo-wl55jc1.radio`, dans les 8 variantes. Rang : 1 → 16 (R3). Propriétés et
+commande : identiques, sauf le chemin du script et `--tests-noyau <trunk>/tests` ajouté ; étiquette
+`greffon:nucleo-wl55jc1` ajoutée. `ctest -N -L greffon:` (banc) : `nucleo-wl55jc1.radio` seul.
+Autres presets : listes QEMU identiques (journaux de banc) ; presets de carte sans port : 0 test,
+inchangés.
+
+Banc radio (`banc-carte/`), A n° …3937 sur `/dev/cu.usbmodem145103` (Location ID 0x14510000), B n° …9937
+sur `/dev/cu.usbmodem1454303` (0x14543000 ; `…1454403` en ENV-31), seules branchées, ELF identiques à
+l'oracle après (SHA-256) :
+
+| Preset | `ctest -L board` | `radiotst tx/rx` A→B, B→A | ping/pong | fumée `/dev/radio` |
+| --- | --- | --- | --- | --- |
+| `nucleo-wl55jc1-embos` | 16/16 | 20/20, 20/20 (perdus 0, désordre 0, doublons 0) | 20/20 | reçue dans les deux sens |
+| `nucleo-wl55jc1-freertos` | 16/16 (2ᵉ passe) | 20/20, 20/20 | 20/20 | reçue dans les deux sens |
+
+Première passe FreeRTOS : 3/16 (`ctest-echec-vm.log`), communication SWD perdue avec A pendant
+`kal.T1`, puis consoles disparues : une VM lancée par l'utilisateur avait pris les deux cartes
+(cause donnée par l'utilisateur). Seconde passe, cartes rendues au Mac : 16/16. Mêmes comptes qu'en
+ENV-24 (16/16 radio comprise). Cartes laissées en FreeRTOS (image d'ENV-32 = ENV-31).

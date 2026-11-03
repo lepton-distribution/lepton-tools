@@ -1,0 +1,52 @@
+Internal ctest changing into directory: /Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos
+Test project /Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos
+      Start  1: smoke.lsh
+ 1/19 Test  #1: smoke.lsh ........................   Passed    3.65 sec
+      Start  2: kal.T1
+ 2/19 Test  #2: kal.T1 ...........................   Passed    0.08 sec
+      Start  3: kal.T2
+ 3/19 Test  #3: kal.T2 ...........................   Passed    0.07 sec
+      Start  4: kal.T3
+ 4/19 Test  #4: kal.T3 ...........................   Passed    0.09 sec
+      Start  5: kal.T4
+ 5/19 Test  #5: kal.T4 ...........................   Passed    0.09 sec
+      Start  6: kal.T5
+ 6/19 Test  #6: kal.T5 ...........................   Passed    0.08 sec
+      Start  7: kal.T6
+ 7/19 Test  #7: kal.T6 ...........................   Passed    0.07 sec
+      Start  8: kal.T7
+ 8/19 Test  #8: kal.T7 ...........................   Passed    0.08 sec
+      Start  9: kal.T8
+ 9/19 Test  #9: kal.T8 ...........................   Passed    0.10 sec
+      Start 10: kal.T1F
+10/19 Test #10: kal.T1F ..........................   Passed    0.07 sec
+      Start 11: kal.T4F
+11/19 Test #11: kal.T4F ..........................   Passed    0.07 sec
+      Start 12: kal.T6F
+12/19 Test #12: kal.T6F ..........................   Passed    0.07 sec
+      Start 13: kal.T7F
+13/19 Test #13: kal.T7F ..........................   Passed    0.07 sec
+      Start 14: kal.TICI
+14/19 Test #14: kal.TICI .........................   Passed    0.06 sec
+      Start 15: kal.TCLK
+15/19 Test #15: kal.TCLK .........................   Passed    0.68 sec
+      Start 16: kal.TSBRK
+16/19 Test #16: kal.TSBRK ........................   Passed    0.08 sec
+      Start 17: kal.IRQ
+17/19 Test #17: kal.IRQ ..........................   Passed    0.09 sec
+      Start 18: kal.harness_fail
+18/19 Test #18: kal.harness_fail .................   Passed    0.07 sec
+      Start 19: qemu-mps2-an386.peripheriques
+19/19 Test #19: qemu-mps2-an386.peripheriques ....   Passed    0.79 sec
+
+100% tests passed, 0 tests failed out of 19
+
+Label Time Summary:
+arch:cortex-m4f            =   6.36 sec*proc (19 tests)
+backend:embos              =   6.36 sec*proc (19 tests)
+greffon:qemu-mps2-an386    =   0.79 sec*proc (1 test)
+kal                        =   5.56 sec*proc (18 tests)
+qemu                       =   0.79 sec*proc (1 test)
+smoke                      =   3.65 sec*proc (1 test)
+
+Total Test time (real) =   6.37 sec
