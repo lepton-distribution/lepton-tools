@@ -142,6 +142,7 @@ identique à `main` deaa5ff) ; diff : `diff-avant-apres.txt` (276 lignes ajouté
 Espace `<ROOTSTOCK>/original-tree.code-workspace`, tâche `lepton : tests des greffons
 qemu-mps2-an386-embos` : visible dans « Exécuter la tâche », exécutée après la construction,
 `smoke.lsh` et `qemu-mps2-an386.peripheriques` réussis, résultat lisible.
+Essai refait par l'utilisateur après la fusion (même espace, même tâche) : visible et verte.
 
 ## 9. Bilan (PA-48)
 - Critères de l'étape : PA-47 tranché ; `pytest` 235 verts dont 6 nouveaux ; diff des relevés
