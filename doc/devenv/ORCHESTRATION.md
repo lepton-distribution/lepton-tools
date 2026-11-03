@@ -92,11 +92,14 @@ Règles des consignes VM (décision PA-31 d'ENV-22, 2026-11-02 ; leçons de R15-
   refusé à la session VM (« Untrusted Code Integration ») ; `rootstock-install`, `seed-add`,
   `graft` et `rejouer-oracle.sh` acceptés.
 - **Branche des clones d'un rootstock existant** (P-1 d'ENV-28, E-1 de `rapports/env-28-debian.md`,
-  décision du 2026-11-02) : avant tout `graft-update` ou toute lecture d'un rootstock existant, les
-  vérifications préalables de la consigne relèvent la branche courante de chaque clone
-  (`git -C <clone> branch --show-current`) ; un clone hors de la version déclarée dans
-  `.scion.grafted.list` est un arrêt. `graft-update` (scion 0.5.3.0) tire la branche courante sans
-  revenir à la version déclarée, et vide le trunk si la regreffe échoue sur un conflit.
+  décision du 2026-11-02 ; allégée au PA-45 d'ENV-29, 2026-11-03) : avant tout `graft-update` ou
+  toute lecture d'un rootstock existant, les vérifications préalables de la consigne relèvent la
+  branche courante de chaque clone (`git -C <clone> branch --show-current`) et la consignent dans
+  le rapport. Depuis scion 0.5.4.0, `graft-update`, `seed-update` et `seed-add` refusent eux-mêmes
+  un clone hors de sa version déclarée, avant tout dégreffage. `graft` et `graft-update` rétablissent
+  le trunk si la regreffe échoue. L'arrêt manuel n'est donc plus requis. Exception : tant qu'un hôte
+  a scion 0.5.3.0 (la VM jusqu'à ENV-33), un clone hors version y reste un arrêt : 0.5.3.0 tire la
+  branche courante et vide le trunk sur un conflit.
 
 ## 3. Cycle d'une session
 
