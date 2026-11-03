@@ -277,3 +277,20 @@ Exclusions :
 
 Références de version : toutes désignent 0.5.4.0 (lepton, `install-vscodium.sh`, scripts et
 documentation du noyau, README de seed.scions).
+
+## 5. Publication (PA-46, utilisateur, 2026-11-03)
+
+- `<SEED_SCIONS>` :
+  - fusion `--no-ff` de `devenv/env-29` dans `master` 1173d6d (159 tests verts après fusion) ;
+  - push de `master` et du tag `0.5.4.0` (99aa973) par l'URL SSH
+    `git@github.com:lepton-distribution/seed.scions.git`, sans changer `origin`, comme en ENV-23 ;
+  - branche non poussée.
+  - Le push HTTPS d'`origin` a échoué faute d'identifiants (« could not read Username »).
+- Clone noyau : fusion `--no-ff` dans `master` be25cd0 ; push de `master` et `devenv/env-29`.
+  Après le retour du clone sur `master`, le trunk de `<ROOTSTOCK>` compte 3956 liens et 0 lien
+  cassé ; les seuls fichiers réguliers sont des `.DS_Store` du Finder (O-1).
+- lepton-tools : état et passation commités sur `devenv/env-29`, fusion `--no-ff` dans `main`,
+  push de `main` et `devenv/env-29`.
+- Copie `essais/env-29` et venv `essais/env-29-venv` supprimés après contrôle des 14 dépôts
+  (propres, aucun commit non publié). `essais/env-29-mesures` est conservé.
+- La validation Debian (scion 0.5.4.0 par `install-debian.sh`) est reportée à ENV-33.
