@@ -97,6 +97,11 @@ WL55JC1 `<BSP-WL>/debug/gdbinit-nucleo-wl55jc1` ; tous sourcent `debug/gdbinit-l
   `svdFile` par `lepton generate` ; pas de SVD pour QEMU.
 - Tâches : onglet *xRTOS* du panneau inférieur (rtos-views), relu à chaque arrêt ; faire une
   *Pause* après le démarrage du RTOS (l'arrêt initial dans `main` précède `OS_Start`).
+- FreeRTOS : taille, usage et pic de pile affichés depuis ENV-31 (`configRECORD_STACK_HIGH_ADDRESS`
+  1 dans `FreeRTOSConfig.h`) ; colonne ID « ?? » attendue (`configUSE_TRACE_FACILITY` reste 0, PA-49).
+- Deux sondes ST ou plus branchées : la cfg OpenOCD du F746 (et des BSP sans
+  `LEPTON_BOARD_STLINK_SERIAL`) prend la première sonde trouvée, STLINK-V3 compris ; tests sur carte
+  avec ce seul F746 branché. Un OpenOCD de Cortex-Debug resté actif tient la sonde : l'arrêter d'abord.
 - embOS : avec rtos-views 0.0.16, la liste reste vide (« No embOS threads detected ») tant que les
   variables sont au format naturel : `OS_Global.IsRunning` (`unsigned char`) est rendu `1 '\001'`
   et refusé par `isNaN`. Contournement : bouton « Enable Hex mode » de la vue VARIABLES (à l'arrêt),
