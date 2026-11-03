@@ -19,7 +19,8 @@ Hors dépôts :
   `env-11/bout-en-bout/rootstock`, `env-13-vierge`), clones aux têtes publiées ; journaux
   `~/lepton-tools-dev/essais/env-33-mac/` (non versionnés). `bout-en-bout/rootstock/.scion.trunk.tolerated`
   complété (`.DS_Store`, `._*`). `<ROOTSTOCK>` non touché.
-- `essais/env-26-copie` et `essais/env-27-copie` (Mac) : toujours présents, hors périmètre.
+- `essais/env-26-copie` et `essais/env-27-copie` (Mac) : supprimés après clôture (décision de
+  l'utilisateur ; contenus vérifiés publiés au préalable).
 
 ## Fait pendant la session
 - Tâche 1 : `rapports/env-33-mac.md` §1 (écarts `env-27-apres` → `env-32-apres` : embOS 0, FreeRTOS
@@ -28,6 +29,7 @@ Hors dépôts :
   rapport VM `rapports/env-33-debian.md`, oracle `oracles/env-33-debian/` (bd14555).
 - Tâche 3 : regreffe des 7 rootstocks d'essai, `check`/`generate` (§5).
 - Tâche 4 : vérification du rapport VM, comparaisons refaites sur l'oracle poussé (§6) ; PA-54.
+- Après clôture : copies d'essai `env-26-copie` et `env-27-copie` supprimées ; `main` poussée (844fdd6).
 
 ## Reste à faire dans l'étape
 - Aucun.
@@ -41,6 +43,7 @@ Hors dépôts :
 | PA-53 (2) : motifs `.DS_Store`/`._*` dans le `.scion.trunk.tolerated` de `bout-en-bout`, puis `graft` | utilisateur | oui |
 | Push de `devenv/env-33-debian` (accordé sur la VM) | utilisateur | oui (PA-54) |
 | PA-54 : fusions `--no-ff` et push | utilisateur | oui |
+| Suppression des copies `env-26-copie`, `env-27-copie` ; push de `main` | utilisateur | oui (journal) |
 | AVANCEMENT §6.2 accepté comme ACCUSÉ (accusé non remis, ECONNRESET) | session Mac, l'utilisateur ayant décidé côté VM de poursuivre | oui (journal) |
 | Mention « la VM jusqu'à ENV-33 » d'ORCHESTRATION §2bis à actualiser | proposition non validée | oui (Prochaine action) |
 
