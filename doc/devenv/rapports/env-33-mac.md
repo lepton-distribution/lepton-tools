@@ -45,3 +45,10 @@ Code de lepton (`lepton/`, `pyproject.toml`, `scripts/`) inchangé depuis c3811b
   l'utilisateur ; copie supprimée ensuite.
 - C8 : `essais/env-14-debian` et `~/env-28-journaux` supprimés par l'utilisateur ;
   `essais/env-28-debian` conservé (cas nominal de C3).
+- PA-53 : consigne validée telle quelle ; push de `devenv/env-33` (e47bc11) ; ordre `R33-1`.
+
+## 4. Journal des messages (§2bis)
+
+| ID | Date | Sens | Résumé |
+| --- | --- | --- | --- |
+| ORDRE R33-1 | 2026-11-03 | Mac (`validation-debian-env-33`) → VM (`debian-linux-vm`) | consigne `env-33-debian.md` @ e47bc11 ; accords du PA-53 ; texte des §1-§3 recopié, §4-§12 renvoyés au fichier poussé (variables recopiées) |
