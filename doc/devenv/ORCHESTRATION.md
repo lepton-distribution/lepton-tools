@@ -97,9 +97,9 @@ Règles des consignes VM (décision PA-31 d'ENV-22, 2026-11-02 ; leçons de R15-
   branche courante de chaque clone (`git -C <clone> branch --show-current`) et la consignent dans
   le rapport. Depuis scion 0.5.4.0, `graft-update`, `seed-update` et `seed-add` refusent eux-mêmes
   un clone hors de sa version déclarée, avant tout dégreffage. `graft` et `graft-update` rétablissent
-  le trunk si la regreffe échoue. L'arrêt manuel n'est donc plus requis. Exception : tant qu'un hôte
-  a scion 0.5.3.0 (la VM jusqu'à ENV-33), un clone hors version y reste un arrêt : 0.5.3.0 tire la
-  branche courante et vide le trunk sur un conflit.
+  le trunk si la regreffe échoue. L'arrêt manuel n'est donc plus requis. Exception : sur un hôte qui a
+  encore scion 0.5.3.0, un clone hors version reste un arrêt : 0.5.3.0 tire la branche courante et
+  vide le trunk sur un conflit (cas de la VM jusqu'à R33-1 d'ENV-33 ; elle a 0.5.4.0 depuis).
 
 ## 3. Cycle d'une session
 

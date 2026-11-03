@@ -45,7 +45,7 @@ Hors dépôts :
 | PA-54 : fusions `--no-ff` et push | utilisateur | oui |
 | Suppression des copies `env-26-copie`, `env-27-copie` ; push de `main` | utilisateur | oui (journal) |
 | AVANCEMENT §6.2 accepté comme ACCUSÉ (accusé non remis, ECONNRESET) | session Mac, l'utilisateur ayant décidé côté VM de poursuivre | oui (journal) |
-| Mention « la VM jusqu'à ENV-33 » d'ORCHESTRATION §2bis à actualiser | proposition non validée | oui (Prochaine action) |
+| Mention « la VM jusqu'à ENV-33 » d'ORCHESTRATION §2bis à actualiser | utilisateur — faite hors étape le 2026-11-03 (gardée, reformulée en historique) | oui (Décisions, Journal) |
 
 ## Pièges rencontrés
 - Messages VM → Mac en `ECONNRESET` au début : l'ACCUSÉ n'arrive pas. Parade : la VM journalise et
