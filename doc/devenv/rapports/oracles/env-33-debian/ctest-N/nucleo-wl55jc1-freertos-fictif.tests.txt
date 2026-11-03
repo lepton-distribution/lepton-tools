@@ -1,0 +1,32 @@
+board.smoke_lsh {"FIXTURES_SETUP": ["board_t0"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 120.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/smoke_lsh.py --transport serial --port /dev/fictif-a --reset-command /usr/bin/openocd -f <build>/openocd-nucleo-wl55jc1.cfg -c "program <build>/lepton.elf verify reset exit" --expect-machine cortexM4-stm32wlxx --command ls --command ps --log <build>/smoke_lsh_board.log
+kal.board_flash {"DEPENDS": ["board.smoke_lsh"], "FIXTURES_REQUIRED": ["board_t0"], "FIXTURES_SETUP": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 120.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --program <build>/tests/kal/kal_bench.elf
+kal.T1 {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=T1
+kal.T2 {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=T2
+kal.T3 {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=T3
+kal.T4 {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=T4
+kal.T5 {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=T5
+kal.T6 {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=T6
+kal.T7 {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=T7
+kal.T8 {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=T8
+kal.TICI {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=TICI
+kal.TCLK {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=TCLK
+kal.TSBRK {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=TSBRK
+kal.IRQ {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=IRQ
+kal.harness_fail {"DEPENDS": ["kal.board_flash"], "FIXTURES_REQUIRED": ["board_kal_flash"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "kal"], "RUN_SERIAL": true, "TIMEOUT": 60.0, "WILL_FAIL": true}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests/kal_openocd.py --openocd /usr/bin/openocd --cfg <build>/openocd-nucleo-wl55jc1.cfg --test=HARNESS_FAIL
+nucleo-wl55jc1.radio {"ENVIRONMENT": ["PYTHONDONTWRITEBYTECODE=1"], "LABELS": ["arch:cortex-m4f", "backend:freertos", "board", "greffon:nucleo-wl55jc1", "radio"], "RUN_SERIAL": true, "TIMEOUT": 300.0}
+    /usr/bin/python3 /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/tests/radio.py --tests-noyau /home/lepton-user/lepton-tools-dev/essais/env-33-debian/trunk/tests --port-a /dev/fictif-a --port-b /dev/fictif-b --reset-a /usr/bin/openocd -f <build>/openocd-nucleo-wl55jc1.cfg -c "program <build>/lepton.elf verify reset exit" --reset-b /usr/bin/openocd -f <build>/openocd-nucleo-wl55jc1-paire.cfg -c "program <build>/lepton.elf verify reset exit" --log <build>/board_radio.log
