@@ -1,0 +1,17 @@
+  Test  #1: board.smoke_lsh
+  Test  #2: kal.board_flash
+  Test  #3: kal.T1
+  Test  #4: kal.T2
+  Test  #5: kal.T3
+  Test  #6: kal.T4
+  Test  #7: kal.T5
+  Test  #8: kal.T6
+  Test  #9: kal.T7
+  Test #10: kal.T8
+  Test #11: kal.TICI
+  Test #12: kal.TCLK
+  Test #13: kal.TSBRK
+  Test #14: kal.IRQ
+  Test #15: kal.harness_fail
+
+Total Tests: 15

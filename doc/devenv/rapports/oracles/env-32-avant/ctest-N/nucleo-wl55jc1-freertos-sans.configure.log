@@ -1,0 +1,36 @@
+Preset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_EXPORT_COMPILE_COMMANDS="ON"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/Users/cle_d_anton/lepton/trunk/cmake/toolchains/arm-none-eabi.cmake"
+  LEPTON_BOARD="nucleo-wl55jc1"
+  LEPTON_CPU="cortex-m4f"
+  LEPTON_EMBOS_ROOT="/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0"
+  LEPTON_FLOAT_ABI="soft"
+  LEPTON_ISA="armv7m"
+  LEPTON_KAL_BACKEND="freertos"
+  LEPTON_MKCONF="sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_wl55jc1.xml"
+  LEPTON_MKLEPTON="/Users/cle_d_anton/lepton/trunk/../build/host/mklepton"
+
+-- The C compiler identification is GNU 14.2.1
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- greffons : qemu-mps2;samd21;stm32f4xx;stm32f7xx;stm32wlxx;nucleo-f429zi;nucleo-f439zi;nucleo-wl55jc1;qemu-mps2-an386;qemu-mps2-an500;samd21-xplained-pro;stm32f746g-disco;lepton-noyau
+-- carte nucleo-wl55jc1 : famille stm32wlxx, cœur cortex-m4f
+-- The ASM compiler identification is GNU
+-- Found assembler: /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc
+-- greffon stm32wlxx : kernel (dev_stm32wlxx/dev_stm32wlxx_uart_x.c;dev_stm32wlxx/dev_stm32wlxx_bsp_radio_if.c;dev_stm32wlxx/dev_stm32wlxx_util_timer.c;radio_subghz_phy/stm32_radio_driver/radio.c;radio_subghz_phy/stm32_radio_driver/radio_driver.c;radio_subghz_phy/stm32_radio_driver/radio_fw.c;radio_subghz_phy/stm32_radio_driver/lr_fhss_mac.c;radio_subghz_phy/stm32_radio_driver/wl_lr_fhss.c;Utilities/misc/stm32_mem.c;cubemx_hal_driver/src/stm32wlxx_hal.c;cubemx_hal_driver/src/stm32wlxx_hal_cortex.c;cubemx_hal_driver/src/stm32wlxx_hal_gpio.c;cubemx_hal_driver/src/stm32wlxx_hal_rcc.c;cubemx_hal_driver/src/stm32wlxx_hal_rcc_ex.c;cubemx_hal_driver/src/stm32wlxx_hal_pwr.c;cubemx_hal_driver/src/stm32wlxx_hal_pwr_ex.c;cubemx_hal_driver/src/stm32wlxx_hal_dma.c;cubemx_hal_driver/src/stm32wlxx_hal_dma_ex.c;cubemx_hal_driver/src/stm32wlxx_hal_uart.c;cubemx_hal_driver/src/stm32wlxx_hal_uart_ex.c;cubemx_hal_driver/src/stm32wlxx_hal_subghz.c)
+-- greffon nucleo-wl55jc1 : bsp (dev_stm32wl55jci_nucleo_peripherals/dev_stm32wl55jci_nucleo_usart_2.c;dev_stm32wl55jci_nucleo_radio/dev_stm32wl55jci_nucleo_radio.c;dev_stm32wl55jci_nucleo_radio/stm32wlxx_nucleo_radio.c;stm32_radio_target/radio_board_if.c)
+-- Found Python3: /usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11 (found version "3.11.0") found components: Interpreter
+-- Configuring done (0.6s)
+-- Generating done (0.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    LEPTON_EMBOS_ROOT
+
+
+-- Build files have been written to: /tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/6aff0bba-44ff-46b1-8c80-00e462a33f6d/scratchpad/ctest-N-avant/nucleo-wl55jc1-freertos-sans
