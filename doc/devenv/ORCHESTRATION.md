@@ -32,7 +32,7 @@ Hôtes :
 | Hôte | Rôle | Étapes |
 | --- | --- | --- |
 | Mac mini Intel, macOS (hôte principal) | Développement, construction native, flash et débogage | Toutes |
-| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian), ENV-15 (partie Debian), ENV-21, ENV-28, ENV-33 |
+| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian), ENV-15 (partie Debian), ENV-21, ENV-28, ENV-33, ENV-36 |
 
 Règles de parallélisme Mac / VM :
 
@@ -203,6 +203,12 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | PA-52 | ENV-32 | Rapport : push et fusions des branches `devenv/env-32` (lepton-tools, clone noyau, BSP) | ouvert |
 | PA-53 | ENV-33 | Consigne `consignes/env-33-debian.md` et nettoyage de la VM ; push de `devenv/env-33`, ordre R33-1 | ouvert |
 | PA-54 | ENV-33 | Après `FIN-SUCCÈS R33-1` : fusions dans `main`, push | ouvert |
+| PA-55 | ENV-34 | Import de la HAL F4 v1.8.5 et du CMSIS device F4 : destination, contenu repris, sous-ensemble de puces, `core_cm4.h` (fins de ligne, provenance), sort des fichiers hors amont, clones amont, script de vérification et compilation à blanc, avant toute modification | ouvert |
+| PA-56 | ENV-34 | Rapport : push et fusions des branches `devenv/env-34` (lepton-tools, famille, clone noyau) | ouvert |
+| PA-57 | ENV-35 | Passage de la SPL à la HAL : architecture (API Lepton F4 conservée ou structure F7), modules HAL, USART, découpage en lots (coexistence SPL/HAL), `STM32F439xx`, sort de la SPL, critère d'occupation, cartes, avant toute modification | ouvert |
+| PA-58 | ENV-35 | Rapport : nouvel oracle de référence ; push et fusions des branches `devenv/env-35` | ouvert |
+| PA-59 | ENV-36 | Consigne `consignes/env-36-debian.md`, cartes et nettoyage de la VM ; push de `devenv/env-36`, ordre R36-1 | ouvert |
+| PA-60 | ENV-36 | Après `FIN-SUCCÈS R36-1` : fusions dans `main`, push | ouvert |
 | PA-P | toutes | Tout `git push`, toute action `scion seed-update` / `graft-update` | permanent |
 
 ## 5. Règles de travail (rappel des acquis du portage)
@@ -223,9 +229,9 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | Élément | Rôle | Étapes |
 | --- | --- | --- |
 | skill `devenv-session` | Procédure de début et de fin de session, passation | toutes |
-| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 31, 32, 33 |
-| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15, 17, 19, 20, 21, 23, 24, 26, 27, 28, 29, 31, 32, 33 |
-| skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 30, 31, 32, 33 |
+| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36 |
+| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15, 17, 19, 20, 21, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36 |
+| skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36 |
 | hook `proteger-trunk.py` | Refuse Write/Edit sous `<ROOTSTOCK>/trunk/` et les commandes shell d'écriture visant `trunk/` | toutes |
 
 Une skill se corrige comme le code : sur la branche de l'étape, commit dédié, ligne de journal
@@ -270,6 +276,9 @@ ce plan.
 | ENV-31 | Piles FreeRTOS lisibles par rtos-views | ENV-28 (indépendante d'ENV-29, ENV-30) |
 | ENV-32 | Test `board.radio` fourni par le BSP `nucleo-wl55jc1` | ENV-28 ; ENV-30 conseillée avant |
 | ENV-33 | Validation Debian groupée | ENV-29, ENV-30, ENV-31, ENV-32 |
+| ENV-34 | HAL et CMSIS device STM32F4 importés par la méthode du F7 | ENV-33 |
+| ENV-35 | Famille STM32F4 : passage de la SPL à la HAL | ENV-34 (HAL, CMSIS device et `core_cm4.h` importés) |
+| ENV-36 | Validation Debian groupée | ENV-34, ENV-35 |
 
 Ordre conseillé : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12. ENV-1 et ENV-2 sont permutables ;
 ENV-4 et ENV-5 aussi ; ENV-7 peut suivre directement ENV-2 si l'audit le justifie.
@@ -278,3 +287,5 @@ validation Debian).
 Révision du 2026-11-02 : 29, 30, 31, 32, 33 (31 et 32 permutables ; ENV-29 d'abord, pour que les
 regreffes d'ENV-33 profitent du correctif de scion ; ENV-30 avant ENV-32, tâche de l'éditeur
 réutilisable pour les tests de carte).
+Révision du 2026-11-04 : 34, 35, 36, strictement dans cet ordre (niveau 1 : import tracé sans
+changement de compilation ; niveau 2 : passage à la HAL ; puis validation Debian).
