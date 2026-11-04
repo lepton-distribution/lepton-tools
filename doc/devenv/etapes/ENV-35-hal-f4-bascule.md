@@ -147,7 +147,7 @@ des 4 presets F4 changent ; ceux des 12 autres presets et de host ne doivent pas
 - Avec `STM32F439xx`, l'IRQ 79 s'appelle `CRYP_IRQn` ; la table de vecteurs reste unique (K9).
 - Deux sondes ST-LINK branchées : toujours `-c "adapter serial <n°>"`. Avant tout banc, vérifier
   qu'aucune VM ne tient les cartes USB (incident d'ENV-32).
-- Le code non compilé qui inclut `stm32f4xx_hal.h` (8 fichiers, ENV-34 §1) reste hors périmètre :
+- Le code non compilé qui inclut `stm32f4xx_hal.h` (7 fichiers, ENV-34 §1) reste hors périmètre :
   il ne doit pas entrer dans `sources` à cette occasion.
 
 ## À la fin de l'étape

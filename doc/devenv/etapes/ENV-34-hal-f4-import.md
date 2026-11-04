@@ -43,9 +43,10 @@ Archétype : migration iso-fonctionnelle de code tiers non compilé. Oracle : bi
   `inc/Legacy/stm32f4xx_hal_conf.h`).
 - Toutes les références à `cubemx_hal_driver` et à `stm32f4xx_hal.h`, dans la famille, les BSP
   `nucleo-f429zi` et `nucleo-f439zi`, le clone noyau (code hors plan compris), `lepton-tools`
-  (skills, documents vivants) et le manifeste de la famille (`description`). Huit fichiers non
+  (skills, documents vivants) et le manifeste de la famille (`description`). Sept fichiers non
   compilés de la famille incluent `stm32f4xx_hal.h` : `dev_stm32f4xx/dev_stm32f4xx_{cpu_x,
-  cubemx_eth,dac_x,flash,i2c_x,sdio,sdio-1.16}.c` et `flash_if.h`.
+  cubemx_eth,dac_x,flash,i2c_x,sdio,sdio-1.16}.c` (relevé du 2026-11-04 corrigé : `flash_if.h`
+  et `flash_if.c` n'incluent rien).
 - Fins de ligne : amont (LF), copie F7 (`hal_driver/`), `cmsis-5/CMSIS/Core/Include` (CRLF).
 - Rapport `rapports/env-34-hal-f4.md`.
 - **PA-55** : l'utilisateur valide :
@@ -72,7 +73,10 @@ Skill `lepton-oracle` : host et les 16 presets → `rapports/oracles/env-34-avan
 
 ### 3. Import
 Chaque point fait l'objet d'un commit distinct, mécanique, dans le clone du greffon :
-1. `git rm -r` de `cubemx_hal_driver/` (famille).
+1. `git rm -r` de `cubemx_hal_driver/` (famille), puis suppression du répertoire resté sur le
+   disque : il contient un `.DS_Store` ignoré par git (`core.excludesFile`), que `git rm` ne
+   retire pas et que le Finder recrée. Contrôle : `cubemx_hal_driver/` absent du clone, pas
+   seulement vide, sinon le contrôle « plus aucun lien » du §4 ne prouve rien.
 2. HAL : copie depuis `git archive <révision>` du clone amont, pas depuis un arbre de travail.
 3. CMSIS device : sous-ensemble du PA-55, même procédure.
 4. `LEPTON-PROVENANCE.md` dans chaque répertoire importé, sur le modèle du F7 : dépôt, commit,
