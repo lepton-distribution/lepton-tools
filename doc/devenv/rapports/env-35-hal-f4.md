@@ -250,3 +250,86 @@ Noyau non touché ; `cmake/lepton_greffons.cmake` inchangé (BLD-6). lepton-tool
   configurait au chargement (`dev_stm32f4xx_eth_load` → `eth_bsp_init`) et ne démarrait le MAC
   qu'à l'ouverture (`eth_init`). La HAL a besoin du tick, qui n'avance qu'après le démarrage du
   noyau (piège de l'étape).
+
+### 4.4 Copie d'essai, puis `<ROOTSTOCK>`
+
+Copie `~/lepton-tools-dev/essais/env-35-copie` (`rsync -a`, sans `build/`) ; clones touchés
+resynchronisés depuis `<ROOTSTOCK>` avant chaque construction. Regreffe : 3978 liens (3977 + 3
+fichiers de la famille + 2 `stm32f4xx_hal_conf.h` − 4 fragments). Premier essai en échec
+(`gpio.c` : `_GPIO_DEFAULT_SPEED` non déclaré, voir e68e250) ; ensuite les 4 presets F4 construits
+et `nucleo-f429zi-{embos,freertos}`, `nucleo-f439zi-embos` à 20/20 sur la carte, réseau compris.
+Puis `scion graft` sur `<ROOTSTOCK>` : 3978 liens, aucun lien cassé, aucun fichier régulier hors
+`.DS_Store`, clone noyau propre, `lepton check` code 0 (19 fichiers conformes).
+
+## 5. Contrôles (tâche 4)
+
+### 5.1 Oracle après
+
+`rapports/oracles/env-35-apres/` : mêmes commandes que l'oracle avant, « tout a réussi ».
+Comparaisons `env-35-apres/comparaisons/<preset>.txt` contre `env-35-avant`.
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| host | — | mklepton identique | — | 7/7 | — |
+| `qemu-mps2-an386-{embos,embos-soft,freertos,freertos-soft}` | code 0 | ≠ | — | 19, 15, 19, 15 / 100 %, mêmes listes | E-2 d'ENV-34 (date) |
+| `qemu-mps2-an500-{embos,freertos}` | code 0 | ≠ | — | 18, 18 / 100 %, mêmes listes | idem |
+| `nucleo-wl55jc1-*`, `samd21-xplained-pro-*`, `stm32f746g-disco-*` (6) | code 0 | ≠ | — | — | idem |
+| `nucleo-f429zi-embos`, `nucleo-f439zi-embos` | code 1 : 89 symboles retirés, 64 ajoutés, 16 modifiés | ≠ | carte | carte | E-1 à E-4 |
+| `nucleo-f429zi-freertos`, `nucleo-f439zi-freertos` | code 1 : 89 retirés, 60 ajoutés, 16 modifiés | ≠ | carte | carte | E-1 à E-5 |
+
+Listes `ctest -N` : identiques à `env-35-avant` pour host et les 16 presets (17/17).
+
+- E-1, symboles retirés : tous de la SPL (`GPIO_*`, `USART_*`, `DMA_*`, `RCC_*`, `SYSCFG_*`,
+  `ETH_*` de `stm32f4x7_eth.c`, `APBAHBPrescTable`), d'`eth.c` (`eth_*`, `DMARxDscrTab`,
+  `Rx_Buff`, `Tx_Buff`…) et de `dev_stm32f4xx_eth.c` (`dev_stm32f4xx_eth_*`), plus
+  `nucleo_f439zi_eth_pins` et `eth_stm32f4x7_bsp` du BSP. Plus aucun symbole SPL : les seuls
+  `ETH_*` restants sont `ETH_IRQHandler` (vecteur) et des fonctions statiques (`t`) de
+  `stm32f4xx_hal_eth.c`.
+- E-2, symboles ajoutés : HAL GPIO et ETH, `HAL_GetTick`, `HAL_Delay`, `dev_stm32f4xx_eth_x_*`,
+  `eth_dma` (14144 o, `.bss` en SRAM, `0x200012c8`), aides USART/DMA (`uart_set_brr`,
+  `uart_reset`, `dma_stream_clear_flags`…), `HAL_ETH_MspInit` et l'instance ETH du BSP. En embOS,
+  `__aeabi_uldivmod`/`__udivmoddi4` (division 64 bits de `HAL_GetTick`, déjà présente en
+  FreeRTOS).
+- E-3, symboles modifiés : couche Lepton réécrite (`gpio_*`, `uart_*`), `ETH_IRQHandler`
+  (0x108 → 0xc : appel du pilote), `dev_nucleo_f439zi_board_load` (horloges par macros HAL),
+  `nucleo_f439zi_uart_{3,6}` (0x6c → 0x70 : pointeurs `RCC_APBxENR`/`RSTR`).
+- E-4, sections : `.text` +1340 (embOS) / +508 (FreeRTOS), `.data` +60, `.bss` −1264, DWARF ;
+  `.ccm_bss` inchangée.
+- E-5, FreeRTOS : `.noinit` 4 → 0 (section vide, bourrage d'alignement sur 8 entre `.bss` et
+  `.noinit`).
+- K8 : les 5 gestionnaires utilisés (`ETH`, `USART3`, `USART6`, `DMA1_Stream1`,
+  `DMA2_Stream1`) restent `T` sur les 4 presets F4.
+- `nucleo-f439zi-*` en `STM32F439xx` : mêmes tailles et mêmes symboles que `nucleo-f429zi-*`.
+
+### 5.2 Occupation (critère du PA-57 : `.text` ≤ +10 %, SRAM et CCM ≤ +5 %)
+
+| Preset | `.text` | SRAM (`.data` + `.bss`) | CCM (`.ccm_bss`) |
+| --- | --- | --- | --- |
+| `nucleo-f429zi-embos`, `nucleo-f439zi-embos` | 159864 → 161204 (+0,84 %) | 99624 → 98420 (−1,21 %) | 45256 → 45256 |
+| `nucleo-f429zi-freertos`, `nucleo-f439zi-freertos` | 166580 → 167088 (+0,30 %) | 100156 → 98952 (−1,20 %) | 56408 → 56408 |
+
+Conforme.
+
+### 5.3 Cartes, NUCLEO-F429ZI (`banc-carte.sh`, journaux `env-35-apres/<P>/carte*.log`)
+
+| Binaire | `lepton.elf` / oracle après | Résultat | Fumée | Réseau |
+| --- | --- | --- | --- | --- |
+| `nucleo-f429zi-embos` | 0 écart | 20/20 | `cortexM4-stm32f4` | ping 3/3, LIST 13 entrées, RETR 57 octets identique, ECONNRESET=15 |
+| `nucleo-f429zi-freertos` | 0 écart | 20/20 | `cortexM4-stm32f4` | idem |
+| `nucleo-f439zi-embos` (STM32F439xx, sur F429) | 0 écart | 20/20 | `cortexM4-stm32f4` | idem |
+
+Identique à la référence (§3). Flash « Verified OK » à chaque test. Fin : image
+`nucleo-f429zi-embos` d'ENV-35 remise en flash (« Verified OK », `remise-flash.log`).
+
+### 5.4 Autres contrôles
+
+- HAL et CMSIS device non modifiés (D1a) : `verifier-import.sh`, listes d'ENV-34 :
+  `hal_driver/` v1.8.5 200 identiques, 0 écart ; `cmsis-5/Device/ST/STM32F4xx` 3c77349
+  6 identiques, 0 écart (`env-35-hal-f4/verifications/`).
+- `lepton check` : code 0.
+- `USE_STDPERIPH_DRIVER` absent des commandes de compilation ; aucune source de `driverlib/`
+  compilée (`sources` du manifeste).
+- DBG-4 : les 4 lancements F4 de `original-tree.code-workspace` désignent toujours
+  `svd/STM32F429.svd` ou `svd/STM32F439.svd`, présents. **Non fait** : lecture des registres
+  dans la vue des périphériques sous VSCodium (session graphique).
+- Copie d'essai `~/lepton-tools-dev/essais/env-35-copie` conservée.

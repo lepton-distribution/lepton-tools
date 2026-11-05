@@ -1,0 +1,4 @@
+Internal ctest changing into directory: /Users/cle_d_anton/lepton/build/nucleo-f429zi-freertos
+Test project /Users/cle_d_anton/lepton/build/nucleo-f429zi-freertos
+
+Total Tests: 0
