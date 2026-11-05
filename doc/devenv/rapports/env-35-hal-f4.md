@@ -184,4 +184,30 @@ Propositions 1 à 9 du §1.9 retenues telles quelles : architecture mixte ; modu
 fichiers conservés, 4 fragments HAL V1.3.0 supprimés ; `core_cm4.h` V3.30 ; critère
 d'occupation. Ajouts : générateur `scripts/tiers/hal_conf_stm32f4.py` dans lepton-tools (clone
 noyau non touché) ; NUCLEO-F429ZI branchée avec câble Ethernet, écriture flash accordée pour la
-session, `LEPTON_NET_TEST_HOST_IP` = 192.168.2.20.
+session, `LEPTON_NET_TEST_HOST_IP` = 192.168.2.10 (`en0` ; 192.168.2.20, donnée d'abord, n'était portée
+par aucune interface : corrigée par l'utilisateur). Sonde F429 seule vue par le Mac
+(0672FF495252717267243842, `/dev/cu.usbmodem1454303`) ; VMware Fusion actif.
+
+## 3. Oracle avant (tâche 2)
+
+`rapports/oracles/env-35-avant/` : `rejouer-oracle.sh <ROOTSTOCK> … --qemu` ×6 `--carte` ×10
+(constructions à neuf, journal `rejouer-oracle.log`) : « tout a réussi ». Contre `env-34-apres`
+(`env-35-avant/comparaisons/`) : `comparer-oracle.py` code 0 ×16, host 7/7, empreintes mklepton
+identiques, bancs KAL QEMU identiques (19, 15, 19, 15, 18, 18 tests, 100 %, mêmes listes). Listes
+`ctest -N` de host et des 16 presets (`env-35-avant/ctest-N/`) identiques à `env-34-apres` (17/17).
+
+Banc sur carte de référence, NUCLEO-F429ZI (ST-LINK/V2-1 0672FF495252717267243842,
+`/dev/cu.usbmodem1454303`, hôte 192.168.2.10 sur `en0`, carte 192.168.2.5) :
+`env-35-hal-f4/banc-carte.sh` (forme d'ENV-24 §6 : reconfiguration avec
+`LEPTON_BOARD_SERIAL_PORT` et `LEPTON_NET_TEST_HOST_IP`, construction, `lepton.elf` comparé à
+l'oracle (code 0), `ctest -L board`). Journaux `env-35-avant/<P>/carte*.log`, `fumee-carte.log`,
+`reseau-carte.log`.
+
+| Binaire | `lepton.elf` / oracle avant | Résultat | Fumée | Réseau |
+| --- | --- | --- | --- | --- |
+| `nucleo-f429zi-embos` | 0 écart | 20/20 | `cortexM4-stm32f4` | ping 3/3, LIST 13 entrées, RETR 57 octets identique, ECONNRESET=15 |
+| `nucleo-f429zi-freertos` | 0 écart | 20/20 | `cortexM4-stm32f4` | idem |
+| `nucleo-f439zi-embos` (sur F429) | 0 écart | 20/20 | `cortexM4-stm32f4` | idem |
+
+Incident : premier lancement du script en échec avant `ctest` (chemin relatif de l'oracle perdu
+après `cd` dans le trunk ; aucune écriture flash) ; corrigé, relancé.
