@@ -1,0 +1,9 @@
+CR      CMSIS/Core/Include/cachel1_armv7.h
+CR      CMSIS/Core/Include/cmsis_compiler.h
+CR      CMSIS/Core/Include/cmsis_gcc.h
+CR      CMSIS/Core/Include/cmsis_version.h
+CR      CMSIS/Core/Include/core_cm0plus.h
+OK      CMSIS/Core/Include/core_cm4.h
+CR      CMSIS/Core/Include/core_cm7.h
+CR      CMSIS/Core/Include/mpu_armv7.h
+verifier-import: 2b7495b8535bdcb306dac29b9ded4cfb679d7e5c ; 1 identique(s), 7 écart(s)

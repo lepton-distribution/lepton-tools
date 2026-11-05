@@ -31,7 +31,9 @@ les rootstocks d'essai du Mac. Forme : celle d'ENV-33. Archétype : infrastructu
     - 0 conflit ;
     - aucun lien sous `cubemx_hal_driver/` ;
     - liens de la HAL et du CMSIS device présents ;
-    - puis rootstock neuf depuis la graine publiée : aucun lien cassé, aucun fichier régulier.
+    - puis rootstock neuf depuis la graine publiée : aucun lien cassé, aucun fichier régulier ;
+    - nombre de liens fixé dans la consigne : celui de `<ROOTSTOCK>` du Mac après ENV-35 (3957
+      avant ENV-34 ; valeur après ENV-34 : `rapports/env-34-hal-f4.md`).
   - **C3** — host et les 16 presets construits. `comparer-oracle.py` contre `env-33-debian` :
     écarts limités aux 4 presets F4 et conformes à l'attendu. Fumée et banc KAL QEMU identiques.
   - **C4** — compilation à blanc de la HAL d'ENV-34, si elle a été retenue au PA-55 : 0 erreur

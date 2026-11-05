@@ -1,0 +1,8 @@
+CMSIS/Core/Include/cachel1_armv7.h
+CMSIS/Core/Include/cmsis_compiler.h
+CMSIS/Core/Include/cmsis_gcc.h
+CMSIS/Core/Include/cmsis_version.h
+CMSIS/Core/Include/core_cm0plus.h
+CMSIS/Core/Include/core_cm4.h
+CMSIS/Core/Include/core_cm7.h
+CMSIS/Core/Include/mpu_armv7.h

@@ -1,0 +1,4 @@
+Internal ctest changing into directory: /Users/cle_d_anton/lepton/build/nucleo-wl55jc1-freertos
+Test project /Users/cle_d_anton/lepton/build/nucleo-wl55jc1-freertos
+
+Total Tests: 0

@@ -1,0 +1,7 @@
+OK      Include/stm32f429xx.h
+OK      Include/stm32f439xx.h
+OK      Include/stm32f4xx.h
+OK      Include/system_stm32f4xx.h
+OK      LICENSE.md
+OK      README.md
+verifier-import: 3c77349ce04c8af401454cc51f85ea9a50e34fc1 ; 6 identique(s), 0 écart(s)
