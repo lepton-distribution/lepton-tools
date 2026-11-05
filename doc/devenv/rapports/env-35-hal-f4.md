@@ -333,3 +333,10 @@ Identique à la référence (§3). Flash « Verified OK » à chaque test. Fin :
   `svd/STM32F429.svd` ou `svd/STM32F439.svd`, présents. **Non fait** : lecture des registres
   dans la vue des périphériques sous VSCodium (session graphique).
 - Copie d'essai `~/lepton-tools-dev/essais/env-35-copie` conservée.
+
+## 6. PA-58 (2026-11-05, décisions de l'utilisateur)
+
+Écarts E-A, E-B, E-C du §4.3 acceptés. `oracles/env-35-apres/` devient l'oracle de référence.
+Fusion de `devenv/env-35` dans `master` (famille 0fd8b2a, BSP `nucleo-f429zi` b9fe2bf, BSP
+`nucleo-f439zi` 314f91b) et dans `main` (lepton-tools), push de `master`/`main` et des branches
+`devenv/env-35`. Validation Debian : ENV-36.
