@@ -1,0 +1,727 @@
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ioctl_eth.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/stm32f4x7_eth_conf.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f4xx.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f429xx.h
+..... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cm4.h
+...... /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stdint.h
+....... /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stdint-gcc.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cmInstr.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cmFunc.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cm4_simd.h
+..... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal.h
+..... /private/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a13f67f8-2223-4086-964f-57b09e4dcffb/scratchpad/env35/coex/conf/stm32f4xx_hal_conf.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_rcc.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_def.h
+........ /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f4xx.h
+........ /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h
+........ /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stddef.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_rcc_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_gpio.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_gpio_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_exti.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_dma.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_dma_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_cortex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_adc.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_ll_adc.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_adc_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_can.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_crc.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_cryp.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_dma2d.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_dac.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_dac_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_dcmi.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_dcmi_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_flash.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_flash_ex.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_sram.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_ll_fmc.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_nor.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_nand.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_pccard.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_sdram.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_hash.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_i2c.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_i2c_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_smbus.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_i2s.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_i2s_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_iwdg.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_ltdc.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_ltdc_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_pwr.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_pwr_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_rng.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_rtc.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_rtc_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_sai.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_sai_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_sd.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_ll_sdmmc.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_spi.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_tim.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_tim_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_uart.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_usart.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_irda.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_smartcard.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_wwdg.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_pcd.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_ll_usb.h
+....... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_pcd_ex.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_hcd.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_dsi.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_qspi.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_cec.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_fmpi2c.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_fmpsmbus.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_spdifrx.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_dfsdm.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_lptim.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_mmc.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernelconf.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ver.h
+.... /Users/cle_d_anton/lepton/build/nucleo-f429zi-embos/generated/board/kernel_mkconf.h
+..... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/include/user_kernel_mkconf.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/nucleo_f439zi.h
+..... /Users/cle_d_anton/lepton/build/nucleo-f429zi-embos/generated/board/dev_dskimg.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/arch/armv7m/kal_arch_conf.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/compiler.h
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:51,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:30:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/stm32f4x7_eth_conf.h:115:9: warning: "PHY_RESET_DELAY" redefined
+  115 | #define PHY_RESET_DELAY    ((uint32_t)0x000FFFFF)
+      |         ^~~~~~~~~~~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal.h:29,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f4xx.h:287,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/stm32f4x7_eth_conf.h:78:
+/private/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a13f67f8-2223-4086-964f-57b09e4dcffb/scratchpad/env35/coex/conf/stm32f4xx_hal_conf.h:223:9: note: this is the location of the previous definition
+  223 | #define PHY_RESET_DELAY                 0x000000FFU
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/stm32f4x7_eth_conf.h:117:9: warning: "PHY_CONFIG_DELAY" redefined
+  117 | #define PHY_CONFIG_DELAY   ((uint32_t)0x00FFFFFF)
+      |         ^~~~~~~~~~~~~~~~
+/private/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a13f67f8-2223-4086-964f-57b09e4dcffb/scratchpad/env35/coex/conf/stm32f4xx_hal_conf.h:225:9: note: this is the location of the previous definition
+  225 | #define PHY_CONFIG_DELAY                0x00000FFFU
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/stm32f4x7_eth_conf.h:127:9: warning: "PHY_SR" redefined
+  127 | #define PHY_SR                        BOARD_ETH_PHY_SR
+      |         ^~~~~~
+/private/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a13f67f8-2223-4086-964f-57b09e4dcffb/scratchpad/env35/coex/conf/stm32f4xx_hal_conf.h:252:9: note: this is the location of the previous definition
+  252 | #define PHY_SR                          ((uint16_t)0x0010)  /*!< PHY status register Offset                      */
+      |         ^~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:227:2: error: conflicting types for 'ETH_InitTypeDef'; have 'struct <anonymous>'
+  227 | }ETH_InitTypeDef;
+      |  ^~~~~~~~~~~~~~~
+In file included from /private/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a13f67f8-2223-4086-964f-57b09e4dcffb/scratchpad/env35/coex/conf/stm32f4xx_hal_conf.h:333:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:442:3: note: previous declaration of 'ETH_InitTypeDef' with type 'ETH_InitTypeDef'
+  442 | } ETH_InitTypeDef;
+      |   ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:284:9: warning: "ETH_MAX_PACKET_SIZE" redefined
+  284 | #define ETH_MAX_PACKET_SIZE    1524    /*!< ETH_HEADER + ETH_EXTRA + VLAN_TAG + MAX_ETH_PAYLOAD + ETH_CRC */
+      |         ^~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:876:9: note: this is the location of the previous definition
+  876 | #define ETH_MAX_PACKET_SIZE      1528U    /*!< ETH_HEADER + 2*VLAN_TAG + MAX_ETH_PAYLOAD + ETH_CRC */
+      |         ^~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:285:9: warning: "ETH_HEADER" redefined
+  285 | #define ETH_HEADER               14    /*!< 6 byte Dest addr, 6 byte Src addr, 2 byte length/type */
+      |         ^~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:877:9: note: this is the location of the previous definition
+  877 | #define ETH_HEADER               14U    /*!< 6 byte Dest addr, 6 byte Src addr, 2 byte length/type */
+      |         ^~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:286:9: warning: "ETH_CRC" redefined
+  286 | #define ETH_CRC                   4    /*!< Ethernet CRC */
+      |         ^~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:878:9: note: this is the location of the previous definition
+  878 | #define ETH_CRC                  4U    /*!< Ethernet CRC */
+      |         ^~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:288:9: warning: "VLAN_TAG" redefined
+  288 | #define VLAN_TAG                  4    /*!< optional 802.1q VLAN Tag */
+      |         ^~~~~~~~
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_def.h:30,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_rcc.h:27,
+                 from /private/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a13f67f8-2223-4086-964f-57b09e4dcffb/scratchpad/env35/coex/conf/stm32f4xx_hal_conf.h:281:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1580:9: note: this is the location of the previous definition
+ 1580 | #define VLAN_TAG                ETH_VLAN_TAG
+      |         ^~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:289:9: warning: "MIN_ETH_PAYLOAD" redefined
+  289 | #define MIN_ETH_PAYLOAD          46    /*!< Minimum Ethernet payload size */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1581:9: note: this is the location of the previous definition
+ 1581 | #define MIN_ETH_PAYLOAD         ETH_MIN_ETH_PAYLOAD
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:290:9: warning: "MAX_ETH_PAYLOAD" redefined
+  290 | #define MAX_ETH_PAYLOAD        1500    /*!< Maximum Ethernet payload size */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1582:9: note: this is the location of the previous definition
+ 1582 | #define MAX_ETH_PAYLOAD         ETH_MAX_ETH_PAYLOAD
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:291:9: warning: "JUMBO_FRAME_PAYLOAD" redefined
+  291 | #define JUMBO_FRAME_PAYLOAD    9000    /*!< Jumbo frame payload size */
+      |         ^~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1583:9: note: this is the location of the previous definition
+ 1583 | #define JUMBO_FRAME_PAYLOAD     ETH_JUMBO_FRAME_PAYLOAD
+      |         ^~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:547:9: warning: "PHY_READ_TO" redefined
+  547 | #define PHY_READ_TO                     ((uint32_t)0x0004FFFF)
+      |         ^~~~~~~~~~~
+/private/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a13f67f8-2223-4086-964f-57b09e4dcffb/scratchpad/env35/coex/conf/stm32f4xx_hal_conf.h:227:9: note: this is the location of the previous definition
+  227 | #define PHY_READ_TO                     0x0000FFFFU
+      |         ^~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:548:9: warning: "PHY_WRITE_TO" redefined
+  548 | #define PHY_WRITE_TO                    ((uint32_t)0x0004FFFF)
+      |         ^~~~~~~~~~~~
+/private/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a13f67f8-2223-4086-964f-57b09e4dcffb/scratchpad/env35/coex/conf/stm32f4xx_hal_conf.h:228:9: note: this is the location of the previous definition
+  228 | #define PHY_WRITE_TO                    0x0000FFFFU
+      |         ^~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:557:9: warning: "PHY_BCR" redefined
+  557 | #define PHY_BCR                          0          /*!< Transceiver Basic Control Register */
+      |         ^~~~~~~
+/private/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a13f67f8-2223-4086-964f-57b09e4dcffb/scratchpad/env35/coex/conf/stm32f4xx_hal_conf.h:232:9: note: this is the location of the previous definition
+  232 | #define PHY_BCR                         ((uint16_t)0x0000)  /*!< Transceiver Basic Control Register   */
+      |         ^~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:558:9: warning: "PHY_BSR" redefined
+  558 | #define PHY_BSR                          1          /*!< Transceiver Basic Status Register */
+      |         ^~~~~~~
+/private/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a13f67f8-2223-4086-964f-57b09e4dcffb/scratchpad/env35/coex/conf/stm32f4xx_hal_conf.h:233:9: note: this is the location of the previous definition
+  233 | #define PHY_BSR                         ((uint16_t)0x0001)  /*!< Transceiver Basic Status Register    */
+      |         ^~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:982:9: warning: "ETH_MAC_FLAG_TST" redefined
+  982 | #define ETH_MAC_FLAG_TST     ((uint32_t)0x00000200)  /*!< Time stamp trigger flag (on MAC) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1581:9: note: this is the location of the previous definition
+ 1581 | #define ETH_MAC_FLAG_TST     0x00000200U  /*!< Time stamp trigger flag (on MAC) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:983:9: warning: "ETH_MAC_FLAG_MMCT" redefined
+  983 | #define ETH_MAC_FLAG_MMCT    ((uint32_t)0x00000040)  /*!< MMC transmit flag  */
+      |         ^~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1582:9: note: this is the location of the previous definition
+ 1582 | #define ETH_MAC_FLAG_MMCT    0x00000040U  /*!< MMC transmit flag  */
+      |         ^~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:984:9: warning: "ETH_MAC_FLAG_MMCR" redefined
+  984 | #define ETH_MAC_FLAG_MMCR    ((uint32_t)0x00000020)  /*!< MMC receive flag */
+      |         ^~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1583:9: note: this is the location of the previous definition
+ 1583 | #define ETH_MAC_FLAG_MMCR    0x00000020U  /*!< MMC receive flag */
+      |         ^~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:985:9: warning: "ETH_MAC_FLAG_MMC" redefined
+  985 | #define ETH_MAC_FLAG_MMC     ((uint32_t)0x00000010)  /*!< MMC flag (on MAC) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1584:9: note: this is the location of the previous definition
+ 1584 | #define ETH_MAC_FLAG_MMC     0x00000010U  /*!< MMC flag (on MAC) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:986:9: warning: "ETH_MAC_FLAG_PMT" redefined
+  986 | #define ETH_MAC_FLAG_PMT     ((uint32_t)0x00000008)  /*!< PMT flag (on MAC) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1585:9: note: this is the location of the previous definition
+ 1585 | #define ETH_MAC_FLAG_PMT     0x00000008U  /*!< PMT flag (on MAC) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:997:9: warning: "ETH_MAC_IT_TST" redefined
+  997 | #define ETH_MAC_IT_TST       ((uint32_t)0x00000200)  /*!< Time stamp trigger interrupt (on MAC) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1621:9: note: this is the location of the previous definition
+ 1621 | #define ETH_MAC_IT_TST       0x00000200U  /*!< Time stamp trigger interrupt (on MAC) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:998:9: warning: "ETH_MAC_IT_MMCT" redefined
+  998 | #define ETH_MAC_IT_MMCT      ((uint32_t)0x00000040)  /*!< MMC transmit interrupt */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1622:9: note: this is the location of the previous definition
+ 1622 | #define ETH_MAC_IT_MMCT      0x00000040U  /*!< MMC transmit interrupt */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:999:9: warning: "ETH_MAC_IT_MMCR" redefined
+  999 | #define ETH_MAC_IT_MMCR      ((uint32_t)0x00000020)  /*!< MMC receive interrupt */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1623:9: note: this is the location of the previous definition
+ 1623 | #define ETH_MAC_IT_MMCR      0x00000020U  /*!< MMC receive interrupt */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1000:9: warning: "ETH_MAC_IT_MMC" redefined
+ 1000 | #define ETH_MAC_IT_MMC       ((uint32_t)0x00000010)  /*!< MMC interrupt (on MAC) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1624:9: note: this is the location of the previous definition
+ 1624 | #define ETH_MAC_IT_MMC       0x00000010U  /*!< MMC interrupt (on MAC) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1001:9: warning: "ETH_MAC_IT_PMT" redefined
+ 1001 | #define ETH_MAC_IT_PMT       ((uint32_t)0x00000008)  /*!< PMT interrupt (on MAC) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1625:9: note: this is the location of the previous definition
+ 1625 | #define ETH_MAC_IT_PMT       0x00000008U  /*!< PMT interrupt (on MAC) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1413:9: warning: "ETH_DMA_FLAG_TST" redefined
+ 1413 | #define ETH_DMA_FLAG_TST               ((uint32_t)0x20000000)  /*!< Time-stamp trigger interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1593:9: note: this is the location of the previous definition
+ 1593 | #define ETH_DMA_FLAG_TST               0x20000000U  /*!< Time-stamp trigger interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1414:9: warning: "ETH_DMA_FLAG_PMT" redefined
+ 1414 | #define ETH_DMA_FLAG_PMT               ((uint32_t)0x10000000)  /*!< PMT interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1594:9: note: this is the location of the previous definition
+ 1594 | #define ETH_DMA_FLAG_PMT               0x10000000U  /*!< PMT interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1415:9: warning: "ETH_DMA_FLAG_MMC" redefined
+ 1415 | #define ETH_DMA_FLAG_MMC               ((uint32_t)0x08000000)  /*!< MMC interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1595:9: note: this is the location of the previous definition
+ 1595 | #define ETH_DMA_FLAG_MMC               0x08000000U  /*!< MMC interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1419:9: warning: "ETH_DMA_FLAG_NIS" redefined
+ 1419 | #define ETH_DMA_FLAG_NIS               ((uint32_t)0x00010000)  /*!< Normal interrupt summary flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1599:9: note: this is the location of the previous definition
+ 1599 | #define ETH_DMA_FLAG_NIS               0x00010000U  /*!< Normal interrupt summary flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1420:9: warning: "ETH_DMA_FLAG_AIS" redefined
+ 1420 | #define ETH_DMA_FLAG_AIS               ((uint32_t)0x00008000)  /*!< Abnormal interrupt summary flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1600:9: note: this is the location of the previous definition
+ 1600 | #define ETH_DMA_FLAG_AIS               0x00008000U  /*!< Abnormal interrupt summary flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1421:9: warning: "ETH_DMA_FLAG_ER" redefined
+ 1421 | #define ETH_DMA_FLAG_ER                ((uint32_t)0x00004000)  /*!< Early receive flag */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1601:9: note: this is the location of the previous definition
+ 1601 | #define ETH_DMA_FLAG_ER                0x00004000U  /*!< Early receive flag */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1422:9: warning: "ETH_DMA_FLAG_FBE" redefined
+ 1422 | #define ETH_DMA_FLAG_FBE               ((uint32_t)0x00002000)  /*!< Fatal bus error flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1602:9: note: this is the location of the previous definition
+ 1602 | #define ETH_DMA_FLAG_FBE               0x00002000U  /*!< Fatal bus error flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1423:9: warning: "ETH_DMA_FLAG_ET" redefined
+ 1423 | #define ETH_DMA_FLAG_ET                ((uint32_t)0x00000400)  /*!< Early transmit flag */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1603:9: note: this is the location of the previous definition
+ 1603 | #define ETH_DMA_FLAG_ET                0x00000400U  /*!< Early transmit flag */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1424:9: warning: "ETH_DMA_FLAG_RWT" redefined
+ 1424 | #define ETH_DMA_FLAG_RWT               ((uint32_t)0x00000200)  /*!< Receive watchdog timeout flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1604:9: note: this is the location of the previous definition
+ 1604 | #define ETH_DMA_FLAG_RWT               0x00000200U  /*!< Receive watchdog timeout flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1425:9: warning: "ETH_DMA_FLAG_RPS" redefined
+ 1425 | #define ETH_DMA_FLAG_RPS               ((uint32_t)0x00000100)  /*!< Receive process stopped flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1605:9: note: this is the location of the previous definition
+ 1605 | #define ETH_DMA_FLAG_RPS               0x00000100U  /*!< Receive process stopped flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1426:9: warning: "ETH_DMA_FLAG_RBU" redefined
+ 1426 | #define ETH_DMA_FLAG_RBU               ((uint32_t)0x00000080)  /*!< Receive buffer unavailable flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1606:9: note: this is the location of the previous definition
+ 1606 | #define ETH_DMA_FLAG_RBU               0x00000080U  /*!< Receive buffer unavailable flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1427:9: warning: "ETH_DMA_FLAG_R" redefined
+ 1427 | #define ETH_DMA_FLAG_R                 ((uint32_t)0x00000040)  /*!< Receive flag */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1607:9: note: this is the location of the previous definition
+ 1607 | #define ETH_DMA_FLAG_R                 0x00000040U  /*!< Receive flag */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1428:9: warning: "ETH_DMA_FLAG_TU" redefined
+ 1428 | #define ETH_DMA_FLAG_TU                ((uint32_t)0x00000020)  /*!< Underflow flag */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1608:9: note: this is the location of the previous definition
+ 1608 | #define ETH_DMA_FLAG_TU                0x00000020U  /*!< Underflow flag */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1429:9: warning: "ETH_DMA_FLAG_RO" redefined
+ 1429 | #define ETH_DMA_FLAG_RO                ((uint32_t)0x00000010)  /*!< Overflow flag */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1609:9: note: this is the location of the previous definition
+ 1609 | #define ETH_DMA_FLAG_RO                0x00000010U  /*!< Overflow flag */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1430:9: warning: "ETH_DMA_FLAG_TJT" redefined
+ 1430 | #define ETH_DMA_FLAG_TJT               ((uint32_t)0x00000008)  /*!< Transmit jabber timeout flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1610:9: note: this is the location of the previous definition
+ 1610 | #define ETH_DMA_FLAG_TJT               0x00000008U  /*!< Transmit jabber timeout flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1431:9: warning: "ETH_DMA_FLAG_TBU" redefined
+ 1431 | #define ETH_DMA_FLAG_TBU               ((uint32_t)0x00000004)  /*!< Transmit buffer unavailable flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1611:9: note: this is the location of the previous definition
+ 1611 | #define ETH_DMA_FLAG_TBU               0x00000004U  /*!< Transmit buffer unavailable flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1432:9: warning: "ETH_DMA_FLAG_TPS" redefined
+ 1432 | #define ETH_DMA_FLAG_TPS               ((uint32_t)0x00000002)  /*!< Transmit process stopped flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1612:9: note: this is the location of the previous definition
+ 1612 | #define ETH_DMA_FLAG_TPS               0x00000002U  /*!< Transmit process stopped flag */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1433:9: warning: "ETH_DMA_FLAG_T" redefined
+ 1433 | #define ETH_DMA_FLAG_T                 ((uint32_t)0x00000001)  /*!< Transmit flag */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1613:9: note: this is the location of the previous definition
+ 1613 | #define ETH_DMA_FLAG_T                 0x00000001U  /*!< Transmit flag */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1454:9: warning: "ETH_DMA_IT_TST" redefined
+ 1454 | #define ETH_DMA_IT_TST       ((uint32_t)0x20000000)  /*!< Time-stamp trigger interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1633:9: note: this is the location of the previous definition
+ 1633 | #define ETH_DMA_IT_TST       0x20000000U  /*!< Time-stamp trigger interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1455:9: warning: "ETH_DMA_IT_PMT" redefined
+ 1455 | #define ETH_DMA_IT_PMT       ((uint32_t)0x10000000)  /*!< PMT interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1634:9: note: this is the location of the previous definition
+ 1634 | #define ETH_DMA_IT_PMT       0x10000000U  /*!< PMT interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1456:9: warning: "ETH_DMA_IT_MMC" redefined
+ 1456 | #define ETH_DMA_IT_MMC       ((uint32_t)0x08000000)  /*!< MMC interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1635:9: note: this is the location of the previous definition
+ 1635 | #define ETH_DMA_IT_MMC       0x08000000U  /*!< MMC interrupt (on DMA) */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1457:9: warning: "ETH_DMA_IT_NIS" redefined
+ 1457 | #define ETH_DMA_IT_NIS       ((uint32_t)0x00010000)  /*!< Normal interrupt summary */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1636:9: note: this is the location of the previous definition
+ 1636 | #define ETH_DMA_IT_NIS       0x00010000U  /*!< Normal interrupt summary */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1458:9: warning: "ETH_DMA_IT_AIS" redefined
+ 1458 | #define ETH_DMA_IT_AIS       ((uint32_t)0x00008000)  /*!< Abnormal interrupt summary */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1637:9: note: this is the location of the previous definition
+ 1637 | #define ETH_DMA_IT_AIS       0x00008000U  /*!< Abnormal interrupt summary */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1459:9: warning: "ETH_DMA_IT_ER" redefined
+ 1459 | #define ETH_DMA_IT_ER        ((uint32_t)0x00004000)  /*!< Early receive interrupt */
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1638:9: note: this is the location of the previous definition
+ 1638 | #define ETH_DMA_IT_ER        0x00004000U  /*!< Early receive interrupt */
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1460:9: warning: "ETH_DMA_IT_FBE" redefined
+ 1460 | #define ETH_DMA_IT_FBE       ((uint32_t)0x00002000)  /*!< Fatal bus error interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1639:9: note: this is the location of the previous definition
+ 1639 | #define ETH_DMA_IT_FBE       0x00002000U  /*!< Fatal bus error interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1461:9: warning: "ETH_DMA_IT_ET" redefined
+ 1461 | #define ETH_DMA_IT_ET        ((uint32_t)0x00000400)  /*!< Early transmit interrupt */
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1640:9: note: this is the location of the previous definition
+ 1640 | #define ETH_DMA_IT_ET        0x00000400U  /*!< Early transmit interrupt */
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1462:9: warning: "ETH_DMA_IT_RWT" redefined
+ 1462 | #define ETH_DMA_IT_RWT       ((uint32_t)0x00000200)  /*!< Receive watchdog timeout interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1641:9: note: this is the location of the previous definition
+ 1641 | #define ETH_DMA_IT_RWT       0x00000200U  /*!< Receive watchdog timeout interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1463:9: warning: "ETH_DMA_IT_RPS" redefined
+ 1463 | #define ETH_DMA_IT_RPS       ((uint32_t)0x00000100)  /*!< Receive process stopped interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1642:9: note: this is the location of the previous definition
+ 1642 | #define ETH_DMA_IT_RPS       0x00000100U  /*!< Receive process stopped interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1464:9: warning: "ETH_DMA_IT_RBU" redefined
+ 1464 | #define ETH_DMA_IT_RBU       ((uint32_t)0x00000080)  /*!< Receive buffer unavailable interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1643:9: note: this is the location of the previous definition
+ 1643 | #define ETH_DMA_IT_RBU       0x00000080U  /*!< Receive buffer unavailable interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1465:9: warning: "ETH_DMA_IT_R" redefined
+ 1465 | #define ETH_DMA_IT_R         ((uint32_t)0x00000040)  /*!< Receive interrupt */
+      |         ^~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1644:9: note: this is the location of the previous definition
+ 1644 | #define ETH_DMA_IT_R         0x00000040U  /*!< Receive interrupt */
+      |         ^~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1466:9: warning: "ETH_DMA_IT_TU" redefined
+ 1466 | #define ETH_DMA_IT_TU        ((uint32_t)0x00000020)  /*!< Underflow interrupt */
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1645:9: note: this is the location of the previous definition
+ 1645 | #define ETH_DMA_IT_TU        0x00000020U  /*!< Underflow interrupt */
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1467:9: warning: "ETH_DMA_IT_RO" redefined
+ 1467 | #define ETH_DMA_IT_RO        ((uint32_t)0x00000010)  /*!< Overflow interrupt */
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1646:9: note: this is the location of the previous definition
+ 1646 | #define ETH_DMA_IT_RO        0x00000010U  /*!< Overflow interrupt */
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1468:9: warning: "ETH_DMA_IT_TJT" redefined
+ 1468 | #define ETH_DMA_IT_TJT       ((uint32_t)0x00000008)  /*!< Transmit jabber timeout interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1647:9: note: this is the location of the previous definition
+ 1647 | #define ETH_DMA_IT_TJT       0x00000008U  /*!< Transmit jabber timeout interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1469:9: warning: "ETH_DMA_IT_TBU" redefined
+ 1469 | #define ETH_DMA_IT_TBU       ((uint32_t)0x00000004)  /*!< Transmit buffer unavailable interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1648:9: note: this is the location of the previous definition
+ 1648 | #define ETH_DMA_IT_TBU       0x00000004U  /*!< Transmit buffer unavailable interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1470:9: warning: "ETH_DMA_IT_TPS" redefined
+ 1470 | #define ETH_DMA_IT_TPS       ((uint32_t)0x00000002)  /*!< Transmit process stopped interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1649:9: note: this is the location of the previous definition
+ 1649 | #define ETH_DMA_IT_TPS       0x00000002U  /*!< Transmit process stopped interrupt */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1471:9: warning: "ETH_DMA_IT_T" redefined
+ 1471 | #define ETH_DMA_IT_T         ((uint32_t)0x00000001)  /*!< Transmit interrupt */
+      |         ^~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1650:9: note: this is the location of the previous definition
+ 1650 | #define ETH_DMA_IT_T         0x00000001U  /*!< Transmit interrupt */
+      |         ^~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1537:9: warning: "ETH_PMT_FLAG_WUFFRPR" redefined
+ 1537 | #define ETH_PMT_FLAG_WUFFRPR      ((uint32_t)0x80000000)  /*!< Wake-Up Frame Filter Register Pointer Reset */
+      |         ^~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1551:9: note: this is the location of the previous definition
+ 1551 | #define ETH_PMT_FLAG_WUFFRPR      0x80000000U  /*!< Wake-Up Frame Filter Register Pointer Reset */
+      |         ^~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1538:9: warning: "ETH_PMT_FLAG_WUFR" redefined
+ 1538 | #define ETH_PMT_FLAG_WUFR         ((uint32_t)0x00000040)  /*!< Wake-Up Frame Received */
+      |         ^~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1552:9: note: this is the location of the previous definition
+ 1552 | #define ETH_PMT_FLAG_WUFR         0x00000040U  /*!< Wake-Up Frame Received */
+      |         ^~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1539:9: warning: "ETH_PMT_FLAG_MPR" redefined
+ 1539 | #define ETH_PMT_FLAG_MPR          ((uint32_t)0x00000020)  /*!< Magic Packet Received */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1553:9: note: this is the location of the previous definition
+ 1553 | #define ETH_PMT_FLAG_MPR          0x00000020U  /*!< Magic Packet Received */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1555:9: warning: "ETH_MMC_IT_TGF" redefined
+ 1555 | #define ETH_MMC_IT_TGF       ((uint32_t)0x00200000)  /*!< When Tx good frame counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1561:9: note: this is the location of the previous definition
+ 1561 | #define ETH_MMC_IT_TGF       0x00200000U  /*!< When Tx good frame counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1556:9: warning: "ETH_MMC_IT_TGFMSC" redefined
+ 1556 | #define ETH_MMC_IT_TGFMSC    ((uint32_t)0x00008000)  /*!< When Tx good multi col counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1562:9: note: this is the location of the previous definition
+ 1562 | #define ETH_MMC_IT_TGFMSC    0x00008000U  /*!< When Tx good multi col counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1557:9: warning: "ETH_MMC_IT_TGFSC" redefined
+ 1557 | #define ETH_MMC_IT_TGFSC     ((uint32_t)0x00004000)  /*!< When Tx good single col counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1563:9: note: this is the location of the previous definition
+ 1563 | #define ETH_MMC_IT_TGFSC     0x00004000U  /*!< When Tx good single col counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1566:9: warning: "ETH_MMC_IT_RGUF" redefined
+ 1566 | #define ETH_MMC_IT_RGUF      ((uint32_t)0x10020000)  /*!< When Rx good unicast frames counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1571:9: note: this is the location of the previous definition
+ 1571 | #define ETH_MMC_IT_RGUF      0x10020000U  /*!< When Rx good unicast frames counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1567:9: warning: "ETH_MMC_IT_RFAE" redefined
+ 1567 | #define ETH_MMC_IT_RFAE      ((uint32_t)0x10000040)  /*!< When Rx alignment error counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1572:9: note: this is the location of the previous definition
+ 1572 | #define ETH_MMC_IT_RFAE      0x10000040U  /*!< When Rx alignment error counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1568:9: warning: "ETH_MMC_IT_RFCE" redefined
+ 1568 | #define ETH_MMC_IT_RFCE      ((uint32_t)0x10000020)  /*!< When Rx crc error counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h:1573:9: note: this is the location of the previous definition
+ 1573 | #define ETH_MMC_IT_RFCE      0x10000020U  /*!< When Rx crc error counter reaches half the maximum value */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1581:9: warning: "ETH_MMCCR" redefined
+ 1581 | #define ETH_MMCCR            ((uint32_t)0x00000100)  /*!< MMC CR register */
+      |         ^~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1589:9: note: this is the location of the previous definition
+ 1589 | #define ETH_MMCCR              0x00000100U
+      |         ^~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1582:9: warning: "ETH_MMCRIR" redefined
+ 1582 | #define ETH_MMCRIR           ((uint32_t)0x00000104)  /*!< MMC RIR register */
+      |         ^~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1590:9: note: this is the location of the previous definition
+ 1590 | #define ETH_MMCRIR             0x00000104U
+      |         ^~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1583:9: warning: "ETH_MMCTIR" redefined
+ 1583 | #define ETH_MMCTIR           ((uint32_t)0x00000108)  /*!< MMC TIR register */
+      |         ^~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1591:9: note: this is the location of the previous definition
+ 1591 | #define ETH_MMCTIR             0x00000108U
+      |         ^~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1584:9: warning: "ETH_MMCRIMR" redefined
+ 1584 | #define ETH_MMCRIMR          ((uint32_t)0x0000010C)  /*!< MMC RIMR register */
+      |         ^~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1592:9: note: this is the location of the previous definition
+ 1592 | #define ETH_MMCRIMR            0x0000010CU
+      |         ^~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1585:9: warning: "ETH_MMCTIMR" redefined
+ 1585 | #define ETH_MMCTIMR          ((uint32_t)0x00000110)  /*!< MMC TIMR register */
+      |         ^~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1593:9: note: this is the location of the previous definition
+ 1593 | #define ETH_MMCTIMR            0x00000110U
+      |         ^~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1586:9: warning: "ETH_MMCTGFSCCR" redefined
+ 1586 | #define ETH_MMCTGFSCCR       ((uint32_t)0x0000014C)  /*!< MMC TGFSCCR register */
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1594:9: note: this is the location of the previous definition
+ 1594 | #define ETH_MMCTGFSCCR         0x0000014CU
+      |         ^~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1587:9: warning: "ETH_MMCTGFMSCCR" redefined
+ 1587 | #define ETH_MMCTGFMSCCR      ((uint32_t)0x00000150)  /*!< MMC TGFMSCCR register */
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1595:9: note: this is the location of the previous definition
+ 1595 | #define ETH_MMCTGFMSCCR        0x00000150U
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1588:9: warning: "ETH_MMCTGFCR" redefined
+ 1588 | #define ETH_MMCTGFCR         ((uint32_t)0x00000168)  /*!< MMC TGFCR register */
+      |         ^~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1596:9: note: this is the location of the previous definition
+ 1596 | #define ETH_MMCTGFCR           0x00000168U
+      |         ^~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1589:9: warning: "ETH_MMCRFCECR" redefined
+ 1589 | #define ETH_MMCRFCECR        ((uint32_t)0x00000194)  /*!< MMC RFCECR register */
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1597:9: note: this is the location of the previous definition
+ 1597 | #define ETH_MMCRFCECR          0x00000194U
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1590:9: warning: "ETH_MMCRFAECR" redefined
+ 1590 | #define ETH_MMCRFAECR        ((uint32_t)0x00000198)  /*!< MMC RFAECR register */
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1598:9: note: this is the location of the previous definition
+ 1598 | #define ETH_MMCRFAECR          0x00000198U
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1591:9: warning: "ETH_MMCRGUFCR" redefined
+ 1591 | #define ETH_MMCRGUFCR        ((uint32_t)0x000001C4)  /*!< MMC RGUFCR register */
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1599:9: note: this is the location of the previous definition
+ 1599 | #define ETH_MMCRGUFCR          0x000001C4U
+      |         ^~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1724:9: warning: "MACMIIAR_CR_MASK" redefined
+ 1724 | #define MACMIIAR_CR_MASK    ((uint32_t)0xFFFFFFE3)
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1584:9: note: this is the location of the previous definition
+ 1584 | #define MACMIIAR_CR_MASK        ETH_MACMIIAR_CR_MASK
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1727:9: warning: "MACCR_CLEAR_MASK" redefined
+ 1727 | #define MACCR_CLEAR_MASK    ((uint32_t)0xFF20810F)
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1585:9: note: this is the location of the previous definition
+ 1585 | #define MACCR_CLEAR_MASK        ETH_MACCR_CLEAR_MASK
+      |         ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1730:9: warning: "MACFCR_CLEAR_MASK" redefined
+ 1730 | #define MACFCR_CLEAR_MASK   ((uint32_t)0x0000FF41)
+      |         ^~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1586:9: note: this is the location of the previous definition
+ 1586 | #define MACFCR_CLEAR_MASK       ETH_MACFCR_CLEAR_MASK
+      |         ^~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4x7_eth.h:1734:9: warning: "DMAOMR_CLEAR_MASK" redefined
+ 1734 | #define DMAOMR_CLEAR_MASK   ((uint32_t)0xF8DE3F23)
+      |         ^~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/Legacy/stm32_hal_legacy.h:1587:9: note: this is the location of the previous definition
+ 1587 | #define DMAOMR_CLEAR_MASK       ETH_DMAOMR_CLEAR_MASK
+      |         ^~~~~~~~~~~~~~~~~
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/types.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/gpio.h
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:32:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/gpio.h:64:9: warning: "GPIO_MODE_AF_PP" redefined
+   64 | #define GPIO_MODE_AF_PP   0x00000002
+      |         ^~~~~~~~~~~~~~~
+In file included from /private/tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/a13f67f8-2223-4086-964f-57b09e4dcffb/scratchpad/env35/coex/conf/stm32f4xx_hal_conf.h:285:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_gpio.h:120:10: note: this is the location of the previous definition
+  120 | #define  GPIO_MODE_AF_PP                        (MODE_AF | OUTPUT_PP)                                       /*!< Alternate Function Push Pull Mode     */
+      |          ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/gpio.h:65:9: warning: "GPIO_MODE_AF_OD" redefined
+   65 | #define GPIO_MODE_AF_OD   0x00000102
+      |         ^~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_gpio.h:121:10: note: this is the location of the previous definition
+  121 | #define  GPIO_MODE_AF_OD                        (MODE_AF | OUTPUT_OD)                                       /*!< Alternate Function Open Drain Mode    */
+      |          ^~~~~~~~~~~~~~~
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx.h
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:33:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.h:67:4: error: unknown type name 'GPIOSpeed_TypeDef'; did you mean 'GPIO_TypeDef'?
+   67 |    GPIOSpeed_TypeDef gpio_speed;
+      |    ^~~~~~~~~~~~~~~~~
+      |    GPIO_TypeDef
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/include/libc/string.h
+.. /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stddef.h
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c: In function 'eth_nvic_configuration':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:260:9: error: unknown type name 'NVIC_InitTypeDef'; did you mean 'SPI_InitTypeDef'?
+  260 |         NVIC_InitTypeDef NVIC_InitStructure;
+      |         ^~~~~~~~~~~~~~~~
+      |         SPI_InitTypeDef
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c: In function 'eth_macdma_config':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:334:4: error: implicit declaration of function 'RCC_AHB1PeriphClockCmd' [-Wimplicit-function-declaration]
+  334 |    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_ETH_MAC | RCC_AHB1Periph_ETH_MAC_Tx |
+      |    ^~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:334:27: error: 'RCC_AHB1Periph_ETH_MAC' undeclared (first use in this function)
+  334 |    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_ETH_MAC | RCC_AHB1Periph_ETH_MAC_Tx |
+      |                           ^~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:334:27: note: each undeclared identifier is reported only once for each function it appears in
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:334:52: error: 'RCC_AHB1Periph_ETH_MAC_Tx' undeclared (first use in this function)
+  334 |    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_ETH_MAC | RCC_AHB1Periph_ETH_MAC_Tx |
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:335:22: error: 'RCC_AHB1Periph_ETH_MAC_Rx' undeclared (first use in this function)
+  335 |                      RCC_AHB1Periph_ETH_MAC_Rx, ENABLE);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c: In function 'eth_bsp_init':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:432:4: error: unknown type name 'NVIC_InitTypeDef'; did you mean 'SPI_InitTypeDef'?
+  432 |    NVIC_InitTypeDef NVIC_InitStructure;
+      |    ^~~~~~~~~~~~~~~~
+      |    SPI_InitTypeDef
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:444:27: error: 'RCC_AHB1Periph_ETH_MAC' undeclared (first use in this function)
+  444 |    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_ETH_MAC | RCC_AHB1Periph_ETH_MAC_Tx |
+      |                           ^~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:444:52: error: 'RCC_AHB1Periph_ETH_MAC_Tx' undeclared (first use in this function)
+  444 |    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_ETH_MAC | RCC_AHB1Periph_ETH_MAC_Tx |
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:445:4: error: 'RCC_AHB1Periph_ETH_MAC_Rx' undeclared (first use in this function)
+  445 |    RCC_AHB1Periph_ETH_MAC_Rx | RCC_AHB1Periph_ETH_MAC_PTP, ENABLE);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:445:32: error: 'RCC_AHB1Periph_ETH_MAC_PTP' undeclared (first use in this function)
+  445 |    RCC_AHB1Periph_ETH_MAC_Rx | RCC_AHB1Periph_ETH_MAC_PTP, ENABLE);
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:452:4: error: implicit declaration of function 'RCC_APB2PeriphClockCmd' [-Wimplicit-function-declaration]
+  452 |    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+      |    ^~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:452:27: error: 'RCC_APB2Periph_SYSCFG' undeclared (first use in this function)
+  452 |    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+      |                           ^~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:454:4: error: implicit declaration of function 'SYSCFG_ETH_MediaInterfaceConfig' [-Wimplicit-function-declaration]
+  454 |    SYSCFG_ETH_MediaInterfaceConfig(SYSCFG_ETH_MediaInterface_RMII);
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:454:36: error: 'SYSCFG_ETH_MediaInterface_RMII' undeclared (first use in this function)
+  454 |    SYSCFG_ETH_MediaInterfaceConfig(SYSCFG_ETH_MediaInterface_RMII);
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:457:22: error: 'GPIO_InitTypeDef' has no member named 'GPIO_OType'
+  457 |    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+      |                      ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:457:36: error: 'GPIO_OType_PP' undeclared (first use in this function); did you mean 'GPIO_TYPE_PP'?
+  457 |    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+      |                                    ^~~~~~~~~~~~~
+      |                                    GPIO_TYPE_PP
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:458:22: error: 'GPIO_InitTypeDef' has no member named 'GPIO_Mode'
+  458 |    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+      |                      ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:458:35: error: 'GPIO_Mode_AF' undeclared (first use in this function); did you mean 'GPIO_MODE_AF'?
+  458 |    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+      |                                   ^~~~~~~~~~~~
+      |                                   GPIO_MODE_AF
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:459:22: error: 'GPIO_InitTypeDef' has no member named 'GPIO_PuPd'
+  459 |    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+      |                      ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:459:35: error: 'GPIO_PuPd_NOPULL' undeclared (first use in this function); did you mean 'GPIO_NOPULL'?
+  459 |    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+      |                                   ^~~~~~~~~~~~~~~~
+      |                                   GPIO_NOPULL
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:460:22: error: 'GPIO_InitTypeDef' has no member named 'GPIO_Speed'
+  460 |    GPIO_InitStructure.GPIO_Speed = eth_stm32f4x7_bsp.gpio_speed;
+      |                      ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:463:25: error: 'GPIO_InitTypeDef' has no member named 'GPIO_Pin'
+  463 |       GPIO_InitStructure.GPIO_Pin = (uint16_t)(1u << pin->pin_source);
+      |                         ^
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:464:7: error: implicit declaration of function 'GPIO_Init'; did you mean 'SDIO_Init'? [-Wimplicit-function-declaration]
+  464 |       GPIO_Init(pin->port, &GPIO_InitStructure);
+      |       ^~~~~~~~~
+      |       SDIO_Init
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:465:7: error: implicit declaration of function 'GPIO_PinAFConfig' [-Wimplicit-function-declaration]
+  465 |       GPIO_PinAFConfig(pin->port, pin->pin_source, GPIO_AF_ETH);
+      |       ^~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/eth.c:465:52: error: 'GPIO_AF_ETH' undeclared (first use in this function); did you mean 'GPIO_AF11_ETH'?
+  465 |       GPIO_PinAFConfig(pin->port, pin->pin_source, GPIO_AF_ETH);
+      |                                                    ^~~~~~~~~~~
+      |                                                    GPIO_AF11_ETH
+Multiple include guards may be useful for:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cm4.h
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cm4_simd.h
