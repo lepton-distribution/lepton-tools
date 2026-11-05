@@ -1,0 +1,8 @@
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_ll_usb.c: In function 'USB_WritePacket':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_ll_usb.c:1013:41: error: implicit declaration of function '__UNALIGNED_UINT32_READ' [-Wimplicit-function-declaration]
+ 1013 |       USBx_DFIFO((uint32_t)ch_ep_num) = __UNALIGNED_UINT32_READ(pSrc);
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_ll_usb.c: In function 'USB_ReadPacket':
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_ll_usb.c:1042:5: error: implicit declaration of function '__UNALIGNED_UINT32_WRITE' [-Wimplicit-function-declaration]
+ 1042 |     __UNALIGNED_UINT32_WRITE(pDest, USBx_DFIFO(0U));
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,0 +1,6 @@
+OK      Include/stm32f746xx.h
+OK      Include/stm32f7xx.h
+OK      Include/system_stm32f7xx.h
+OK      LICENSE.md
+OK      README.md
+verifier-import: 2352e888e821aa0f4fe549bd5ea81d29c67a3222 ; 5 identique(s), 0 écart(s)
