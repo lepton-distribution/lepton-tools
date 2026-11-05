@@ -13,7 +13,8 @@ Valider sur Debian x86_64 l'état publié après ENV-34 et ENV-35 :
 - constructions host et 16 presets : seuls les 4 presets F4 changent (passage de la SPL à la HAL,
   ENV-35), avec les mêmes écarts que sur le Mac ;
 - compilation à blanc de la HAL F4 importée avec la chaîne APT ;
-- fichiers générés par lepton inchangés.
+- fichiers générés par lepton inchangés ;
+- banc sur carte NUCLEO-F429ZI depuis Debian (première carte sur la VM), réseau compris.
 
 Aucune réinstallation : scion 0.5.4.0 est inchangé ; le paquet lepton est identique à celui
 installé en R33-1 (`devenv/env-33` e47bc11 → `main` 06cb55d : seuls `scripts/tiers/` et `doc/`
@@ -44,21 +45,26 @@ Référence Mac : oracle `doc/devenv/rapports/oracles/env-35-apres/` (host + 16 
 Mac `env-32-apres` → `env-35-apres` et attendus dérivés : `rapports/env-36-mac.md` §1 et
 `rapports/env-36-mac/attendu/`. Trunk de `~/lepton` au Mac, mêmes commits : 14 entrées greffées,
 3978 liens, 0 cassé. Référence Debian : `rapports/env-33-debian.md` et `oracles/env-33-debian/`
-(dernier oracle Debian complet ; binaires F4 = SPL).
+(dernier oracle Debian complet ; binaires F4 = SPL ; aucune carte sur la VM jusqu'ici).
 
-La session VM ne développe pas : elle exécute, constate et rapporte. <CARTES : à fixer au PA-59 ;
-par défaut, pas de carte sur la VM : les presets de carte sont construits, jamais flashés.>
+La session VM ne développe pas : elle exécute, constate et rapporte. Carte (PA-59) : la
+NUCLEO-F429ZI (ST-LINK/V2-1 0672FF495252717267243842, adresse 192.168.2.5 sur le câble Ethernet)
+est rattachée à la VM par l'utilisateur dans VMware Fusion ; écriture flash accordée pour cette
+session (PA-11) des seules images `nucleo-f429zi-embos`, `nucleo-f429zi-freertos` et
+`nucleo-f439zi-embos` construites sur la VM (§10). Les autres presets de carte sont construits,
+jamais flashés.
 
 ## 2. Ce que la session VM peut faire, et ne fait pas
 
 | Autorisé | Interdit |
 | --- | --- |
 | `git fetch` / `switch` de `~/lepton-tools-dev/lepton-tools` (`devenv/env-36`) | Modifier `DEVENV-STATUS.md`, `ORCHESTRATION.md`, `SPECIFICATION.md`, `handoff/*.md`, les consignes, `rapports/env-36-mac*` |
-| Lire les journaux des commandes lancées **par l'utilisateur** : `scion graft-update`, suppressions (§6, §10) | Lancer soi-même `sudo`, `pipx install`, `scion graft-update`, `rm -rf` |
+| Lire les journaux des commandes lancées **par l'utilisateur** : `scion graft-update`, droits d'accès à la sonde, suppressions (§6, §10, §11) | Lancer soi-même `sudo`, `pipx install`, `scion graft-update`, `rm -rf` |
 | Lectures dans `$U` (§5, §6) | Toute écriture dans les clones de `$U` ; tout `seed-update` ; toucher aux autres rootstocks hors §6, §9 |
 | Créer `~/lepton-tools-dev/essais/env-36-debian` (rootstock neuf) et y tout faire, `build/` compris | Écrire un fichier régulier dans un `trunk/` ; corriger quoi que ce soit (consigner l'écart pour la session Mac) |
 | `lepton check` / `generate` dans `$P` (`essais/env-11/qemu`) et dans `$R` | Regreffer `$P`, commiter dans sa graine |
-| Compilation à blanc dans `$J/8-hal-blanc` (§8) | Flasher une carte, lancer un test `board` |
+| Compilation à blanc dans `$J/8-hal-blanc` (§8) | Flasher une autre image que les 3 du §10, flasher une autre carte, modifier les octets d'option, effacement de masse ou déverrouillage |
+| §10 : reconfigurer `$R/build/<P>` des 3 presets avec `LEPTON_BOARD_SERIAL_PORT` et `LEPTON_NET_TEST_HOST_IP`, `ctest -L board` (écriture flash), lecture OpenOCD (`init; targets; shutdown`) | Modifier la configuration réseau de la VM ; `sudo` |
 | Créer `devenv/env-36-debian` (depuis `devenv/env-36`) ; y écrire `doc/devenv/rapports/env-36-debian.md` et `doc/devenv/rapports/oracles/env-36-debian/` | Commiter sur une autre branche |
 | `git push origin devenv/env-36-debian` **après accord explicite de l'utilisateur** (PA-P) | Pousser toute autre branche |
 
@@ -87,10 +93,10 @@ attendre.
   `[QUESTION R36-1] …`, `[FIN-SUCCÈS R36-1] …` ou `[FIN-ÉCHEC R36-1] …`).
 - `ACCUSÉ` avant toute commande autre que les lectures du §5 : ordre reformulé en une phrase, tête
   réelle de `devenv/env-36` après `fetch`, résultats de `git ls-remote` du §5, branches et têtes
-  des clones de `$U`, étapes prévues (§6 à §10), écarts déjà visibles.
-- `AVANCEMENT` : quand l'utilisateur doit agir (§6.1, §10), après §6, §7, §8, §9, et à chaque
-  arrêt.
-- `FIN-SUCCÈS` / `FIN-ÉCHEC` : résultat par critère du §11, commits et branche (poussée ou non),
+  des clones de `$U`, étapes prévues (§6 à §11), écarts déjà visibles.
+- `AVANCEMENT` : quand l'utilisateur doit agir (§6.1, §10.1, §11), après §6, §7, §8, §9, §10,
+  et à chaque arrêt ; au §10.1, adresse IP relevée, à confirmer par l'utilisateur avant le banc.
+- `FIN-SUCCÈS` / `FIN-ÉCHEC` : résultat par critère du §12, commits et branche (poussée ou non),
   chemin du rapport, versions relevées, écarts, ce qui n'a pas été fait.
 
 ## 4. Journaux et variables
@@ -341,9 +347,88 @@ inchangés : contrôle de stabilité). `$P` est QEMU seul : `build/.active/compi
 n'est pas comparé (il ne suit que le preset configuré ; les inclusions de la famille F4 n'y
 figurent que pour un preset F4).
 
-## 10. Nettoyage de la VM (C6)
+## 10. Banc sur carte NUCLEO-F429ZI (C7)
 
-<À fixer au PA-59.> Proposition : après le §9.1, relevé par la session :
+Première carte sur la VM. Forme du banc d'ENV-35 (`rapports/env-35-hal-f4/banc-carte.sh`),
+commandes données ici en clair : ce script appelle `caffeinate` (macOS seul) et ne doit pas être
+lancé sur la VM. Référence Mac (`rapports/env-35-hal-f4.md` §5.3) : 20/20 pour les 3 images,
+fumée `cortexM4-stm32f4`, ping 3/3, LIST 13 entrées, RETR 57 octets identique, `ECONNRESET=15`.
+
+### 10.1 Sonde, port série, droits, réseau
+
+`AVANCEMENT` : l'**utilisateur** rattache la NUCLEO-F429ZI à la VM (VMware Fusion, menu des
+périphériques USB ; le Mac ne la voit plus). Puis la session, en lecture seule :
+```bash
+id -nG; ls -l /dev/ttyACM* 2>&1; ls /dev/serial/by-id/ 2>&1
+lsusb 2>&1 | grep -i -E 'st-?link|0483:' ; ls /etc/udev/rules.d/ /usr/lib/udev/rules.d/ 2>/dev/null | grep -i openocd
+CFG="$R"/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg
+openocd -f "$CFG" -c "init; targets; shutdown" > "$J/10.1-openocd-targets.log" 2>&1; echo "code=$?" >> "$J/10.1-openocd-targets.log"
+cat "$J/10.1-openocd-targets.log"
+ip -4 -o addr show | awk '{print $2, $4}'
+ip route get 192.168.2.5
+ping -c 3 -W 2 192.168.2.5 > "$J/10.1-ping-carte.log" 2>&1; echo "code=$?" >> "$J/10.1-ping-carte.log"
+```
+Attendu : une seule sonde, n° 0672FF495252717267243842 (`by-id` ou journal OpenOCD), cible
+`stm32f4x.cpu` vue, code 0 sans sudo ; un port `/dev/ttyACM<n>` lisible et inscriptible par
+l'utilisateur (groupe `dialout`) ; une interface de la VM sur 192.168.2.0/24 (mode pont) ; le
+ping de la carte peut échouer si l'image en flash ne répond pas encore (pas un arrêt).
+
+Si un droit manque (OpenOCD : `LIBUSB_ERROR_ACCESS` ; port : `Permission denied`) :
+`AVANCEMENT` avec la commande exacte pour l'**utilisateur**, selon le cas :
+```bash
+sudo usermod -aG dialout,plugdev "$USER"          # puis fermer et rouvrir la session de la VM
+sudo cp /usr/lib/udev/rules.d/60-openocd.rules /etc/udev/rules.d/ 2>/dev/null; sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+(la seconde seulement si aucune règle `60-openocd.rules` n'est active). La session revérifie,
+consigne la commande lancée et son effet. Toujours bloqué : `QUESTION`, pas de contournement
+(ni `sudo openocd`, ni `chmod` du périphérique).
+
+Puis `AVANCEMENT` : port relevé (`PORT`) et adresse IPv4 de la VM sur 192.168.2.0/24 (`HOSTIP`).
+**L'utilisateur confirme l'adresse** avant tout flash. Aucune interface sur 192.168.2.0/24 :
+arrêt et `QUESTION` (pas de modification réseau par la session).
+
+### 10.2 Banc des 3 images
+
+Après confirmation, pour `P` dans `nucleo-f429zi-embos`, `nucleo-f429zi-freertos`,
+`nucleo-f439zi-embos`, dans cet ordre :
+```bash
+PORT=/dev/ttyACM<n>; HOSTIP=<adresse confirmée>
+export PYTHONDONTWRITEBYTECODE=1
+source "$R"/depots/lepton/original/master/scripts/lepton-env.sh > /dev/null
+cd "$T"
+for P in nucleo-f429zi-embos nucleo-f429zi-freertos nucleo-f439zi-embos; do
+  D=$T/$O/env-36-debian/$P; B=$R/build/$P
+  { cmake -S "$R/trunk" -B "$B" --preset "$P" -DLEPTON_BOARD_SERIAL_PORT="$PORT" -DLEPTON_NET_TEST_HOST_IP="$HOSTIP" && cmake --build "$B"; } > "$D/carte-config.log" 2>&1; echo "code=$?" >> "$D/carte-config.log"
+  X=$(mktemp -d); scripts/oracle/capturer-oracle.sh "$B/lepton.elf" "$X" > /dev/null
+  python3 scripts/oracle/comparer-oracle.py "$D" "$X" > "$D/carte-oracle.txt" 2>&1; echo "$P oracle=$?"; rm -rf "$X"
+  (cd "$R/trunk" && ctest --preset "$P" -L board --output-on-failure) > "$D/carte.log" 2>&1; echo "$P ctest=$?"
+  cp "$B/Testing/Temporary/LastTest.log" "$D/carte-detail.log" 2>/dev/null
+  cp "$B/smoke_lsh_board.log" "$D/fumee-carte.log" 2>/dev/null
+  cp "$B/board_net.log" "$D/reseau-carte.log" 2>/dev/null
+  grep -E 'tests passed|tests failed' "$D/carte.log"
+done
+```
+Un `oracle=` non nul (l'image reconfigurée diffère de celle du §7) : arrêt avant `ctest` pour ce
+preset, `AVANCEMENT` avec l'extrait de `carte-oracle.txt`. Puis :
+```bash
+for P in nucleo-f429zi-embos nucleo-f429zi-freertos nucleo-f439zi-embos; do
+  D=$T/$O/env-36-debian/$P
+  echo "== $P"; grep -E 'Total Tests|tests passed' "$D/carte.log"
+  grep -o 'cortexM4-stm32f4' "$D/fumee-carte.log" | head -1
+  grep -i -E 'ping|LIST|RETR|ECONNRESET' "$D/reseau-carte.log" | head -12
+done
+find "$R/trunk" -type f ! -name .scion.grafted.list | wc -l; find "$R/trunk" -name __pycache__ | wc -l
+```
+Attendu, pour chacune des 3 images : `oracle=0` ; `ctest=0`, **20/20** (`board.smoke_lsh`, banc
+KAL sur carte, `board.net`) ; fumée `cortexM4-stm32f4` ; réseau : ping 3/3, LIST 13 entrées, RETR
+57 octets identique à la référence, `ECONNRESET=15` ; trunk sans fichier régulier ni
+`__pycache__`. Un test en échec : relever `carte-detail.log` (extrait), le relancer une fois
+seul (`ctest --preset <P> -R <test>`) et consigner les deux résultats ; pas de correction. La
+carte garde l'image `nucleo-f439zi-embos` de la VM.
+
+## 11. Nettoyage de la VM (C6)
+
+Accordé au PA-59. Après le §9.1, relevé par la session :
 ```bash
 du -sh "$R33" ~/env-33-journaux
 ```
@@ -353,9 +438,10 @@ rm -rf ~/lepton-tools-dev/essais/env-33-debian ~/env-33-journaux
 ```
 La session vérifie `ls -d ~/lepton-tools-dev/essais/env-33-debian ~/env-33-journaux 2>&1`
 (absents). Conservés : `$U` (`essais/env-28-debian`, mis à jour au §6.1), `$R`
-(`essais/env-36-debian`), `$P`, `$J`.
+(`essais/env-36-debian`), `$P`, `$J`. Après le §10, l'utilisateur peut rattacher de nouveau la
+carte au Mac (à consigner).
 
-## 11. Critères et rapport
+## 12. Critères et rapport
 
 | Critère | Attendu |
 | --- | --- |
@@ -364,11 +450,13 @@ La session vérifie `ls -d ~/lepton-tools-dev/essais/env-33-debian ~/env-33-jour
 | C3 Constructions | host ctest 7/7, mklepton = `env-33-debian` = `env-35-apres` ; 16 presets construits ; QEMU fumée et banc 20/20, 16/16, 19/19 ; `comparer_R33-1` : 12 presets 0, 4 presets F4 1 avec écarts normalisés = Mac ; `f429→f439` hors `.debug_*` 0 |
 | C4 Compilation à blanc | `cmsis5` 0 échec (2 puces) ; `v330` 1 échec `stm32f4xx_ll_usb` (2 puces), comme au Mac ; trunk sans fichier régulier |
 | C5 Fichiers générés | `$R` : `check`, `generate` 0, espace = `$R33` au chemin près ; `$P` : `check`, `generate` 0, générés, graine et `check` identiques |
-| C6 Nettoyage | <selon PA-59> |
+| C6 Nettoyage | `essais/env-33-debian` et `~/env-33-journaux` supprimés par l'utilisateur (taille relevée), absents |
+| C7 Carte NUCLEO-F429ZI | sonde vue de la VM, droits sans sudo ; IP de la VM confirmée par l'utilisateur ; 3 `lepton.elf` reconfigurés = oracle `env-36-debian` (code 0) ; `ctest -L board` 20/20 pour chacun ; fumée `cortexM4-stm32f4` ; réseau ping 3/3, LIST 13 entrées, RETR 57 octets identique, `ECONNRESET=15` |
 
 Rapport `doc/devenv/rapports/env-36-debian.md` sur `devenv/env-36-debian`, contenant : hôte et
 versions (§5), table des critères, table des presets (construction, fumée, banc KAL, symboles
 R36-1 / R33-1 / Mac `env-35-apres`, `comparer_R33-1`, `comparer_Mac`), deltas de sections des
-4 presets F4 (Debian contre Mac), écarts et constats, journal des messages §2bis (ID, date,
+4 presets F4 (Debian contre Mac), banc sur carte (§10 : sonde, port, IP, droits, table des
+3 images), écarts et constats, journal des messages §2bis (ID, date,
 résumé), non fait. Commit du rapport et de `oracles/env-36-debian/` (`compilation-a-blanc/`
-compris), puis `QUESTION` à l'utilisateur pour le push (PA-P), puis `FIN-*`.
+et journaux de carte compris), puis `QUESTION` à l'utilisateur pour le push (PA-P), puis `FIN-*`.

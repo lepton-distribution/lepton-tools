@@ -70,3 +70,20 @@ l'utilisateur, puis rootstock neuf `essais/env-36-debian` ; C3 host + 16 presets
 `env-33-debian` ; C4 compilation à blanc (`compiler-hal-f4-a-blanc.sh`) ; C5 fichiers générés
 (`$R` contre l'espace de `essais/env-33-debian`, `$P` stabilité) ; C6 nettoyage. Points laissés au
 PA-59 : cartes, nettoyage, choix de C4 et C5.
+
+## 2. PA-59 (2026-11-05, décisions de l'utilisateur)
+
+- Consigne validée ; C4 et C5 retenus tels que rédigés.
+- Carte : NUCLEO-F429ZI sur la VM (première carte sous Debian) ; écriture flash accordée pour les
+  3 images d'ENV-35 construites sur la VM ; VM en mode pont, adresse relevée par la VM et
+  confirmée par l'utilisateur ; droits de la sonde corrigés par l'utilisateur si besoin. Ajout du
+  §10 (C7) à la consigne : commandes en clair, `banc-carte.sh` d'ENV-35 non utilisable sur Debian
+  (`caffeinate`, macOS seul).
+- Nettoyage C6 accordé (`essais/env-33-debian`, `~/env-33-journaux`).
+- Push de `devenv/env-36` et ordre `R36-1` accordés ; `graft-update` dans `essais/env-28-debian`
+  seulement, lancé par l'utilisateur.
+
+## 3. Messages §2bis
+
+| Message | Date | Sens | Résumé |
+| --- | --- | --- | --- |
