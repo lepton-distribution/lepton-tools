@@ -211,3 +211,42 @@ l'oracle (code 0), `ctest -L board`). Journaux `env-35-avant/<P>/carte*.log`, `f
 
 Incident : premier lancement du script en échec avant `ctest` (chemin relatif de l'oracle perdu
 après `cd` dans le trunk ; aucune écriture flash) ; corrigé, relancé.
+
+## 4. Implémentation (tâche 3, un seul lot)
+
+### 4.1 Famille `family-stm32f4xx` (`devenv/env-35`, depuis `master` c5de4a5)
+
+| Commit | Contenu |
+| --- | --- |
+| 020db7b | Suppression des 4 fragments HAL V1.3.0 sans provenance de `driverlib/` (mécanique) |
+| 02d36d8 | `dev_stm32f4xx/dev_stm32f4xx_eth_x.{c,h}` repris de `dev_stm32f7xx_eth_x.{c,h}` (MPU, `SCB_*` et alignement 16 Ko retirés ; bloc DMA en `.bss`) ; `dev_stm32f4xx_hal_tick.c` repris de `dev_stm32f7xx_hal_tick.c` |
+| e68e250 | `gpio.c` sur `HAL_GPIO_Init`/`WritePin`/`ReadPin`/`TogglePin` ; mode Lepton traduit en mode HAL, fonction alternative (AFR) conservée ; `gpio_set_function` et `gpio_read_output` par registres (pas d'équivalent HAL) ; `kernelconf.h` inclus explicitement (arrivait par le `stm32f4xx.h` modifié de la SPL) ; `GPIO_MODE_AF_PP`/`AF_OD` retirés de `gpio.h` |
+| a83f3cd | `uart.c` par registres : calculs de la SPL repris (`RCC_GetClocksFreq`, BRR de `USART_Init`/`USART_ChangeBaudrate`), réglages de `USART_StructInit`/`DMA_StructInit` ; effacement des indicateurs DMA par `dma_stream_clear_flags` (`dma.h`, calculé d'après l'adresse du flux) ; `_Uart_Descriptor` : `RCC_APBxENR`, `RCC_APBxRSTR`, bit, `UART_DMA_CHANNEL(n)` |
+| 7252fe6 | Manifeste : `sources` (couche Lepton, ETH, tick, HAL GPIO, ETH, RCC, CORTEX), `USE_HAL_DRIVER`, inclusions `dev_stm32f4xx`, `hal_driver/Inc`, `cmsis-5/Device/ST/STM32F4xx/Include`, `mcu` + `STM32F439xx`, description |
+
+Non compilés désormais : `driverlib/` (fichiers conservés), `eth.c`, `eth.h`,
+`dev_stm32f4xx/dev_stm32f4xx_eth.c`, `stm32f4x7_eth_conf.h`.
+
+### 4.2 BSP `nucleo-f429zi` et `nucleo-f439zi` (`devenv/env-35`)
+
+| BSP | Commits | Contenu |
+| --- | --- | --- |
+| `nucleo-f429zi` (depuis 2b2dfdd) | 7799dcf, f8cbde4 | `stm32f4xx_hal_conf.h` généré (mécanique) ; `nucleo_f439zi_board.c` : `stm32f4xx_hal.h`, `SystemInit` inchangé, `SystemCoreClockUpdate` par registres (forme du F746), `GPIO_PIN_n`, descripteurs USART sans SPL (`GPIO_AF7_USART3`, `GPIO_AF8_USART6`), `HAL_ETH_MspInit` (mêmes broches, AF11, sans tirage, vitesse maximale), `ETH_IRQHandler` fort, instance `dev_stm32f4xx_eth_info_t` ; `dev_stm32f4xx_eth_map` gardé de nom (XML mklepton du noyau inchangé) ; `nucleo_f439zi.h` : `_GPIO_DEFAULT_SPEED` = `GPIO_SPEED_FREQ_HIGH` (même valeur 2), `BOARD_ETH_PHY_ADDR` ; manifeste : inclusion du BSP (pour `stm32f4xx_hal_conf.h`) |
+| `nucleo-f439zi` (depuis bdbfa06) | 936de82, ad9819f | mêmes fichiers (identiques) ; `STM32F439xx` ; description et commentaire de `user_kernel_mkconf.h` |
+
+Noyau non touché ; `cmake/lepton_greffons.cmake` inchangé (BLD-6). lepton-tools :
+`scripts/tiers/hal_conf_stm32f4.py` (471d468).
+
+### 4.3 Écarts de comportement introduits (à valider au PA-58)
+
+- E-A, adresse MAC par défaut : celle du pilote F7, dérivée de l'identifiant unique de la puce
+  (`0x02:…`, administrée localement), au lieu de la constante `00:bd:3b:33:05:71` du pilote SPL.
+  Aucune adresse n'est posée par `.init`. Conséquence : adresse propre à chaque carte.
+- E-B, PHY : adresse MDIO fixe `BOARD_ETH_PHY_ADDR` (0), comme le F7 ; le pilote SPL
+  parcourait les adresses à partir de 0 et contrôlait l'identifiant du PHY.
+- E-C, moment de l'initialisation : broches RMII, horloges ETH, `SYSCFG` (RMII), MAC et DMA sont
+  configurés à la première ouverture de `/dev/eth0` (`_eth_start` : `HAL_ETH_Init`, donc
+  `HAL_ETH_MspInit`, négociation du PHY, `HAL_ETH_Start_IT`), comme sur le F7 ; le pilote SPL les
+  configurait au chargement (`dev_stm32f4xx_eth_load` → `eth_bsp_init`) et ne démarrait le MAC
+  qu'à l'ouverture (`eth_init`). La HAL a besoin du tick, qui n'avance qu'après le démarrage du
+  noyau (piège de l'étape).
