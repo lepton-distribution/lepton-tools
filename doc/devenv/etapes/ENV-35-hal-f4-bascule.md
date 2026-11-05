@@ -59,10 +59,22 @@ des 4 presets F4 changent ; ceux des 12 autres presets et de host ne doivent pas
   `driverlib/` (SPL) et `cmsis-5/Device/ST/STM32F4xx/Include` (ENV-34). Relever l'ordre des
   inclusions publiques et chaque `#include "stm32f4xx.h"` sans chemin. Garde K4.
 - Dépendants de `driverlib/` et de `kernel/core/ucore/cmsis/Device/st/stm32f4xx/` hors des
-  4 presets : BSP `stm32f469i-eval` et `kernel/usb/stm32f4-usb-core` du noyau, XML Olimex.
+  4 presets (relevé du 2026-11-04, BSP recomptés le 2026-11-05, PA-55 d'ENV-34) : BSP du noyau
+  `kernel/dev/bsp/stm32f469i-eval` (3 fichiers), `discovery_f4` (1), `discovery_f4-baseboard-modem`
+  (13), `olimex_p407` (2) ; `kernel/usb/stm32f4-usb-core` (4) ;
+  `kernel/core/ucore/cmsis/Device/st/stm32f4xx` (2) ; XML Olimex. Les inclusions de
+  `stm32f4xx_hal.h` hors plan (`stm32f4-usb-core` 3, `discovery_f4-baseboard-modem` 2,
+  `stm32f469i-eval` 1) : `rapports/env-34-hal-f4.md` §1.3.
 - Mémoire :
   - la CCM (`0x10000000`, `.ccm_bss`) est inaccessible au DMA (`ld/mem_nucleo-f439zi.ld`) :
-    relever où sont placés les descripteurs et les tampons ETH ;
+    relever où sont placés les descripteurs et les tampons ETH. Constat du 2026-11-04 :
+    `ld/common-cortexm.ld` place en `.ccm_bss` les pools lwIP sauf `PBUF_POOL`, les piles du
+    noyau et de lwIP, la mémoire statique FreeRTOS ; le pilote ETH F4 actuel n'a aucun attribut
+    de section ;
+  - `core_cm4.h` : `cmake/isa/armv7m.cmake` place CMSIS-Core V3.30 en tête des inclusions de tous
+    les presets M4 ; le `core_cm4.h` 5.9.0 importé en ENV-34 n'est vu par aucun preset
+    (`rapports/env-34-hal-f4.md` §1.5). Choix à poser au PA-57, avec le résultat de la
+    compilation à blanc d'ENV-34 dans les deux ordres ;
   - occupation flash et RAM actuelle (`lepton.occupation.txt`).
 - Rapport `rapports/env-35-hal-f4.md`.
 - **PA-57** : l'utilisateur valide :
