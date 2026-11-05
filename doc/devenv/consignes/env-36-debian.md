@@ -400,7 +400,8 @@ for P in nucleo-f429zi-embos nucleo-f429zi-freertos nucleo-f439zi-embos; do
   D=$T/$O/env-36-debian/$P; B=$R/build/$P
   { cmake -S "$R/trunk" -B "$B" --preset "$P" -DLEPTON_BOARD_SERIAL_PORT="$PORT" -DLEPTON_NET_TEST_HOST_IP="$HOSTIP" && cmake --build "$B"; } > "$D/carte-config.log" 2>&1; echo "code=$?" >> "$D/carte-config.log"
   X=$(mktemp -d); scripts/oracle/capturer-oracle.sh "$B/lepton.elf" "$X" > /dev/null
-  python3 scripts/oracle/comparer-oracle.py "$D" "$X" > "$D/carte-oracle.txt" 2>&1; echo "$P oracle=$?"; rm -rf "$X"
+  python3 scripts/oracle/comparer-oracle.py "$D" "$X" > "$D/carte-oracle.txt" 2>&1; rc=$?; echo "$P oracle=$rc"; rm -rf "$X"
+  [ "$rc" -eq 0 ] || { echo "ARRÊT : $P différent de l'oracle"; break; }
   (cd "$R/trunk" && ctest --preset "$P" -L board --output-on-failure) > "$D/carte.log" 2>&1; echo "$P ctest=$?"
   cp "$B/Testing/Temporary/LastTest.log" "$D/carte-detail.log" 2>/dev/null
   cp "$B/smoke_lsh_board.log" "$D/fumee-carte.log" 2>/dev/null
