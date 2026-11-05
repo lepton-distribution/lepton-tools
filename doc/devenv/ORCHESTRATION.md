@@ -20,7 +20,7 @@ chaque session, avec `DEVENV-STATUS.md`, le fichier de l'étape courante et la d
 | --- | --- | --- |
 | Dépôt `lepton-tools` | `<LEPTON_TOOLS>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements ; distant `lepton-distribution/lepton-tools` | Outil `lepton`, schémas, modèles, scripts d'installation, ce dossier `doc/devenv/` |
 | Rootstock Lepton | `<ROOTSTOCK>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements | `depots/`, `trunk/` ; clone noyau `depots/lepton/original/master` |
-| Dépôt `seed.scions` | clone à part, `<SEED_SCIONS>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements | Évolutions génériques de scion (ENV-7, ENV-15, ENV-23, ENV-29) |
+| Dépôt `seed.scions` | clone à part, `<SEED_SCIONS>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements | Évolutions génériques de scion (ENV-7, ENV-15, ENV-23, ENV-29, ENV-39, ENV-40) |
 | Répertoire de construction | `<ROOTSTOCK>/build/<preset>` | Toujours hors du trunk |
 
 Claude Code est lancé à la racine de `<LEPTON_TOOLS>`. Les chemins `<…>` sont résolus une fois en
@@ -32,7 +32,7 @@ Hôtes :
 | Hôte | Rôle | Étapes |
 | --- | --- | --- |
 | Mac mini Intel, macOS (hôte principal) | Développement, construction native, flash et débogage | Toutes |
-| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian), ENV-15 (partie Debian), ENV-21, ENV-28, ENV-33, ENV-36 |
+| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian), ENV-15 (partie Debian), ENV-21, ENV-28, ENV-33, ENV-36, ENV-43 |
 
 Règles de parallélisme Mac / VM :
 
@@ -209,6 +209,20 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | PA-58 | ENV-35 | Rapport : nouvel oracle de référence ; push et fusions des branches `devenv/env-35` | ouvert |
 | PA-59 | ENV-36 | Consigne `consignes/env-36-debian.md`, cartes et nettoyage de la VM ; push de `devenv/env-36`, ordre R36-1 | ouvert |
 | PA-60 | ENV-36 | Après `FIN-SUCCÈS R36-1` : fusions dans `main`, push | ouvert |
+| PA-61 | ENV-37 | Code tiers de la famille STM32WL : révisions amont retenues, sort des fichiers modifiés par Lepton et des fichiers hors amont, forme de la provenance, texte du manifeste, source de la pile radio et des utilitaires, avant toute modification | ouvert |
+| PA-62 | ENV-37 | Rapport : push et fusions des branches `devenv/env-37` (lepton-tools, famille WL) | ouvert |
+| PA-63 | ENV-38 | Projection et miroir de scion : syntaxe de `.scion.projections`, sémantique des motifs, motif sans correspondance, révision épinglée, emplacement des clones tiers, articulation avec la graine, dépendance d'un greffon envers une projection, commande de miroir, versions, provenance, emplacement de la spécification, avant toute rédaction | ouvert |
+| PA-64 | ENV-38 | Spécification validée ; push et fusions des branches `devenv/env-38` | ouvert |
+| PA-65 | ENV-39 | Projection : écarts à la spécification, numéro de version, `SCION_MIN_VERSION`, effets sur lepton traités ici ou en ENV-41, avant toute modification | ouvert |
+| PA-66 | ENV-39 | Rapport : publication du tag et de `master` de `seed.scions`, branches `devenv/env-39`, fusions | ouvert |
+| PA-67 | ENV-40 | Miroir : écarts à la spécification, numéro de version, `SCION_MIN_VERSION`, avant toute modification | ouvert |
+| PA-68 | ENV-40 | Miroirs sous `lepton-distribution/` : noms, visibilité, contenu, périmètre, auteur de la création, avant toute création ; publication du tag et de `master` de `seed.scions`, fusions | ouvert |
+| PA-69 | ENV-41 | Bascule du F4 : lignes de projection, sort des provenances et licences, graines de projet qui référencent la famille, modifications de lepton, scripts `scripts/tiers/`, skill et hook, avant toute modification | ouvert |
+| PA-70 | ENV-41 | Rapport : ordre de publication de la graine `original-tree` et de la famille F4 ; push et fusions des branches `devenv/env-41` | ouvert |
+| PA-71 | ENV-42 | `core_cm4.h` : option (5.9.0 pour les Cortex-M4, retrait du 5.9.0, statu quo), sort de V3.30, critère d'écart par preset, cartes et écriture flash, avant toute modification | ouvert |
+| PA-72 | ENV-42 | Rapport : nouvel oracle de référence si des binaires ont changé ; push et fusions des branches `devenv/env-42` (lepton-tools, clone noyau) | ouvert |
+| PA-73 | ENV-43 | Consigne `consignes/env-43-debian.md`, critères C6 à C8 (miroir, cartes, nettoyage de la VM) ; push de `devenv/env-43`, ordre R43-1 | ouvert |
+| PA-74 | ENV-43 | Après `FIN-SUCCÈS R43-1` : fusions dans `main`, push | ouvert |
 | PA-P | toutes | Tout `git push`, toute action `scion seed-update` / `graft-update` | permanent |
 
 ## 5. Règles de travail (rappel des acquis du portage)
@@ -229,9 +243,9 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | Élément | Rôle | Étapes |
 | --- | --- | --- |
 | skill `devenv-session` | Procédure de début et de fin de session, passation | toutes |
-| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36 |
-| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15, 17, 19, 20, 21, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36 |
-| skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36 |
+| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 39, 40, 41, 42, 43 |
+| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15, 17, 19, 20, 21, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 39, 41, 42, 43 |
+| skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 41, 42, 43 |
 | hook `proteger-trunk.py` | Refuse Write/Edit sous `<ROOTSTOCK>/trunk/` et les commandes shell d'écriture visant `trunk/` | toutes |
 
 Une skill se corrige comme le code : sur la branche de l'étape, commit dédié, ligne de journal
@@ -279,6 +293,13 @@ ce plan.
 | ENV-34 | HAL et CMSIS device STM32F4 importés par la méthode du F7 | ENV-33 |
 | ENV-35 | Famille STM32F4 : passage de la SPL à la HAL | ENV-34 (HAL, CMSIS device et `core_cm4.h` importés) |
 | ENV-36 | Validation Debian groupée | ENV-34, ENV-35 |
+| ENV-37 | Famille STM32WL : audit et provenance du code tiers | ENV-36 |
+| ENV-38 | scion : conception de la projection et du miroir | ENV-37 (cas d'épreuve WL) |
+| ENV-39 | scion : projection d'un dépôt tiers | ENV-38 |
+| ENV-40 | scion : miroir de conservation | ENV-38 (indépendante d'ENV-39) |
+| ENV-41 | Famille STM32F4 : copie d'ENV-34 remplacée par la projection | ENV-39, ENV-40 |
+| ENV-42 | `core_cm4.h` : un seul CMSIS-Core pour les Cortex-M4 | ENV-36 (indépendante d'ENV-37 à ENV-41 ; ENV-41 conseillée avant) |
+| ENV-43 | Validation Debian groupée | ENV-37, ENV-38, ENV-39, ENV-40, ENV-41, ENV-42 |
 
 Ordre conseillé : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12. ENV-1 et ENV-2 sont permutables ;
 ENV-4 et ENV-5 aussi ; ENV-7 peut suivre directement ENV-2 si l'audit le justifie.
@@ -289,3 +310,6 @@ regreffes d'ENV-33 profitent du correctif de scion ; ENV-30 avant ENV-32, tâche
 réutilisable pour les tests de carte).
 Révision du 2026-11-04 : 34, 35, 36, strictement dans cet ordre (niveau 1 : import tracé sans
 changement de compilation ; niveau 2 : passage à la HAL ; puis validation Debian).
+Révision du 2026-11-05 : 37, 38, 39, 40, 41, 42, 43 (39 et 40 permutables ; ENV-37 d'abord, pour
+que la conception de la projection dispose du cas WL ; ENV-42 après ENV-41, une variable à la
+fois ; seule la famille F4 bascule sur la projection, le F7 et le WL à la révision suivante).
