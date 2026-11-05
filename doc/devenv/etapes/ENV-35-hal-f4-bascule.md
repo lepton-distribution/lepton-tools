@@ -65,6 +65,10 @@ des 4 presets F4 changent ; ceux des 12 autres presets et de host ne doivent pas
   `kernel/core/ucore/cmsis/Device/st/stm32f4xx` (2) ; XML Olimex. Les inclusions de
   `stm32f4xx_hal.h` hors plan (`stm32f4-usb-core` 3, `discovery_f4-baseboard-modem` 2,
   `stm32f469i-eval` 1) : `rapports/env-34-hal-f4.md` §1.3.
+- Fragments de HAL sans provenance dans `driverlib/` (écart d'ENV-34 renvoyé ici, PA-56) :
+  `stm32_hal_legacy.h`, `stm32f4xx_hal_def.h`, `stm32f4xx_hal_gpio.h`, `stm32f4xx_hal_gpio_ex.h`
+  (V1.3.0), inclus par aucune source compilée (`rapports/env-34-hal-f4.md` §5.4). Leur sort est
+  posé au PA-57 avec celui de la SPL.
 - Mémoire :
   - la CCM (`0x10000000`, `.ccm_bss`) est inaccessible au DMA (`ld/mem_nucleo-f439zi.ld`) :
     relever où sont placés les descripteurs et les tampons ETH. Constat du 2026-11-04 :
