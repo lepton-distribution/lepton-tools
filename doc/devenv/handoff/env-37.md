@@ -9,7 +9,7 @@ remplacée par celle de la session qui exécutera ENV-37.
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `main` | 98d8063 « devenv: révision du plan, étapes ENV-37 à ENV-43 … », puis le commit de cette passation ; non poussés (`origin/main` à 43bf697) | oui |
+| lepton-tools | `main` | 98d8063 « devenv: révision du plan, étapes ENV-37 à ENV-43 … », puis 30d9536 (cette passation) ; poussés le 2026-11-05 (PA-P), ainsi que le commit de consignation du push | oui |
 | clone noyau `depots/lepton/original/master` | `master` | 2893297 (non touché) | oui |
 | famille `depots/lepton/family-stm32wlxx/master` | `master` | dbc58d7 « Fusion de devenv/env-26 … » (non touché) | oui |
 | famille F4, BSP F429 et F439, BSP WL55, graine, seed.scions | — | non touchés (0fd8b2a, b9fe2bf, 314f91b, ef51ec1, 15740f9, 1173d6d et tag `0.5.4.0`) | oui |
