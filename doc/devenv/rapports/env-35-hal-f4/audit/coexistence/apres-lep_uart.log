@@ -1,0 +1,101 @@
+. /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stdint.h
+.. /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stdint-gcc.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernelconf.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ver.h
+.. /Users/cle_d_anton/lepton/build/nucleo-f429zi-embos/generated/board/kernel_mkconf.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/include/user_kernel_mkconf.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/nucleo_f439zi.h
+... /Users/cle_d_anton/lepton/build/nucleo-f429zi-embos/generated/board/dev_dskimg.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/arch/armv7m/kal_arch_conf.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/compiler.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/types.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/etypes.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/interrupt.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/arch/armv7m/kal_arch.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h
+..... /Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h
+...... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/include/libc/string.h
+....... /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stddef.h
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal/backend/embos/kal_backend.h:33,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kal.h:56,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h:47,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel.h:70,
+                 from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/uart.c:34:
+/Users/cle_d_anton/lepton/third_party/embos/cortexm-gcc/5.20.0.0/Start/Inc/RTOS.h:426:25: warning: 'struct _reent' declared inside parameter list will not be visible outside of this definition or declaration
+  426 | void OS__TLS_Set(struct _reent* pReentStruct) OS_TEXT_SECTION_ATTRIBUTE(OS_TLS_Set);
+      |                         ^~~~~~
+..... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/include/libc/stdlib.h
+...... /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stddef.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/limits.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_sem.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/timer.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_sigqueue.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/sys/siginfo.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_object.h
+..... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_pthread_mutex.h
+..... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/kernel_timer.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/signal.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/system.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/cpu.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ioctl_cpu.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/fcntl.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/pipe.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfsdev.h
+.... /Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/include/stdarg.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/net/socks.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/ufs/ufsinfo.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/yaffs/yaffsinfo.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/fat/fatinfo.h
+In file included from /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/uart.c:38:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/fs/vfs/vfstypes.h:249:56: warning: 'struct stat' declared inside parameter list will not be visible outside of this definition or declaration
+  249 | typedef int (*FS_EXTERN_STAT)(const char* path, struct stat * stat);                                    /* Get file status */
+      |                                                        ^~~~
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/malloc.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f429xx.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cm4.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cmInstr.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cmFunc.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cm4_simd.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/system_stm32f4xx.h
+.. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_conf.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_adc.h
+.... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_can.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_crc.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_cryp.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_dac.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_dbgmcu.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_dcmi.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_dma.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_exti.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_flash.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_fsmc.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_hash.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_gpio.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_i2c.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_iwdg.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_pwr.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_rcc.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_rng.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_rtc.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_sdio.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_spi.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_syscfg.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_tim.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_usart.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/stm32f4xx_wwdg.h
+... /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/driverlib/misc.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/types.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/gpio.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/dma.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/uart.h
+. /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/dev_stm32f4xx/dev_stm32f4xx_uart_x.h
+Multiple include guards may be useful for:
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cm4.h
+/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/cmsis/CMSIS/Include/core_cm4_simd.h

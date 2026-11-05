@@ -1,0 +1,635 @@
+Start testing: Nov 05 16:24 CET
+----------------------------------------------------------
+1/20 Testing: board.smoke_lsh
+1/20 Test: board.smoke_lsh
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/smoke_lsh.py" "--transport" "serial" "--port" "/dev/cu.usbmodem1454303" "--reset-command" "/opt/local/bin/openocd -f /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg -c "program /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/lepton.elf verify reset exit"" "--expect-machine" "cortexM4-stm32f4" "--command" "ls" "--command" "ps" "--log" "/Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/smoke_lsh_board.log"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos
+"board.smoke_lsh" start time: Nov 05 16:24 CET
+Output:
+----------------------------------------------------------
+smoke_lsh : /dev/cu.usbmodem1454303, uname -a = cortexM4-stm32f4, 2 commande(s) ; journal /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/smoke_lsh_board.log
+<end of output>
+Test time =  10.70 sec
+----------------------------------------------------------
+Test Passed.
+"board.smoke_lsh" end time: Nov 05 16:25 CET
+"board.smoke_lsh" time elapsed: 00:00:10
+----------------------------------------------------------
+
+2/20 Testing: board.net
+2/20 Test: board.net
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/board_net.py" "--port" "/dev/cu.usbmodem1454303" "--reset-command" "/opt/local/bin/openocd -f /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg -c "program /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/lepton.elf verify reset exit"" "--host-ip" "192.168.2.10" "--guest-ip" "192.168.2.5" "--ftp-file" "/usr/etc/.boot" "--ftp-reference" "/Users/cle_d_anton/lepton/trunk/sys/user/tauon-basic/etc/nucleo-f439zi/.boot" "--errno-header" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/errno.h" "--log" "/Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/board_net.log"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos
+"board.net" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+*resp* '220 You will be disconnected after 1800 seconds of inactivity.'
+*welcome* '220 You will be disconnected after 1800 seconds of inactivity.'
+*cmd* 'USER tauon'
+*resp* '331 User tauon OK.  Password required.'
+*cmd* 'PASS *****'
+*resp* '230 OK.  Current directory is /'
+*cmd* 'CWD /usr/sbin'
+*resp* '250 Changed to /usr/sbin'
+*cmd* 'TYPE A'
+*resp* '200 TYPE is now ASCII'
+*cmd* 'PASV'
+*resp* '227 Passive mode OK (192,168,2,5,119,17)'
+*cmd* 'LIST'
+*resp* '150 Accepted data connection from 192.168.2.10:60623'
+*resp* '226-Options: -l \n226 12 matches total'
+*cmd* 'TYPE I'
+*resp* '200 TYPE is now 8-bit binary'
+*cmd* 'PASV'
+*resp* '227 Passive mode OK (192,168,2,5,119,16)'
+*cmd* 'RETR /usr/etc/.boot'
+*resp* '150 Accepted data connection from 192.168.2.10:60624'
+*resp* '226 File written successfully'
+*cmd* 'QUIT'
+*resp* '221 Goodbye.  You uploaded 0 and downloaded 1 kbytes.'
+board_net : ping 3/3, FTP « 220 You will be disconnected after 1800 seconds of inactivity. », LIST 13 entrée(s), RETR /usr/etc/.boot 57 octets identique, errno ECONNRESET=15 ; journal /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/board_net.log
+<end of output>
+Test time =  16.43 sec
+----------------------------------------------------------
+Test Passed.
+"board.net" end time: Nov 05 16:25 CET
+"board.net" time elapsed: 00:00:16
+----------------------------------------------------------
+
+3/20 Testing: kal.board_flash
+3/20 Test: kal.board_flash
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--program" "/Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal/kal_bench.elf"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.board_flash" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000240 msp: 0x20030000
+** Programming Started **
+** Programming Finished **
+** Verify Started **
+** Verified OK **
+shutdown command invoked
+<end of output>
+Test time =   1.00 sec
+----------------------------------------------------------
+Test Passed.
+"kal.board_flash" end time: Nov 05 16:25 CET
+"kal.board_flash" time elapsed: 00:00:01
+----------------------------------------------------------
+
+4/20 Testing: kal.T1
+4/20 Test: kal.T1
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T1"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T1" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x61000000 pc: 0x2000002e msp: 0x20030000
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T1]
+
+kal_bench : T1
+kal_bench : OK
+<end of output>
+Test time =   0.97 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T1" end time: Nov 05 16:25 CET
+"kal.T1" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/20 Testing: kal.T2
+5/20 Test: kal.T2
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T2"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T2" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T2]
+
+kal_bench : T2
+T2 : PC de départ = 0x0800206b
+kal_bench : OK
+<end of output>
+Test time =   1.29 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T2" end time: Nov 05 16:25 CET
+"kal.T2" time elapsed: 00:00:01
+----------------------------------------------------------
+
+6/20 Testing: kal.T3
+6/20 Test: kal.T3
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T3"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T3" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T3]
+
+kal_bench : T3
+kal_bench : OK
+<end of output>
+Test time =   0.99 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T3" end time: Nov 05 16:25 CET
+"kal.T3" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/20 Testing: kal.T4
+7/20 Test: kal.T4
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T4"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T4" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T4]
+
+kal_bench : T4
+kal_bench : OK
+<end of output>
+Test time =   0.98 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T4" end time: Nov 05 16:25 CET
+"kal.T4" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/20 Testing: kal.T5
+8/20 Test: kal.T5
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T5"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T5" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T5]
+
+kal_bench : T5
+kal_bench : OK
+<end of output>
+Test time =   0.98 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T5" end time: Nov 05 16:25 CET
+"kal.T5" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/20 Testing: kal.T6
+9/20 Test: kal.T6
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T6"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T6" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T6]
+
+kal_bench : T6
+kal_bench : OK
+<end of output>
+Test time =   0.98 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T6" end time: Nov 05 16:25 CET
+"kal.T6" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/20 Testing: kal.T7
+10/20 Test: kal.T7
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T7"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T7" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T7]
+
+kal_bench : T7
+kal_bench : OK
+<end of output>
+Test time =   1.00 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T7" end time: Nov 05 16:25 CET
+"kal.T7" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/20 Testing: kal.T8
+11/20 Test: kal.T8
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T8"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T8" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T8]
+
+kal_bench : T8
+T8 : SP de la nouvelle image = 0x20001e80
+T8 : FPSCR de la nouvelle image = 0x02000000
+T8 : S16-S31 résiduels = motifs de l'ancienne image (journalisé, non exigé)
+kal_bench : OK
+<end of output>
+Test time =   1.68 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T8" end time: Nov 05 16:25 CET
+"kal.T8" time elapsed: 00:00:01
+----------------------------------------------------------
+
+12/20 Testing: kal.T1F
+12/20 Test: kal.T1F
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T1F"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T1F" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T1F]
+
+kal_bench : T1F
+kal_bench : OK
+<end of output>
+Test time =   0.97 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T1F" end time: Nov 05 16:25 CET
+"kal.T1F" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/20 Testing: kal.T4F
+13/20 Test: kal.T4F
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T4F"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T4F" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T4F]
+
+kal_bench : T4F
+kal_bench : OK
+<end of output>
+Test time =   0.97 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T4F" end time: Nov 05 16:25 CET
+"kal.T4F" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/20 Testing: kal.T6F
+14/20 Test: kal.T6F
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T6F"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T6F" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T6F]
+
+kal_bench : T6F
+kal_bench : OK
+<end of output>
+Test time =   0.98 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T6F" end time: Nov 05 16:25 CET
+"kal.T6F" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/20 Testing: kal.T7F
+15/20 Test: kal.T7F
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=T7F"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.T7F" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench T7F]
+
+kal_bench : T7F
+kal_bench : OK
+<end of output>
+Test time =   0.97 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T7F" end time: Nov 05 16:25 CET
+"kal.T7F" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/20 Testing: kal.TICI
+16/20 Test: kal.TICI
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=TICI"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.TICI" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench TICI]
+
+kal_bench : TICI
+kal_bench : OK
+<end of output>
+Test time =   1.04 sec
+----------------------------------------------------------
+Test Passed.
+"kal.TICI" end time: Nov 05 16:25 CET
+"kal.TICI" time elapsed: 00:00:01
+----------------------------------------------------------
+
+17/20 Testing: kal.TCLK
+17/20 Test: kal.TCLK
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=TCLK"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.TCLK" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench TCLK]
+
+kal_bench : TCLK
+TCLK : ticks = 0x000001f4
+TCLK : temps noyau (us) = 0x0007a120
+kal_bench : OK
+<end of output>
+Test time =   2.09 sec
+----------------------------------------------------------
+Test Passed.
+"kal.TCLK" end time: Nov 05 16:25 CET
+"kal.TCLK" time elapsed: 00:00:02
+----------------------------------------------------------
+
+18/20 Testing: kal.TSBRK
+18/20 Test: kal.TSBRK
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=TSBRK"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.TSBRK" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench TSBRK]
+
+kal_bench : TSBRK
+TSBRK : taille des blocs = 0x000055d0
+TSBRK : blocs alloués = 0x00000007
+kal_bench : OK
+<end of output>
+Test time =   1.59 sec
+----------------------------------------------------------
+Test Passed.
+"kal.TSBRK" end time: Nov 05 16:25 CET
+"kal.TSBRK" time elapsed: 00:00:01
+----------------------------------------------------------
+
+19/20 Testing: kal.IRQ
+19/20 Test: kal.IRQ
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=IRQ"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.IRQ" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench IRQ]
+
+kal_bench : IRQ
+IRQ : itérations pour 5 ticks = 0x00029040
+kal_bench : OK
+<end of output>
+Test time =   1.28 sec
+----------------------------------------------------------
+Test Passed.
+"kal.IRQ" end time: Nov 05 16:25 CET
+"kal.IRQ" time elapsed: 00:00:01
+----------------------------------------------------------
+
+20/20 Testing: kal.harness_fail
+20/20 Test: kal.harness_fail
+Command: "/usr/local/Frameworks/Python.framework/Versions/3.11/bin/python3.11" "/Users/cle_d_anton/lepton/trunk/tests/kal_openocd.py" "--openocd" "/opt/local/bin/openocd" "--cfg" "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg" "--test=HARNESS_FAIL"
+Directory: /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/tests/kal
+"kal.harness_fail" start time: Nov 05 16:25 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+[stm32f4x.cpu] halted due to breakpoint, current mode: Thread 
+xPSR: 0x21000000 pc: 0x08001cc0 psp: 0x20002e68
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001d0 msp: 0x20030000
+semihosting is enabled
+
+semihosting command line is [kal_bench HARNESS_FAIL]
+
+kal_bench : HARNESS_FAIL
+ÉCHEC : échec volontaire (le harnais doit rendre un code non nul)
+kal_bench : ÉCHEC
+<end of output>
+Test time =   1.31 sec
+----------------------------------------------------------
+Test Passed.
+"kal.harness_fail" end time: Nov 05 16:25 CET
+"kal.harness_fail" time elapsed: 00:00:01
+----------------------------------------------------------
+
+End testing: Nov 05 16:25 CET
+
+arch:cortex-m4f =  48.19 sec*proc
+
+backend:embos =  48.19 sec*proc
+
+board =  48.19 sec*proc
+
+kal =  31.76 sec*proc
+
+net =  16.43 sec*proc
+

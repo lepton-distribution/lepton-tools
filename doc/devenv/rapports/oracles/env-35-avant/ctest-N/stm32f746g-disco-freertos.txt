@@ -1,0 +1,4 @@
+Internal ctest changing into directory: /Users/cle_d_anton/lepton/build/stm32f746g-disco-freertos
+Test project /Users/cle_d_anton/lepton/build/stm32f746g-disco-freertos
+
+Total Tests: 0
