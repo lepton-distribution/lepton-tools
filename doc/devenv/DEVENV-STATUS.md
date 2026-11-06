@@ -431,6 +431,8 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-11-06 | PA-71 (ENV-42) | Critère d'écart : écarts mesurés exacts du rapport §1.3 (`.text` +16 à +48 octets et `.debug_*` des 10 presets M4F/M4, symboles NVIC listés ; données identiques ; fumée et banc KAL QEMU identiques) ; M7, M0+ et host : code 0 ; tout autre écart bloque l'étape. Décision de l'utilisateur. |
 | 2026-11-06 | PA-71, PA-11 (ENV-42) | Cartes : NUCLEO-F429ZI et les deux NUCLEO-WL55JC1, écriture flash accordée pour la session (banc de référence avant modification, banc après, vue XPERIPHERALS F429). Décision de l'utilisateur. |
 | 2026-11-06 | PA-71 (ENV-42) | Commentaire `qemu_mps2_machine.h:9` du BSP `qemu-mps2-an386` corrigé (branche `devenv/env-42` du greffon `bsp-qemu-mps2-an386`, binaire inchangé) ; fusion et push au PA-72. Décision de l'utilisateur. |
+| 2026-11-06 | PA-72 (ENV-42, PA-P) | Rapport `rapports/env-42-core-cm4.md` accepté ; nouvel oracle de référence `oracles/env-42-apres/` ; publication dans l'ordre clone noyau (`devenv/env-42` → `master`), `bsp-qemu-mps2-an386` (`devenv/env-42` → `master`), lepton-tools (`devenv/env-42` → `main`), branches et cibles poussées ; copie `essais/env-42-copie` supprimée ; O-1 (BSP `nucleo-f429zi` sans choix de sonde par numéro) hors plan, à la révision suivante. Décision de l'utilisateur. |
+| 2026-11-06 | PA-71, PA-11 (ENV-42) | Vue XPERIPHERALS de `nucleo-f429zi-embos` (image ENV-42) : registres `RCC` et `GPIOB` lisibles, confirmé par l'utilisateur. |
 
 ## Journal
 

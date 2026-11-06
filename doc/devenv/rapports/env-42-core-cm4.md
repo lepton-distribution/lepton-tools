@@ -257,3 +257,9 @@ L'OpenOCD de Cortex-Debug est resté actif après la session jusqu'à la fermetu
   proposé).
 - **O-4** : copie d'essai `~/lepton-tools-dev/essais/env-42-copie` (487 Mo) conservée en attendant
   le PA-72.
+
+## 5. PA-72 (2026-11-06, décisions de l'utilisateur)
+
+Rapport accepté ; nouvel oracle de référence `oracles/env-42-apres/`. Publication : clone noyau,
+puis `bsp-qemu-mps2-an386`, puis lepton-tools (fusions `--no-ff` de `devenv/env-42`, branches et
+cibles poussées). Copie d'essai supprimée. O-1 : hors plan, révision suivante.
