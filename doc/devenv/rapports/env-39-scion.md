@@ -65,3 +65,70 @@ requis.
 - E3 : clé projetée que son porteur ne déclare plus → retirée de la liste greffée, avec un
   message (nouvelle règle P-P7).
 - Version 0.6.0.0 ; `SCION_REF` relevé ici ; `SCION_MIN_VERSION` inchangé ; aucun effet sur lepton.
+
+## 2. Implémentation (`<SEED_SCIONS>`, `devenv/env-39`)
+
+| Commit | Contenu |
+| --- | --- |
+| f5c71ce | spécification : précisions du PA-65 (P-T4, P-K2, P-V1, P-V2, P-V4, P-V6, P-E1, P-P4, P-P5, P-P7, P-G3, A.11) |
+| b82452a | `model.py` : 6ᵉ colonne `carrier` de la liste greffée, lecture numérotée |
+| 8141b53 | `projection.py` (nouveau) : lecture stricte, motifs, destinations, résolution, casse ; `gitops.py` : clone partiel, `ls-tree`, commit |
+| a9d8ea5 | `graft.py`, `cli.py` : graines et porteurs, versions tag/commit, état du clone, propriété par la table, retrait avec le porteur ; `tests/test_projection.py`, fixture `build_tiers` |
+| 7634504 | version 0.6.0.0 : `__init__.py`, `CHANGELOG.md`, `README.md`, test de version |
+
+Tag annoté local `0.6.0.0` sur 7634504 (non publié avant le PA-66).
+
+Écart à la procédure : les tests et le code d'un même comportement sont dans un même commit
+(trois commits de fond au lieu d'un par règle), le code des règles étant entrelacé dans `graft.py`.
+
+Tests : `pytest -q` → **229 réussis, 1 sauté** (158 existants inchangés + 71 nouveaux dans
+`tests/test_projection.py`, un ou plusieurs par ligne P-* et A.11/A.12 du plan d'ENV-38 §3, plus
+`test_version_declaree_remplace_toujours` (P-V6) et `test_cle_que_le_porteur_ne_declare_plus_retiree`
+(P-P7)). Contrôle par mutation : la suppression du contrôle de casse, du contrôle des fichiers
+modifiés du clone ou de la réserve des clones partagés fait échouer 4 tests.
+
+Noms interdits : `git diff master -- scion tests | grep -ci '^+.*lepton'` → 0 ; aucun nom ST ou
+STM32. Le critère littéral `grep -ri lepton scion/` → 0 n'est pas tenu depuis avant ENV-39 :
+`scion/__init__.py` porte l'URL du dépôt et l'adresse de l'auteur (occurrences antérieures, non
+modifiées).
+
+## 3. Essai sur une copie (`~/lepton-tools-dev/essais/env-39-copie`)
+
+Copie de `<ROOTSTOCK>` par `rsync -a` sans `build/` ni `third_party/` (inutiles à la greffe).
+scion lancé depuis les sources de `devenv/env-39` (`PYTHONPATH=<SEED_SCIONS> python3 -m
+scion.cli`) au lieu d'un `pipx install` : l'outil installé reste 0.5.4.0 pour tous les rootstocks
+pendant l'essai.
+
+### 3.1 Non-régression sans projection
+Liste triée des liens (`chemin -> cible`, 3982 lignes), SHA-256 :
+
+| Relevé | SHA-256 |
+| --- | --- |
+| `<ROOTSTOCK>` tel quel | `05b15192d4d45e37ff63dc731e3842639082b634ba683aa880185115686005da` |
+| copie, avant toute greffe | idem |
+| copie, `scion graft` 0.5.4.0 installé | idem |
+| copie, `scion graft` de `devenv/env-39` | idem |
+
+Mêmes messages (« 30 chemin(s) ignoré(s) », « 3982 feuilles »), liste greffée à 5 colonnes,
+`rootstock-information` sans ligne `projected`. Le trunk de `<ROOTSTOCK>` contient 16 `.DS_Store`
+tolérés (`.scion.trunk.tolerated`), sans effet.
+
+### 3.2 Essai à blanc F4
+- Porteur : `scion/.scion/` du clone `family-stm32f4xx` de la copie, lignes du §2.1 du rapport
+  d'ENV-38. Les URL sont `file://localhost/Users/cle_d_anton/lepton-tools-dev/tiers/…` (E12).
+- 206 fichiers de la HAL et du CMSIS device retirés du clone famille de la copie
+  (`git rm`, non commité). `LEPTON-PROVENANCE.md` est conservé.
+- `seed-clone --seed depots/lepton-seed.scions/original-tree` (code 0), puis `graft` (code 0).
+
+| Contrôle | Résultat |
+| --- | --- |
+| chemins du trunk (3982) | identiques à ceux d'avant |
+| cibles changées | 206, toutes sous `depots/tiers/` ; liste = `attendus/f4-hal.txt` + `attendus/f4-cmsis-device.txt` (`chemins-projetes.txt`) |
+| contenu des 206 fichiers (`cmp` avec le trunk de `<ROOTSTOCK>`) | identique |
+| clones | `depots/tiers/stm32f4xx-hal-driver/v1.8.5` (HEAD b6f0ed3), `depots/tiers/cmsis-device-f4/3c77349…` (HEAD 3c77349) ; `partialclonefilter` = `blob:none` |
+| liste greffée | 16 entrées, 2 à 6 colonnes (6ᵉ = `depots/lepton/family-stm32f4xx/master/scion/.scion`) ; `scions projected: 2` |
+| fichiers réguliers, liens cassés | 0, 0 |
+
+SHA-256 de la liste après projection : `d9f4ea56cc06867daa69313ac9ff2ee5a6185cc77b6254e0e6080ec75078bb8c`.
+Écart : `env-39-scion/essai-f4.diff` (206 lignes retirées, 206 ajoutées, mêmes chemins).
+**Aucun écart** à consigner pour ENV-41.
