@@ -26,7 +26,12 @@ GITKEEP = ".gitkeep"
 class Owner:
     key: str
     name: str
-    stem: Path          # <clone>/scion, résolu
+    stem: Path          # <clone>/scion, résolu ; clé projetée : racine du clone tiers (P-G3)
+    porter: str | None = None   # clé projetée : nom du greffon porteur, « graine » si la graine la déclare
+
+    @property
+    def projected(self) -> bool:
+        return self.porter is not None
 
 
 @dataclass
@@ -42,14 +47,24 @@ class Target:
         return self.rs.trunk / self.rel
 
     def clone_path(self, owner: Owner) -> Path:
+        if owner.projected and not self.in_clone:
+            # lien projeté : la cible du lien (le chemin du trunk ne se retrouve pas dans le clone tiers)
+            return self.trunk_path.resolve() if self.trunk_path.is_symlink() else owner.stem / self.rel
         return owner.stem / self.rel
 
 
 def _owners(rs: Rootstock) -> list[Owner]:
-    found = []
+    found, projected = [], rs.projected_keys()
+    names = {}
     for e in rs.grafted():
         m = find_manifest(rs.clone(e))
-        found.append(Owner(e.key, m.name if m else e.name, (rs.clone(e) / STEM_DIR).resolve()))
+        names[e.key] = m.name if m else e.name
+        if e.key in projected:
+            porter = rs.porter_of(e)
+            found.append(Owner(e.key, e.name, rs.clone(e).resolve(),
+                               names.get(porter.key, porter.name) if porter else "graine"))
+        else:
+            found.append(Owner(e.key, names[e.key], (rs.clone(e) / STEM_DIR).resolve()))
     return found
 
 
@@ -113,7 +128,18 @@ def _by_name(rs: Rootstock, owners: list[Owner], name: str) -> Owner:
     return o
 
 
+def refuse_projected(owner: Owner) -> Owner:
+    """Clé projetée : fichiers d'un dépôt tiers, jamais modifiés par lepton (ENV-41, PA-69)."""
+    if owner.projected:
+        raise LeptonError(f"« {owner.name} » ({owner.key}) : dépôt tiers projeté par {owner.porter}, "
+                          f"fichiers non modifiables",
+                          "modifier la projection dans le scion/.scion/ du porteur, ou fournir un fichier local "
+                          "par un autre greffon (exclusion !motif) ; --scion NAME pour créer dans un greffon")
+    return owner
+
+
 def _in_seed(rs: Rootstock, owner: Owner) -> Owner:
+    refuse_projected(owner)
     if owner.key not in {s.key for s in rs.sources()}:
         raise LeptonError(f"greffon « {owner.name} » ({owner.key}) hors de la graine",
                           f"lepton seed add {owner.name} … pour l'y déclarer")
@@ -153,6 +179,10 @@ def _new_path_owner(rs: Rootstock, owners: list[Owner], t: Target, scion_name: s
     plus proche répertoire du trunk qui en a (§3.7, _search_dir)."""
     o = _ownership(rs, owners, t, scion_name)
     where = o.searched.relative_to(rs.trunk.parent) if o.searched else None
+    writable = [c for c in o.candidates if not c.projected]
+    if o.status == "ambiguous" and len(writable) == 1:
+        # répertoire partagé avec une clé projetée (P-G1) : seul le greffon ordinaire peut recevoir le fichier
+        o = Ownership("owned", o.source, writable[0], o.candidates, o.searched)
     if o.status == "none":
         raise LeptonError(f"{t.rel} : chemin du trunk sans greffon propriétaire (aucune feuille sous {where})",
                           "désigner le greffon par --scion NAME")
@@ -223,6 +253,8 @@ def _adopt(rs: Rootstock, owners: list[Owner], t: Target, args) -> int:
 
 def _owner_json(o: Owner, rs: Rootstock, t: Target | None = None) -> dict:
     data = {"name": o.name, "key": o.key, "in_seed": o.key in {s.key for s in rs.sources()}}
+    if o.projected:
+        data["projected_by"] = o.porter
     if t is not None:
         data["clone_path"] = str(t.clone_path(o))
     return data
@@ -250,7 +282,8 @@ def file_owner(args) -> int:
         json.dump(result, sys.stdout, ensure_ascii=False, indent=2)
         print()
     elif o.owner:
-        print(f"{o.owner.name} ({o.owner.key}) : {t.clone_path(o.owner)}")
+        porter = f", projeté par {o.owner.porter}" if o.owner.projected else ""
+        print(f"{o.owner.name} ({o.owner.key}{porter}) : {t.clone_path(o.owner)}")
     elif o.candidates:
         print(f"plusieurs greffons : {', '.join(c.name for c in o.candidates)}")
     else:

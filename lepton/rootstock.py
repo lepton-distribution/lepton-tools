@@ -2,10 +2,13 @@
 
 Lecture seule : toute écriture des fichiers `.scion.*` passe par scion (interface PA-9 §1). Le
 format reproduit celui de scion 0.5.1.0 (`scion/model.py`) : champs séparés par des blancs, `#`
-commence un commentaire, ligne trop courte ignorée.
+commence un commentaire, ligne trop courte ignorée. Depuis scion 0.6.0.0 (projection d'un dépôt
+tiers, ENV-41) : 6ᵉ colonne facultative de la liste greffée (`.scion/` porteur, P-P3) et
+`.scion.projections` d'une graine ou d'un porteur.
 """
 
 import json
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -17,6 +20,7 @@ SIGNATURE = ".scion.rootstock.signature"
 GRAFTED_LIST = ".scion.grafted.list"
 SOURCES_LIST = ".scion.sources.list"
 RAMIFICATIONS = ".scion.ramifications"
+PROJECTIONS = ".scion.projections"
 STEM_DIR = "scion"
 SOURCE_ROOT = Path("sys/root/src")   # racine des destinations des manifestes (lecteur CMake)
 
@@ -63,10 +67,16 @@ class GraftedEntry:
     version: str
     local_path: str
     seed_dot: str = ""
+    porter: str = ""        # 6ᵉ colonne : `.scion/` du scion porteur d'une clé projetée (P-P3)
 
     @property
     def key(self) -> str:
         return f"{self.shelf}@{self.name}"
+
+    @property
+    def dot(self) -> str:
+        """`.scion/` qui déclare l'entrée : porteur (6ᵉ colonne), sinon graine (5ᵉ)."""
+        return self.porter or self.seed_dot
 
 
 @dataclass(frozen=True)
@@ -83,7 +93,8 @@ class SourceEntry:
 
 
 def read_grafted(path: Path) -> list[GraftedEntry]:
-    return [GraftedEntry(f[0], f[1], f[2], f[3], f[4] if len(f) > 4 else "") for f in _lines(path) if len(f) >= 4]
+    return [GraftedEntry(f[0], f[1], f[2], f[3], f[4] if len(f) > 4 else "", f[5] if len(f) > 5 else "")
+            for f in _lines(path) if len(f) >= 4]
 
 
 def read_sources(path: Path) -> list[SourceEntry]:
@@ -95,10 +106,16 @@ def read_ramifications(path: Path) -> list[str]:
     return [f"{f[0]}@{f[1]}" for f in _lines(path) if len(f) >= 3]
 
 
+def read_projection_keys(path: Path) -> set[str]:
+    """Clés `shelf@nom` qui ont au moins une ligne dans `.scion.projections` (clés projetées)."""
+    return {f"{f[0]}@{f[1]}" for f in _lines(path) if len(f) >= 4}
+
+
 @dataclass
 class Manifest:
     path: Path
     data: dict
+    trunk_dir: Path | None = None   # répertoire du manifeste dans le trunk (greffon greffé)
 
     @property
     def name(self) -> str:
@@ -209,8 +226,46 @@ class Rootstock:
         for e in self.grafted():
             m = find_manifest(self.clone(e))
             if m is not None:
+                m.trunk_dir = self.trunk / m.path.parent.relative_to(self.clone(e) / STEM_DIR)
                 found[e.key] = m
         return found
+
+    # --- clés projetées (scion 0.6.0.0, ENV-41) ---------------------------------------------------
+    def projected_keys(self) -> set[str]:
+        """Clés projetées greffées : 6ᵉ colonne présente, ou ligne dans le `.scion.projections` du
+        `.scion/` qui les déclare (graine ou porteur)."""
+        grafted = self.grafted()
+        declared = set()
+        for dot in {e.dot for e in grafted if e.dot}:
+            declared |= read_projection_keys(self.resolve(dot) / PROJECTIONS)
+        return {e.key for e in grafted if e.porter or e.key in declared}
+
+    def porter_of(self, entry: GraftedEntry) -> GraftedEntry | None:
+        """Scion greffé dont le `scion/.scion/` porte la clé projetée `entry` (None : la graine)."""
+        if not entry.porter:
+            return None
+        clone = self.resolve(entry.porter).resolve().parent.parent
+        return next((e for e in self.grafted() if self.clone(e).resolve() == clone), None)
+
+    def projection_tables(self) -> dict[str, dict[str, str]]:
+        """Par clé projetée : chemin relatif au clone tiers → chemin relatif au trunk, d'après les
+        liens du trunk (résultat réel de la greffe, P-G3 ; aucune relecture des motifs)."""
+        roots = {e.key: os.path.realpath(self.clone(e)) for e in self.grafted() if e.key in self.projected_keys()}
+        tables: dict[str, dict[str, str]] = {key: {} for key in roots}
+        if not roots:
+            return tables
+        trunk = str(self.trunk)
+        for directory, dirs, files in os.walk(trunk):
+            for name in dirs + files:
+                p = os.path.join(directory, name)
+                if not os.path.islink(p):
+                    continue
+                real = os.path.realpath(p)
+                for key, root in roots.items():
+                    if real.startswith(root + os.sep):
+                        tables[key][os.path.relpath(real, root)] = os.path.relpath(p, trunk)
+                        break
+        return tables
 
     def key_of(self, name: str) -> str | None:
         """Clé scion du greffon greffé dont le manifeste porte `nom` = name."""
