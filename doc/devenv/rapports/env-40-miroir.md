@@ -150,3 +150,36 @@ cet essai. Rien n'a été créé sur GitHub.
   `README.md`, `README-PAQUET.md`, `doc/BUILDING.md` à 0.6.1.0 ; `shellcheck` conforme. Trunk :
   aucun fichier régulier, aucun lien cassé.
 - Ces références désignent le tag `0.6.1.0` de GitHub, publié au PA-68.
+
+## 4. Miroirs publiés, version (PA-68)
+
+### 4.1 Décisions du PA-68 (utilisateur, 2026-11-06)
+- Périmètre : les deux dépôts du F4 ; F7 et WL à la révision suivante du plan.
+- Noms : `lepton-distribution/mirror-stm32f4xx-hal-driver`, `lepton-distribution/mirror-cmsis_device_f4`.
+- Publics ; description GitHub seule (« Miroir de conservation de <amont> (avance rapide
+  seulement, scion mirror-sync) ») ; aucun commit ajouté.
+- Création par la session (`gh repo create --public`, sans README ni licence).
+- Authentification : `git config --global url."ssh://git@github.com/".pushInsteadOf
+  "https://github.com/"`, posé par la session ; les miroirs sont déclarés par leur URL `https://`.
+- Publication complète.
+
+### 4.2 Exécution
+| Action | Résultat |
+| --- | --- |
+| tag annoté `0.6.1.0` sur 4502a70 (`<SEED_SCIONS>`) | posé |
+| `pipx install --force "git+file://<SEED_SCIONS>@0.6.1.0"` | `scion version` → 0.6.1.0 |
+| `pushInsteadOf` global | `url.ssh://git@github.com/.pushinsteadof https://github.com/` |
+| `gh repo create` ×2 | `https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver`, `https://github.com/lepton-distribution/mirror-cmsis_device_f4` ; publics, branche par défaut `master` |
+| graine de publication `~/lepton-tools-dev/essais/env-40-publication/` | rootstock `--bare` ; `graine/scion/.scion/.scion.mirrors` : 2 lignes `https://github.com/lepton-distribution/mirror-<nom>.git https://github.com/STMicroelectronics/<nom>.git` |
+| `scion mirror-sync --seed graine --dry-run` | code 0 ; 16 et 9 « à envoyer » |
+| `scion mirror-sync --seed graine` | code 0 ; 16 et 9 références envoyées, 0 signalement (`env-40-miroir/publication/synchro-1.log`) |
+| contrôle `git ls-remote` branches et tags | miroir = amont GitHub (`cmp`) : 31 lignes (HAL), 17 lignes (CMSIS device) (`publication/miroir-*.txt`, `amont-*.txt`) |
+| atteignabilité | clone nu partiel de chaque miroir : `b6f0ed3829f3…` et `3c77349ce04c…` ancêtres de `master` |
+| seconde passe | code 0 ; 0 envoyée, 0 signalement (`synchro-2.log`) |
+| liste des liens de `<ROOTSTOCK>` (`./chemin -> cible`, triée) | 3982 liens, SHA-256 `05b15192…` = ENV-39 ; aucune regreffe nécessaire (aucun `.scion.mirrors` dans `<ROOTSTOCK>`) |
+| `lepton check` (`<ROOTSTOCK>`) | code 0 ; 19 fichiers conformes |
+| `pytest` de lepton (`~/lepton-tools-dev/venv-lepton-tools`) | 235 réussis (5 min 49 s) |
+| fusions et push | seed.scions `devenv/env-40` → `master` f29fa35, push de `master`, de la branche et du tag `0.6.1.0` (objet ea9e35a → 4502a70) par `origin` (pushurl SSH) ; clone noyau `devenv/env-40` → `master` 885696c, poussées ; lepton-tools `devenv/env-40` → `main`, poussées |
+
+Trunk de `<ROOTSTOCK>` après les fusions : 0 fichier régulier, 0 lien cassé, clone noyau propre.
+Validation Debian reportée à ENV-43.
