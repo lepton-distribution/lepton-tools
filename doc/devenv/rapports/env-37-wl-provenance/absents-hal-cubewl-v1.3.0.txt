@@ -1,0 +1,4 @@
+Drivers/STM32WLxx_HAL_Driver/_htmresc/favicon.png
+Drivers/STM32WLxx_HAL_Driver/_htmresc/mini-st_2020.css
+Drivers/STM32WLxx_HAL_Driver/_htmresc/st_logo_2020.png
+Drivers/STM32WLxx_HAL_Driver/LICENSE.md

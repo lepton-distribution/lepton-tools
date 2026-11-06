@@ -1,0 +1,11 @@
+--- stm32wlxx-hal-driver v1.3.0:Inc/Legacy/stm32_hal_legacy.h
++++ famille (= STM32CubeWL v1.3.0)
+@@ -1291,7 +1291,7 @@
+ #define TIM_TIM3_TI1_COMP1COMP2_OUT   TIM_TIM3_TI1_COMP1_COMP2
+ #endif
+ 
+-#if defined(STM32U5)
++#if defined(STM32U5) || defined(STM32MP2)
+ #define OCREF_CLEAR_SELECT_Pos       OCREF_CLEAR_SELECT_POS
+ #define OCREF_CLEAR_SELECT_Msk       OCREF_CLEAR_SELECT_MSK
+ #endif

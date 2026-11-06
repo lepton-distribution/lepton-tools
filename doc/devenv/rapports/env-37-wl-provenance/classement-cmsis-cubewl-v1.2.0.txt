@@ -1,0 +1,6 @@
+OK      Drivers/CMSIS/Device/ST/STM32WLxx/Include/stm32wl55xx.h
+OK      Drivers/CMSIS/Device/ST/STM32WLxx/Include/stm32wlxx.h
+OK      Drivers/CMSIS/Device/ST/STM32WLxx/Include/system_stm32wlxx.h
+OK      Drivers/CMSIS/Device/ST/STM32WLxx/Source/Templates/iar/startup_stm32wl55xx_cm4.s
+OK      Drivers/CMSIS/Device/ST/STM32WLxx/Source/Templates/system_stm32wlxx.c
+verifier-import: 6d27fec2e59e2032d3d6cd55909b0bc73bae9356 ; 5 identique(s), 0 écart(s)
