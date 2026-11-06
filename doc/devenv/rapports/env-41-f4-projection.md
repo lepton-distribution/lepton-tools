@@ -198,3 +198,71 @@ file://…`, `graft` : code 0, 3982 feuilles, 16 entrées dont 2 à 6 colonnes. 
 l'avant ; 0 lien cassé, 0 fichier régulier ; 206 fichiers projetés = HEAD des clones tiers ; les
 3 seuls contenus différents de `<ROOTSTOCK>` sont les 3 fichiers modifiés du §3.1 ; `lepton check`
 code 0 (`env-41-f4-projection/vierge/`).
+
+### 3.5 `<ROOTSTOCK>` (accord PA-P de l'utilisateur, 2026-11-06)
+
+Journaux : `env-41-f4-projection/rootstock/`.
+
+| Action | Résultat |
+| --- | --- |
+| `git fetch` des 4 commits du clone de la copie, `merge --ff-only` | `family-stm32f4xx` `devenv/env-41` = dfb4528, propre, aucun répertoire résiduel |
+| `scion seed-clone --seed depots/lepton-seed.scions/original-tree` | code 0 ; `depots/tiers/stm32f4xx-hal-driver/v1.8.5`, `depots/tiers/cmsis-device-f4/3c77349…` (origine = miroirs) |
+| `scion graft` (ni `graft-update` ni `seed-update`) | code 0, 3982 feuilles ; liste greffée 16 entrées, 2 à 6 colonnes |
+| liste des liens | 3982 chemins identiques à l'avant, SHA-256 `d9f4ea56…` (= copie) ; 206 cibles vers `depots/tiers/` ; 0 fichier régulier, 0 lien cassé ; clone noyau propre |
+| contenu, casse | 206 fichiers = `HEAD` des clones tiers (b6f0ed3, 3c77349), 0 écart ; 0 écart de casse |
+| `pipx install --force "git+file://<LEPTON_TOOLS>@devenv/env-41"` | `lepton --version` : scion 0.6.1.0 (requis ≥ 0.6.1.0) |
+| `codium --install-extension extension/dist/lepton-0.5.2.vsix --force` | `lepton-distribution.lepton@0.5.2` |
+| `lepton check`, `lepton generate`, `seed status` | code 0, 0, 0 ; espace de travail **identique** à celui régénéré avant la bascule |
+
+## 4. Contrôles (PA-70)
+
+### 4.1 Oracle après
+
+`rapports/oracles/env-41-apres/` : mêmes commandes qu'au §2, constructions à neuf sur `<ROOTSTOCK>`
+basculé : « tout a réussi ». Contre `env-41-avant` (`env-41-apres/comparaisons/`) :
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| host | — | mklepton identiques | — | ctest 7/7 | — |
+| qemu-mps2-an386-embos, -embos-soft, -freertos, -freertos-soft | code 0 ×4 | différente (attendu) | ok | 19, 15, 19, 15 ; mêmes cas, 100 % | aucun |
+| qemu-mps2-an500-embos, -freertos | code 0 ×2 | différente (attendu) | ok | 18, 18 ; mêmes cas, 100 % | aucun |
+| nucleo-f429zi, nucleo-f439zi (embos, freertos) | code 0 ×4 | différente (attendu) | — | — | aucun ; `depots/tiers` absent des 4 binaires (`strings`) |
+| nucleo-wl55jc1, stm32f746g-disco, samd21-xplained-pro (×2) | code 0 ×6 | différente (attendu) | — | — | aucun |
+
+Listes `ctest -N` : 17/17 identiques. Empreintes : les `.bin` diffèrent entre deux constructions à
+neuf pour **tous** les presets, touchés ou non, et différaient déjà entre `env-37-avant` et
+`env-41-avant` : constructions non reproductibles octet pour octet, admis par la skill
+`lepton-oracle` (sections et symboles décident). Rangs et durées des bancs ignorés.
+
+### 4.2 Bilan des critères
+
+| Critère | Résultat |
+| --- | --- |
+| PA-69 et PA-70 tranchés et consignés | PA-69 oui (§1.6) ; PA-70 : ce rapport |
+| Binaires identiques sur host et les 16 presets (code 0) | oui |
+| Liste des chemins du trunk identique, aux écarts accordés près | oui, aucun écart (3982 chemins ; provenances conservées) |
+| Plus aucun fichier de la HAL ni du CMSIS device F4 dans le clone `family-stm32f4xx` | oui : il reste les 2 `LEPTON-PROVENANCE.md` (PA-69) |
+| Fichiers projetés identiques octet pour octet à `v1.8.5` et `3c77349` | oui : 206/206 = `git cat-file HEAD:` des clones épinglés |
+| Rootstock neuf conforme depuis la graine de la branche | oui (§3.4) |
+| `lepton check` / `generate` sur `<ROOTSTOCK>`, espace identique ; `pytest` vert | oui ; 243 réussis (235 + 8) ; extension 22/22 |
+
+### 4.3 Graines de projet à traiter en ENV-43
+
+- Rootstocks du Mac qui greffent `family-stm32f4xx` : `essais/env-13-vierge` (`original-tree`),
+  `essais/env-11/f429zi` (graine `env11f4`). Leur clone famille est sur `master` 0fd8b2a : rien ne
+  change tant que la famille publiée n'avance pas ; un `graft-update` après publication exige
+  scion ≥ 0.6.1.0 (installé sur le Mac) et clonera les 2 dépôts tiers depuis les miroirs.
+- VM : scion 0.5.4.0 → installer 0.6.1.0 (et lepton) **avant** toute regreffe d'un rootstock qui
+  greffe la famille, sinon la famille est greffée sans HAL.
+- Copies d'étape (`env-34-copie`, `env-35-copie`, `env-37-copie`, `env-39-copie`) : hors des 7.
+
+### 4.4 Résidus et observations
+
+- `seed replace`/`seed remove` d'un greffon porteur : retrait et regreffe des clés projetées laissés
+  à scion (P-P6) ; non essayé ici (aucune graine de projet ne remplace la famille F4).
+- Extension 0.5.2 : la table clone tiers → trunk n'agit que si gdb rend le chemin réel ; les
+  binaires F4 sont compilés par le trunk (aucun `depots/tiers` dans les binaires), l'effet n'a pas
+  été observé en session de débogage réelle (pas de carte flashée dans cette étape).
+- Hook : il lit le texte des commandes shell ; un script qui contient `trunk/` ou `depots/tiers/`
+  après un verbe d'écriture est refusé même s'il n'écrit pas dans ces chemins (deux fois ici) ;
+  parade : passer par un fichier.

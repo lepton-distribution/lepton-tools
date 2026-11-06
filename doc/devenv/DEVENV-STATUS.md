@@ -425,6 +425,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-11-06 | PA-69 (ENV-41) | `SCION_MIN_VERSION` de lepton relevé à (0, 6, 1, 0) ; aucun rootstock d'essai traité ici, ENV-43 installe 0.6.1.0 sur la VM avant toute regreffe ; le message du commit de la famille le dit. |
 | 2026-11-06 | PA-69 (ENV-41) | lepton, périmètre complet : `check` résout `sources` et fichiers par le trunk ; `seed status`, `seed tree`, `file owner` (et refus d'écriture) reconnaissent une clé projetée ; `generate` sans dossiers « git · » des clones tiers ; `seed lock`/`--verify`/`--restore` incluent les clés projetées ; extension : table de correspondance clone tiers → trunk (`srcmap`, `debug`), `pickScion`, `watch`, `revealInClone` ; tests. |
 | 2026-11-06 | PA-69 (ENV-41) | Hook `proteger-trunk.py` : refuse aussi `<rootstock>/depots/tiers/`, message corrigé ; skill `lepton-rootstock` : règle « jamais sous `depots/tiers/` », clé d'exemple corrigée ; `verifier-import.sh` conservé (F7, WL) ; texte de `hal_conf_stm32f4.py` corrigé ; `compiler-hal-f4-a-blanc.sh` inchangé. |
+| 2026-11-06 | PA-P (ENV-41) | Accord : bascule de `<ROOTSTOCK>` (4 commits de la famille repris en avance rapide sur `devenv/env-41`, `scion seed-clone --seed …/original-tree`, `scion graft`, sans `graft-update` ni `seed-update`) ; `pipx install --force` de lepton depuis `devenv/env-41` ; installation de l'extension 0.5.2 dans VSCodium. |
 
 ## Journal
 
