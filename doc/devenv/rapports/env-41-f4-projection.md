@@ -128,3 +128,73 @@ identiques.
 Relevés de `<ROOTSTOCK>` juste avant la bascule (`env-41-f4-projection/avant/`) : espace de travail
 régénéré par `lepton generate` (code 0) puis copié ; `lepton check` code 0 ; liste des liens
 3982, SHA-256 `05b15192…` (`trunk-liens.txt`).
+
+## 3. Bascule
+
+### 3.1 Famille (`family-stm32f4xx`, branche `devenv/env-41`)
+
+Commits faits dans le clone de la copie d'essai, puis repris dans `<ROOTSTOCK>` (§3.5) :
+
+| Commit | Contenu |
+| --- | --- |
+| 5218b05 | `scion/.scion/` : `.scion.sources.list`, `.scion.ramifications`, `.scion.projections` (§1.1), `.scion.mirrors` recopié de la graine de publication d'ENV-40 ; message : scion ≥ 0.6.1.0 exigé |
+| a8c7131 | mécanique : `git rm -r` de `hal_driver/Inc`, `Src`, `LICENSE.md`, `README.md` (200 fichiers) |
+| ec15c06 | mécanique : `git rm -r` du CMSIS device `Include/`, `LICENSE.md`, `README.md` (6 fichiers) |
+| dfb4528 | `LEPTON-PROVENANCE.md` ×2 réécrits (projection, clé, révision, miroir) ; `description` du manifeste ; `sources` et `compilation` inchangés |
+
+Aucun répertoire résiduel après `git rm` (pas de `.DS_Store` sous `Inc/`, `Src/`, `Include/`).
+
+### 3.2 lepton-tools (`devenv/env-41`), PA-69 point 4 et 5
+
+- `lepton/rootstock.py` : 6ᵉ colonne (`GraftedEntry.porter`, `dot`) ; `projected_keys()`,
+  `porter_of()`, `projection_tables()` (table clone tiers → trunk tirée des liens du trunk, sans
+  relire les motifs) ; `Manifest.trunk_dir`.
+- `lepton/checks.py` : un fichier déclaré absent du clone est cherché dans le trunk (`_declared`),
+  pour `sources`, champs de fichiers et `scion_c_files`.
+- `lepton/files.py` : propriétaire d'une clé projetée = racine du clone tiers ; `clone_path` = cible
+  du lien ; refus explicite d'écrire (`refuse_projected`) ; dans un répertoire partagé, un fichier
+  nouveau va au seul greffon ordinaire ; `file owner --json` : `projected_by`.
+- `lepton/seed.py` : `seed status` rôle « projection », origine et version du porteur,
+  `projected_by`, `root`, `projection` ; `seed lock` fige les clés projetées (`projected_by`),
+  `--verify` les compare, `--restore` ne les déplace jamais et signale l'écart.
+- `lepton/generate.py` : pas de dossier « git · » pour une clé projetée.
+- `lepton/__init__.py` : `SCION_MIN_VERSION` (0, 6, 1, 0) ; `README.md`.
+- Extension : `srcmap.ts` (table fichier par fichier des clés projetées), `debug.ts`, `lepton.ts`
+  (types), `watch.ts` (pas d'observateur sur un clone tiers), `tree.ts` (`revealInClone`),
+  `commands.ts` (`pickScion` sans clé projetée).
+- Hook `proteger-trunk.py` : refuse aussi `<rootstock>/depots/tiers/` (message propre), message du
+  trunk corrigé ; essai sur 10 cas conforme. Le hook lit le texte des commandes : un script qui
+  contient ces chemins passe par un fichier (constaté deux fois pendant la session).
+- Skill `lepton-rootstock` : section « Projection », règle 1 corrigée, clé `lepton@bsp-nucleo-f429zi`.
+- `scripts/tiers/` : aide de `hal_conf_stm32f4.py` et de `verifier-import.sh` ; en-tête généré
+  inchangé (les `stm32f4xx_hal_conf.h` des BSP ne changent pas) ; `compiler-hal-f4-a-blanc.sh`
+  inchangé.
+- Tests : `tests/test_projection.py` (8 tests, scion réel, dépôt tiers factice) ; extension :
+  `srcmap.test.ts` (22/22).
+
+### 3.3 Copie d'essai `~/lepton-tools-dev/essais/env-41-copie`
+
+`rsync -a` de `<ROOTSTOCK>` sans `build/` ni `third_party/` ; commits du §3.1 ; `scion seed-clone
+--seed depots/lepton-seed.scions/original-tree` (clones tiers depuis les miroirs GitHub) puis
+`scion graft` : code 0, 3982 feuilles (`env-41-f4-projection/copie/`).
+
+| Contrôle | Résultat |
+| --- | --- |
+| chemins du trunk | 3982, identiques à l'avant (0 retiré, 0 ajouté) ; SHA-256 de la liste `d9f4ea56…` = essai à blanc d'ENV-39 |
+| cibles changées | 206, toutes sous `depots/tiers/` ; liste = `env-38-projection/attendus/f4-*.txt` |
+| fichiers réguliers, liens cassés | 0, 0 |
+| contenu des 206 | = `git cat-file HEAD:<chemin>` du clone tiers, et = fichier du trunk de `<ROOTSTOCK>` (copie d'ENV-34) : 0 écart |
+| casse | nom du lien = nom suivi par git dans le clone : 0 écart |
+| clones tiers | HEAD b6f0ed3 et 3c77349, `origin` = miroirs, 0 modification, `partialclonefilter` `blob:none` |
+| `lepton check` / `generate` (sources) | code 0 / code 0 ; espace = avant aux chemins des schémas près (lepton de développement contre pipx) |
+| `seed status` / `seed tree` | 2 clés « projection » (200 et 6 fichiers) ; F4 66/54 + HAL 96/102 + CMSIS 0/4 = 162/160 comme avant |
+
+### 3.4 Rootstock neuf `~/lepton-tools-dev/essais/env-41-vierge`
+
+Graine d'essai locale `essais/env-41-vierge-graine` (clone d'`original-tree`, branche
+`devenv/env-41` c85ba56, jamais publiée) : `family-stm32f4xx` en `file://` de la branche
+`devenv/env-41` du clone de la copie. `scion rootstock-install`, `seed-add --version devenv/env-41
+file://…`, `graft` : code 0, 3982 feuilles, 16 entrées dont 2 à 6 colonnes. Chemins identiques à
+l'avant ; 0 lien cassé, 0 fichier régulier ; 206 fichiers projetés = HEAD des clones tiers ; les
+3 seuls contenus différents de `<ROOTSTOCK>` sont les 3 fichiers modifiés du §3.1 ; `lepton check`
+code 0 (`env-41-f4-projection/vierge/`).

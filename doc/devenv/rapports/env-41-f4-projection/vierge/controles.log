@@ -1,0 +1,11 @@
+liens 3982 sha256 b6dbac6a70d63a54d015627c2d1b1244c04ff16f368f1dfeb3931e86cd3090d3
+fichiers réguliers 0 []
+liens cassés 0 []
+chemins identiques à l'avant : True (retirés 0 , ajoutés 0 )
+cibles changées 335 dont vers depots/tiers/ 206
+contenu ≠ référence : ./sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/LEPTON-PROVENANCE.md
+contenu ≠ référence : ./sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/LEPTON-PROVENANCE.md
+contenu ≠ référence : ./sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/lepton-greffon.json
+contenu : écarts 3 ; casse/suivi : écarts 0
+depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1 HEAD 3c77349ce04c8af401454cc51f85ea9a50e34fc1 origin https://github.com/lepton-distribution/mirror-cmsis_device_f4.git modifs 0 filtre blob:none
+depots/tiers/stm32f4xx-hal-driver/v1.8.5 HEAD b6f0ed3829f3829eb358a2e7417d80bba1a42db7 origin https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git modifs 0 filtre blob:none
