@@ -40,9 +40,9 @@ scion reste générique (NF-2). Archétype : infrastructure.
 - Rapport `rapports/env-40-miroir.md`, §1.
 - **PA-67** : l'utilisateur valide :
   - Les écarts à la spécification : <À CONFIRMER au PA-67>.
-  - Le numéro de version : <À CONFIRMER au PA-67 : version propre, ou celle d'ENV-39 si le PA-63
-    a retenu une seule version>.
-  - `SCION_MIN_VERSION` de lepton relevé ou non : <À CONFIRMER au PA-67>.
+  - Numéro de version : fixé au PA-63 Q13 (`0.6.1.0` si ENV-39 a été livrée avant, `0.6.0.0`
+    sinon) ; seule la confirmation est demandée ici.
+  - `SCION_MIN_VERSION` de lepton : non relevé ici (PA-63 Q13 : ENV-41).
 - Aucune modification avant la réponse.
 
 ### 2. Implémentation (`<SEED_SCIONS>`, `devenv/env-40`)

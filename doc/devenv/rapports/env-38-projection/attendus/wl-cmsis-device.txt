@@ -1,0 +1,5 @@
+sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/startup/iar/startup_stm32wl55xx_cm4.s
+sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/stm32wl55xx.h
+sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/stm32wlxx.h
+sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/system_stm32wlxx.c
+sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/system_stm32wlxx.h
