@@ -132,3 +132,23 @@ tolérés (`.scion.trunk.tolerated`), sans effet.
 SHA-256 de la liste après projection : `d9f4ea56cc06867daa69313ac9ff2ee5a6185cc77b6254e0e6080ec75078bb8c`.
 Écart : `env-39-scion/essai-f4.diff` (206 lignes retirées, 206 ajoutées, mêmes chemins).
 **Aucun écart** à consigner pour ENV-41.
+
+## 4. Version, lepton, `<ROOTSTOCK>`
+
+- PA-P accordé (2026-11-06) : `pipx install --force "git+file://<SEED_SCIONS>@0.6.0.0"` →
+  `scion version` = 0.6.0.0 (Python 3.11.5) ; `scion graft` de `<ROOTSTOCK>` (aucun `graft-update`
+  ni `seed-update`).
+- `<ROOTSTOCK>` regreffé : 3982 feuilles, empreinte de la liste des liens inchangée (`05b15192…`),
+  0 fichier régulier (les 16 `.DS_Store` tolérés sont partis avec le dégreffage), 0 lien cassé,
+  liste greffée à 5 colonnes (14 entrées), clone noyau propre.
+- lepton : `pytest` (venv de développement) → 235 réussis ; `lepton check` dans `<ROOTSTOCK>` →
+  code 0 (19 fichiers conformes). `SCION_MIN_VERSION` inchangé (0, 5, 4, 0).
+- `SCION_REF` à 0.6.0.0 (PA-65) :
+  - lepton-tools `devenv/env-39` ed3eafd : `scripts/install-vscodium.sh` ; `README.md` (minimum
+    0.5.4.0 conservé, version installée mentionnée) ;
+  - clone noyau `devenv/env-39` 8edff56 (depuis `master` 2893297) : `scripts/install-macos.sh`,
+    `scripts/install-debian.sh`, `doc/BUILDING.md`, `README.md`, `README-PAQUET.md` ;
+  - `shellcheck` des trois scripts : conforme.
+- Les scripts du noyau installent depuis `https://github.com/lepton-distribution/seed.scions.git@0.6.0.0` :
+  ils exigent la publication du tag (PA-66) avant tout usage, et avant la validation Debian
+  d'ENV-43.
