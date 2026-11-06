@@ -115,3 +115,16 @@ est faux sans le signaler.
    projetées et, dans l'extension, la table clone tiers → trunk (`srcmap`, `debug`), `pickScion`,
    `watch`, `revealInClone`.
 5. Proposition 5 acceptée (hook, skill, scripts).
+
+## 2. Oracle avant
+
+`rapports/oracles/env-41-avant/` : `rejouer-oracle.sh <ROOTSTOCK> … --qemu` ×6 `--carte` ×10
+(constructions à neuf, `rejouer-oracle.log`) : « tout a réussi ». Contre `env-37-avant`
+(`env-41-avant/comparaisons/`) : `comparer-oracle.py` code 0 ×16 ; host 7/7 ; empreintes mklepton
+identiques ; bancs KAL QEMU identiques (mêmes cas et résultats, rangs et durées ignorés). Listes
+`ctest -N` (`env-41-avant/ctest-N/`, `ctest --preset <P> -N` depuis `<ROOTSTOCK>/trunk`) : 17/17
+identiques.
+
+Relevés de `<ROOTSTOCK>` juste avant la bascule (`env-41-f4-projection/avant/`) : espace de travail
+régénéré par `lepton generate` (code 0) puis copié ; `lepton check` code 0 ; liste des liens
+3982, SHA-256 `05b15192…` (`trunk-liens.txt`).
