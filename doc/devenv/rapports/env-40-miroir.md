@@ -72,3 +72,81 @@ Utilisateur, 2026-11-06 (consignées dans `DEVENV-STATUS.md` §Décisions) :
 - E13 : graine de publication d'essai `~/lepton-tools-dev/essais/env-40-publication/`.
 - Version 0.6.1.0 ; `SCION_REF` relevé ici (lepton-tools, clone noyau) ; `SCION_MIN_VERSION`
   inchangé jusqu'à ENV-41.
+
+## 2. Implémentation (`<SEED_SCIONS>`, `devenv/env-40`)
+
+| Commit | Contenu |
+| --- | --- |
+| 57061f2 | spécification : précisions du PA-67 (M-D1, M-D4, M-D5, M-C1, M-C2, M-C4, M-C6, M-R4, M-R8, M-K1) |
+| 4d113a3 | déclaration `.scion.mirrors` (`scion/mirror.py` : `read_mirrors`, `declared`, `upstream_of`, `hint`), `MIRRORS` (`model.py`), suggestion M-D5 dans `graft.py` (`_fetch`, `_check_clone`, `_check_projected_clone`) ; tests de la greffe |
+| b6db24c | `mirror-sync` (`cli.py`), dépôt de travail et règles par référence (`mirror.py` : `sync`, `_plan`, `_push`), `gitops.refs`, `gitops.is_ancestor`, `UsageError` (code 2) ; tests M-D1, M-D3, M-D4, M-C*, M-R*, M-K* |
+| 9b0bb9a | version 0.6.1.0 (`__init__.py`, `CHANGELOG.md`, `README.md`) |
+| 4502a70 | tests M-R4 et M-R8 renforcés après le contrôle par mutation |
+
+- Écart de procédure : deux commits de fond (déclaration, commande) au lieu d'un par règle ;
+  `mirror.py` les porte tous deux. Les tests ont été écrits avant le code (34 échecs sur 36 avant
+  implémentation ; les 2 qui passaient vérifient l'absence de changement de la greffe).
+- CLI : `mirror-sync [rootstock] [--seed] [--dry-run] [url…]`. Le premier argument positionnel
+  est le rootstock s'il n'est pas une URL distante ; les positionnels placés après une option sont
+  repris par `parse_known_args` (les autres commandes gardent l'erreur « unrecognized arguments »
+  d'argparse, à l'identique).
+- `graft.is_remote` est désormais `mirror.is_remote` (même définition).
+- NF-2 : `git diff f526f25 -- scion/ | grep -i '^+.*lepton'` → 0 ligne (E17).
+
+Tests : `~/lepton-tools-dev/venv-lepton-tools/bin/python -m pytest -q` dans `<SEED_SCIONS>` →
+**265 réussis, 1 sauté** (229 + 36 de `tests/test_mirror.py`), 5 min 16 s. Un test par cas nommé
+du plan d'ENV-38 §3 :
+
+| Règle | Test(s) |
+| --- | --- |
+| M-D1 | `test_mirrors_dans_porteur`, `test_ordinaire_non_porteur_ignore` |
+| M-D2 | `test_greffe_ne_lit_pas_mirrors` |
+| M-D3 | `test_ligne_mirrors_mal_formee` |
+| M-D4 | `test_miroir_deux_amonts_erreur`, `test_meme_amont_deux_miroirs_admis` |
+| M-D5 | `test_echec_clone_miroir_suggere_mirror_sync`, `test_echec_clone_miroir_absent_suggere_mirror_sync`, `test_version_introuvable_dans_clone_suggere_mirror_sync`, `test_echec_clone_sans_miroir_message_inchange` (P-C1) |
+| M-C1 | `test_mirror_sync_url_inconnue_erreur_avant_tout`, `test_mirror_sync_selection`, `test_rootstock_en_argument_avant_les_url`, `test_sans_miroir_declare` |
+| M-C2 | `test_depot_de_travail_refs_amont_separees` |
+| M-C3 | `test_seules_branches_et_tags` |
+| M-C4 | `test_push_sans_force_ni_suppression`, `test_reference_refusee_signalee` |
+| M-C5 | `test_miroir_inaccessible_signale_les_autres_traites`, `test_amont_inaccessible_signale` |
+| M-C6 | `test_dry_run_rien_envoye` |
+| M-R1 à M-R9 | `test_premiere_synchronisation_miroir_vide`, `test_branche_nouvelle`, `test_branche_avance_rapide`, `test_branche_identique`, `test_branche_reecrite_non_envoyee`, `test_miroir_en_avance_non_envoye` (E8), `test_branche_supprimee_conservee` (E6), `test_tag_nouveau`, `test_tag_identique`, `test_tag_deplace_non_propage`, `test_tag_recree_meme_commit_non_propage` (E7), `test_tag_supprime_conserve` |
+| M-K1 | `test_codes_de_retour_mirror_sync` |
+| M-K2 | `test_rien_supprime_ni_reecrit_dans_miroir` |
+| P-C1 | `test_grafted_list_inchangee` |
+
+Contrôle par mutation (copie du dépôt, `tests/test_mirror.py`) : 8 mutations (M-R4 envoyée, M-R8
+propagée, `--prune` retiré, suggestion M-D5 vide, URL inconnue ignorée, M-D4 sans contrôle,
+`remote.origin.mirror` conservé, code toujours 0). 7 détectées d'emblée. La mutation M-R8 ne
+l'était pas : git refuse lui-même de mettre à jour un tag existant sans `+`, et le miroir restait
+intact. Les tests M-R4 et M-R8 vérifient depuis qu'aucun envoi n'est tenté (4502a70) ; mutation
+alors détectée.
+
+## 3. Essai local (`~/lepton-tools-dev/essais/env-40-miroirs/`)
+
+Préparation : copies nues des clones `~/lepton-tools-dev/tiers/stm32f4xx-hal-driver` et
+`…/cmsis_device_f4` (`git clone --mirror`, `refs/remotes/*` retirées : branches et tags seuls)
+dans `amonts/` ; deux miroirs nus vides dans `miroirs/` ; rootstock `rootstock/`
+(`scion rootstock-install --bare`) ; graine `graine/scion/.scion/.scion.mirrors` (2 lignes
+`file://localhost/…`). scion lancé depuis les sources (`PYTHONPATH=<SEED_SCIONS> python3 -m
+scion.cli`, `scion version` → 0.6.1.0). Relevés : `rapports/env-40-miroir/essai/`.
+
+| Passe | Commande | Résultat |
+| --- | --- | --- |
+| 1 | `mirror-sync --seed graine --dry-run` | code 0 ; 16 et 9 références « à envoyer », 0 signalement ; miroirs toujours vides |
+| 2 | `mirror-sync --seed graine` | code 0 ; 16 et 9 références envoyées |
+| contrôle | `git ls-remote` des branches et tags | miroir = copie d'amont = relevé GitHub du §1.2 (`cmp`), pour les deux dépôts ; `b6f0ed3…` présent (commit) ; `3c77349…` ancêtre de `master` du miroir |
+| 3 | même commande, rien de changé | code 0 ; 0 envoyée, 0 signalement (`passe-2.log`) |
+| 4 | `v1.8.5` déplacé dans la copie d'amont (`tag -f -a`, b6f0ed3 → 6ef30cf), puis même commande | code 1 ; « tag « v1.8.5 » déplacé dans l'amont, non propagé : miroir b6f0ed3, amont 6ef30cf » ; `git ls-remote` du miroir identique à avant (`passe-3-tag-deplace.log`) |
+
+La copie d'amont `amonts/stm32f4xx-hal-driver.git` garde son `v1.8.5` déplacé : elle ne sert qu'à
+cet essai. Rien n'a été créé sur GitHub.
+
+### Références de version (PA-67)
+
+- lepton-tools `devenv/env-40` 311b18a : `SCION_REF` d'`install-vscodium.sh` et `README.md` à
+  0.6.1.0 ; `shellcheck` conforme.
+- Clone noyau `devenv/env-40` (depuis `master` 00911b9) 61ce18d : `install-{macos,debian}.sh`,
+  `README.md`, `README-PAQUET.md`, `doc/BUILDING.md` à 0.6.1.0 ; `shellcheck` conforme. Trunk :
+  aucun fichier régulier, aucun lien cassé.
+- Ces références désignent le tag `0.6.1.0` de GitHub, publié au PA-68.
