@@ -70,19 +70,29 @@ def check_options(m: Manifest, label: str) -> list[Anomaly]:
     return found
 
 
+def _declared(m: Manifest, rel: str) -> Path:
+    """Chemin d'un fichier déclaré (relatif à la destination) : dans le clone du greffon, sinon dans le
+    trunk quand il y est fourni par un autre scion, une clé projetée par ce greffon (ENV-41, P-P1)."""
+    p = m.path.parent / rel
+    if not (p.exists() or p.is_symlink()) and m.trunk_dir is not None and (m.trunk_dir / rel).exists():
+        return m.trunk_dir / rel
+    return p
+
+
 def check_declared_files(m: Manifest, label: str) -> list[Anomaly]:
-    """Fichiers et répertoires déclarés présents dans le clone (relatifs à la destination)."""
+    """Fichiers et répertoires déclarés présents dans le clone (relatifs à la destination), ou dans le
+    trunk pour un fichier projeté (`_declared`)."""
     base, found = m.path.parent, []
     for i, rel in enumerate(m.data.get("sources", [])):
-        if isinstance(rel, str) and not (base / rel).exists():
+        if isinstance(rel, str) and not _declared(m, rel).exists():
             found.append(Anomaly(label, f"/sources/{i}", f"« {rel} » introuvable dans {base}"))
     for field in FILE_FIELDS:
         for i, rel in enumerate(m.data.get(field, [])):
-            if isinstance(rel, str) and not (base / rel).is_file():
+            if isinstance(rel, str) and not _declared(m, rel).is_file():
                 found.append(Anomaly(label, f"/{field}/{i}", f"fichier « {rel} » introuvable dans {base}"))
     for field in SINGLE_FILE_FIELDS:
         rel = m.data.get(field)
-        if isinstance(rel, str) and not (base / rel).is_file():
+        if isinstance(rel, str) and not _declared(m, rel).is_file():
             found.append(Anomaly(label, f"/{field}", f"fichier « {rel} » introuvable dans {base}"))
     rel = m.data.get("tests")      # TST-2 (PA-41 d'ENV-27) : répertoire ajouté par le lecteur CMake
     if isinstance(rel, str):
@@ -265,13 +275,13 @@ def scion_c_files(m: Manifest) -> list[Path]:
         return sorted(base.rglob("*.c"))
     files = []
     for rel in sources:
-        p = base / rel
+        p = _declared(m, rel)
         if p.is_dir():
             files.extend(sorted(p.glob("*.c")))
         elif p.suffix == ".c":
             files.append(p)
     for field in OBJECT_FIELDS:
-        files.extend(base / rel for rel in m.data.get(field, [])
+        files.extend(_declared(m, rel) for rel in m.data.get(field, [])
                      if isinstance(rel, str) and rel.endswith(".c"))
     return files
 

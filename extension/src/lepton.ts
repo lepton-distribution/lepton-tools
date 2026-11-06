@@ -80,6 +80,8 @@ export interface ScionRef {
   name: string;
   key: string;
   in_seed: boolean;
+  /** Clé projetée d'un dépôt tiers (ENV-41) : greffon porteur, ou « graine ». */
+  projected_by?: string;
 }
 
 /** Sortie de `lepton file owner PATH --json` (rapports/env-8-interface.md §12). */
@@ -105,6 +107,9 @@ export interface StatusScion extends ScionRef {
   commit: string | null;
   dirty: number | null;
   dirty_files: string[];
+  /** Clé projetée : racine résolue du clone tiers et table clone → trunk (chemins relatifs). */
+  root?: string;
+  projection?: Record<string, string>;
 }
 
 /** Configuration de la graine (preset généré `<projet>-<nom>`). */

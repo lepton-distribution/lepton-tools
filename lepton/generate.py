@@ -341,12 +341,15 @@ def _folder_path(ctx: Context, path: Path) -> str:
 
 
 def workspace_folders(ctx: Context) -> list[dict]:
-    """Trunk d'abord (seul chemin d'ouverture des fichiers, PA-1), puis un dossier par dépôt git (IDE-2)."""
+    """Trunk d'abord (seul chemin d'ouverture des fichiers, PA-1), puis un dossier par dépôt git (IDE-2).
+    Clés projetées (dépôts tiers, ENV-41) omises : leurs fichiers ne s'éditent pas (IDE-4) et
+    `files.exclude` ne masquerait rien d'un clone sans `scion/`."""
     folders = [{"name": "trunk", "path": _folder_path(ctx, ctx.rs.trunk)}]
     names = {key: m.name for key, m in ctx.rs.manifests().items()}
     seen = set()
+    skipped = ctx.rs.projected_keys() | {project_key(ctx.project)}
     repos = [(f"graine {ctx.project}", ctx.seed_root)]
-    repos += [(names.get(e.key, e.name), ctx.rs.clone(e)) for e in ctx.rs.grafted() if e.key != project_key(ctx.project)]
+    repos += [(names.get(e.key, e.name), ctx.rs.clone(e)) for e in ctx.rs.grafted() if e.key not in skipped]
     for label, path in repos:
         top = _git_toplevel(path) if path.is_dir() else None
         if top is None or top in seen:

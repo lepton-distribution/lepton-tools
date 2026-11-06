@@ -84,7 +84,8 @@ export class Watchers implements vscode.Disposable {
     if (!status?.trunk || !Array.isArray(status.scions)) {
       return;                         // pas de rootstock ici : rien à observer
     }
-    const stems = autoGraft ? status.scions.map((s) => s.stem).filter((s) => s).sort() : [];
+    // clés projetées exclues (ENV-41) : un clone tiers ne se modifie pas et ne se regreffe pas par chemin
+    const stems = autoGraft ? status.scions.filter((s) => !s.projected_by).map((s) => s.stem).filter((s) => s).sort() : [];
     const trunk = redirect || askUnlink ? status.trunk : "";
     const signature = JSON.stringify([trunk, stems, redirect, askUnlink]);
     if (!force && signature === this.signature) {

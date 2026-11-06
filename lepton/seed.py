@@ -16,8 +16,8 @@ from urllib.parse import urlparse
 from lepton import __version__, cmake, mkconf
 from lepton.checks import removal_unprovided
 from lepton.errors import EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
-from lepton.rootstock import (KERNEL_KEY, PROJECT_SUBPATH, STEM_DIR, Manifest, Rootstock, TrunkReport,
-                              find_manifest, is_system_file, project_key, scion_key)
+from lepton.rootstock import (KERNEL_KEY, PROJECT_SUBPATH, SOURCES_LIST, STEM_DIR, Manifest, Rootstock,
+                              TrunkReport, find_manifest, is_system_file, project_key, read_sources, scion_key)
 from lepton.scion_runner import git, run, scion
 from lepton.templates import c_identifier, render_text, render_tree, templates_dir
 from lepton.validation import SEED_MANIFEST, validate_data, validate_xml
@@ -455,6 +455,8 @@ def status_data(rs: Rootstock) -> tuple[dict, dict | None, dict, list[str], Trun
         roles.update({n: "bibliotheque" for n in graine.get("bibliotheques", [])})
 
     scions = []
+    projected = rs.projected_keys()
+    tables = rs.projection_tables() if projected else {}
     for e in rs.grafted():
         m = manifests.get(e.key)
         name = m.name if m else e.name
@@ -463,12 +465,23 @@ def status_data(rs: Rootstock) -> tuple[dict, dict | None, dict, list[str], Trun
         if role is None:
             # déclaré dans .scion.sources.list sans rôle dans lepton-graine.json (ex. ancien BSP)
             role = ("non utilisé" if src else "hors graine") if graine else (m.kind or "?")
+        extra = {}
+        if e.key in projected:
+            # clé projetée (ENV-41) : origine et version dans le `.scion/` qui la déclare (porteur ou graine)
+            role = "projection"
+            src = src or next((s for s in read_sources(rs.resolve(e.dot) / SOURCES_LIST) if s.key == e.key), None)
+            porter = rs.porter_of(e)
+            extra = {"projected_by": (manifests[porter.key].name if porter.key in manifests else porter.name)
+                     if porter else "graine",
+                     "root": str(rs.clone(e).resolve()),
+                     "projection": dict(sorted(tables.get(e.key, {}).items()))}
         scions.append({"name": name, "role": role, "key": e.key,
                        "version": src.version if src else e.version,
                        "location": src.location if src else None,
                        "path": str(rs.clone(e)),
                        "stem": str((rs.clone(e) / STEM_DIR).resolve()),
-                       "in_seed": src is not None,
+                       "in_seed": e.key in sources,
+                       **extra,
                        **_git_state(rs.clone(e))})
     grafted_names = {s["name"] for s in scions}
     missing = sorted(n for n in roles if n not in grafted_names)
@@ -515,8 +528,10 @@ def seed_status(args) -> int:
     bwidth = max([len(s["branch"] or "") for s in scions] + [16])
     _info(f"{'greffon':{width}}  {'rôle':14} {'version':{vwidth}} {'branche':{bwidth}} {'commit':9} modif.  origine")
     for s in scions:
-        _info(f"{s['name']:{width}}  {s['role']:14} {s['version']:{vwidth}} {_fmt_git(s, bwidth)}  "
-              f"{s['location'] or '(hors graine)'}")
+        origin = s["location"] or "(hors graine)"
+        if "projected_by" in s:
+            origin += f" (projeté par {s['projected_by']}, {len(s['projection'])} fichier(s))"
+        _info(f"{s['name']:{width}}  {s['role']:14} {s['version']:{vwidth}} {_fmt_git(s, bwidth)}  {origin}")
         if args.verbose:
             for f in s["dirty_files"]:
                 _info(f"{'':{width}}    modifié : {f}")
@@ -737,9 +752,32 @@ def _locked_entries(rs: Rootstock) -> list[dict]:
             refused.append(f"  {s.key} : {state['dirty']} fichier(s) modifié(s) non commité(s) dans {rs.clone(e)}")
         else:
             entries.append(dict(entry, commit=git(rs.clone(e), "rev-parse", "HEAD").stdout.strip()))
+    entries.extend(_projected_entries(rs, {x["key"] for x in entries}, refused))
     if refused:
         raise LeptonError("graine non figeable :\n" + "\n".join(refused),
                           "commiter dans chaque clone (lepton seed status -v), puis lepton seed lock")
+    return entries
+
+
+def _projected_entries(rs: Rootstock, done: set[str], refused: list[str]) -> list[dict]:
+    """Clés projetées greffées (ENV-41, PA-69) : origine et version lues dans le `.scion/` qui les
+    déclare, commit exact du clone tiers ; `projected_by` = clé du porteur (None : la graine)."""
+    entries, projected = [], rs.projected_keys()
+    for e in rs.grafted():
+        if e.key not in projected or e.key in done:
+            continue
+        src = next((s for s in read_sources(rs.resolve(e.dot) / SOURCES_LIST) if s.key == e.key), None)
+        porter = rs.porter_of(e)
+        state = _git_state(rs.clone(e))
+        if state["commit"] is None:
+            refused.append(f"  {e.key} : {rs.clone(e)} n'est pas un dépôt git")
+        elif state["dirty"]:
+            refused.append(f"  {e.key} : {state['dirty']} fichier(s) modifié(s) dans le clone tiers {rs.clone(e)}")
+        else:
+            entries.append({"key": e.key, "name": e.name, "location": src.location if src else None,
+                            "version": src.version if src else e.version, "path": "",
+                            "commit": git(rs.clone(e), "rev-parse", "HEAD").stdout.strip(),
+                            "projected_by": porter.key if porter else None})
     return entries
 
 
@@ -765,6 +803,8 @@ def _lock_gaps(rs: Rootstock, locked: list[dict]) -> list[str]:
             gaps.append(f"{entry['name']} : {state['dirty']} fichier(s) modifié(s) non commité(s)")
     for key in sorted(declared - {entry["key"] for entry in locked}):
         gaps.append(f"{key} : déclaré dans la graine, absent du verrou")
+    for key in sorted(rs.projected_keys() - declared - {entry["key"] for entry in locked}):
+        gaps.append(f"{key} : clé projetée greffée, absente du verrou")
     return gaps
 
 
@@ -806,8 +846,12 @@ def seed_lock(args) -> int:
 def _restore(rs: Rootstock, locked: list[dict], no_cmake: bool) -> int:
     """Clones d'origine distante remis au commit figé ; origine locale (`*`) signalée, jamais modifiée."""
     grafted = {e.key: e for e in rs.grafted()}
-    moved, local_gaps, refused = [], [], []
+    moved, local_gaps, refused, projected = [], [], [], []
+    projected_keys = rs.projected_keys()
     for entry in locked:
+        if "projected_by" in entry or entry["key"] in projected_keys:
+            projected.append(entry)        # version fixée par le `.scion/` du porteur : contrôlée après
+            continue
         e = grafted.get(entry["key"])
         if e is None:
             refused.append(f"  {entry['name']} : non greffé (lepton seed status)")
@@ -839,6 +883,14 @@ def _restore(rs: Rootstock, locked: list[dict], no_cmake: bool) -> int:
     if moved:
         scion_on_trunk(rs, "graft")
         finish(rs, no_cmake)
+    grafted = {e.key: e for e in rs.grafted()}
+    for entry in projected:                # clé projetée : jamais déplacée par lepton (PA-69)
+        e = grafted.get(entry["key"])
+        head = git(rs.clone(e), "rev-parse", "HEAD").stdout.strip() if e else None
+        if head != entry["commit"]:
+            local_gaps.append(f"  {entry['name']} : clé projetée au commit {head[:12] if head else '(non greffée)'}, "
+                              f"figé {entry['commit'][:12]} (version fixée par le .scion/ de "
+                              f"{entry.get('projected_by') or 'la graine'})")
     for g in local_gaps:
         _warn(g.strip())
     if not moved and not local_gaps:

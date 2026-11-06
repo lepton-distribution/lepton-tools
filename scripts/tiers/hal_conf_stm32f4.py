@@ -4,11 +4,12 @@
 Usage :
   python3 scripts/tiers/hal_conf_stm32f4.py <modèle> <sortie> <HSE_Hz> <MODULE>...
   ex. : python3 scripts/tiers/hal_conf_stm32f4.py \\
-          <famille>/hal_driver/Inc/stm32f4xx_hal_conf_template.h \\
+          <ROOTSTOCK>/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_conf_template.h \\
           <bsp>/stm32f4xx_hal_conf.h 8000000 CORTEX ETH FLASH GPIO PWR RCC
 
 Dérivé de tools/migration/hal_conf_stm32f7.py du clone noyau (ENV-35, PA-57) : copie du modèle
-non modifié de la HAL (stm32f4xx-hal-driver, voir LEPTON-PROVENANCE.md de hal_driver/), seuls les
+non modifié de la HAL (stm32f4xx-hal-driver ; depuis ENV-41, fichier projeté par scion depuis le
+clone tiers, lu par le trunk ; voir LEPTON-PROVENANCE.md de hal_driver/), seuls les
 modules nommés restent activés (HAL_MODULE_ENABLED toujours), les autres
 `#define HAL_<X>_MODULE_ENABLED` sont mis en commentaire ; valeur de HSE_VALUE remplacée.
 Rejouable : le résultat ne dépend que du modèle et des arguments. Code de retour 0, ou 1 avec un

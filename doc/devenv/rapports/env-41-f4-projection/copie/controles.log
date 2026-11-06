@@ -1,0 +1,8 @@
+liens 3982 sha256 d9f4ea56cc06867daa69313ac9ff2ee5a6185cc77b6254e0e6080ec75078bb8c
+fichiers réguliers 0 []
+liens cassés 0 []
+chemins identiques à l'avant : True (retirés 0 , ajoutés 0 )
+cibles changées 206 dont vers depots/tiers/ 206
+contenu : écarts 0 ; casse/suivi : écarts 0
+depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1 HEAD 3c77349ce04c8af401454cc51f85ea9a50e34fc1 origin https://github.com/lepton-distribution/mirror-cmsis_device_f4.git modifs 0 filtre blob:none
+depots/tiers/stm32f4xx-hal-driver/v1.8.5 HEAD b6f0ed3829f3829eb358a2e7417d80bba1a42db7 origin https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git modifs 0 filtre blob:none
