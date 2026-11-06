@@ -15,7 +15,9 @@ réels et l'historique git sont dans les clones (`<ROOTSTOCK>/depots/…`). Chem
    ```bash
    realpath <ROOTSTOCK>/trunk/<chemin>     # macOS : realpath disponible depuis macOS 13 ; sinon python3 -c 'import os,sys;print(os.path.realpath(sys.argv[1]))'
    ```
-   Le résultat doit être sous `<ROOTSTOCK>/depots/`. Éditer ce chemin-là.
+   Le résultat doit être sous `<ROOTSTOCK>/depots/`. Éditer ce chemin-là, **sauf** s'il est sous
+   `<ROOTSTOCK>/depots/tiers/` : c'est un clone tiers projeté (voir « Projection » ci-dessous),
+   jamais modifié.
 2. Fichier ou répertoire nouveau : le créer dans le clone du greffon propriétaire, sous
    `scion/sys/root/src/…`, puis regreffer :
    ```bash
@@ -23,13 +25,30 @@ réels et l'historique git sont dans les clones (`<ROOTSTOCK>/depots/…`). Chem
    ```
    Depuis scion 0.5.1.0, regreffe du seul greffon touché (clé de `.scion.grafted.list`, `/` → `@`) :
    ```bash
-   cd <ROOTSTOCK> && scion graft --scion lepton@bsp::nucleo-f429zi
+   cd <ROOTSTOCK> && scion graft --scion lepton@bsp-nucleo-f429zi
    ```
 3. Déplacer ou renommer : `git -C <clone> mv …` puis `scion graft` (ou `scion graft --scion <clé>`).
 4. Supprimer : `git -C <clone> rm …` puis `scion graft` (ou `scion graft --scion <clé>`).
 
-Le hook du dépôt refuse les écritures directes sous `trunk/` (Write, Edit, et commandes shell
-évidentes). Un refus du hook n'est pas à contourner : il signale une erreur de chemin.
+Le hook du dépôt refuse les écritures directes sous `trunk/` et sous `depots/tiers/` (Write, Edit,
+et commandes shell évidentes). Un refus du hook n'est pas à contourner : il signale une erreur de
+chemin. Il lit le texte de la commande : un script qui contient ces chemins se passe par un fichier.
+
+## Projection (scion ≥ 0.6.0.0, ENV-41)
+
+- Un greffon **porteur** (ex. `family-stm32f4xx`) déclare dans son `scion/.scion/`
+  (`.scion.sources.list`, `.scion.ramifications`, `.scion.projections`, `.scion.mirrors`) des clés
+  projetées (shelf `tiers`) : des dépôts tiers sans `scion/`, clonés sous
+  `<ROOTSTOCK>/depots/tiers/<clé>/<version>` à un tag ou un commit, dont certains fichiers sont liés
+  dans le trunk. La 6ᵉ colonne de `.scion.grafted.list` désigne le `.scion/` du porteur.
+- **Ne jamais éditer un clone tiers**, ni y changer de commit : la greffe refuse un clone hors de son
+  commit épinglé ou modifié (P-E1). Pour changer une version ou un motif : éditer le `scion/.scion/`
+  du porteur dans son clone, commiter, puis `scion graft --scion <porteur>` (ou `scion graft`).
+  Pour remplacer un fichier tiers : l'exclure (`!motif`) et le fournir par un greffon ordinaire.
+- Regreffe d'une seule clé projetée : `scion graft --scion tiers@<clé>`.
+- Les sources des clés projetées désignent les miroirs `lepton-distribution/mirror-*` ; `scion
+  mirror-sync` les tient à jour (jamais de `git push` à la main depuis `depots/.mirrors/`).
+- `lepton file owner` nomme la clé projetée et son porteur ; `lepton file …` refuse d'y écrire.
 
 ## Interdits
 
