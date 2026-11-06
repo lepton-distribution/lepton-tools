@@ -118,16 +118,86 @@ complète : chaque fichier des quatre ensembles est `OK` contre l'amont ou a son
 8. `verifier-import.sh` a suffi tel quel (copies remises aux chemins amont) : aucune évolution
    proposée.
 
-## 2. Oracle avant
-À faire après le PA-61.
+### 1.9 Décisions du PA-61 (utilisateur, 2026-11-06)
+- Révisions citées : HAL `stm32wlxx-hal-driver` `v1.3.0` (écart `stm32_hal_legacy.h` consigné,
+  identité à STM32CubeWL `v1.3.0` mentionnée) ; CMSIS device `cmsis-device-wl` `v1.1.1` ; pile
+  radio `stm32-mw-subghz-phy` `v1.3.0` ; utilitaires et `stm32_radio_core_inc/` : STM32CubeWL
+  `v1.3.0` admis, exception étroite à la décision du 2026-11-04.
+- Fichiers modifiés par Lepton : option 1, laissés et décrits un par un (écart à D1a consigné).
+- Fichiers `TROP` : tous laissés et listés, aucune suppression.
+- Forme : un `LEPTON-PROVENANCE.md` par ensemble (4), un commit chacun.
+- Texte `description` du manifeste : inchangé.
 
-## 3. Cas d'épreuve pour ENV-38 (projet, à confirmer après le PA-61)
+## 2. Oracle avant
+`rapports/oracles/env-37-avant/` : `rejouer-oracle.sh <ROOTSTOCK> … --qemu` ×6 `--carte` ×10
+(constructions à neuf, `rejouer-oracle.log`) : « tout a réussi ». Contre `env-35-apres`
+(`env-37-avant/comparaisons/`) : `comparer-oracle.py` code 0 ×16 ; host 7/7 ; empreintes mklepton
+identiques ; bancs KAL QEMU identiques (19, 15, 19, 15, 18, 18 tests, 100 %, mêmes listes, durées
+ignorées). Listes `ctest -N` (`env-37-avant/ctest-N/`, lancées depuis `<ROOTSTOCK>/trunk`)
+identiques pour host et les 16 presets (17/17), hors la ligne informative « Internal ctest
+changing into directory » présente dans `env-35-apres` (dépend du répertoire de lancement).
+
+## 3. Provenance et regreffe
+Clone `family-stm32wlxx`, branche `devenv/env-37` (depuis `master` dbc58d7), un commit par
+ensemble, aucun fichier tiers déplacé, renommé, recopié ni supprimé ; `lepton-greffon.json`
+inchangé :
+
+| Commit | Fichier |
+| --- | --- |
+| 2255483 | `kernel/dev/arch/cortexm/stm32wlxx/cubemx_hal_driver/LEPTON-PROVENANCE.md` |
+| a6f517f | `kernel/core/ucore/cmsis/Device/st/stm32wlxx/LEPTON-PROVENANCE.md` |
+| d2d5e95 | `kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/LEPTON-PROVENANCE.md` |
+| 6107dd8 | `kernel/dev/arch/cortexm/stm32wlxx/Utilities/LEPTON-PROVENANCE.md` |
+
+`verifier-import.sh` ignore `LEPTON-PROVENANCE.md` : classements inchangés (radio : 18 identiques,
+6 écarts, relancé après commit).
+
+Regreffe : copie d'essai `~/lepton-tools-dev/essais/env-37-copie` (`cp -RP` de
+`.scion.rootstock.signature`, `.scion.trunk.tolerated`, `depots`, `trunk`),
+`scion graft --scion lepton@family-stm32wlxx` (243 feuilles), code 0 ; même commande sur
+`<ROOTSTOCK>`, code 0. Liste des liens de `<ROOTSTOCK>` identique à celle de la copie.
+
+| Contrôle du trunk | Avant | Après |
+| --- | --- | --- |
+| Liens | 3978 | **3982** (+4 `LEPTON-PROVENANCE.md`, `env-37-wl-provenance/liens-ajoutes.txt` ; 0 retrait) |
+| Liens cassés | 0 | 0 |
+| Fichiers réguliers hors `.DS_Store` | 0 | 0 |
+| `lepton -C <ROOTSTOCK> check` | — | code 0 (19 fichiers conformes) |
+
+## 4. Contrôles (oracle après)
+`rapports/oracles/env-37-apres/` : mêmes commandes que l'oracle avant, sur `<ROOTSTOCK>` regreffé
+(3982 liens), constructions à neuf : « tout a réussi ». Comparaisons contre `env-37-avant`
+(`env-37-apres/comparaisons/`) :
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| `qemu-mps2-an386-embos` | code 0 | différente | `cortexM4-qemu-mps2-an386` | 19/19 identique | date, jeton UART |
+| `qemu-mps2-an386-embos-soft` | code 0 | différente | idem | 15/15 identique | date, jeton UART |
+| `qemu-mps2-an386-freertos` | code 0 | différente | idem | 19/19 identique | date, jeton UART, place de `rcv SIGCHLD` |
+| `qemu-mps2-an386-freertos-soft` | code 0 | différente | idem | 15/15 identique | idem |
+| `qemu-mps2-an500-embos` | code 0 | différente | `cortexM7-qemu-mps2-an500` | 18/18 identique | idem |
+| `qemu-mps2-an500-freertos` | code 0 | différente | idem | 18/18 identique | idem |
+| 10 presets de carte (F429, F439, WL55, SAMD21, F746 ; embOS et FreeRTOS) | code 0 ×10 | différente | — (construction seule) | — | date |
+
+- Empreintes : différentes sur les 16 presets, du seul fait de la date de compilation incluse
+  dans le noyau (`kernel compilation date`) ; sections et symboles identiques (nom, type, taille).
+- Fumée : comparée en ignorant la date de compilation, le jeton `lepton-uart1-<n>` et la place
+  du message asynchrone `rcv SIGCHLD` dans la console (`rapports/env-34-hal-f4.md` §5.1, E-1,
+  E-2) ; aucun autre écart.
+- host : 7/7 ; empreintes mklepton identiques. Listes `ctest -N` : 17/17 identiques à
+  `env-37-avant`. Les tests sur carte n'ont pas été lancés : rien de compilé ne change, et les
+  binaires de carte ont mêmes sections et mêmes symboles.
+- Trunk : 3982 liens, 0 lien cassé, 0 fichier régulier ; `lepton check` code 0 (§3).
+
+Bilan : rien de compilé ne change ; les quatre ensembles ont leur provenance.
+
+## 5. Cas d'épreuve pour ENV-38
 | Ensemble | Dépôt, révision | Chemin amont → chemin dans la famille | Exceptions |
 | --- | --- | --- | --- |
-| HAL | `stm32wlxx-hal-driver` `v1.3.0` e3966ab (ou STM32CubeWL `v1.3.0` `Drivers/STM32WLxx_HAL_Driver`) | `Inc/` → `cubemx_hal_driver/inc/` ; `Src/` → `cubemx_hal_driver/src/` ; `README.md`, `Release_Notes.html` → `cubemx_hal_driver/` (renommage de casse de répertoire) | `stm32_hal_legacy.h` d'une autre révision ; `LICENSE.md` non repris, `LICENSE.txt` hors amont ; `_htmresc/` non repris |
+| HAL | `stm32wlxx-hal-driver` `v1.3.0` e3966ab (PA-61 ; copie identique à STM32CubeWL `v1.3.0` `Drivers/STM32WLxx_HAL_Driver`) | `Inc/` → `cubemx_hal_driver/inc/` ; `Src/` → `cubemx_hal_driver/src/` ; `README.md`, `Release_Notes.html` → `cubemx_hal_driver/` (renommage de casse de répertoire) | `stm32_hal_legacy.h` d'une autre révision ; `LICENSE.md` non repris, `LICENSE.txt` hors amont ; `_htmresc/` non repris |
 | CMSIS device | `cmsis-device-wl` `v1.1.1` d248c55 | `Include/{stm32wl55xx.h,stm32wlxx.h,system_stm32wlxx.h}` → `cmsis/Device/st/stm32wlxx/` ; `Source/Templates/system_stm32wlxx.c` → idem ; `Source/Templates/iar/startup_stm32wl55xx_cm4.s` → `…/startup/iar/` (aplatissement, sélection par fichier, casse `ST/STM32WLxx` → `st/stm32wlxx`) | sous-ensemble d'une puce ; 2 fichiers ni compilés ni inclus |
 | Pile radio | `stm32-mw-subghz-phy` `v1.3.0` 1cad768 | racine → `radio_subghz_phy/` (sans renommage) | `radio.c` modifié ; `stm32_radio_core_inc/` (4 fichiers) d'un **autre dépôt** (STM32CubeWL `Projects/…/SubGHz_Phy_PingPong/Core/Inc`), 3 modifiés ; `LICENSE.txt` hors amont |
-| Utilitaires | STM32CubeWL `v1.3.0` 378e461 (seul amont) | `Utilities/<d>/` → `Utilities/<d>/` pour `conf`, `Fonts`, `lcd`, `lpm/tiny_lpm`, `misc`, `sequencer`, `timer`, `trace/adv_trace` (sous-arbre d'un gros dépôt) | `stm32_timer.h` modifié ; documentation (`html/`, `_htmresc/`, notes de version), `LICENSE.md`, `PC_Software/` exclus ; `LICENSE.txt` ×6 hors amont |
+| Utilitaires | STM32CubeWL `v1.3.0` 378e461 (seul amont ; exception admise au PA-61) | `Utilities/<d>/` → `Utilities/<d>/` pour `conf`, `Fonts`, `lcd`, `lpm/tiny_lpm`, `misc`, `sequencer`, `timer`, `trace/adv_trace` (sous-arbre d'un gros dépôt) | `stm32_timer.h` modifié ; documentation (`html/`, `_htmresc/`, notes de version), `LICENSE.md`, `PC_Software/` exclus ; `LICENSE.txt` ×6 hors amont |
 
 Exigences mises en évidence pour la projection : renommage de répertoire (casse), aplatissement
 et sélection fichier par fichier, sous-arbre d'un dépôt volumineux, deux dépôts amont pour un même
