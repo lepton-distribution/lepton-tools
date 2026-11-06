@@ -1,0 +1,14 @@
+empreinte .bin : différente
+empreinte .elf : différente
+empreinte .hex : différente
+section modifié  : .debug_abbrev ['79273'] -> ['79257']
+section modifié  : .debug_info ['675004'] -> ['675016']
+section modifié  : .debug_line ['292740'] -> ['292706']
+section modifié  : .debug_loclists ['140872'] -> ['140802']
+section modifié  : .debug_str ['72407'] -> ['72608']
+section modifié  : .text ['108004'] -> ['108020']
+symbole retiré   : NVIC_SetPriority.constprop.0 ['t 00000024']
+symbole ajouté   : __NVIC_SetPriority.constprop.0 ['t 00000024']
+symbole modifié  : HAL_NVIC_DisableIRQ ['T 00000018'] -> ['T 00000024']
+symbole modifié  : HAL_NVIC_EnableIRQ ['T 00000018'] -> ['T 0000001c']
+bilan : 10 écart(s) de sections ou de symboles
