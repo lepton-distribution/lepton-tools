@@ -130,3 +130,130 @@ code 0). Option 2 : l'ordre `cmsis5` du script devient impossible (fichier retir
 - Cartes : aucune sonde visible au démarrage de la session (`/dev/cu.usbmodem*` absent) ; la
   NUCLEO-F429ZI porte l'image `nucleo-f439zi-embos` de la VM (reflasher avant le banc de
   référence) ; le contrôle XPERIPHERALS du §4 exige la F429.
+
+## 2. PA-71 (2026-11-06, décisions de l'utilisateur)
+
+| Question | Décision |
+| --- | --- |
+| Option | 1b : `cortex-m4f.cmake` ajoute `cmsis-5/CMSIS/Core/Include` ; la ligne V3.30 d'`armv7m.cmake` passe dans `cortex-m3.cmake` |
+| Sort de V3.30 | fichiers conservés dans l'arbre (M3, armv6m, code du §1.4) ; hors des `-I` des M4 et M7 |
+| Critère d'écart | écarts mesurés exacts du §1.3 ; M7, M0+, host : code 0 ; tout autre écart bloque |
+| Cartes et flash (PA-11) | NUCLEO-F429ZI et deux NUCLEO-WL55JC1, flash accordé ; banc de référence avant, banc après, vue XPERIPHERALS F429 |
+| Commentaire du BSP an386 | corrigé dans `bsp-qemu-mps2-an386` (branche `devenv/env-42`) |
+
+## 3. Oracle avant, banc de référence, modification
+
+### 3.1 Oracle avant
+
+`oracles/env-42-avant/` (`audit/oracle-16.sh <ROOTSTOCK>`, construction à neuf, host et 16 presets) :
+16 × code 0 contre `oracles/env-41-apres/` ; mklepton identiques ; host 7/7 ; bancs KAL 19/15/19/15
+(an386) et 18/18 (an500), 100 %.
+
+### 3.2 Banc de référence sur carte (PA-11 accordé)
+
+Sondes : WL55 A n° 002700253431510837393937 (`/dev/cu.usbmodem145103`), B n° 004F003E3431510937393937
+(`/dev/cu.usbmodem1454403`), F429 n° 0672FF495252717267243842 (`/dev/cu.usbmodem1454303`) ; hôte du
+test réseau 192.168.2.10 (`en0`). ELF reconstruits avec les variables de carte identiques à l'oracle
+avant (`carte-oracle.txt`, code 0).
+
+| Preset | Script | Résultat | Journaux (`oracles/env-42-avant/<P>/`) |
+| --- | --- | --- | --- |
+| `nucleo-wl55jc1-embos` | `env-42-core-cm4/banc-wl55.sh` (A et B flashées) | 16/16 ; radio A→B et B→A reçue | `carte.log`, `carte-detail.log`, `fumee-carte.log`, `radio-carte.log` |
+| `nucleo-wl55jc1-freertos` | idem | 16/16 ; radio reçue dans les deux sens | idem |
+| `nucleo-f429zi-embos` | `env-35-hal-f4/banc-carte.sh` (WL55 débranchées : le BSP F429 ne choisit pas sa sonde) | 20/20 (fumée, KAL, réseau) | `carte.log`, `carte-detail.log`, `fumee-carte.log`, `reseau-carte.log` |
+| `nucleo-f429zi-freertos` | idem | 20/20 | idem |
+
+`banc-wl55.sh` (nouveau) : forme de `banc-carte.sh` avec les variables de la paire d'ENV-32
+(`LEPTON_BOARD_STLINK_SERIAL`, `LEPTON_RADIO_PEER_*`).
+
+### 3.3 Modification
+
+Commits faits dans la copie d'essai, puis repris dans `<ROOTSTOCK>` par `git fetch <copie>` et
+`merge --ff-only` sur `devenv/env-42` :
+
+| Dépôt | Commit | Contenu |
+| --- | --- | --- |
+| clone noyau | 484c44e | `cmake/cpu/cortex-m4f.cmake` (+ `cmsis-5/CMSIS/Core/Include`), `cmake/isa/armv7m.cmake` (ligne V3.30 retirée), `cmake/cpu/cortex-m3.cmake` (ligne V3.30 ajoutée), commentaire de `cmake/cpu/cortex-m7.cmake` |
+| clone noyau | eb6c6c5 | `cmsis-5/CMSIS/Core/LEPTON-PROVENANCE.md` (inclusion, historique), `doc/migration/ajout-coeur.md` (CMSIS-Core posé par le cœur) |
+| `bsp-qemu-mps2-an386` | 21ca883 | commentaire de `qemu_mps2_machine.h:9` |
+| lepton-tools | c67b409 | aide de `scripts/tiers/compiler-hal-f4-a-blanc.sh` (ordre `cmsis5` = presets M4) |
+
+Aucun fichier ajouté, déplacé ni supprimé : liens du trunk inchangés, pas de regreffe. Copie d'essai
+avec ces commits : 16 presets identiques à l'essai 1b (code 0), mklepton identiques. `<ROOTSTOCK>` :
+0 fichier régulier hors `.scion.grafted.list`, 0 lien cassé, `lepton check` code 0 (19 fichiers).
+
+## 4. Contrôles
+
+### 4.1 Oracle après
+
+`oracles/env-42-apres/` (mêmes commandes) ; comparaisons `oracles/env-42-apres/comparaisons/<P>.txt`.
+
+| Preset | Sections/symboles | `.text` | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- | --- |
+| `qemu-mps2-an386-embos` | code 1, 8 écarts | +16 | différente | identique | 19/19 identique | oui (§1.3) |
+| `qemu-mps2-an386-embos-soft` | code 1, 8 | +16 | différente | identique | 15/15 identique | oui |
+| `qemu-mps2-an386-freertos` | code 1, 8 | +16 | différente | identique | 19/19 identique | oui |
+| `qemu-mps2-an386-freertos-soft` | code 1, 8 | +16 | différente | identique | 15/15 identique | oui |
+| `nucleo-f429zi-embos` | code 1, 17 | +32 | différente | — | — | oui |
+| `nucleo-f429zi-freertos` | code 1, 17 | +48 | différente | — | — | oui |
+| `nucleo-f439zi-embos` | code 1, 17 | +32 | différente | — | — | oui |
+| `nucleo-f439zi-freertos` | code 1, 17 | +48 | différente | — | — | oui |
+| `nucleo-wl55jc1-embos` | code 1, 10 | +16 | différente | — | — | oui |
+| `nucleo-wl55jc1-freertos` | code 1, 10 | +16 | différente | — | — | oui |
+| `qemu-mps2-an500-{embos,freertos}` | code 0 | = | — | identique | 18/18 identique | — |
+| `stm32f746g-disco-{embos,freertos}` | code 0 | = | — | — | — | — |
+| `samd21-xplained-pro-{embos,freertos}` | code 0 | = | — | — | — | — |
+| `host` | mklepton identiques | | | | ctest 7/7 | — |
+
+Critère du PA-71 : pour chacun des 10 presets concernés, la liste des écarts (sections hors
+`.debug_*`, symboles) et le delta de `.text` sont **identiques** à ceux de l'essai 1a/1b du §1.3 ;
+`.data`, `.bss` et les autres sections chargées sont inchangés. Les presets FreeRTOS ont un `.text`
+plus court de 152 octets dans `<ROOTSTOCK>` que dans la copie, avant comme après (chaînes de chemin
+`__FILE__`, chemin du rootstock plus court) : le delta n'en dépend pas. Hors périmètre : code 0.
+
+`ctest -N` (`oracles/env-42-apres/ctest-N/`, `ctest --preset <P> -N` depuis le trunk sur les
+répertoires neufs de l'oracle) : 17/17 identiques à `oracles/env-41-apres/ctest-N/` (état avant =
+env-41-apres, §3.1).
+
+En-têtes (`env-42-core-cm4/entetes-apres/`) : aucun en-tête V3.30 inclus par un preset ; les M4
+n'incluent que le `core_cm4.h` 5.9.0, les M7 `core_cm7.h`, la M0+ `core_cm0plus.h` ;
+`cmsis/CMSIS/Include` absent des `-I` des M4 et des M7 (présent pour la M0+, après `cmsis-5`).
+
+Compilation à blanc de la HAL F4 (`env-42-core-cm4/compilation-a-blanc-apres/resume.txt`) : identique
+à l'audit ; l'ordre des presets M4 est désormais `cmsis5` : **0 échec** (F429 et F439) ; la ligne
+`v330`, gardée pour comparaison, reste à 1 échec (le script rend donc 1).
+
+### 4.2 Cartes
+
+| Preset | Résultat après | Comparaison au §3.2 |
+| --- | --- | --- |
+| `nucleo-f429zi-embos` | 20/20 | liste et résultats identiques |
+| `nucleo-f429zi-freertos` | 20/20 | identiques |
+| `nucleo-wl55jc1-embos` | 16/16 ; radio A→B, B→A reçue (4/4 lignes) | identiques |
+| `nucleo-wl55jc1-freertos` | 16/16 ; radio reçue (4/4) | identiques |
+
+ELF reconstruits avec les variables de carte : code 0 contre `oracles/env-42-apres/` (`carte-oracle.txt`).
+Cartes laissées : F429 avec `nucleo-f429zi-embos` ENV-42 (écrite par `load` de la session de
+débogage), WL55 A et B avec `nucleo-wl55jc1-freertos` ENV-42.
+
+### 4.3 Vue des périphériques (VSCodium, utilisateur, 2026-11-06)
+
+Espace `<ROOTSTOCK>/original-tree.code-workspace`, lancement « Déboguer nucleo-f429zi-embos (carte,
+OpenOCD) » (`svdFile` `stm32f4xx/svd/STM32F429.svd`, inchangé depuis ENV-26), F429 seule branchée :
+**registres `RCC` et `GPIOB` lisibles** dans XPERIPHERALS (confirmé par l'utilisateur). L'ELF après
+la tâche de construction du lancement = oracle après (code 0). Référence : `env-26-dbg4.md` §4.
+L'OpenOCD de Cortex-Debug est resté actif après la session jusqu'à la fermeture par l'utilisateur
+(piège connu de la skill `lepton-cibles`).
+
+### 4.4 Observations
+
+- **O-1** : le BSP `nucleo-f429zi` ne choisit pas sa sonde (pas de `LEPTON_BOARD_STLINK_SERIAL`,
+  contrairement au BSP `nucleo-wl55jc1`) : avec les WL55 branchées, OpenOCD prendrait la première
+  sonde trouvée ; les bancs F429 ont été passés WL55 débranchées. Résidu, non traité.
+- **O-2** : l'en-tête V3.30 se dit `V3.30` mais `__CM4_CMSIS_VERSION_SUB` vaut `0x20` ; le
+  commentaire corrigé de `cortex-m7.cmake` dit désormais V3.30.
+- **O-3** : le BSP an386 garde l'en-tête de périphérique `cmsis/Device/ARM/ARMCM4` de l'arbre V3.x,
+  compilé avec le `core_cm4.h` 5.9.0 ; un `ARMCM4` CMSIS 5 existe sous `cmsis-5/Device/ARM/` (non
+  proposé).
+- **O-4** : copie d'essai `~/lepton-tools-dev/essais/env-42-copie` (487 Mo) conservée en attendant
+  le PA-72.

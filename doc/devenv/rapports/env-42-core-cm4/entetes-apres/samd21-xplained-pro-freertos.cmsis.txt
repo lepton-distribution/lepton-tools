@@ -1,0 +1,4 @@
+    2  cmsis-5/CMSIS/Core/Include/cmsis_compiler.h
+    2  cmsis-5/CMSIS/Core/Include/cmsis_gcc.h
+    2  cmsis-5/CMSIS/Core/Include/cmsis_version.h
+    2  cmsis-5/CMSIS/Core/Include/core_cm0plus.h

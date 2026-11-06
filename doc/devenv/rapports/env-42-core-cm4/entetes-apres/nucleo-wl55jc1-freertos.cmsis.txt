@@ -1,0 +1,5 @@
+   24  cmsis-5/CMSIS/Core/Include/cmsis_compiler.h
+   24  cmsis-5/CMSIS/Core/Include/cmsis_gcc.h
+   24  cmsis-5/CMSIS/Core/Include/cmsis_version.h
+   24  cmsis-5/CMSIS/Core/Include/core_cm4.h
+   24  cmsis-5/CMSIS/Core/Include/mpu_armv7.h
