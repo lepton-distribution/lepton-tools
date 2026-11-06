@@ -8,7 +8,7 @@ script d'installation de VSCodium.
 extension Lepton 0.5.1 (`extension/`). Voir `doc/devenv/`.
 
 Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée par pipx ; scion ≥ 0.5.4.0
-requis). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`, puis
+requis ; `scripts/install-vscodium.sh` installe 0.6.0.0). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`, puis
 `pip install -e '.[test]'` et `python -m pytest`.
 
 Environnement complet (VSCodium épinglé, extensions de `scripts/extensions.lst` depuis Open VSX,
