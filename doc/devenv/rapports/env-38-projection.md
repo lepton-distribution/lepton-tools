@@ -205,3 +205,203 @@ Conséquence de Q9 sur C7 et C10 : la projection d'une famille voyage avec la fa
 de projet qui référence la famille n'a rien à ajouter. `lepton seed lock` et `seed status`, qui ne
 lisent que les sources de la graine, ne voient pas les sources d'un `.scion/` de greffon (effet
 ENV-41, §4).
+
+## 2. Cas d'épreuve dans le format final
+
+Spécification : `<SEED_SCIONS>/doc/projection-miroir.md` (branche `devenv/env-38`). Règles citées :
+`P-…`, `M-…`. Chaque cas est déclaré dans le `scion/.scion/` de sa famille (porteur, PA-63 Q9).
+Noms de clé, shelf `tiers` et URL : **propositions** pour illustrer le format ; ils seront arrêtés
+au PA-69 (ENV-41, F4 seul). Les URL deviendront celles des miroirs après le PA-68 (M-D2).
+
+Listes des chemins attendus dans le trunk : `rapports/env-38-projection/attendus/` (618 chemins).
+Elles sont tirées des listes git amont (`git ls-tree -r --name-only <révision>`) et, pour le WL, des
+fichiers `OK` des classements d'ENV-37, préfixées de la destination. **Contrôle** : chacun des 618
+chemins est aujourd'hui un lien du trunk, vers la copie de la famille. F4 et F7 : la liste amont est
+identique, fichier par fichier, à la copie (hors `LEPTON-PROVENANCE.md`, qui reste dans la famille).
+La projection reproduit donc le trunk actuel.
+
+Abréviations dans les lignes ci-dessous (à écrire en entier dans le fichier réel) :
+`K` = `scion/sys/root/src/kernel`, `D` = `K/dev/arch/cortexm`.
+
+### 2.1 F4 (bascule ENV-41) — `family-stm32f4xx/master/scion/.scion/`
+```
+# .scion.sources.list
+tiers  stm32f4xx-hal-driver  v1.8.5                                    https://github.com/STMicroelectronics/stm32f4xx-hal-driver.git
+tiers  cmsis-device-f4       3c77349ce04c8af401454cc51f85ea9a50e34fc1  https://github.com/STMicroelectronics/cmsis_device_f4.git
+# .scion.ramifications
+tiers  stm32f4xx-hal-driver  v1.8.5
+tiers  cmsis-device-f4       3c77349ce04c8af401454cc51f85ea9a50e34fc1
+# .scion.projections
+tiers  stm32f4xx-hal-driver  Inc/**                      D/stm32f4xx/hal_driver/Inc/
+tiers  stm32f4xx-hal-driver  Src/**                      D/stm32f4xx/hal_driver/Src/
+tiers  stm32f4xx-hal-driver  LICENSE.md                  D/stm32f4xx/hal_driver/
+tiers  stm32f4xx-hal-driver  README.md                   D/stm32f4xx/hal_driver/
+tiers  cmsis-device-f4       Include/stm32f4xx.h         K/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/
+tiers  cmsis-device-f4       Include/system_stm32f4xx.h  K/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/
+tiers  cmsis-device-f4       Include/stm32f4[23]9xx.h    K/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/
+tiers  cmsis-device-f4       LICENSE.md                  K/core/ucore/cmsis-5/Device/ST/STM32F4xx/
+tiers  cmsis-device-f4       README.md                   K/core/ucore/cmsis-5/Device/ST/STM32F4xx/
+```
+Formes : récursif, fichier, filtre (`[23]`). Version par commit (P-V1). Attendus : `f4-hal.txt`
+(200), `f4-cmsis-device.txt` (6). Clones : `depots/tiers/stm32f4xx-hal-driver/v1.8.5`,
+`depots/tiers/cmsis-device-f4/3c77349…` (P-V2).
+
+### 2.2 F7 (cas d'épreuve, bascule non planifiée)
+Même forme que le F4 : `stm32f7xx-hal-driver` `v1.3.3` (`Inc/**`, `Src/**`, `LICENSE.md`,
+`README.md` → `D/stm32f7xx/hal_driver/…`) ; `cmsis-device-f7` `v1.2.10`
+(`Include/stm32f7xx.h`, `Include/system_stm32f7xx.h`, `Include/stm32f746xx.h` → `…/STM32F7xx/Include/` ;
+`LICENSE.md`, `README.md` → `…/STM32F7xx/`). Attendus : `f7-hal.txt` (196), `f7-cmsis-device.txt` (5).
+
+### 2.3 WL (cas d'épreuve, bascule non planifiée) — `family-stm32wlxx/master/scion/.scion/`
+```
+# .scion.sources.list (extrait) ; ramifications : mêmes clés et versions
+tiers  stm32wlxx-hal-driver        v1.3.0  https://github.com/STMicroelectronics/stm32wlxx-hal-driver.git
+tiers  cmsis-device-wl             v1.1.1  https://github.com/STMicroelectronics/cmsis-device-wl.git
+tiers  stm32-mw-subghz-phy         v1.3.0  https://github.com/STMicroelectronics/stm32-mw-subghz-phy.git
+tiers  stm32cubewl::utilities      v1.3.0  https://github.com/STMicroelectronics/STM32CubeWL.git
+tiers  stm32cubewl::radio-core-inc v1.3.0  https://github.com/STMicroelectronics/STM32CubeWL.git
+# .scion.projections
+tiers  stm32wlxx-hal-driver  Inc/**                          D/stm32wlxx/cubemx_hal_driver/inc/
+tiers  stm32wlxx-hal-driver  Src/**                          D/stm32wlxx/cubemx_hal_driver/src/
+tiers  stm32wlxx-hal-driver  README.md                       D/stm32wlxx/cubemx_hal_driver/
+tiers  stm32wlxx-hal-driver  Release_Notes.html              D/stm32wlxx/cubemx_hal_driver/
+tiers  stm32wlxx-hal-driver  !Inc/Legacy/stm32_hal_legacy.h
+tiers  cmsis-device-wl  Include/stm32wl55xx.h                         K/core/ucore/cmsis/Device/st/stm32wlxx/
+tiers  cmsis-device-wl  Include/stm32wlxx.h                           K/core/ucore/cmsis/Device/st/stm32wlxx/
+tiers  cmsis-device-wl  Include/system_stm32wlxx.h                    K/core/ucore/cmsis/Device/st/stm32wlxx/
+tiers  cmsis-device-wl  Source/Templates/system_stm32wlxx.c           K/core/ucore/cmsis/Device/st/stm32wlxx/
+tiers  cmsis-device-wl  Source/Templates/iar/startup_stm32wl55xx_cm4.s  K/core/ucore/cmsis/Device/st/stm32wlxx/startup/iar/
+tiers  stm32-mw-subghz-phy  *.h                    D/stm32wlxx/radio_subghz_phy/
+tiers  stm32-mw-subghz-phy  LICENSE                D/stm32wlxx/radio_subghz_phy/
+tiers  stm32-mw-subghz-phy  Conf/*                 D/stm32wlxx/radio_subghz_phy/Conf/
+tiers  stm32-mw-subghz-phy  stm32_radio_driver/*   D/stm32wlxx/radio_subghz_phy/stm32_radio_driver/
+tiers  stm32-mw-subghz-phy  !stm32_radio_driver/radio.c
+tiers  stm32cubewl::utilities  Utilities/conf/*.[ch]           D/stm32wlxx/Utilities/conf/
+tiers  stm32cubewl::utilities  Utilities/Fonts/*.[ch]          D/stm32wlxx/Utilities/Fonts/
+tiers  stm32cubewl::utilities  Utilities/lcd/*.[ch]            D/stm32wlxx/Utilities/lcd/
+tiers  stm32cubewl::utilities  Utilities/lpm/tiny_lpm/*.[ch]   D/stm32wlxx/Utilities/lpm/tiny_lpm/
+tiers  stm32cubewl::utilities  Utilities/misc/*.[ch]           D/stm32wlxx/Utilities/misc/
+tiers  stm32cubewl::utilities  Utilities/sequencer/*.[ch]      D/stm32wlxx/Utilities/sequencer/
+tiers  stm32cubewl::utilities  Utilities/timer/*.[ch]          D/stm32wlxx/Utilities/timer/
+tiers  stm32cubewl::utilities  Utilities/trace/adv_trace/*.[ch]  D/stm32wlxx/Utilities/trace/adv_trace/
+tiers  stm32cubewl::utilities  !Utilities/timer/stm32_timer.h
+tiers  stm32cubewl::radio-core-inc  Projects/NUCLEO-WL55JC/Applications/SubGHz_Phy/SubGHz_Phy_PingPong/Core/Inc/utilities_def.h  D/stm32wlxx/radio_subghz_phy/stm32_radio_core_inc/
+```
+Ce que le cas éprouve :
+- renommage de casse `Inc` → `inc` (P-T2) ; P-K2 sans collision, car la famille fournit
+  `inc/Legacy/stm32_hal_legacy.h` avec la même casse ;
+- aplatissement et chemin changé (`Source/Templates/iar/` → `startup/iar/`) ;
+- exclusion des fichiers modifiés par Lepton, fournis par la famille (P-X1, P-G2) ;
+- sélection positive dans un gros dépôt, `html/` exclu par le motif non récursif ;
+- deux clés de même préfixe et de même version partagent un clone :
+  `depots/tiers/stm32cubewl/v1.3.0` (P-V2), partiel (`blob:none`) ;
+- deux dépôts amont pour `radio_subghz_phy/` (P-G1).
+
+Attendus : `wl-hal.txt` (155), `wl-cmsis-device.txt` (5), `wl-radio.txt` (18), `wl-stm32cubewl.txt`
+(32 + 1). Restent dans la famille : `stm32_hal_legacy.h` (autre révision), `radio.c`,
+`stm32_timer.h`, 3 fichiers de `stm32_radio_core_inc/` (modifiés), `LICENSE.txt` ×8 (hors amont),
+les 4 `LEPTON-PROVENANCE.md`.
+
+## 3. Plan de tests pour ENV-39 et ENV-40
+
+Un cas nommé par règle, sur des dépôts de test fabriqués par `tests/make_fixture.py` (dépôt tiers
+sans `scion/`, tags, commit sans tag, fichiers non suivis, sous-module, lien committé), sans réseau
+sauf `tests/test_network.py`. Fichiers proposés : `tests/test_projection.py`, `tests/test_mirror.py`.
+
+| Règle | Cas de test |
+| --- | --- |
+| P-C1 | `test_sans_projection_greffe_identique_0_5_4_0` (fixture actuelle, trunk et liste greffée comparés) |
+| P-C2 | `test_liste_greffee_sans_sixieme_colonne_hors_porteur` |
+| P-C3 | `test_scion_dot_scion_sans_projections_ignore` |
+| P-D1 | `test_cle_projetee_declaree_comme_scion` |
+| P-D2 | `test_cle_projetee_greffe_sans_repertoire_scion` ; `test_cle_projetee_chemin_dans_depot_refuse` |
+| P-D3 | `test_projection_sans_ligne_de_sources_erreur` |
+| P-F1 | `test_ligne_projection_mal_formee_erreur_avec_numero` |
+| P-F2 | `test_fichier_tiers_a_blanc_projete_par_joker` |
+| P-M1 | `test_joker_dernier_segment` ; `test_joker_segment_interieur_refuse` ; `test_joker_point_initial` |
+| P-M2 | `test_double_etoile_dernier_segment_seulement` |
+| P-M3 | `test_motif_point_point_refuse` |
+| P-M4 | `test_non_suivi_jamais_projete` ; `test_sous_module_ignore_par_recursif` ; `test_lien_committe_projete_comme_feuille` |
+| P-M5 | `test_forme_fichier_sur_repertoire_refusee` |
+| P-T1 | `test_destination_sans_prefixe_scion_refusee` |
+| P-T2 | `test_renommage_de_base_repertoire` |
+| P-T3 | `test_renommage_de_fichier` ; `test_destination_fichier_pour_recursif_refusee` |
+| P-T4 | `test_destination_segment_dot_scion_refusee` ; `test_destination_liste_greffee_refusee` |
+| P-X1 | `test_exclusion_toutes_inclusions_ordre_indifferent` |
+| P-X2 | `test_exclusion_porte_sur_la_source` |
+| P-R1 | `test_inclusion_sans_correspondance_erreur_trunk_retabli` |
+| P-R2 | `test_exclusion_sans_correspondance_erreur` |
+| P-R3 | `test_meme_source_meme_destination_un_lien` |
+| P-R4 | `test_deux_sources_meme_destination_erreur` |
+| P-R5 | `test_une_source_deux_destinations` |
+| P-R6 | `test_fichier_projete_contre_repertoire_erreur` |
+| P-K1 | `test_motif_sensible_a_la_casse` |
+| P-K2 | `test_collision_de_casse_projection_contre_scion_erreur` ; `test_collision_de_casse_sur_repertoire` |
+| P-V1 | `test_version_tag` ; `test_version_commit` ; `test_version_branche_refusee` ; `test_version_etoile_et_point_d_interrogation_refusees` |
+| P-V2 | `test_clone_partiel_blob_none_head_detache` ; `test_meme_prefixe_meme_version_clone_partage` |
+| P-V3 | `test_emplacement_local_git_utilise_tel_quel` ; `test_emplacement_local_hors_git_refuse` |
+| P-V4 | `test_tag_deplace_arrete_graft_update` ; `test_commit_absent_fetch_puis_erreur` |
+| P-V5 | `test_changement_de_version_nouveau_clone` |
+| P-E1 | `test_clone_modifie_greffe_refusee` ; `test_clone_hors_commit_refuse` ; `test_non_suivi_ne_bloque_pas` |
+| P-P1 | `test_porteur_lu_dot_scion_non_greffe` |
+| P-P2 | `test_porteur_scion_ordinaire_refuse` |
+| P-P3 | `test_porteur_sixieme_colonne` ; `test_ordre_des_porteurs` |
+| P-P4 | `test_double_declaration_identique_admise` ; `test_double_declaration_differente_erreur` |
+| P-P5 | `test_porteur_avance_projection_suit` |
+| P-P6 | `test_graft_remove_porteur_retire_ses_projections` |
+| P-G1 | `test_liens_relatifs_vers_clone_tiers_repertoires_partages` |
+| P-G2 | `test_conflit_projection_contre_scion` ; `test_remplacement_local_par_exclusion` |
+| P-G3 | `test_proprietaire_repertoire_projete` ; `test_elagage_apres_graft_remove_projection` |
+| P-G4 | `test_filtre_ignore_sans_effet_sur_projection` |
+| P-G5 | `test_graft_scion_cle_projetee_seule` |
+| A.11 | `test_seed_add_clone_projections` ; `test_rootstock_information_compte_projections` ; `test_git_key_cle_projetee` |
+| A.12 | `test_messages_citent_fichier_et_ligne` ; `test_verbose_liste_par_ligne` |
+| M-D1 | `test_mirrors_dans_porteur` |
+| M-D2 | `test_greffe_ne_lit_pas_mirrors` |
+| M-D3 | `test_ligne_mirrors_mal_formee` |
+| M-D4 | `test_miroir_deux_amonts_erreur` |
+| M-D5 | `test_echec_clone_miroir_suggere_mirror_sync` |
+| M-C1 | `test_mirror_sync_url_inconnue_erreur_avant_tout` ; `test_mirror_sync_selection` |
+| M-C2 | `test_depot_de_travail_refs_amont_separees` |
+| M-C3 | `test_seules_branches_et_tags` |
+| M-C4 | `test_push_sans_force_ni_suppression` |
+| M-C5 | `test_miroir_inaccessible_signale_les_autres_traites` |
+| M-C6 | `test_dry_run_rien_envoye` |
+| M-R1 à M-R9 | `test_branche_nouvelle`, `test_branche_avance_rapide`, `test_branche_identique`, `test_branche_reecrite_non_envoyee`, `test_branche_supprimee_conservee`, `test_tag_nouveau`, `test_tag_identique`, `test_tag_deplace_non_propage`, `test_tag_supprime_conserve` |
+| M-K1 | `test_codes_de_retour_mirror_sync` |
+| M-K2 | `test_rien_supprime_ni_reecrit_dans_miroir` |
+
+Contrôle de bout en bout, côté Lepton (ENV-41) : greffe du F4 par projection sur une copie d'essai.
+On compare les liens du trunk à `attendus/f4-*.txt`, puis l'oracle (`comparer-oracle.py`, code 0).
+
+## 4. Effets à traiter hors de scion
+
+| Élément | Effet | Étape |
+| --- | --- | --- |
+| `lepton/__init__.py` `SCION_MIN_VERSION`, `install-vscodium.sh` `SCION_REF`, `README.md` | relever à la version qui porte la projection (Q13) | ENV-41 |
+| `lepton/rootstock.py` | lire `.scion.projections` et le `.scion/` des porteurs ; 6ᵉ colonne de la liste greffée (P-P3) ; `seed_dot()` inchangé (5ᵉ colonne = graine) | ENV-41 |
+| `seed lock`, `--verify`, `--restore` | inclure les clés projetées des porteurs (commit), sinon GRA-5 n'est pas tenu | ENV-41 |
+| `seed status` (`stem`, `role`, `in_seed`) et extension (`srcmap.ts`, `watch.ts`, `pickScion`, `tree.ts:298`) | rôle « projection », `stem` = racine du clone ; correspondance trunk ↔ clone par la table de projection (gdb rend le chemin du clone tiers) | ENV-41 |
+| `checks.py` (`check_declared_files`, `check_family_files`, `scion_c_files`) | résoudre `sources` et `inclusions` par le trunk, ou par le porteur et ses projections | ENV-41 |
+| `files.py` (`file owner`, `file add [--adopt]`, `file rm/mv`, `dir *`, `graft --path`) | propriétaire d'un lien projeté ; refuser une clé projetée comme cible d'écriture | ENV-41 |
+| `seed tree` | propriétaire par la table de projection | ENV-41 |
+| `lepton generate` | dossier « git · » d'un clone tiers et `files.exclude` (IDE-4) | ENV-41 |
+| `seed new`, `seed add/replace` | rien à recopier : la projection voyage avec la famille (Q9) ; contrôle seulement | ENV-41 |
+| hook `proteger-trunk.py` | refuser aussi l'écriture dans un clone projeté (`depots/tiers/…`) | ENV-41 |
+| skill `lepton-rootstock` | règle « ne jamais éditer un clone tiers » ; regreffe d'une projection ; exemple de clé périmé (`lepton@bsp::nucleo-f429zi` → `lepton@bsp-nucleo-f429zi`) | ENV-41 |
+| `scripts/tiers/verifier-import.sh`, `hal_conf_stm32f4.py` | sans objet pour une projection ; texte de provenance | ENV-41 (PA-69) |
+| `LEPTON-PROVENANCE.md`, licences | renvoyés au PA-69 (Q14) ; la ligne de sources du porteur et `seed lock` portent la provenance | ENV-41 |
+| miroirs sous `lepton-distribution/` | noms, visibilité, création (hors scion, M-C5) | ENV-40 (PA-68) |
+| `ORCHESTRATION.md` §4 PA-63 | libellé « projection dans la graine » : Q9 retient le greffon porteur | ENV-38 (fin de session, PA-64) |
+| `etapes/ENV-39`, `ENV-40`, `ENV-41` | relire selon la spécification (porteur, version 0.6.x) avant leur démarrage | début de chacune |
+
+## 5. Ce que le format ne couvre pas
+
+| Cas | Constat | Conséquence |
+| --- | --- | --- |
+| Fichiers dérivés et modifiés (`radio.c`, `stm32_timer.h`, `subghz.h`, `utilities_conf.h`, `platform.h`) | aucune forme « fichier amont + correctif » | copie dans la famille, exclue de la projection, provenance écrite à la main |
+| `stm32_hal_legacy.h` du WL (révision STM32CubeWL, pas celle du dépôt séparé) | une clé n'a qu'une révision | exclu, reste copie ; ou une clé `stm32cubewl::hal-legacy` en forme fichier, ce qui ferait de STM32CubeWL une source de la HAL (contraire à la décision du 2026-11-04) |
+| `LICENSE.txt` ×8 du WL | hors amont, origine non établie | restent dans la famille |
+| Fichier à blanc dans le nom (`_htmresc/Add button.svg`) | ne s'écrit pas en forme fichier (P-F2) | désignable par joker seulement ; sans objet ici (exclu) |
+| Paquet logiciel tiers non git (embOS, archive Segger) | une projection exige un dépôt git (P-V3, P-M4) | hors format |
+| Vérification de contenu de la copie par empreinte | n'a plus d'objet : le clone est l'amont | `verifier-import.sh` reste utile pour les copies |
