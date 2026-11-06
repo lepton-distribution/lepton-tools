@@ -392,7 +392,6 @@ On compare les liens du trunk à `attendus/f4-*.txt`, puis l'oracle (`comparer-o
 | `scripts/tiers/verifier-import.sh`, `hal_conf_stm32f4.py` | sans objet pour une projection ; texte de provenance | ENV-41 (PA-69) |
 | `LEPTON-PROVENANCE.md`, licences | renvoyés au PA-69 (Q14) ; la ligne de sources du porteur et `seed lock` portent la provenance | ENV-41 |
 | miroirs sous `lepton-distribution/` | noms, visibilité, création (hors scion, M-C5) | ENV-40 (PA-68) |
-| `ORCHESTRATION.md` §4 PA-63 | libellé « projection dans la graine » : Q9 retient le greffon porteur | ENV-38 (fin de session, PA-64) |
 | `etapes/ENV-39`, `ENV-40`, `ENV-41` | relire selon la spécification (porteur, version 0.6.x) avant leur démarrage | début de chacune |
 
 ## 5. Ce que le format ne couvre pas

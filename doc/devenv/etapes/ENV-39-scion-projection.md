@@ -2,8 +2,10 @@
 
 ## Contexte
 ENV-38 a produit la spécification de la projection : un dépôt tiers sans répertoire `scion/`
-devient un greffon par des lignes de `.scion.projections` déclarées dans la graine (principes du
-2026-11-04, détails tranchés au PA-63, spécification validée au PA-64).
+devient un greffon par des lignes de `.scion.projections`. Elles sont déclarées dans le `scion/.scion/`
+du greffon qui en dépend (« porteur »), ou dans la graine (principes du 2026-11-04 ; détails tranchés
+au PA-63, dont Q9 « le greffon porte ses projections », écart au principe « déclarée dans la graine » ;
+spécification `<SEED_SCIONS>/doc/projection-miroir.md` validée au PA-64).
 
 Cette étape implémente la projection dans scion, sans rien basculer dans Lepton : la bascule de la
 famille STM32F4 est l'objet d'ENV-41. Le miroir de conservation est l'objet d'ENV-40.
@@ -34,11 +36,13 @@ infrastructure. La procédure de version est celle d'ENV-15, d'ENV-23 et d'ENV-2
 - **PA-65** : l'utilisateur valide :
   - Les écarts à la spécification relevés par l'audit : <À CONFIRMER au PA-65>. Un écart accepté
     est reporté dans la spécification, par un commit séparé.
-  - Le numéro de version : <À CONFIRMER au PA-65 : `0.5.5.0` ou `0.6.0.0`>.
-  - `SCION_MIN_VERSION` de lepton : relevé dans cette étape ou en ENV-41 :
+  - Numéro de version : fixé au PA-63 Q13 : `0.6.0.0` si ENV-39 est livrée la première, `0.6.1.0`
+    si ENV-40 l'a précédée. Seule la confirmation est demandée ici.
+  - `SCION_MIN_VERSION` de lepton : relevé en ENV-41 (PA-63 Q13), pas ici.
+  - `SCION_REF` d'`install-vscodium.sh` et des scripts du noyau : relevé ici ou en ENV-41 :
     <À CONFIRMER au PA-65>.
-  - Effets sur lepton listés au §4 du rapport d'ENV-38 : lesquels sont traités ici, lesquels en
-    ENV-41 : <À CONFIRMER au PA-65>.
+  - Effets sur lepton : tous portés par ENV-41 (`rapports/env-38-projection.md` §4) ; le PA-65
+    confirme qu'aucun n'est traité ici.
 - Aucune modification avant la réponse.
 
 ### 2. Implémentation (`<SEED_SCIONS>`, `devenv/env-39`)
@@ -56,18 +60,20 @@ infrastructure. La procédure de version est celle d'ENV-15, d'ENV-23 et d'ENV-2
 - Non-régression, sans projection : `scion graft` de la copie donne une liste de liens identique à
   celle de `<ROOTSTOCK>` (`sha256` de la liste triée).
 - Essai à blanc de la projection, dans la copie seulement, rien n'est publié :
-  - écrire dans la graine de la copie les lignes du cas d'épreuve F4 (`rapports/env-38-projection.md`
-    §2), avec les clones de `~/lepton-tools-dev/tiers/` en `file://` ;
+  - écrire dans le `scion/.scion/` du clone `family-stm32f4xx` de la copie (porteur, P-P1) les lignes
+    du cas d'épreuve F4 (`rapports/env-38-projection.md` §2.1 : sources, ramifications, projections),
+    avec les clones de `~/lepton-tools-dev/tiers/` en `file://` ; la graine de la copie ne change pas ;
   - retirer la copie de la HAL et du CMSIS device du clone famille de la copie ;
   - regreffer ; comparer la liste des **chemins** du trunk à celle d'avant : identique, seules les
-    cibles des liens changent.
+    cibles des liens changent ; les chemins projetés sont ceux de
+    `rapports/env-38-projection/attendus/f4-*.txt`.
 - Consigner l'écart éventuel : il est l'entrée d'ENV-41.
 
 ### 4. Version, lepton, `<ROOTSTOCK>` → PA-66
 - Préparer le tag annoté de la version, puis
   `pipx install --force "git+file://<SEED_SCIONS>@<version>"`.
-- lepton-tools, selon le PA-65 : `SCION_MIN_VERSION` (`lepton/__init__.py`), `SCION_REF`
-  d'`scripts/install-vscodium.sh`, `README.md`, tests.
+- lepton-tools, selon le PA-65 : `SCION_REF` d'`scripts/install-vscodium.sh`, `README.md`.
+  `SCION_MIN_VERSION` ne change pas (ENV-41).
 - Clone noyau, si la version change le défaut : `SCION_REF` d'`install-{macos,debian}.sh`,
   `doc/BUILDING.md` et `README-PAQUET.md`.
 - Regreffer `<ROOTSTOCK>` (PA-P) : liste inchangée, 0 fichier régulier, 0 lien cassé.
