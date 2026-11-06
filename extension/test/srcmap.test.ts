@@ -34,3 +34,16 @@ test("message DAP : source et sources réécrits, le reste intact", () => {
   assert.equal(msg.body.sources[0].path, "/r/trunk/k/c.c");
   assert.equal(msg.body.path, "/r/depots/a/master/scion/sys/b.c");     // hors d'un objet source
 });
+
+test("clé projetée (ENV-41) : fichier du clone tiers ramené par la table, sans préfixe commun", () => {
+  const projected = sourceMap("/r/trunk", ["/r/depots/a/master/scion"], [
+    { root: "/r/depots/tiers/hal/v1", projection: { "Src/x.c": "sys/fam/hal_driver/Src/x.c", "Inc/x.h": "sys/fam/hal_driver/Inc/x.h" } },
+  ]);
+  const links = new Set(["/r/trunk/sys/fam/hal_driver/Src/x.c", "/r/trunk/sys/b.c"]);
+  const has = (p: string) => links.has(p);
+  assert.equal(toTrunk(projected, "/r/depots/tiers/hal/v1/Src/x.c", has), "/r/trunk/sys/fam/hal_driver/Src/x.c");
+  assert.equal(toTrunk(projected, "/r/depots/tiers/hal/v1/Inc/x.h", has), "/r/depots/tiers/hal/v1/Inc/x.h");  // lien absent
+  assert.equal(toTrunk(projected, "/r/depots/tiers/hal/v1/Src/y.c", has), "/r/depots/tiers/hal/v1/Src/y.c");  // non projeté
+  assert.equal(toTrunk(projected, "/r/depots/a/master/scion/sys/b.c", has), "/r/trunk/sys/b.c");
+  assert.equal(sourceMap("/r/trunk", []).files.size, 0);
+});

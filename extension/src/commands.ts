@@ -67,15 +67,16 @@ export class Commands {
   }
 
   /** Greffons du rootstock d'après `lepton seed status --json`, présentés tels quels ;
-   *  `among` : restreint aux greffons nommés (candidats donnés par lepton). */
+   *  `among` : restreint aux greffons nommés (candidats donnés par lepton). Clés projetées (dépôts
+   *  tiers, ENV-41) exclues : lepton refuse d'y écrire et elles ne sont pas dans la graine. */
   async pickScion(placeHolder: string, among?: ScionRef[]): Promise<string | undefined> {
     let items: { label: string; description?: string }[];
     if (among) {
-      items = among.map((s) => ({ label: s.name, description: s.key }));
+      items = among.filter((s) => !s.projected_by).map((s) => ({ label: s.name, description: s.key }));
     } else {
       const status = await this.status();
       if (!status) return undefined;
-      items = status.scions.map((s) => ({ label: s.name, description: s.role }));
+      items = status.scions.filter((s) => !s.projected_by).map((s) => ({ label: s.name, description: s.role }));
     }
     const chosen = await vscode.window.showQuickPick(items, { placeHolder, ignoreFocusOut: true });
     return chosen?.label;

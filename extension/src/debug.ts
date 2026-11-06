@@ -26,7 +26,11 @@ export class DebugSources implements vscode.Disposable {
   private async load(): Promise<void> {
     const result = await this.runner.exec(["seed", "status", "--json"]);
     const status = result && parseJson<StatusResult>(result);
-    this.map = status?.scions ? sourceMap(status.trunk, status.scions.map((s) => s.stem)) : undefined;
+    this.map = status?.scions
+      ? sourceMap(status.trunk, status.scions.filter((s) => !s.projected_by).map((s) => s.stem),
+        status.scions.filter((s) => s.projected_by && s.root && s.projection)
+          .map((s) => ({ root: s.root as string, projection: s.projection as Record<string, string> })))
+      : undefined;
   }
 
   /** Rendu sans attendre lepton : VSCodium 1.135 abandonne sans le signaler un traceur rendu après

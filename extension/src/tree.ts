@@ -295,11 +295,13 @@ export class ArchitectureView implements vscode.TreeDataProvider<Node>, vscode.D
       target = node.file.clone_path;
     } else if (node?.kind === "dir") {
       const s = this.status(node.group.key);
-      target = s && path.join(s.stem, ...node.dir.path.split("/"));
+      // clé projetée (ENV-41) : les répertoires du trunk ne se retrouvent pas dans le clone tiers
+      target = s && (s.projected_by ? s.path : path.join(s.stem, ...node.dir.path.split("/")));
     } else if (node?.kind === "scion") {
-      target = this.status(node.group.key)?.stem;
+      const s = this.status(node.group.key);
+      target = s && (s.projected_by ? s.path : s.stem);
     } else if (node?.kind === "status") {
-      target = node.scion.stem;
+      target = node.scion.projected_by ? node.scion.path : node.scion.stem;
     }
     if (target) {
       await vscode.commands.executeCommand("revealFileInOS", vscode.Uri.file(target));
