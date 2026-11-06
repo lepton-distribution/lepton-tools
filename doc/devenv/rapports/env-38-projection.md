@@ -179,5 +179,29 @@ appelle un clone partiel (`--filter=blob:none`) et peut-être un `sparse-checkou
 
 | C10 | lepton lit les sources pour `seed lock` et le statut ; il cherche les fichiers d'un manifeste dans le clone (§1.4) | toute famille projetée | Articulation ; effets ENV-41 |
 
-### 1.7 Décisions du PA-63
-<À COMPLÉTER après la réponse de l'utilisateur>
+### 1.7 Décisions du PA-63 (utilisateur, 2026-11-06)
+Une ligne par point dans `DEVENV-STATUS.md` §Décisions (PA-63 Q1 à Q16).
+
+| Point | Décision |
+| --- | --- |
+| Q1 articulation | dépôt tiers = scion ordinaire (sources, ramifications) ; `.scion.projections` : `shelf nom motif destination` |
+| Q2 révision | tag ou commit complet ; branche refusée ; tag déplacé = arrêt |
+| Q3 sans correspondance | erreur, exclusion comprise |
+| Q4 casse | stricte, sur la liste git ; collision de casse dans le trunk = erreur partout |
+| Q5 motifs | `d/**`, `d/*`, jokers dans le dernier segment, fichier ; destination `/` = répertoire remplaçant la base ; `!motif` |
+| Q6 recouvrement | même source, même destination = un lien ; sinon erreur ; conflit inter-scions inchangé |
+| Q7 clone modifié | fichiers suivis au commit seulement ; modification = greffe refusée |
+| Q8 clone | `depots/<shelf>/<prefix>/<version>`, `--filter=blob:none` |
+| Q9 dépendance | **greffon porteur** (écart au principe du 2026-11-04) : `scion/.scion/` complet, un niveau, projections seules ; double déclaration = erreur sauf identité |
+| Q10 miroir | graine → miroir ; `.scion.mirrors` à côté de la ligne de sources (graine ou greffon) |
+| Q11 conduite | branche réécrite non mise à jour, tag supprimé conservé, signalés ; code 1 si signalement |
+| Q12 commande | `mirror-sync [--seed] [--dry-run] [miroir…]`, `depots/.mirrors/` |
+| Q13 versions | 0.6.0.0 puis 0.6.1.0 ; `SCION_MIN_VERSION` en ENV-41 |
+| Q14 provenance | renvoyée au PA-69 |
+| Q15 emplacement | `<SEED_SCIONS>/doc/projection-miroir.md` |
+| Q16 édition | aucune commande |
+
+Conséquence de Q9 sur C7 et C10 : la projection d'une famille voyage avec la famille ; une graine
+de projet qui référence la famille n'a rien à ajouter. `lepton seed lock` et `seed status`, qui ne
+lisent que les sources de la graine, ne voient pas les sources d'un `.scion/` de greffon (effet
+ENV-41, §4).
