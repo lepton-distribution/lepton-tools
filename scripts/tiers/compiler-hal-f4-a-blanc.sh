@@ -5,9 +5,10 @@
 # Usage : compiler-hal-f4-a-blanc.sh <ROOTSTOCK> <répertoire-de-sortie>
 #
 # Pour chaque puce (STM32F429xx, STM32F439xx) et chaque ordre d'inclusion du CMSIS-Core :
-#   v330    kernel/core/ucore/cmsis/CMSIS/Include (V3.30) en tête, comme cmake/isa/armv7m.cmake
-#           le fait aujourd'hui pour tous les presets M4, puis cmsis-5/CMSIS/Core/Include ;
-#   cmsis5  cmsis-5/CMSIS/Core/Include seul (core_cm4.h 5.9.0) ;
+#   v330    kernel/core/ucore/cmsis/CMSIS/Include (V3.30) en tête, puis cmsis-5/CMSIS/Core/Include :
+#           ordre des presets M4 d'ENV-34 à ENV-41 (cmake/isa/armv7m.cmake), gardé pour comparaison ;
+#   cmsis5  cmsis-5/CMSIS/Core/Include seul (core_cm4.h 5.9.0) : ordre des presets M4 depuis
+#           ENV-42 (cmake/cpu/cortex-m4f.cmake, PA-71) ;
 # compile chaque hal_driver/Src/*.c (hors modèles *_template.c et Legacy/) avec
 # -D<puce> -DUSE_HAL_DRIVER, le stm32f4xx_hal_conf.h copié sans modification du modèle
 # stm32f4xx_hal_conf_template.h dans <sortie>/conf, et les inclusions <sortie>/conf,
