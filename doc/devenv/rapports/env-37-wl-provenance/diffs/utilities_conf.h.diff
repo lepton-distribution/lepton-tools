@@ -1,0 +1,36 @@
+--- STM32CubeWL v1.3.0:Projects/NUCLEO-WL55JC/Applications/SubGHz_Phy/SubGHz_Phy_PingPong/Core/Inc/utilities_conf.h
++++ famille:radio_subghz_phy/stm32_radio_core_inc/utilities_conf.h
+@@ -27,7 +27,8 @@
+ #endif
+ 
+ /* Includes ------------------------------------------------------------------*/
+-#include "cmsis_compiler.h"
++// removed for lepton
++//#include "cmsis_compiler.h"
+ 
+ /* definitions to be provided to "sequencer" utility */
+ #include "stm32_mem.h"
+@@ -73,23 +74,13 @@
+ /**
+   * @brief Memory placement macro
+   */
+-#if defined(__CC_ARM)
+-#define UTIL_PLACE_IN_SECTION( __x__ )  __attribute__((section (__x__), zero_init))
+-#elif defined(__ICCARM__)
+ #define UTIL_PLACE_IN_SECTION( __x__ )  __attribute__((section (__x__)))
+-#else  /* __GNUC__ */
+-#define UTIL_PLACE_IN_SECTION( __x__ )  __attribute__((section (__x__)))
+-#endif /* __CC_ARM | __ICCARM__ | __GNUC__ */
+ 
+ /**
+   * @brief Memory alignment macro
+   */
+ #undef ALIGN
+-#ifdef WIN32
+-#define ALIGN(n)
+-#else
+ #define ALIGN(n)             __attribute__((aligned(n)))
+-#endif /* WIN32 */
+ 
+ /**
+   * @brief macro used to initialize the critical section

@@ -1,0 +1,3 @@
+Test project /Users/cle_d_anton/lepton/build/stm32f746g-disco-embos
+
+Total Tests: 0

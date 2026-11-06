@@ -1,0 +1,16 @@
+_htmresc/Add button.svg
+_htmresc/favicon.png
+_htmresc/mini-st_2020.css
+_htmresc/st_logo_2020.png
+_htmresc/Update.svg
+.github/ISSUE_TEMPLATE/bug_report.yml
+.github/ISSUE_TEMPLATE/config.yml
+.github/ISSUE_TEMPLATE/feature_request.yml
+.github/ISSUE_TEMPLATE/question.yml
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+LICENSE.md
+README.md
+Release_Notes.html
+Release_Notes.md
+SECURITY.md

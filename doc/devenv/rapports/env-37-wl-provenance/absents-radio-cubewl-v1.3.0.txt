@@ -1,0 +1,7 @@
+Middlewares/Third_Party/SubGHz_Phy/_htmresc/Add button.svg
+Middlewares/Third_Party/SubGHz_Phy/_htmresc/favicon.png
+Middlewares/Third_Party/SubGHz_Phy/_htmresc/mini-st_2020.css
+Middlewares/Third_Party/SubGHz_Phy/_htmresc/st_logo_2020.png
+Middlewares/Third_Party/SubGHz_Phy/_htmresc/Update.svg
+Middlewares/Third_Party/SubGHz_Phy/LICENSE.md
+Middlewares/Third_Party/SubGHz_Phy/Release_Notes.html

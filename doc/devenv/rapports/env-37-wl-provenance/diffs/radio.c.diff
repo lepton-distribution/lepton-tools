@@ -1,0 +1,20 @@
+--- STM32CubeWL v1.3.0:Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio.c
++++ famille:radio_subghz_phy/stm32_radio_driver/radio.c
+@@ -807,6 +807,7 @@
+ 
+ static bool RadioIsChannelFree( uint32_t freq, uint32_t rxBandwidth, int16_t rssiThresh, uint32_t maxCarrierSenseTime )
+ {
++#if 0
+     bool status = true;
+     int16_t rssi = 0;
+     uint32_t carrierSenseTime = 0;
+@@ -840,6 +841,9 @@
+     RadioStandby( );
+ 
+     return status;
++#else
++    return false;
++#endif
+ }
+ 
+ static uint32_t RadioRandom( void )

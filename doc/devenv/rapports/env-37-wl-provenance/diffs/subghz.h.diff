@@ -1,0 +1,14 @@
+--- STM32CubeWL v1.3.0:Projects/NUCLEO-WL55JC/Applications/SubGHz_Phy/SubGHz_Phy_PingPong/Core/Inc/subghz.h
++++ famille:radio_subghz_phy/stm32_radio_core_inc/subghz.h
+@@ -26,7 +26,10 @@
+ #endif
+ 
+ /* Includes ------------------------------------------------------------------*/
+-#include "main.h"
++// lepton removed 
++//#include "main.h"
++ //lepton added
++#include "stm32wlxx_hal.h"
+ 
+ /* USER CODE BEGIN Includes */
+ 
