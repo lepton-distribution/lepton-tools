@@ -69,6 +69,16 @@ Règles :
 - L'émetteur d'un `ORDRE` n'agit pas sur la suite tant que l'`ACCUSÉ` n'est pas reçu. Sans accusé :
   pas de supposition ; demander à l'utilisateur de vérifier la session destinataire, puis renvoyer
   une fois avec le même `ID`.
+- **Remise en échec** (D9 d'ENV-44, constat de R43-1) : l'émetteur dont l'envoi échoue (erreur
+  du canal, ECONNRESET, « bridge ID is stale ») le renvoie une fois. Si le second envoi échoue,
+  il consigne le message en entier dans son journal (VM : `rapports/env-N-debian.md` §Messages,
+  avec la mention « non remis ») et l'annonce à l'utilisateur. L'utilisateur relaie : il colle
+  dans l'autre session la première ligne `[<TYPE> <ID>]` et le corps, inchangés. Le destinataire
+  tient un message relayé pour reçu s'il porte le bon `ID`. Il le consigne avec la mention
+  « relayé par l'utilisateur » et y répond normalement ; sa réponse peut à son tour être relayée.
+  Un `ACCUSÉ` relayé vaut accusé. Si l'utilisateur fait poursuivre le destinataire sans relais,
+  c'est sa décision : la session principale la consigne au journal, et les messages manquants
+  sont lus dans le rapport du destinataire avant toute fusion.
 - Le destinataire n'exécute rien avant d'avoir envoyé l'`ACCUSÉ`, et termine toujours par
   `FIN-SUCCÈS` ou `FIN-ÉCHEC`, même interrompu.
 - Réponse : à l'adresse `from` du message reçu.
@@ -260,7 +270,7 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50 |
 | skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15, 17, 19, 20, 21, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50 |
 | skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50 |
-| hook `proteger-trunk.py` | Refuse Write/Edit sous `<ROOTSTOCK>/trunk/` et les commandes shell d'écriture visant `trunk/` | toutes |
+| hook `proteger-trunk.py` | Refuse Write/Edit sous `<ROOTSTOCK>/trunk/` et `<ROOTSTOCK>/depots/tiers/` (ENV-41), et les commandes shell qui y écrivent (analyse par commande simple depuis ENV-44 ; tests `tests/test_proteger_trunk.py`) | toutes |
 
 Une skill se corrige comme le code : sur la branche de l'étape, commit dédié, ligne de journal
 dans `DEVENV-STATUS.md`. La skill `lepton-portage-instructions` (hors de ce dépôt) sert à réviser

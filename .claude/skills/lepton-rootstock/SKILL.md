@@ -32,7 +32,10 @@ réels et l'historique git sont dans les clones (`<ROOTSTOCK>/depots/…`). Chem
 
 Le hook du dépôt refuse les écritures directes sous `trunk/` et sous `depots/tiers/` (Write, Edit,
 et commandes shell évidentes). Un refus du hook n'est pas à contourner : il signale une erreur de
-chemin. Il lit le texte de la commande : un script qui contient ces chemins se passe par un fichier.
+chemin. Depuis ENV-44, il analyse chaque commande simple et ne juge que les chemins qu'elle écrit :
+une lecture qui cite `trunk/` ou `depots/tiers/` (`diff`, `grep`, `cp` depuis le trunk, script
+sur plusieurs lignes) passe. Le contenu d'un script exécuté (`bash f.sh`, `python3 -c`) n'est
+pas lu. Tests : `tests/test_proteger_trunk.py`.
 
 ## Projection (scion ≥ 0.6.0.0, ENV-41)
 
@@ -44,6 +47,8 @@ chemin. Il lit le texte de la commande : un script qui contient ces chemins se p
 - **Ne jamais éditer un clone tiers**, ni y changer de commit : la greffe refuse un clone hors de son
   commit épinglé ou modifié (P-E1). Pour changer une version ou un motif : éditer le `scion/.scion/`
   du porteur dans son clone, commiter, puis `scion graft --scion <porteur>` (ou `scion graft`).
+  Depuis scion 0.6.2.0, `graft --scion <porteur>` regreffe aussi ses clés projetées (P-G6). En
+  0.6.1.0, il les laissait sans aucun lien.
   Pour remplacer un fichier tiers : l'exclure (`!motif`) et le fournir par un greffon ordinaire.
 - Regreffe d'une seule clé projetée : `scion graft --scion tiers@<clé>`.
 - Les sources des clés projetées désignent les miroirs `lepton-distribution/mirror-*` ; `scion

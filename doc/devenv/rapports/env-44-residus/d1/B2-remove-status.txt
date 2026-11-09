@@ -1,0 +1,11 @@
+rootstock : /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-remove
+graine    : /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-remove/depots/lepton-seed/env11  main             124db52   0     
+            projet env11 0.1.0, backend freertos, XML sys/user/env11/etc/mkconf_env11.xml
+            configurations : debug-qemu (Debug, qemu), release-qemu (Release, qemu)
+greffon          rôle           version  branche          commit    modif.  origine
+building         sans manifeste *        (hors git)                         depots/generation/building
+lepton-noyau     noyau          master   master           763dda2   0       https://github.com/lepton-distribution/lepton-original-tree.scions.git
+qemu-mps2        famille        master   master           3954357   0       https://github.com/lepton-distribution/lepton-famille-qemu-mps2.git
+qemu-mps2-an386  bsp            master   master           5819047   0       https://github.com/lepton-distribution/lepton-bsp-qemu-mps2-an386.git
+project-env11    projet         *        main             124db52   0       depots/lepton-seed/env11
+trunk : aucun fichier régulier, aucun lien cassé

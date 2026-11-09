@@ -1,0 +1,40 @@
+OS_Idle () at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/arch/armv7m/embos_init_hw.c:69
+69	   for(;;) {
+Unable to match requested speed 2000 kHz, using 1800 kHz
+Unable to match requested speed 2000 kHz, using 1800 kHz
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000240 msp: 0x20030000
+Breakpoint 1 at 0x8000870: file /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/arch/armv7m/embos_main.c, line 13.
+Note: automatically using hardware breakpoints for read-only addresses.
+Breakpoint 2 at 0x8011e38: file /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_gpio.c, line 177.
+Num     Type           Disp Enb Address    What
+1       breakpoint     keep y   0x08000870 in main at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/arch/armv7m/embos_main.c:13
+2       breakpoint     keep y   0x08011e38 in HAL_GPIO_Init at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_gpio.c:177
+
+Breakpoint 1, main () at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/arch/armv7m/embos_main.c:13
+13	   OS_IncDI();          /* interruptions masquées jusqu'à OS_Start */
+#0  main () at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/arch/armv7m/embos_main.c:13
+halted: PC: 0x08000872
+
+Breakpoint 2, HAL_GPIO_Init (GPIOx=GPIOx@entry=0x40020400, GPIO_Init=GPIO_Init@entry=0x2002fefc) at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_gpio.c:177
+177	  for(position = 0U; position < GPIO_NUMBER; position++)
+#0  HAL_GPIO_Init (GPIOx=GPIOx@entry=0x40020400, GPIO_Init=GPIO_Init@entry=0x2002fefc) at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_gpio.c:177
+#1  0x08010b94 in gpio_set_mode (Gpio=Gpio@entry=0x802627c <Gpio_Descriptor+52>, Mode=1, Val=0 '\000') at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/gpio.c:138
+#2  0x08010bca in gpio_init (Gpio=Gpio@entry=0x802627c <Gpio_Descriptor+52>) at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/gpio.c:153
+#3  0x08000420 in dev_nucleo_f439zi_board_load () at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/nucleo_f439zi_board.c:251
+#4  0x080071ee in _kernel_warmup_dev () at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel.c:625
+#5  0x080076b0 in _start_kernel (arg=arg@entry=0x0) at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/core-segger/kernel.c:1210
+^done,frame={level="0",addr="0x08011e38",func="HAL_GPIO_Init",file="/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_gpio.c",fullname="/Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src/stm32f4xx_hal_gpio.c",line="177",arch="armv7e-m"}
+halted: PC: 0x08011e3c
+halted: PC: 0x08011e40
+halted: PC: 0x08011e42
+halted: PC: 0x08011e44
+180	    ioposition = 0x01U << position;
+halted: PC: 0x08011e46
+halted: PC: 0x08011e48
+halted: PC: 0x08011e4a
+182	    iocurrent = (uint32_t)(GPIO_Init->Pin) & ioposition;
+^done,frame={level="0",addr="0x08011e4a",func="HAL_GPIO_Init",file="/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_gpio.c",fullname="/Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src/stm32f4xx_hal_gpio.c",line="182",arch="armv7e-m"}
+Unable to match requested speed 2000 kHz, using 1800 kHz
+Unable to match requested speed 2000 kHz, using 1800 kHz
+[Inferior 1 (Remote target) detached]

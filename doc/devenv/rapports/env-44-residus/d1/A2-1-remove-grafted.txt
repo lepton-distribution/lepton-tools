@@ -1,0 +1,4 @@
+lepton@bsp-nucleo-f429zi master
+lepton@building *
+lepton@original::tree master
+lepton@project-env11f4 *

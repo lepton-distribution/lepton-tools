@@ -1,0 +1,5 @@
+depots/lepton-application/salut master 4e1df4c 0
+depots/lepton-seed/env11 main 124db52 0
+depots/lepton/bsp-qemu-mps2-an386/master master 5819047 0
+depots/lepton/family-qemu-mps2/master master 3954357 0
+depots/lepton/original/master master 763dda2 0

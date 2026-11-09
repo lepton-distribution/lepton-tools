@@ -1,0 +1,8 @@
+lepton: exécute : scion graft-remove lepton@family-stm32f4xx --purge  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-replace)
+lepton: exécute : scion seed-scion-add --replace --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-replace/depots/lepton-seed/env11f4 lepton@family-stm32f4xx master file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-sources/lepton-famille-stm32f4xx.git  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-replace)
+lepton: exécute : scion seed-clone --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-replace/depots/lepton-seed/env11f4  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-replace)
+lepton: exécute : scion graft --scion lepton@family-stm32f4xx  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-replace)
+fichier système supprimé du trunk : /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-replace/trunk/.DS_Store
+fichier système supprimé du trunk : /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-replace/trunk/sys/root/src/kernel/.DS_Store
+stm32f4xx remplacé (lepton@family-stm32f4xx : master https://github.com/lepton-distribution/lepton-famille-stm32f4xx.git → master file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-sources/lepton-famille-stm32f4xx.git)
+graine modifiée, non commitée : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-replace/depots/lepton-seed/env11f4 commit -am "…"

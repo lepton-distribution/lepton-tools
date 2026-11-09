@@ -128,3 +128,14 @@ WL55JC1 `<BSP-WL>/debug/gdbinit-nucleo-wl55jc1` ; tous sourcent `debug/gdbinit-l
   ceux qui répondent à `command -v` et consignés dans `DEVENV-STATUS.md` §Versions.
 - Un échec de connexion de la sonde : relever le message OpenOCD complet avant toute autre action ;
   ne pas tenter de déverrouillage ni d'effacement de masse sans accord.
+- NUCLEO-F429ZI revenue de la VM (ENV-44) : Cortex-Debug échoue sur « Protocol error with Rcmd:
+  FC » (`monitor reset halt`). Il arrive aussi qu'OpenOCD 0.12.0 s'arrête au `load` sur l'assertion
+  `stm32f2x.c:1221`, quand la taille de flash est lue alors que le programme de flashage est encore
+  en RAM.
+  - Cause constatée : le `reset halt` par NRST (`srst_only`) expire (« timed out while waiting for
+    target halted »), alors que le reset logiciel marche :
+    `openocd -f <cfg> -c "reset_config none" -c init -c "reset halt" -c shutdown`.
+  - Parade : couper l'alimentation de la carte (USB débranché 10 s), puis remesurer
+    `openocd -f <cfg> -c init -c "reset halt" -c shutdown` avant de relancer l'éditeur. Ensuite,
+    contrôler l'image par `verify_image`.
+  - Détails : `doc/devenv/rapports/env-44-residus.md` §4.3.

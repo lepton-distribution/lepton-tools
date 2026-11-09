@@ -1,0 +1,13 @@
+rootstock : /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-replace
+graine    : /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-replace/depots/lepton-seed/env11f4  main             e4129d2   0     
+            projet env11f4 0.1.0, backend embos, XML sys/user/env11f4/etc/mkconf_env11f4.xml
+            configurations : debug-board (Debug, carte)
+greffon               rôle           version                                  branche          commit    modif.  origine
+building              sans manifeste *                                        (hors git)                         depots/generation/building
+lepton-noyau          noyau          master                                   master           763dda2   0       https://github.com/lepton-distribution/lepton-original-tree.scions.git
+stm32f4xx             famille        master                                   master           7afd7f1   0       https://github.com/lepton-distribution/lepton-famille-stm32f4xx.git
+nucleo-f429zi         bsp            master                                   master           b9fe2bf   0       https://github.com/lepton-distribution/lepton-bsp-nucleo-f429zi.git
+project-env11f4       projet         *                                        main             e4129d2   0       depots/lepton-seed/env11f4
+stm32f4xx-hal-driver  projection     v1.8.5                                   HEAD             b6f0ed3   0       https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git (projeté par stm32f4xx, 200 fichier(s))
+cmsis-device-f4       projection     3c77349ce04c8af401454cc51f85ea9a50e34fc1 HEAD             3c77349   0       https://github.com/lepton-distribution/mirror-cmsis_device_f4.git (projeté par stm32f4xx, 6 fichier(s))
+trunk : aucun fichier régulier, aucun lien cassé

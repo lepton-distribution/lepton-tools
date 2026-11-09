@@ -1,0 +1,43 @@
+ok  attendu=accepte obtenu=accepte | diff -r /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc /tmp/a
+ok  attendu=accepte obtenu=accepte | grep -rn HAL_Init /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src
+ÉCART attendu=accepte obtenu=refus   | mkdir -p /tmp/x ⏎ diff -r /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc /tmp/x
+ok  attendu=accepte obtenu=accepte | mkdir -p /tmp/x && diff -r /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc /tmp/x
+ÉCART attendu=accepte obtenu=refus   | cp /Users/cle_d_anton/lepton/trunk/sys/a.c /tmp/a.c
+ÉCART attendu=accepte obtenu=refus   | grep -rn mkdir /Users/cle_d_anton/lepton/trunk/sys
+ok  attendu=accepte obtenu=accepte | find /Users/cle_d_anton/lepton/trunk -type l | wc -l
+ok  attendu=accepte obtenu=accepte | readelf --debug-dump=line build/x.elf | grep -c depots/tiers/
+ok  attendu=accepte obtenu=accepte | git -C /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5 log --oneline -1
+ok  attendu=accepte obtenu=accepte | ls /Users/cle_d_anton/lepton/trunk/ 2>/dev/null > /tmp/liste
+ok  attendu=accepte obtenu=accepte | for f in /Users/cle_d_anton/lepton/trunk/a /Users/cle_d_anton/lepton/trunk/b; do ⏎   test -L $f || echo $f ⏎ d
+ok  attendu=refus   obtenu=refus   | echo x > /Users/cle_d_anton/lepton/trunk/a
+ok  attendu=refus   obtenu=refus   | echo x >> /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5/a
+ok  attendu=refus   obtenu=refus   | echo x | tee /Users/cle_d_anton/lepton/trunk/a
+ok  attendu=refus   obtenu=refus   | sed -i 's/a/b/' /Users/cle_d_anton/lepton/trunk/a
+ok  attendu=refus   obtenu=refus   | sed -i.bak 's/a/b/' /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5/a
+ok  attendu=refus   obtenu=refus   | cp /tmp/a /Users/cle_d_anton/lepton/trunk/a
+ok  attendu=refus   obtenu=refus   | cp /tmp/a /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5/
+ok  attendu=refus   obtenu=refus   | mv /Users/cle_d_anton/lepton/trunk/a /tmp/a
+ok  attendu=refus   obtenu=refus   | rm -f /Users/cle_d_anton/lepton/trunk/a
+ok  attendu=refus   obtenu=refus   | rm -rf /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5
+ok  attendu=refus   obtenu=refus   | ln -sf /tmp/a /Users/cle_d_anton/lepton/trunk/a
+ok  attendu=refus   obtenu=refus   | touch /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/x.h
+ok  attendu=refus   obtenu=refus   | cd ~/lepton && rm trunk/a
+ok  attendu=refus   obtenu=refus   | cd ~/lepton && cp /tmp/a depots/tiers/x/
+ÉCART attendu=refus   obtenu=accepte | cd /Users/cle_d_anton/lepton/trunk && touch a
+ÉCART attendu=refus   obtenu=accepte | cd /Users/cle_d_anton/lepton/trunk && echo x > a
+ÉCART attendu=refus   obtenu=accepte | cp /tmp/a /Users/cle_d_anton/lepton/trunk
+ok  attendu=refus   obtenu=refus   | sudo tee /Users/cle_d_anton/lepton/trunk/a < /tmp/a
+ÉCART attendu=refus   obtenu=accepte | find /Users/cle_d_anton/lepton/trunk -name '*.o' -delete
+ÉCART attendu=refus   obtenu=accepte | find /Users/cle_d_anton/lepton/trunk -name '*.o' -exec rm {} +
+ÉCART attendu=refus   obtenu=accepte | ls /Users/cle_d_anton/lepton/trunk/*.tmp | xargs rm
+ÉCART attendu=refus   obtenu=accepte | bash -c 'rm /Users/cle_d_anton/lepton/trunk/a'
+ÉCART attendu=refus   obtenu=accepte | rsync -a /tmp/a/ /Users/cle_d_anton/lepton/trunk/
+ok  attendu=refus   obtenu=refus   | perl -pi -e 's/a/b/' /Users/cle_d_anton/lepton/trunk/a
+ok  attendu=refus   obtenu=refus   | truncate -s0 /Users/cle_d_anton/lepton/trunk/a
+ok  attendu=refus   obtenu=refus   | chmod +w /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/a.h
+ÉCART attendu=refus   obtenu=accepte | patch -p1 -d /Users/cle_d_anton/lepton/trunk < /tmp/p
+ok  attendu=refus   obtenu=refus   | install -m644 /tmp/a /Users/cle_d_anton/lepton/trunk/a
+ÉCART attendu=refus   obtenu=accepte | dd if=/tmp/a of=/Users/cle_d_anton/lepton/trunk/a
+ÉCART attendu=refus   obtenu=accepte | git -C /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5 checkout v1.8.4
+ok  attendu=refus   obtenu=refus   | ROOT=/Users/cle_d_anton/lepton; rm $ROOT/trunk/a
+42 cas, 14 écarts

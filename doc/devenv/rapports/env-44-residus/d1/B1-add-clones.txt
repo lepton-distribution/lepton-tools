@@ -1,0 +1,8 @@
+depots/lepton-application/salut master 4e1df4c 0
+depots/lepton-seed/env11 main 124db52 2
+depots/lepton/bsp-qemu-mps2-an386/master master 5819047 0
+depots/lepton/family-qemu-mps2/master master 3954357 0
+depots/lepton/family-stm32f4xx/master master 7afd7f1 0
+depots/lepton/original/master master 763dda2 0
+depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1  3c77349 0
+depots/tiers/stm32f4xx-hal-driver/v1.8.5  b6f0ed3 0
