@@ -1,0 +1,22 @@
+Test project /Users/cle_d_anton/lepton/build/qemu-mps2-an386-freertos
+  Test  #1: smoke.lsh
+  Test  #2: kal.T1
+  Test  #3: kal.T2
+  Test  #4: kal.T3
+  Test  #5: kal.T4
+  Test  #6: kal.T5
+  Test  #7: kal.T6
+  Test  #8: kal.T7
+  Test  #9: kal.T8
+  Test #10: kal.T1F
+  Test #11: kal.T4F
+  Test #12: kal.T6F
+  Test #13: kal.T7F
+  Test #14: kal.TICI
+  Test #15: kal.TCLK
+  Test #16: kal.TSBRK
+  Test #17: kal.IRQ
+  Test #18: kal.harness_fail
+  Test #19: qemu-mps2-an386.peripheriques
+
+Total Tests: 19
