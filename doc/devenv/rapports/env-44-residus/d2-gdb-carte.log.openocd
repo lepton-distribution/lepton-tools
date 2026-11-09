@@ -1,0 +1,41 @@
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+
+none separate
+
+Info : Listening on port 6666 for tcl connections
+Info : Listening on port 4444 for telnet connections
+Info : clock speed 2000 kHz
+Info : STLINK V2J27M15 (API v2) VID:PID 0483:374B
+Info : Target voltage: 3.230890
+Info : [stm32f4x.cpu] Cortex-M4 r0p1 processor detected
+Info : [stm32f4x.cpu] target has 6 breakpoints, 4 watchpoints
+Info : starting gdb server for stm32f4x.cpu on 3333
+Info : Listening on port 3333 for gdb connections
+Info : accepting 'gdb' connection on tcp/3333
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000990 msp: 0x2002ffe0
+Info : device id = 0x20016419
+Info : flash size = 2048 KiB
+Info : Dual Bank 2048 kiB STM32F42x/43x/469/479 found
+Info : flash size = 512 bytes
+Info : Unable to match requested speed 2000 kHz, using 1800 kHz
+Info : Unable to match requested speed 2000 kHz, using 1800 kHz
+[stm32f4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000240 msp: 0x20030000
+Info : halted: PC: 0x08000872
+Info : halted: PC: 0x08011e3c
+Info : halted: PC: 0x08011e40
+Info : halted: PC: 0x08011e42
+Info : halted: PC: 0x08011e44
+Info : halted: PC: 0x08011e46
+Info : halted: PC: 0x08011e48
+Info : halted: PC: 0x08011e4a
+Info : Unable to match requested speed 2000 kHz, using 1800 kHz
+Info : Unable to match requested speed 2000 kHz, using 1800 kHz
+Info : dropped 'gdb' connection
+shutdown command invoked

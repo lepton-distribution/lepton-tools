@@ -217,3 +217,205 @@ L'état est conforme à `handoff/env-44.md` :
 | D6 | Option a : ordre `v330` retiré. |
 | D7 | `ucore/cmsis/LEPTON-PROVENANCE.md` ; `source.txt` inchangé. |
 | D9 | Texte du §1.7 tel quel. |
+
+Une décision complémentaire a été prise pendant D1. Le défaut constaté au §3.1 se corrige dans
+scion 0.6.2.0, par une nouvelle règle P-G6, plutôt que dans lepton seul. C'est une décision de
+l'utilisateur.
+
+## 3. Corrections et essais
+
+### 3.1 D1 — `seed replace` / `seed remove` d'une famille porteuse
+Fichiers : `env-44-residus/d1-releve.sh` ; relevés dans `env-44-residus/d1/` (`*-liens.txt` au
+format `chemin -> cible`, `*-grafted.txt`, `*-status.txt`, `*-clones.txt`).
+
+- **Essai A, scion 0.6.1.0** (`essais/env-44-d1-replace`, copie de `env-11/f429zi`). Commande :
+  `lepton seed replace stm32f4xx file://localhost/…/essais/env-44-d1-sources/lepton-famille-stm32f4xx.git`
+  (clone nu de `family-stm32f4xx` 7afd7f1). Elle rend 0.
+  - **Défaut** : les liens passent de 3389 à 3183, soit −206. Les 2 clés projetées restent dans la
+    liste greffée, avec « 0 fichier(s) » : le trunk n'a plus la HAL ni le CMSIS device F4.
+  - **Décomposition** (`essais/env-44-d1-pas`, A2-1 à A2-5) :
+    - `graft-remove` du porteur est conforme à P-P6 : il retire les 2 clés et l'annonce ;
+    - `seed-clone` réinscrit la famille et ses 2 clés ;
+    - `graft --scion lepton@family-stm32f4xx` ne lie que la famille (129 feuilles).
+  - **Reprise** : `graft --scion` de chaque clé tiers rend des liens identiques à l'état avant.
+- **Essai B, scion 0.6.1.0** (`essais/env-44-d1-remove`, copie de `env-11/qemu`, BSP an386).
+  - `lepton seed add stm32f4xx --type famille <URL>` a le même défaut : 3058 + 129 liens, clés
+    projetées à 0 fichier.
+  - `lepton seed remove stm32f4xx` est conforme à P-P6 : clés et liens reviennent à l'état avant,
+    les clones tiers et celui de la famille sont conservés.
+- **Correctif, scion 0.6.2.0.** seed.scions, branche `devenv/env-44` :
+  - **9c7ba79** :
+    - `graft_scions` ajoute aux clés nommées les clés projetées que porte chacune
+      (`_carried_entries`, factorisé avec `remove`), et le dit ;
+    - règle **P-G6** de `doc/projection-miroir.md` (§A.10, table A.11) ;
+    - 3 tests : deux échouent sur le code de 0.6.1.0, le troisième vérifie que P-G5 n'a pas changé.
+  - **213d2c0** : version 0.6.2.0, CHANGELOG. Le test de version attendait encore `0.6.0.0` au tag
+    0.6.1.0 (O-1).
+  - Tag annoté local **0.6.2.0**. Suite complète : 269 tests réussis, 1 sauté (réseau).
+  - Installé par `pipx install --force git+file://<SEED_SCIONS>@0.6.2.0`.
+- **lepton.**
+  - `SCION_MIN_VERSION` (0, 6, 2, 0), README, `SCION_REF` 0.6.2.0 d'`install-vscodium.sh`
+    (bca408a). Clone noyau : `install-{macos,debian}.sh`, README, README-PAQUET, BUILDING (54be710).
+  - Test `test_seed_replace_porteur_garde_les_projections`.
+  - lepton réinstallé par pipx.
+- **Essais rejoués en 0.6.2.0.**
+  - A : 3389 liens, liste `chemin -> cible` identique à l'avant, 200 + 6 fichiers projetés.
+  - B : 3058 + 129 + 206 = 3393 liens à l'ajout ; retour exact à l'état avant au retrait.
+- Piège : lepton n'accepte une URL `file://` qu'avec un hôte (`file://localhost/…`, forme
+  documentée par `parse_location`). Sans hôte, elle est lue comme un chemin local.
+
+### 3.2 D2 — Table clone tiers → trunk de l'extension
+- **Contrôle scripté** (`env-44-residus/d2-table.py`, `d2-table.txt`). On prend le
+  `-file-list-exec-source-files` de gdb sur les 4 presets F4. Chaque `fullname` sous
+  `depots/tiers/` passe par le `toTrunk` réel (`srcmap.js` recompilé, identique à `out/`), avec la
+  table de `seed status --json` construite comme `debug.ts`.
+  - Résultat : 10, 9, 10 et 9 sources ou en-têtes tiers, tous ramenés à un lien existant du trunk,
+    de même `realpath`.
+- **gdb sur la carte**, sans écriture (`env-44-residus/d2-gdb-carte.sh`, `.log`).
+  - Arrêt sur `main`, puis sur `HAL_GPIO_Init` (`stm32f4xx_hal_gpio.c:177`).
+  - Pile d'appels : `gpio_set_mode` ← `gpio_init` ← `dev_nucleo_f439zi_board_load` ←
+    `_kernel_warmup_dev`.
+  - Le cadre MI donne `file` = trunk et `fullname` = `…/depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src/stm32f4xx_hal_gpio.c`,
+    à l'arrêt comme après deux `next`.
+- **Sous VSCodium**, essai de l'utilisateur sur `~/lepton/original-tree.code-workspace`, lancement
+  « Déboguer nucleo-f429zi-embos (carte, OpenOCD) », flash par `load` :
+  - point d'arrêt de ligne 177, posé onglet fermé ;
+  - à l'arrêt, l'onglet ouvert est
+    `/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_gpio.c` ;
+  - **conforme**.
+- **Incidents de la session de carte** (§4.3) : reset matériel bloqué, et un arrêt inattendu dans
+  `ls.c:107`.
+- **Image flashée** : `nucleo-f429zi-embos` du Mac. `verify_image` ne montre que les 4 octets de
+  bourrage connus, 0x080001ac à 0x080001af.
+
+### 3.3 D3 — Hook
+- Commit 48f788c. `.claude/hooks/proteger-trunk.py` analyse chaque commande simple :
+  - découpage `shlex` sur le saut de ligne, les parenthèses et les accents graves ;
+  - suivi de `cd` et des variables (`X=…`, `for X in …`) ;
+  - verbes classés par chemin écrit ;
+  - récursion pour `bash -c`, `eval`, `find -exec`/`-delete`, `xargs` et le heredoc d'un shell ;
+  - le corps d'un heredoc de données n'est plus jugé ;
+  - `git -C` refusé hors des sous-commandes de lecture ;
+  - l'ancienne règle s'applique en repli.
+- Résultats :
+  - les 42 cas de l'audit passent de 14 écarts à 0 ;
+  - `tests/test_proteger_trunk.py` : 118 cas, dans les deux sens, en chemin absolu et relatif, vers
+    le trunk et vers un clone tiers, plus les 4 outils de fichier.
+- Deux faux positifs du nouveau hook sont apparus pendant la session. Ils sont corrigés et couverts
+  par des tests :
+  - `$` hors des caractères de mot ;
+  - le heredoc d'un script Python.
+- Documentation : ORCHESTRATION §5bis, `CLAUDE.md`, skill `lepton-rootstock` (7c18954).
+
+### 3.4 D5 — `ARMCM4_FP.h` dans le BSP an386
+- `bsp-qemu-mps2-an386` `devenv/env-44`, commit **755e80d** : `#include` et commentaire de
+  `qemu_mps2_machine.h`. Aucun fichier ajouté ni retiré.
+- **Preuve d'objet** (`env-44-residus/d5-objet.py`, `d5/`). `qemu_mps2_board.c` est le seul objet
+  qui inclut l'en-tête. Compilé avec l'ancien et le nouvel en-tête, pour les 4 presets : toutes les
+  sections chargées (`.text*`, `.rodata*`, `.data*`, `.bss*`) sont identiques octet pour octet, et
+  le désassemblage aussi.
+
+### 3.5 D6 — Script de compilation à blanc
+- Commit ad165b4 : l'ordre `v330` est retiré, la boucle est simplifiée, `shellcheck` est propre.
+- Résultat : code 0. F429 et F439 : 90 sources, 0 échec, 0 avertissement, `core_cm4.h` CMSIS 5.
+  Identique à `env-42-core-cm4/compilation-a-blanc-apres` (`env-44-residus/d6/resume.txt`).
+
+### 3.6 D7 — Provenance de CMSIS V3.30
+- Clone noyau `devenv/env-44`, commit **253be2a** : `kernel/core/ucore/cmsis/LEPTON-PROVENANCE.md`.
+  Il décrit le paquet mixte, la macro 0x20, les utilisateurs restants et `source.txt`, conservé.
+  Aucun en-tête n'est modifié.
+- `scion graft --scion lepton@original::tree` : 3982 → 3983 liens (+1, ce fichier), 0 lien cassé.
+
+### 3.7 D9 — §2bis
+- Commit b7393b4 : règle « Remise en échec » d'ORCHESTRATION §2bis, texte du §1.7.
+
+## 4. Contrôles → PA-76
+
+### 4.1 Oracle
+- **Avant** (`oracles/env-44-avant/`, `rejouer-oracle.sh` aux arguments d'ENV-41, 6 QEMU et
+  10 cartes, constructions à neuf) :
+  - code 0 sur les 16 presets contre `env-42-apres` ;
+  - empreintes mklepton identiques ;
+  - host 7/7 ;
+  - `ctest -N` 17/17 identiques.
+- **Après** (`oracles/env-44-apres/`, comparaisons dans `comparaisons/`) :
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| `qemu-mps2-an386-embos` | code 1 : `.debug_info` +132, `.debug_line` +5, `.debug_str` +219 | différente | identique | 19/19 identique | oui (D5) |
+| `qemu-mps2-an386-embos-soft` | code 1 : mêmes 3 sections, mêmes deltas | différente | identique | 15/15 identique | oui (D5) |
+| `qemu-mps2-an386-freertos` | code 1 : idem | différente | identique | 19/19 identique | oui (D5) |
+| `qemu-mps2-an386-freertos-soft` | code 1 : idem | différente | identique | 15/15 identique | oui (D5) |
+| `qemu-mps2-an500-{embos,freertos}` | code 0 | différente | identique | 18/18 identique | — |
+| 10 presets de carte | code 0 | différente | — | — | — |
+| `host` | mklepton identiques | | | ctest 7/7 | — |
+
+- **Explication des écarts an386.** Seules les sections DWARF changent :
+  - `.debug_str` porte le nouveau chemin d'en-tête et les noms de l'énumération `IRQn` de CMSIS 5
+    (23 interruptions propres au lieu d'une, `GPIO_IRQn`) ;
+  - `.debug_info` porte les types correspondants ;
+  - `.debug_line` porte le chemin `cmsis-5/Device/ARM/ARMCM4/Include`.
+
+  Sections chargées et symboles : identiques (code 0 hors `.debug_*`). La preuve d'objet du §3.4 le
+  confirme : critère du PA-75 atteint.
+- **Empreintes.** Elles diffèrent pour **tous** les presets, an500 et cartes compris, entre deux
+  constructions de la même source : l'heure de compilation est incluse dans l'image (« kernel
+  compilation date »). Ce n'est pas un écart.
+- **Journaux** (`env-44-residus/comparer-journaux.py`, `comparaisons/journaux.txt`). Ignorés :
+  - la date et l'heure de compilation ;
+  - les durées de ctest ;
+  - le jeton aléatoire `lepton-uart1-<n>` ;
+  - les lignes asynchrones `rcv SIGCHLD` et le numéro d'invite qui les suit ;
+  - les lignes vides.
+- `ctest -N` : 17/17 identiques à l'avant.
+- **Nouvel oracle de référence** : `oracles/env-44-apres/`.
+
+### 4.2 Autres contrôles
+- `<ROOTSTOCK>` : 3983 liens, 0 lien cassé ; fichiers réguliers tolérés seulement ; `lepton check`
+  code 0 (19 fichiers conformes) ; `seed status` : 200 + 6 fichiers projetés.
+- Tests :
+  - `pytest` de lepton : 362 réussis (243 + 118 du hook + 1) ;
+  - scion : 269 réussis, 1 sauté.
+- Hook : écriture sous `trunk/` et `depots/tiers/` toujours refusée (tests `test_ecriture_refusee`).
+- `compiler-hal-f4-a-blanc.sh` : code 0.
+
+### 4.3 Observations
+- **O-1** : le test de version de seed.scions attendait `0.6.0.0` au tag 0.6.1.0. Il échouait donc
+  en 0.6.1.0, alors que le rapport d'ENV-40 annonce 265 réussis. Il est corrigé en 0.6.2.0.
+- **O-2** : lepton ne relaie pas les messages d'information de scion, même avec `-v` : « clés
+  projetées retirées… » (P-P6), « … regreffées… » (P-G6). Point ajouté à `HORS-PLAN.md` (D10), non
+  traité.
+- **O-3, NUCLEO-F429ZI revenue de la VM.** La carte gardait l'image `nucleo-f439zi-embos` de
+  Debian.
+  - État initial : cœur bloqué dans le HardFault, HFSR = 0x80000000 (DEBUGEVT).
+  - Le `reset halt` par NRST (`srst_only` de `board/st_nucleo_f4.cfg`) expirait. Mesure : 3 échecs
+    sur 3, alors que le reset logiciel (`reset_config none`) réussissait 2 fois sur 2.
+  - Conséquences :
+    - Cortex-Debug échoue sur « Protocol error with Rcmd: FC » (`monitor reset halt`) ;
+    - une fois, OpenOCD 0.12.0 s'est arrêté au `load` sur l'assertion `stm32f2x.c:1221`. La taille
+      de flash a été lue 0x2003, pendant que le programme de flashage tournait en RAM
+      (pc 0x20000044). Après un reset logiciel, la valeur lue est la bonne (0x0800).
+  - Parade : une coupure d'alimentation (USB débranché). Ensuite, 3 resets matériels sur 3
+    réussissent.
+  - Consigné dans la skill `lepton-cibles` (b1cc378). Cause matérielle exacte non établie.
+- **O-4** : au premier lancement sous VSCodium, la session s'est arrêtée dans `sbin/ls.c:107`
+  (`return -1` après `opendir`). Aucun point d'arrêt n'était enregistré pour l'espace de travail.
+  Cause non établie. L'onglet affichait le chemin du trunk.
+- **O-5** : rootstocks d'essai créés dans `~/lepton-tools-dev/essais/` : `env-44-d1-replace`,
+  `env-44-d1-pas`, `env-44-d1-remove`, `env-44-d1-sources`. Leur sort se décide au PA-76.
+
+### 4.4 Branches et commits (rien de poussé)
+| Dépôt | Branche | Depuis | Commits |
+| --- | --- | --- | --- |
+| lepton-tools | `devenv/env-44` | `main` 7140e9c | audit, D9, oracle avant, D3, D6, oracle après, D1 lepton, skills, D1/D2 relevés, rapport |
+| seed.scions | `devenv/env-44` | `master` f29fa35 | 9c7ba79 (P-G6), 213d2c0 (0.6.2.0) ; tag local `0.6.2.0` |
+| clone noyau | `devenv/env-44` | `master` 763dda2 | 253be2a (D7), 54be710 (`SCION_REF`) |
+| `bsp-qemu-mps2-an386` | `devenv/env-44` | `master` 5819047 | 755e80d (D5) |
+
+Ordre de publication proposé :
+1. seed.scions : fusion dans `master`, puis tag `0.6.2.0` poussé avec `master`.
+2. Clone noyau et BSP an386 : fusion dans `master`, push.
+3. lepton-tools : fusion dans `main`, push.
+
+`<ROOTSTOCK>` est déjà greffé sur les branches d'étape. Après les fusions, il suffit de remettre
+chaque clone sur `master` : le contenu est identique, et aucune regreffe n'est nécessaire.
