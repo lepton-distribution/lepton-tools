@@ -11,8 +11,8 @@ Langue : français. Ton neutre, objectif, concis.
 | `lepton-oracle` | Avant et après toute modification qui doit être sans régression |
 | `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage |
 
-Le hook `.claude/hooks/proteger-trunk.py` refuse les écritures dans `<ROOTSTOCK>/trunk/`. Un refus
-signale une erreur de chemin : ne jamais le contourner.
+Le hook `.claude/hooks/proteger-trunk.py` refuse les écritures dans `<ROOTSTOCK>/trunk/`
+et `<ROOTSTOCK>/depots/tiers/`. Un refus signale une erreur de chemin : ne jamais le contourner.
 
 ## Règles permanentes
 - Début de session : skill `devenv-session`, puis mode plan et accord de l'utilisateur.
