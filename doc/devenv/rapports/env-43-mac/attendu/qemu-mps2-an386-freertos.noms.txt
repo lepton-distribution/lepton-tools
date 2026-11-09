@@ -1,0 +1,3 @@
+section modifié: .text
+symbole modifié: qemu_mps2_eth_irq_enable
+symbole modifié: qemu_mps2_uart_irq_enable
