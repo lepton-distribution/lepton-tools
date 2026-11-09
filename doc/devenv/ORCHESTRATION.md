@@ -69,6 +69,16 @@ Règles :
 - L'émetteur d'un `ORDRE` n'agit pas sur la suite tant que l'`ACCUSÉ` n'est pas reçu. Sans accusé :
   pas de supposition ; demander à l'utilisateur de vérifier la session destinataire, puis renvoyer
   une fois avec le même `ID`.
+- **Remise en échec** (D9 d'ENV-44, constat de R43-1) : l'émetteur dont l'envoi échoue (erreur
+  du canal, ECONNRESET, « bridge ID is stale ») le renvoie une fois. Si le second envoi échoue,
+  il consigne le message en entier dans son journal (VM : `rapports/env-N-debian.md` §Messages,
+  avec la mention « non remis ») et l'annonce à l'utilisateur. L'utilisateur relaie : il colle
+  dans l'autre session la première ligne `[<TYPE> <ID>]` et le corps, inchangés. Le destinataire
+  tient un message relayé pour reçu s'il porte le bon `ID`. Il le consigne avec la mention
+  « relayé par l'utilisateur » et y répond normalement ; sa réponse peut à son tour être relayée.
+  Un `ACCUSÉ` relayé vaut accusé. Si l'utilisateur fait poursuivre le destinataire sans relais,
+  c'est sa décision : la session principale la consigne au journal, et les messages manquants
+  sont lus dans le rapport du destinataire avant toute fusion.
 - Le destinataire n'exécute rien avant d'avoir envoyé l'`ACCUSÉ`, et termine toujours par
   `FIN-SUCCÈS` ou `FIN-ÉCHEC`, même interrompu.
 - Réponse : à l'adresse `from` du message reçu.
