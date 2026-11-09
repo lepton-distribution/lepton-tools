@@ -133,6 +133,7 @@ Points laissés au PA-73 : C6, C7, C8. Il faut aussi décider d'un essai préala
 
 | Message | Date | Sens | Résumé |
 | --- | --- | --- | --- |
+| ORDRE R43-1 | 2026-11-09 | Mac → VM (`debian-linux-vm`) | consigne `env-43-debian.md` @ f01e735 envoyée en entier ; PA-73 : installations, `graft-update` de `essais/env-28-debian`, `rm -rf` par l'utilisateur ; F429 seule (PA-11, 3 images) ; `mirror-sync --dry-run` ; push sur accord ; envoi réussi ; ACCUSÉ non reçu par la session Mac, mais l’utilisateur constate que la VM a commencé les opérations |
 
 ## 4. Vérification du rapport VM (tâche 4)
 
@@ -154,7 +155,45 @@ Espace régénéré par `lepton generate` (code 0) juste avant le relevé.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `env-13-vierge` | 0 ; noyau 2893297 → 763dda2, an386 09f4943 → 5819047, F4 0fd8b2a → 7afd7f1, WL dbc58d7 → 2340b25 ; 2 clones tiers `--filter=blob:none` depuis les miroirs ; projections 102 + 96 + 1 + 1 et 1 + 1 fichiers | 3978 → 3982 | 4 / 0 = attendu | 16 | `CONFORME` (= attendu, 206 projetés, 0 écart de nom ni de contenu, tiers b6f0ed3 / 3c77349, `blob:none`) | 0 | 0 | identique (`diff` vide) |
 
-`seed status` : 2 clés « projection » (200 et 6 fichiers), trunk sans fichier régulier ni lien
-cassé. Le passage d'une famille copiée à une famille porteuse par `graft-update` (jamais fait
+Les 6 autres rootstocks : accord de l'utilisateur (PA-P) le 2026-11-09, pendant l'exécution de
+R43-1 sur la VM. Inventaire avant : tous les clones de greffons sur `master`, amont
+`origin/master`, propres, aux têtes de R36-1 (noyau 2893297, an386 09f4943, F4 0fd8b2a, WL
+dbc58d7) ; 0 lien cassé ; aucun fichier régulier hors `.DS_Store` du Finder (2 à 5 par trunk,
+tolérés). La graine `bout-en-bout` a 2 fichiers générés non suivis (`CMakeUserPresets.json`,
+`lepton-graine.lock.json`), sans effet. Les espaces ont été régénérés par `lepton generate` juste
+avant le relevé.
+
+Procédure par rootstock (script de session) :
+1. `generate` avant, puis copie de l'espace ;
+2. relevé `chemin -> cible` par `controler-trunk.py` ;
+3. `scion graft-update -v` ; pour `qemu-gra2`, `graft-remove lepton@bsp-qemu-mps2-an386` sans
+   `--purge` ;
+4. relevé après, comparé à l'avant ;
+5. `check`, `generate`, `diff` de l'espace.
+
+| Rootstock | `graft-update` | Liens avant → après | Ajouts / retraits | Entrées | Écarts `chemin -> cible` | `check` | `generate` | Espace | `request` / `lldb` / `svdFile` / tests |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-9` | 0 | 3058 → 3058 | 0 / 0 | 5 | aucun | 0 | 0 | identique | 3 / 1 / 0 / 2 |
+| `env-11/f429zi` | 0 ; 2 clones tiers créés depuis les miroirs | 3389 → 3389 | 0 / 0 | 5 → 7 | 206 cibles → `depots/tiers/` (= `attendu/projetes.txt`), 0 autre ; contenu = HEAD, 0 écart de casse | 0 | 0 | identique | 2 / 1 / 1 / 0 |
+| `env-11/qemu` | 0 | 3058 → 3058 | 0 / 0 | 5 | aucun | 0 | 0 | identique | 3 / 1 / 0 / 2 |
+| `env-11/qemu-gra2` | 0 (BSP an386 réinscrit), puis `graft-remove` code 0, 8 feuilles | 3050 → 3050 | 0 / 0 | 4 | aucun | 1 (attendu, CFG-5) | 1 (attendu) | identique | 1 / 0 / 0 / 0 |
+| `env-11/wl55jc1` | 0 | 3308 → 3312 | 4 / 0 (provenances WL) | 5 | les 4 ajouts seuls | 0 | 0 | identique | 2 / 1 / 1 / 0 |
+| `env-11/bout-en-bout/rootstock` | 0 | 3058 → 3058 | 0 / 0 | 5 | aucun | 0 | 0 | identique | 2 / 1 / 0 / 1 |
+
+Clones après : tous sur `master`, propres, aux têtes publiées (noyau 763dda2, an386 5819047, F4
+7afd7f1, WL 2340b25). 0 lien cassé, 0 fichier régulier hors `.DS_Store`.
+
+`env-11/f429zi`, construction à neuf de `host` et `nucleo-f429zi-embos` (`cmake --fresh`,
+`--clean-first`) : codes 0. Contre `oracles/env-42-apres/nucleo-f429zi-embos` : 0 écart de
+symboles, sections allouées identiques. Seules `.debug_line` (306684 → 330957) et `.debug_str`
+(139391 → 143421) diffèrent : les chemins des sources sont propres au rootstock, et les deltas sont
+ceux d'ENV-36 (+24273, +4030). Pas de flash. Trunk sans fichier régulier ni `__pycache__`.
+
+Le hook `proteger-trunk.py` a refusé une commande de lecture qui citait `depots/tiers/` dans un
+`diff` : c'est le faux positif connu (ENV-41 §4.4). La commande a été passée par un fichier de
+script.
+
+`seed status` (`env-13-vierge`) : 2 clés « projection » (200 et 6 fichiers), trunk sans fichier
+régulier ni lien cassé. Le passage d'une famille copiée à une famille porteuse par `graft-update` (jamais fait
 auparavant : ENV-41 avait fait `seed-clone` + `graft`) est donc conforme. L'attendu de C2 est
 confirmé sur un rootstock dans l'état de `$U`.
