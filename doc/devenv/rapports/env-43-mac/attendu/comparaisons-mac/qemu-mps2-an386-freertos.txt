@@ -1,0 +1,12 @@
+empreinte .bin : différente
+empreinte .elf : différente
+empreinte .hex : différente
+section modifié  : .debug_abbrev ['103448'] -> ['103536']
+section modifié  : .debug_info ['835187'] -> ['835467']
+section modifié  : .debug_line ['327945'] -> ['328089']
+section modifié  : .debug_loclists ['189039'] -> ['189086']
+section modifié  : .debug_str ['64251'] -> ['64272']
+section modifié  : .text ['159416'] -> ['159432']
+symbole modifié  : qemu_mps2_eth_irq_enable ['t 00000020'] -> ['t 00000028']
+symbole modifié  : qemu_mps2_uart_irq_enable ['t 00000054'] -> ['t 0000005c']
+bilan : 8 écart(s) de sections ou de symboles

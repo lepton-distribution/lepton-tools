@@ -1,0 +1,10 @@
+section modifié: .text
+symbole ajouté: __NVIC_DisableIRQ
+symbole ajouté: __NVIC_EnableIRQ
+symbole modifié: nucleo_f439zi_eth_irq_enable
+symbole modifié: uart_close
+symbole modifié: uart_get_char
+symbole modifié: uart_irq_handler
+symbole modifié: uart_open
+symbole retiré: NVIC_DisableIRQ
+symbole retiré: NVIC_EnableIRQ

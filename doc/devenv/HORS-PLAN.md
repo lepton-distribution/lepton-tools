@@ -5,7 +5,7 @@ a été écarté du plan, laissé en l'état ou relevé sans suite, avec sa sour
 l'utilisateur à la fin du chantier (après la dernière étape du plan), pour décision : traiter, garder
 hors plan, ou abandonner. Toute session qui écarte un nouveau point l'ajoute ici.
 
-État au 2026-11-06 (après ENV-42).
+État au 2026-11-09 (après ENV-43, dernière étape du plan).
 
 ## A. Hors plan par décision de l'utilisateur
 
@@ -43,3 +43,5 @@ hors plan, ou abandonner. Toute session qui écarte un nouveau point l'ajoute ic
 | D5 | BSP `qemu-mps2-an386` : en-tête de périphérique `ucore/cmsis/Device/ARM/ARMCM4` de l'arbre V3.x, compilé avec le `core_cm4.h` 5.9.0 ; un `ARMCM4` CMSIS 5 existe sous `ucore/cmsis-5/Device/ARM/` | `rapports/env-42-core-cm4.md` §1.4, §4.4 (O-3) |
 | D6 | `scripts/tiers/compiler-hal-f4-a-blanc.sh` rend 1 tant qu'il essaie l'ordre `v330`, qui n'est plus celui d'aucun preset depuis ENV-42 (ligne gardée pour comparaison) | `rapports/env-42-core-cm4.md` §4.1 |
 | D7 | CMSIS-Core V3.30 : en-tête `V3.30`, macro `__CM4_CMSIS_VERSION_SUB` à `0x20` (3.20) ; `cmsis/source.txt` dit « Version 2.10 » | `rapports/env-42-core-cm4.md` §1.1, §4.4 (O-2) |
+| D8 | VM : `essais/env-13-debian` (graine `original-tree`, greffe la famille F4) non regreffé en R43-1. scion 0.6.1.0 y est installé : une regreffe clonera les dépôts tiers depuis les miroirs ; d'ici là, son trunk garde la HAL F4 copiée d'ENV-34 | `rapports/env-43-debian.md` §8 (constat 7) |
+| D9 | Messages entre sessions : les messages de la VM vers la session Mac (`ACCUSÉ`, `AVANCEMENT`) ne sont pas remis (bridge ECONNRESET, « bridge ID is stale ») ; perte du premier accusé en R33-1 et R36-1, puis de tous les messages sauf `FIN-SUCCÈS` en R43-1. L'utilisateur relaie de fait. Le protocole du §2bis suppose une remise fiable | `rapports/env-43-mac.md` §3 ; `rapports/env-43-debian.md` §9 |

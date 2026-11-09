@@ -1,0 +1,21 @@
+empreinte .bin : différente
+empreinte .elf : différente
+empreinte .hex : différente
+section modifié  : .debug_abbrev ['108726'] -> ['108780']
+section modifié  : .debug_frame ['48676'] -> ['48664']
+section modifié  : .debug_info ['885932'] -> ['886154']
+section modifié  : .debug_line ['350291'] -> ['350463']
+section modifié  : .debug_loclists ['199028'] -> ['199177']
+section modifié  : .debug_rnglists ['16744'] -> ['16741']
+section modifié  : .debug_str ['74573'] -> ['74580']
+section modifié  : .text ['167088'] -> ['167136']
+symbole retiré   : NVIC_DisableIRQ ['t 00000018']
+symbole retiré   : NVIC_EnableIRQ ['t 00000018']
+symbole ajouté   : __NVIC_DisableIRQ ['t 00000024']
+symbole ajouté   : __NVIC_EnableIRQ ['t 0000001c']
+symbole modifié  : nucleo_f439zi_eth_irq_enable ['t 00000020'] -> ['t 00000028']
+symbole modifié  : uart_close ['T 00000092'] -> ['T 00000098']
+symbole modifié  : uart_get_char ['T 000000aa'] -> ['T 000000b4']
+symbole modifié  : uart_irq_handler ['T 000001d0'] -> ['T 000001d4']
+symbole modifié  : uart_open ['T 00000204'] -> ['T 00000208']
+bilan : 17 écart(s) de sections ou de symboles

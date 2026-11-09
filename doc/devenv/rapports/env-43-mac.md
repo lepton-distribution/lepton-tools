@@ -1,0 +1,259 @@
+# ENV-43 — Validation Debian groupée (ENV-37 à ENV-42) — rapport de la session Mac
+
+Session Mac `validation-debian-env-43`, 2026-11-09. Branche lepton-tools `devenv/env-43` (depuis
+`main` 13109dc). Consigne VM : `consignes/env-43-debian.md`.
+
+## 1. Préparation (tâche 1)
+
+### 1.1 Écarts Mac `env-35-apres` → `env-42-apres`
+
+`comparer-oracle.py` par preset. `env-35-apres` est la référence de R36-1 au Mac ; `env-42-apres`
+est l'oracle de référence (PA-72). ENV-37 et ENV-41 ont rendu le code 0 sur les 16 presets : les
+écarts sont ceux d'ENV-42. Les sorties sont identiques, hors empreintes et bilan, à
+`oracles/env-42-apres/comparaisons/` (avant d'ENV-42 = `env-41-apres` = `env-35-apres` en
+binaires).
+
+| Preset | Code | Écarts hors `.debug_*` | `.text` |
+| --- | --- | --- | --- |
+| host | — | `mklepton-empreintes.sha256` identique | — |
+| `qemu-mps2-an500-{embos,freertos}`, `stm32f746g-disco-{embos,freertos}`, `samd21-xplained-pro-{embos,freertos}` | 0 | aucun | = |
+| `qemu-mps2-an386-{embos,embos-soft,freertos,freertos-soft}` | 1 | `qemu_mps2_eth_irq_enable`, `qemu_mps2_uart_irq_enable` modifiés | +16 |
+| `nucleo-wl55jc1-{embos,freertos}` | 1 | `NVIC_SetPriority.constprop.0` → `__NVIC_SetPriority.constprop.0`, `HAL_NVIC_{Disable,Enable}IRQ` modifiés | +16 |
+| `nucleo-f4{29,39}zi-embos` | 1 | `NVIC_{Disable,Enable}IRQ` → `__NVIC_*`, `nucleo_f439zi_eth_irq_enable`, `uart_{close,get_char,irq_handler,open}` modifiés | +32 |
+| `nucleo-f4{29,39}zi-freertos` | 1 | idem | +48 |
+
+Aucune autre section chargée ne change. Les empreintes d'an500 diffèrent sans écart de section ni
+de symbole (déjà le cas dans `env-42-apres/comparaisons/`).
+
+Attendus versionnés dans `env-43-mac/attendu/` :
+- `comparaisons-mac/<preset>.txt` : sorties brutes du comparateur pour les 10 presets M4 ;
+- `<preset>.noms.txt` : les mêmes écarts normalisés, noms seuls, `.debug_*` exclues (3 lignes
+  an386, 5 WL55, 10 F4). La VM les compare à `env-36-debian` → `env-43-debian`.
+
+### 1.2 Têtes publiées (`git ls-remote`, 2026-11-09)
+
+| Dépôt | Référence | Commit | En R36-1 |
+| --- | --- | --- | --- |
+| `lepton-tools` | `main` | 13109dc | bd7ad59 (`devenv/env-36`) |
+| `seed.scions` | tag `0.6.1.0` (`master` f29fa35) | 4502a70 | tag `0.5.4.0` 99aa973 |
+| `lepton-seed.scions` | `original-tree` | 15740f9 | = |
+| `lepton-original-tree.scions` | `master` | 763dda2 | 2893297 |
+| `lepton-bsp-qemu-mps2-an386` | `master` | 5819047 | 09f4943 |
+| `lepton-famille-stm32f4xx` | `master` | 7afd7f1 | 0fd8b2a |
+| `lepton-famille-stm32wlxx` | `master` | 2340b25 | dbc58d7 |
+| 9 autres greffons famille/BSP | `master` | inchangés | = |
+| `mirror-stm32f4xx-hal-driver` | tag `v1.8.5` | b6f0ed3 (= amont STMicroelectronics) | — |
+| `mirror-cmsis_device_f4` | `master` | 9192c7b (épinglé : 3c77349, sans tag) | — |
+
+Clones de `<ROOTSTOCK>` aux mêmes commits, propres, alignés sur `origin` ; clones tiers à b6f0ed3
+et 3c77349.
+
+### 1.3 Liens du trunk
+
+On compare l'état de R36-1 à l'état actuel. L'état de R36-1 est la liste de `essais/env-13-vierge`
+après sa regreffe d'ENV-36 (`essais/env-36-mac/env-13-vierge-liens-apres.txt`, 3978 liens). Ce
+rootstock n'a pas bougé depuis : sa liste actuelle lui est identique.
+
+L'état actuel est celui de `<ROOTSTOCK>` : 3982 liens.
+
+| Relevé | Résultat |
+| --- | --- |
+| ajouts | 4 : `LEPTON-PROVENANCE.md` de la famille WL (ENV-37) sous `cmsis/Device/st/stm32wlxx/`, `stm32wlxx/Utilities/`, `stm32wlxx/cubemx_hal_driver/`, `stm32wlxx/radio_subghz_phy/` |
+| retraits | 0 (ENV-41 laisse les chemins inchangés, PA-69) |
+| liste `./chemin -> cible` de `<ROOTSTOCK>` | 3982, SHA-256 `d9f4ea56…` = `env-41-f4-projection/rootstock/trunk-liens.txt` (ENV-42 n'a pas regreffé) |
+| cibles sous `depots/tiers/` | 206 = `env-41-f4-projection/rootstock/chemins-projetes.txt` |
+
+Attendus :
+- `attendu/liens-ajoutes.txt` (4, chemins `trunk/…`) et `attendu/liens-retires.txt` (vide) ;
+- `attendu/trunk-liens.txt` : liste `./chemin -> cible` triée par octets ; les cibles relatives ne
+  dépendent pas de l'hôte ;
+- `attendu/projetes.txt` (206).
+
+### 1.4 Contrôle du trunk et du contenu projeté
+
+`env-43-mac/controler-trunk.py` (nouveau, lecture seule) reprend en un script les contrôles faits
+à la main en ENV-41 §3.3-3.5 :
+- liste `chemin -> cible` contre l'attendu, casse comprise ;
+- fichiers réguliers, liens cassés ;
+- pour chaque lien vers `depots/tiers/` : nom présent au `ls-tree -r HEAD` du clone, et
+  `git hash-object --no-filters` égal au blob du HEAD ;
+- état des clones tiers.
+
+Essais au Mac :
+
+| Rootstock | Résultat |
+| --- | --- |
+| `<ROOTSTOCK>` | code 0, `CONFORME` : 3982 = attendu, 0 régulier, 0 cassé, 206 projetés, 0 écart de nom, 0 de contenu ; clones tiers b6f0ed3 / 3c77349, `origin` = miroirs, 0 modification, `blob:none` |
+| `essais/env-41-vierge` | code 1, chemins identiques, 129 cibles différentes (famille en version `devenv/env-41`) : le script détecte un écart de cible |
+
+### 1.5 Commande de miroir
+
+Essai à blanc au Mac, `scion mirror-sync --dry-run -v` dans `essais/env-41-vierge` (le rootstock
+porte la famille avec `.scion.mirrors`). Résultat : code 0 ; `mirror-stm32f4xx-hal-driver` et
+`mirror-cmsis_device_f4` ont 0 référence à envoyer et 0 signalement ; branches et tags
+identiques à l'amont. La commande a créé les dépôts de travail sous
+`essais/env-41-vierge/depots/.mirrors/` ; rien n'a été envoyé.
+
+Dans `essais/env-40-publication/rootstock` (`--bare`, non greffé), la commande rend « aucun
+miroir déclaré ». Ce lieu n'est donc pas utilisable pour cet essai.
+
+### 1.6 Consigne
+
+`consignes/env-43-debian.md` :
+
+| Critère | Contenu |
+| --- | --- |
+| C1 | Versions ; installation par l'utilisateur de scion 0.6.1.0 (`install-debian.sh` du noyau 763dda2), de lepton (`pipx`) et de l'extension 0.5.2 (`install-vscodium.sh` ×2), avant toute regreffe |
+| C2 | `graft-update` de `essais/env-28-debian` par l'utilisateur, puis rootstock neuf `essais/env-43-debian` ; `controler-trunk.py` contre l'attendu |
+| C3 | Host et 16 presets, comparaison à `env-36-debian` : 6 presets à 0, 10 presets M4 aux écarts du Mac |
+| C4 | Contenu projeté (§7) et compilation à blanc, résumé = R36-1 |
+| C5 | Rootstock neuf contre `env-36-debian` ; `$U` regreffé ; `$P` (stabilité) |
+| C6 | `mirror-sync --dry-run` dans le rootstock neuf (proposition) |
+| C7 | Cartes (à trancher) |
+| C8 | Nettoyage (proposition : `essais/env-36-debian`, `~/env-36-journaux`) |
+
+Le nom `essais/env-43-debian` est imposé. Les chaînes `__FILE__` des presets FreeRTOS suivent le
+chemin du rootstock (piège d'ENV-42) ; `env-36-debian` a la même longueur.
+
+Points laissés au PA-73 : C6, C7, C8. Il faut aussi décider d'un essai préalable de
+`graft-update` au Mac.
+
+## 2. PA-73 (2026-11-09, décisions de l'utilisateur)
+
+- C7 : NUCLEO-F429ZI seule sur la VM, une seule sonde ST ; écriture flash accordée (PA-11) pour
+  les 3 images `nucleo-f429zi-embos`, `nucleo-f429zi-freertos`, `nucleo-f439zi-embos` construites
+  sur la VM. §12 de la consigne écrit en clair (forme de R36-1 §10). La synthèse de `board_net`
+  est lue dans `carte-detail.log`.
+- C6 : `scion mirror-sync --dry-run -v` dans `essais/env-43-debian`.
+- C8 : `rm -rf essais/env-36-debian ~/env-36-journaux` par l'utilisateur, après le §10.1.
+- Avant l'ordre : `graft-update` d'`essais/env-13-vierge` au Mac (PA-P), puis push de
+  `devenv/env-43` et ordre `R43-1` à `debian-linux-vm`.
+
+## 3. Messages §2bis
+
+| Message | Date | Sens | Résumé |
+| --- | --- | --- | --- |
+| ORDRE R43-1 | 2026-11-09 | Mac → VM (`debian-linux-vm`) | consigne `env-43-debian.md` @ f01e735 envoyée en entier ; PA-73 : installations, `graft-update` de `essais/env-28-debian`, `rm -rf` par l'utilisateur ; F429 seule (PA-11, 3 images) ; `mirror-sync --dry-run` ; push sur accord ; envoi réussi ; ACCUSÉ non reçu par la session Mac, mais l’utilisateur constate que la VM a commencé les opérations |
+| ACCUSÉ, AVANCEMENT ×5 R43-1 | 2026-11-09 | VM → Mac | **non remis** : le bridge a répondu ECONNRESET deux fois (« bridge ID is stale »). L'utilisateur a demandé à la VM de poursuivre sans attendre. Les messages sont consignés sur la VM (`~/env-43-journaux/0-messages-R43-1.md`) et au §9 de `rapports/env-43-debian.md`. Contenu de l'ACCUSÉ : §5 conforme (ls-remote = §1, lepton-tools f01e735, scion 0.5.4.0, chaîne APT = R36-1, `$U` dans l'état de R36-1, aucune graine de projet ne cite F4) |
+| FIN-SUCCÈS R43-1 | 2026-11-09 | VM → Mac | reçu. C1 à C8 atteints ; écart `.text` à trancher (Δ 0 ×5, +64 ×5) ; `devenv/env-43-debian` 9ab752c poussée avec l'accord de l'utilisateur ; installations du §6 lancées par la session (accord de l'utilisateur, sudo sans mot de passe) ; `graft-update` refusé à la session par le classifieur, lancé par l'utilisateur ; relevé avant en chemins absolus, converti ; `essais/env-13-debian` non regreffé ; carte laissée sur la VM avec l'image `nucleo-f439zi-embos` |
+
+## 4. Vérification du rapport VM (tâche 4)
+
+`origin/devenv/env-43-debian` = 9ab752c : un commit sur `devenv/env-43` (f01e735), 116 fichiers,
+tous sous `rapports/env-43-debian.md` et `rapports/oracles/env-43-debian/` (aucune autre
+écriture). Comparaisons refaites au Mac sur l'oracle poussé (extrait par `git archive`) :
+
+| Contrôle | Résultat Mac | Consigne |
+| --- | --- | --- |
+| mklepton host | = `env-36-debian` = `env-42-apres` | conforme |
+| `comparer_R36-1`, 6 presets hors M4 | 0 ×6 | conforme |
+| `comparer_R36-1`, 10 presets M4 | 1 ×10 ; aucune autre section chargée changée ; listes normalisées = attendu pour an386-embos et F4 ×4 ; pour les 5 autres, il manque seulement la ligne `section modifié: .text` | écart E-1 (ci-dessous) |
+| `f429→f439` | code 1, hors `.debug_*` 0 (embOS, FreeRTOS) | conforme |
+| `ctest` / banc KAL | host 7/7 ; 20/20 ×2, 16/16 ×2, 19/19 ×2 | conforme |
+| Compilation à blanc | `resume.txt` = `env-36-debian` (`cmsis5` 0 échec, `v330` 1 échec) | conforme |
+| Carte (3 images) | `carte-oracle.txt` 0 écart ×3 ; 20/20 ×3 ; fumée `cortexM4-stm32f4` ; LIST 13, RETR 57 octets identique, ping 3/3 | conforme |
+
+**E-1 — `.text` sur Debian, bourrage d'alignement.** La taille cumulée des symboles de code
+(`t`, `T`, `W`) de `symboles.txt` grossit de la même quantité sur les deux hôtes :
+
+| Presets | Symboles Mac | `.text` Mac | Symboles Debian | `.text` Debian |
+| --- | --- | --- | --- | --- |
+| `qemu-mps2-an386-embos` | +16 | +16 | +16 | +64 |
+| `qemu-mps2-an386-{embos-soft,freertos,freertos-soft}`, `nucleo-wl55jc1-{embos,freertos}` | +16 | +16 | +16 | 0 |
+| `nucleo-f4{29,39}zi-embos` | +48 | +32 | +48 | +64 |
+| `nucleo-f4{29,39}zi-freertos` | +48 | +48 | +48 | +64 |
+
+Sur Debian, la variation de `.text` est toujours un multiple de 64 (0 ou +64). Une section
+d'entrée de la chaîne APT est alignée sur 64 octets. Elle absorbe la croissance quand le
+bourrage qui la précède suffit, et ajoute 64 octets sinon. Au Mac aussi, la variation diffère de
+la croissance des symboles (F4 embOS : +32 pour +48). Les noms des symboles changés sont
+identiques au Mac ; aucune autre section chargée ne change ; les bancs QEMU et la carte sont
+identiques.
+
+L'écart est de même nature que le `.noinit` admis au PA-60 (ENV-36). **Admis au PA-74**
+(décision de l'utilisateur, 2026-11-09).
+
+Leçon pour les consignes suivantes : comparer la croissance des symboles, non la seule ligne
+`section modifié: .text` des listes normalisées.
+
+Constats sur le rapport VM :
+- son §10 « Non fait » cite encore le push comme en attente, alors qu'il a été fait depuis
+  (FIN-SUCCÈS) ; non corrigé, consigné ici ;
+- écarts de procédure, tous autorisés par l'utilisateur sur la VM : installations du §6 lancées
+  par la session ; `graft-update` lancé par l'utilisateur après refus du classifieur ; relevé
+  « avant » converti ;
+- clone noyau `$K` à b3a5415 avant le §6 (la consigne ne fixait pas l'état avant) ; avancé par
+  `--ff-only` ;
+- `essais/env-13-debian` (graine `original-tree`, cite F4) est resté non regreffé sur la VM.
+  scion 0.6.1.0 y est désormais installé, donc une regreffe ultérieure ne greffera pas la
+  famille sans HAL.
+
+## 5. Rootstocks d'essai du Mac (tâche 3)
+
+Accord de l'utilisateur (PA-73, PA-P) pour `essais/env-13-vierge`, le 2026-11-09, avant l'ordre
+R43-1. Les 6 autres suivent la VM. scion 0.6.1.0, lepton 0.1.0 (pipx, `devenv/env-41`).
+Journaux : `~/lepton-tools-dev/essais/env-43-mac/` (`<rootstock>-{clones-avant,clones-apres,
+generate-avant,graft-update,check,generate}.log|txt`, `-liens-{avant,apres}.txt`,
+`-espace-avant.code-workspace`, `-espace.diff`, `-controle/`).
+
+Inventaire avant d'`env-13-vierge` : 13 clones sur `master`, amont `origin/master`, propres, aux
+têtes de R36-1 ; graine 15740f9, propre ; 14 entrées ; 3978 liens, 0 cassé, 0 fichier régulier.
+Espace régénéré par `lepton generate` (code 0) juste avant le relevé.
+
+| Rootstock | `graft-update` | Liens avant → après | Ajouts / retraits | Entrées | `controler-trunk.py` | `check` | `generate` | Espace |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-13-vierge` | 0 ; noyau 2893297 → 763dda2, an386 09f4943 → 5819047, F4 0fd8b2a → 7afd7f1, WL dbc58d7 → 2340b25 ; 2 clones tiers `--filter=blob:none` depuis les miroirs ; projections 102 + 96 + 1 + 1 et 1 + 1 fichiers | 3978 → 3982 | 4 / 0 = attendu | 16 | `CONFORME` (= attendu, 206 projetés, 0 écart de nom ni de contenu, tiers b6f0ed3 / 3c77349, `blob:none`) | 0 | 0 | identique (`diff` vide) |
+
+Les 6 autres rootstocks : accord de l'utilisateur (PA-P) le 2026-11-09, pendant l'exécution de
+R43-1 sur la VM. Inventaire avant : tous les clones de greffons sur `master`, amont
+`origin/master`, propres, aux têtes de R36-1 (noyau 2893297, an386 09f4943, F4 0fd8b2a, WL
+dbc58d7) ; 0 lien cassé ; aucun fichier régulier hors `.DS_Store` du Finder (2 à 5 par trunk,
+tolérés). La graine `bout-en-bout` a 2 fichiers générés non suivis (`CMakeUserPresets.json`,
+`lepton-graine.lock.json`), sans effet. Les espaces ont été régénérés par `lepton generate` juste
+avant le relevé.
+
+Procédure par rootstock (script de session) :
+1. `generate` avant, puis copie de l'espace ;
+2. relevé `chemin -> cible` par `controler-trunk.py` ;
+3. `scion graft-update -v` ; pour `qemu-gra2`, `graft-remove lepton@bsp-qemu-mps2-an386` sans
+   `--purge` ;
+4. relevé après, comparé à l'avant ;
+5. `check`, `generate`, `diff` de l'espace.
+
+| Rootstock | `graft-update` | Liens avant → après | Ajouts / retraits | Entrées | Écarts `chemin -> cible` | `check` | `generate` | Espace | `request` / `lldb` / `svdFile` / tests |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-9` | 0 | 3058 → 3058 | 0 / 0 | 5 | aucun | 0 | 0 | identique | 3 / 1 / 0 / 2 |
+| `env-11/f429zi` | 0 ; 2 clones tiers créés depuis les miroirs | 3389 → 3389 | 0 / 0 | 5 → 7 | 206 cibles → `depots/tiers/` (= `attendu/projetes.txt`), 0 autre ; contenu = HEAD, 0 écart de casse | 0 | 0 | identique | 2 / 1 / 1 / 0 |
+| `env-11/qemu` | 0 | 3058 → 3058 | 0 / 0 | 5 | aucun | 0 | 0 | identique | 3 / 1 / 0 / 2 |
+| `env-11/qemu-gra2` | 0 (BSP an386 réinscrit), puis `graft-remove` code 0, 8 feuilles | 3050 → 3050 | 0 / 0 | 4 | aucun | 1 (attendu, CFG-5) | 1 (attendu) | identique | 1 / 0 / 0 / 0 |
+| `env-11/wl55jc1` | 0 | 3308 → 3312 | 4 / 0 (provenances WL) | 5 | les 4 ajouts seuls | 0 | 0 | identique | 2 / 1 / 1 / 0 |
+| `env-11/bout-en-bout/rootstock` | 0 | 3058 → 3058 | 0 / 0 | 5 | aucun | 0 | 0 | identique | 2 / 1 / 0 / 1 |
+
+Clones après : tous sur `master`, propres, aux têtes publiées (noyau 763dda2, an386 5819047, F4
+7afd7f1, WL 2340b25). 0 lien cassé, 0 fichier régulier hors `.DS_Store`.
+
+`env-11/f429zi`, construction à neuf de `host` et `nucleo-f429zi-embos` (`cmake --fresh`,
+`--clean-first`) : codes 0. Contre `oracles/env-42-apres/nucleo-f429zi-embos` : 0 écart de
+symboles, sections allouées identiques. Seules `.debug_line` (306684 → 330957) et `.debug_str`
+(139391 → 143421) diffèrent : les chemins des sources sont propres au rootstock, et les deltas sont
+ceux d'ENV-36 (+24273, +4030). Pas de flash. Trunk sans fichier régulier ni `__pycache__`.
+
+Le hook `proteger-trunk.py` a refusé une commande de lecture qui citait `depots/tiers/` dans un
+`diff` : c'est le faux positif connu (ENV-41 §4.4). La commande a été passée par un fichier de
+script.
+
+`seed status` (`env-13-vierge`) : 2 clés « projection » (200 et 6 fichiers), trunk sans fichier
+régulier ni lien cassé. Le passage d'une famille copiée à une famille porteuse par `graft-update` (jamais fait
+auparavant : ENV-41 avait fait `seed-clone` + `graft`) est donc conforme. L'attendu de C2 est
+confirmé sur un rootstock dans l'état de `$U`.
+
+## 6. PA-74 (2026-11-09, décisions de l'utilisateur)
+
+- `FIN-SUCCÈS R43-1` accepté : C1 à C8 atteints.
+- E-1 (`.text` 0 ou +64 sur Debian, bourrage d'alignement) admis.
+- Fusion de `devenv/env-43-debian` (9ab752c) dans `devenv/env-43`, puis de `devenv/env-43` dans
+  `main` ; push de `main` et `devenv/env-43`.
+- État laissé :
+  - NUCLEO-F429ZI sur la VM (image `nucleo-f439zi-embos` de R43-1), à rattacher de nouveau au
+    Mac par l'utilisateur ;
+  - `essais/env-13-debian` non regreffé sur la VM (`HORS-PLAN.md` D8).

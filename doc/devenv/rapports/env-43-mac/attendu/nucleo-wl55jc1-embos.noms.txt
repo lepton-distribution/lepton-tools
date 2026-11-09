@@ -1,0 +1,5 @@
+section modifié: .text
+symbole ajouté: __NVIC_SetPriority.constprop.0
+symbole modifié: HAL_NVIC_DisableIRQ
+symbole modifié: HAL_NVIC_EnableIRQ
+symbole retiré: NVIC_SetPriority.constprop.0
