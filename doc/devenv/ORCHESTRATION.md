@@ -266,6 +266,17 @@ Une skill se corrige comme le code : sur la branche de l'étape, commit dédié,
 dans `DEVENV-STATUS.md`. La skill `lepton-portage-instructions` (hors de ce dépôt) sert à réviser
 ce plan.
 
+Relecture d'une révision du plan (décision de l'utilisateur du 2026-11-09) : avant tout commit,
+toute révision du plan est relue par un agent indépendant.
+- L'agent a l'effort `xhigh` et travaille en lecture seule.
+- Il reçoit les fichiers, les décisions de l'utilisateur et les sources des faits, mais pas les
+  conclusions de la session.
+- La session vérifie elle-même les constats principaux, les présente à l'utilisateur et n'applique
+  que ceux qu'il retient.
+- Le résultat (constats appliqués, écartés, non confirmés) est consigné au journal.
+
+Précédent : révision du 2026-11-09, ENV-44 à ENV-50. La même règle figure à l'étape 8 de la skill.
+
 ## 6. Graphe des étapes
 
 | Étape | Titre | Dépend de |
