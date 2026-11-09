@@ -1,0 +1,7 @@
+lepton@bsp-nucleo-f429zi master
+lepton@building *
+lepton@family-stm32f4xx master
+lepton@original::tree master
+lepton@project-env11f4 *
+tiers@cmsis-device-f4 3c77349ce04c8af401454cc51f85ea9a50e34fc1
+tiers@stm32f4xx-hal-driver v1.8.5

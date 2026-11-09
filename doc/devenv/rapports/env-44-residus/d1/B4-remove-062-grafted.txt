@@ -1,0 +1,5 @@
+lepton@bsp-qemu-mps2-an386 master
+lepton@building *
+lepton@family-qemu-mps2 master
+lepton@original::tree master
+lepton@project-env11 *

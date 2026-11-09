@@ -1,0 +1,11 @@
+rootstock : /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-pas
+graine    : /Users/cle_d_anton/lepton-tools-dev/essais/env-44-d1-pas/depots/lepton-seed/env11f4  main             e4129d2   0     
+            projet env11f4 0.1.0, backend embos, XML sys/user/env11f4/etc/mkconf_env11f4.xml
+            configurations : debug-board (Debug, carte)
+greffon          rôle           version  branche          commit    modif.  origine
+building         sans manifeste *        (hors git)                         depots/generation/building
+lepton-noyau     noyau          master   master           763dda2   0       https://github.com/lepton-distribution/lepton-original-tree.scions.git
+nucleo-f429zi    bsp            master   master           b9fe2bf   0       https://github.com/lepton-distribution/lepton-bsp-nucleo-f429zi.git
+project-env11f4  projet         *        main             e4129d2   0       depots/lepton-seed/env11f4
+absent du trunk : stm32f4xx (famille)
+trunk : aucun fichier régulier, aucun lien cassé

@@ -1,0 +1,80 @@
+nucleo-f429zi-embos        sources tierces vues par gdb :  10 ; ramenées au trunk :  10
+    depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1/Include/stm32f429xx.h
+      -> trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f429xx.h
+    depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1/Include/stm32f4xx.h
+      -> trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f4xx.h
+    depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1/Include/system_stm32f4xx.h
+      -> trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_def.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_def.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_eth.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_gpio.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_gpio.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_rcc.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_rcc.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src/stm32f4xx_hal_eth.c
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_eth.c
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src/stm32f4xx_hal_gpio.c
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_gpio.c
+nucleo-f429zi-freertos     sources tierces vues par gdb :   9 ; ramenées au trunk :   9
+    depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1/Include/stm32f429xx.h
+      -> trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f429xx.h
+    depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1/Include/stm32f4xx.h
+      -> trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f4xx.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_def.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_def.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_eth.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_gpio.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_gpio.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_rcc.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_rcc.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src/stm32f4xx_hal_eth.c
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_eth.c
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src/stm32f4xx_hal_gpio.c
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_gpio.c
+nucleo-f439zi-embos        sources tierces vues par gdb :  10 ; ramenées au trunk :  10
+    depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1/Include/stm32f439xx.h
+      -> trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f439xx.h
+    depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1/Include/stm32f4xx.h
+      -> trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f4xx.h
+    depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1/Include/system_stm32f4xx.h
+      -> trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_def.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_def.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_eth.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_gpio.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_gpio.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_rcc.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_rcc.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src/stm32f4xx_hal_eth.c
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_eth.c
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src/stm32f4xx_hal_gpio.c
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_gpio.c
+nucleo-f439zi-freertos     sources tierces vues par gdb :   9 ; ramenées au trunk :   9
+    depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1/Include/stm32f439xx.h
+      -> trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f439xx.h
+    depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1/Include/stm32f4xx.h
+      -> trunk/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f4xx.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_def.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_def.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_eth.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_eth.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_gpio.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_gpio.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal_rcc.h
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal_rcc.h
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src/stm32f4xx_hal_eth.c
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_eth.c
+    depots/tiers/stm32f4xx-hal-driver/v1.8.5/Src/stm32f4xx_hal_gpio.c
+      -> trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Src/stm32f4xx_hal_gpio.c
