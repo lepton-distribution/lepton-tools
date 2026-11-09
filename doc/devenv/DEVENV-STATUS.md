@@ -435,6 +435,9 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-11-06 | PA-71 (ENV-42) | Commentaire `qemu_mps2_machine.h:9` du BSP `qemu-mps2-an386` corrigé (branche `devenv/env-42` du greffon `bsp-qemu-mps2-an386`, binaire inchangé) ; fusion et push au PA-72. Décision de l'utilisateur. |
 | 2026-11-06 | PA-72 (ENV-42, PA-P) | Rapport `rapports/env-42-core-cm4.md` accepté ; nouvel oracle de référence `oracles/env-42-apres/` ; publication dans l'ordre clone noyau (`devenv/env-42` → `master`), `bsp-qemu-mps2-an386` (`devenv/env-42` → `master`), lepton-tools (`devenv/env-42` → `main`), branches et cibles poussées ; copie `essais/env-42-copie` supprimée ; O-1 (BSP `nucleo-f429zi` sans choix de sonde par numéro) hors plan, à la révision suivante. Décision de l'utilisateur. |
 | 2026-11-06 | PA-71, PA-11 (ENV-42) | Vue XPERIPHERALS de `nucleo-f429zi-embos` (image ENV-42) : registres `RCC` et `GPIOB` lisibles, confirmé par l'utilisateur. |
+| 2026-11-09 | PA-73, PA-11 (ENV-43) | C7 : NUCLEO-F429ZI seule rattachée à la VM, une seule sonde ST ; écriture flash accordée pour les 3 images `nucleo-f429zi-embos`, `nucleo-f429zi-freertos`, `nucleo-f439zi-embos` construites sur la VM (forme de R36-1). Décision de l'utilisateur. |
+| 2026-11-09 | PA-73 (ENV-43) | C6 : `scion mirror-sync --dry-run -v` dans le rootstock neuf `essais/env-43-debian` (dépôts de travail locaux, rien envoyé) ; C8 : `rm -rf essais/env-36-debian ~/env-36-journaux` par l'utilisateur après le §10.1. Décision de l'utilisateur. |
+| 2026-11-09 | PA-73, PA-P (ENV-43) | Avant l'ordre R43-1 : `graft-update` d'`essais/env-13-vierge` au Mac (même état que `$U` de la VM), contrôlé par `controler-trunk.py` (tâche 3 avancée pour ce rootstock) ; puis push de `devenv/env-43` et ordre R43-1 à `debian-linux-vm`. Décision de l'utilisateur. |
 
 ## Journal
 

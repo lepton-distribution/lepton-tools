@@ -20,7 +20,13 @@ Valider sur Debian x86_64 l'état publié après ENV-37 à ENV-42 :
 - compilation à blanc de la HAL F4 ;
 - fichiers générés par lepton ;
 - commande de miroir, à blanc ;
-- carte(s) : <À CONFIRMER au PA-73> (§12).
+- banc sur carte NUCLEO-F429ZI depuis Debian, réseau compris (§12).
+
+Carte (PA-73) : la NUCLEO-F429ZI (ST-LINK/V2-1 0672FF495252717267243842, adresse 192.168.2.5 sur
+le câble Ethernet) est rattachée à la VM par l'utilisateur dans VMware Fusion. Elle doit être la
+**seule sonde ST** rattachée à la VM. L'écriture flash est accordée pour cette session (PA-11),
+pour les seules images `nucleo-f429zi-embos`, `nucleo-f429zi-freertos` et `nucleo-f439zi-embos`
+construites sur la VM. Les autres presets de carte sont construits, jamais flashés.
 
 Références publiées (toutes poussées, aucune fusion différée) :
 
@@ -65,7 +71,8 @@ La session VM ne développe pas : elle exécute, constate et rapporte.
 | Lectures dans `$U` ; `lepton check` / `generate` / `seed status` dans `$U`, `$P`, `$R36` et `$R` | Toute écriture dans les clones de `$U` ; tout `seed-update` ; regreffer `$P` ou `$R36`, commiter dans leur graine |
 | Créer `~/lepton-tools-dev/essais/env-43-debian` (rootstock neuf, **sous ce nom** : même longueur de chemin qu'`env-36-debian`, §8) et y tout faire, `build/` compris | Écrire un fichier régulier dans un `trunk/` ou sous `depots/tiers/` ; corriger quoi que ce soit (consigner l'écart pour la session Mac) |
 | `scion mirror-sync --dry-run` dans `$R` (§11) | `scion mirror-sync` **sans** `--dry-run` ; tout envoi vers un miroir |
-| Compilation à blanc dans `$J/9-hal-blanc` (§9) | Flasher une image ou une carte hors du §12 ; octets d'option, effacement de masse, déverrouillage |
+| Compilation à blanc dans `$J/9-hal-blanc` (§9) | Flasher une autre image que les 3 du §12, flasher une autre carte, modifier les octets d'option, effacement de masse ou déverrouillage |
+| §12 : reconfigurer `$R/build/<P>` des 3 presets avec `LEPTON_BOARD_SERIAL_PORT` et `LEPTON_NET_TEST_HOST_IP`, `ctest -L board` (écriture flash), lecture OpenOCD (`init; targets; shutdown`) | Modifier la configuration réseau de la VM ; `sudo` |
 | Créer `devenv/env-43-debian` (depuis `devenv/env-43`) ; y écrire `doc/devenv/rapports/env-43-debian.md` et `doc/devenv/rapports/oracles/env-43-debian/` | Commiter sur une autre branche |
 | `git push origin devenv/env-43-debian` **après accord explicite de l'utilisateur** (PA-P) | Pousser toute autre branche |
 
@@ -101,8 +108,9 @@ attendre.
   - les résultats de `git ls-remote` du §5 ;
   - les branches et têtes des clones de `$U` ;
   - les étapes prévues (§6 à §13) et les écarts déjà visibles.
-- `AVANCEMENT` : quand l'utilisateur doit agir (§6, §7.1, §12, §13), après chacun des §6 à §12,
-  et à chaque arrêt.
+- `AVANCEMENT` : quand l'utilisateur doit agir (§6, §7.1, §12.1, §13), après chacun des §6 à
+  §12, et à chaque arrêt. Au §12.1, donner l'adresse IP relevée : l'utilisateur la confirme
+  avant le banc.
 - `FIN-SUCCÈS` / `FIN-ÉCHEC` : résultat par critère du §14, commits et branche (poussée ou non),
   chemin du rapport, versions relevées, écarts, ce qui n'a pas été fait.
 - Premier `ACCUSÉ` perdu deux fois (ECONNRESET, R33-1 et R36-1) : en cas d'erreur d'envoi,
@@ -480,8 +488,8 @@ est QEMU seul : ce contrôle établit la stabilité du nouveau lepton.
 
 ## 11. Commande de miroir, à blanc (C6)
 
-<À CONFIRMER au PA-73.> Proposition : contrôle des 2 miroirs F4 contre leur amont, sans envoi.
-`$R` porte les déclarations de miroir (`scion/.scion/.scion.mirrors` de `family-stm32f4xx`).
+Retenu au PA-73 : contrôle des 2 miroirs F4 contre leur amont, sans envoi. `$R` porte les
+déclarations de miroir (`scion/.scion/.scion.mirrors` de `family-stm32f4xx`).
 
 ```bash
 cd "$R"
@@ -501,24 +509,104 @@ Une référence « à envoyer » (l'amont a avancé depuis le 2026-11-06) est re
 ne sera pas envoyée. Un signalement (tag déplacé, branche réécrite ou supprimée) est un écart à
 exposer. Jamais sans `--dry-run`.
 
-## 12. Cartes (C7)
+## 12. Banc sur carte NUCLEO-F429ZI (C7)
 
-<À CONFIRMER au PA-73 : cartes rattachées à la VM, images, écriture flash (PA-11).>
-Proposition : NUCLEO-F429ZI seule, comme en R36-1 (forme et commandes du §10 de
-`consignes/env-36-debian.md`), 3 images construites au §8 sur `$R` :
-- `nucleo-f429zi-embos`, `nucleo-f429zi-freertos`, `nucleo-f439zi-embos` ;
-- variables `$O/env-43-debian` et `$R` ; journaux `$J/12.*` ;
-- **une seule sonde ST rattachée à la VM** : le BSP `nucleo-f429zi` ne choisit pas sa sonde par
-  numéro (O-1 d'ENV-42).
+Retenu au PA-73 : forme de R36-1 (`consignes/env-36-debian.md` §10), commandes en clair.
+`rapports/env-35-hal-f4/banc-carte.sh` appelle `caffeinate` (macOS seul) : ne pas le lancer sur la
+VM. Référence Debian (R36-1, `rapports/env-36-debian.md`) : 20/20 pour les 3 images, fumée
+`cortexM4-stm32f4`, ping 3/3, LIST 13 entrées, RETR 57 octets identique, `ECONNRESET=15`. Les
+images ont changé depuis (`.text` +32 / +48, ENV-42) ; les résultats du banc doivent rester les
+mêmes.
 
-Référence : R36-1 (20/20 ×3, fumée `cortexM4-stm32f4`, ping 3/3, LIST 13, RETR 57 octets,
-`ECONNRESET=15`). La synthèse de `board_net` est dans `carte-detail.log` (`LastTest.log`), pas dans
-`reseau-carte.log`.
+### 12.1 Sonde, port série, droits, réseau
+
+`AVANCEMENT` : l'**utilisateur** rattache la NUCLEO-F429ZI à la VM (VMware Fusion, menu des
+périphériques USB ; le Mac ne la voit plus). **Aucune autre sonde ST** ne doit être rattachée à la
+VM : le BSP `nucleo-f429zi` ne choisit pas sa sonde par numéro (O-1 d'ENV-42), OpenOCD prend la
+première. Puis la session, en lecture seule :
+```bash
+id -nG; ls -l /dev/ttyACM* 2>&1; ls /dev/serial/by-id/ 2>&1
+lsusb 2>&1 | grep -i -E 'st-?link|0483:' ; ls /etc/udev/rules.d/ /usr/lib/udev/rules.d/ 2>/dev/null | grep -i openocd
+CFG="$R"/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg
+openocd -f "$CFG" -c "init; targets; shutdown" > "$J/12.1-openocd-targets.log" 2>&1; echo "code=$?" >> "$J/12.1-openocd-targets.log"
+cat "$J/12.1-openocd-targets.log"
+ip -4 -o addr show | awk '{print $2, $4}'
+ip route get 192.168.2.5
+ping -c 3 -W 2 192.168.2.5 > "$J/12.1-ping-carte.log" 2>&1; echo "code=$?" >> "$J/12.1-ping-carte.log"
+```
+Attendu (R36-1) :
+- **une seule** sonde ST, n° 0672FF495252717267243842 → `/dev/ttyACM0` ;
+- OpenOCD voit `stm32f4x.cpu`, code 0 sans sudo ;
+- port lisible et inscriptible par l'utilisateur (R36-1 : `root:plugdev` + ACL `uaccess`) ;
+- une interface de la VM sur 192.168.2.0/24 (R36-1 : `ens37` 192.168.2.20/16) ;
+- le ping de la carte peut échouer si l'image en flash ne répond pas (pas un arrêt).
+
+Deux sondes ST visibles : arrêt, `AVANCEMENT` pour que l'utilisateur détache l'autre.
+
+Si un droit manque (OpenOCD : `LIBUSB_ERROR_ACCESS` ; port : `Permission denied`) :
+`AVANCEMENT` avec la commande exacte pour l'**utilisateur**, selon le cas :
+```bash
+sudo usermod -aG dialout,plugdev "$USER"          # puis fermer et rouvrir la session de la VM
+sudo cp /usr/lib/udev/rules.d/60-openocd.rules /etc/udev/rules.d/ 2>/dev/null; sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+La seconde commande ne sert que si aucune règle `60-openocd.rules` n'est active. La session
+revérifie, consigne la commande lancée et son effet. Si c'est toujours bloqué : `QUESTION`, sans
+contournement (ni `sudo openocd`, ni `chmod` du périphérique).
+
+Puis `AVANCEMENT` : port relevé (`PORT`) et adresse IPv4 de la VM sur 192.168.2.0/24 (`HOSTIP`).
+**L'utilisateur confirme l'adresse** avant tout flash. Aucune interface sur 192.168.2.0/24 :
+arrêt et `QUESTION` (pas de modification réseau par la session).
+
+### 12.2 Banc des 3 images
+
+Après confirmation, dans cet ordre :
+```bash
+PORT=/dev/ttyACM<n>; HOSTIP=<adresse confirmée>
+export PYTHONDONTWRITEBYTECODE=1
+source "$R"/depots/lepton/original/master/scripts/lepton-env.sh > /dev/null
+cd "$T"
+for P in nucleo-f429zi-embos nucleo-f429zi-freertos nucleo-f439zi-embos; do
+  D=$T/$O/env-43-debian/$P; B=$R/build/$P
+  { cmake -S "$R/trunk" -B "$B" --preset "$P" -DLEPTON_BOARD_SERIAL_PORT="$PORT" -DLEPTON_NET_TEST_HOST_IP="$HOSTIP" && cmake --build "$B"; } > "$D/carte-config.log" 2>&1; echo "code=$?" >> "$D/carte-config.log"
+  Y=$(mktemp -d); scripts/oracle/capturer-oracle.sh "$B/lepton.elf" "$Y" > /dev/null
+  python3 scripts/oracle/comparer-oracle.py "$D" "$Y" > "$D/carte-oracle.txt" 2>&1; rc=$?; echo "$P oracle=$rc"; rm -rf "$Y"
+  [ "$rc" -eq 0 ] || { echo "ARRÊT : $P différent de l'oracle"; break; }
+  (cd "$R/trunk" && ctest --preset "$P" -L board --output-on-failure) > "$D/carte.log" 2>&1; echo "$P ctest=$?"
+  cp "$B/Testing/Temporary/LastTest.log" "$D/carte-detail.log" 2>/dev/null
+  cp "$B/smoke_lsh_board.log" "$D/fumee-carte.log" 2>/dev/null
+  cp "$B/board_net.log" "$D/reseau-carte.log" 2>/dev/null
+  grep -E 'tests passed|tests failed' "$D/carte.log"
+done
+```
+Un `oracle=` non nul veut dire que l'image reconfigurée diffère de celle du §8. Dans ce cas :
+arrêt avant `ctest` pour ce preset, `AVANCEMENT` avec l'extrait de `carte-oracle.txt`. Puis :
+```bash
+for P in nucleo-f429zi-embos nucleo-f429zi-freertos nucleo-f439zi-embos; do
+  D=$T/$O/env-43-debian/$P
+  echo "== $P"; grep -E 'Total Tests|tests passed' "$D/carte.log"
+  grep -a -o 'cortexM4-stm32f4' "$D/fumee-carte.log" | head -1
+  grep -a -i -E 'ping|LIST|RETR|ECONNRESET' "$D/carte-detail.log" | head -12
+done
+find "$R/trunk" -type f ! -name .scion.grafted.list | wc -l; find "$R/trunk" -name __pycache__ | wc -l
+```
+La synthèse de `board_net` est dans `carte-detail.log` (`LastTest.log`), pas dans
+`reseau-carte.log` (défaut de la consigne de R36-1).
+
+Attendu, pour chacune des 3 images :
+- `oracle=0` ; `ctest=0`, **20/20** (`board.smoke_lsh`, banc KAL sur carte, `board.net`) ;
+- fumée `cortexM4-stm32f4` ;
+- réseau : ping 3/3, LIST 13 entrées, RETR 57 octets identique à la référence, `ECONNRESET=15` ;
+- trunk sans fichier régulier ni `__pycache__`.
+
+Un test en échec : relever `carte-detail.log` (extrait), relancer ce test une fois seul
+(`ctest --preset <P> -R <test>`) et consigner les deux résultats ; pas de correction. La carte
+garde l'image `nucleo-f439zi-embos` de la VM. Après le banc, l'utilisateur peut rattacher de
+nouveau la carte au Mac (à consigner).
 
 ## 13. Nettoyage de la VM (C8)
 
-<À CONFIRMER au PA-73.> Proposition, après le §10.1 (l'espace de `$R36` est copié au §5.1),
-relevé par la session :
+Accordé au PA-73. Après le §10.1 (l'espace de `$R36` est copié au §5.1), relevé par la
+session :
 ```bash
 du -sh "$R36" ~/env-36-journaux
 ```
@@ -539,9 +627,9 @@ Conservés : `$U` (`essais/env-28-debian`, regreffé au §7.1), `$R` (`essais/en
 | C3 Constructions | host ctest 7/7, mklepton = `env-36-debian` = `env-42-apres` ; 16 presets construits ; QEMU fumée et banc 20/20, 16/16, 19/19 ; `comparer_R36-1` : 6 presets 0, 10 presets M4 1 avec écarts normalisés = Mac, `.text` seule section chargée changée ; `f429→f439` hors `.debug_*` 0 |
 | C4 Contenu projeté et compilation à blanc | 206 projetés = HEAD des clones épinglés, 0 écart de casse (§7) ; résumé de la compilation à blanc = R36-1 (`cmsis5` 0 échec, `v330` 1 échec) ; trunk sans fichier régulier |
 | C5 Fichiers générés | `$R` : `check`, `generate`, `seed status` 0, 2 clés projetées, espace = `$R36` au chemin près ; `$U` : codes 0, espace = avant ; `$P` : générés, graine et `check` identiques |
-| C6 Miroir | <PA-73> `mirror-sync --dry-run` code 0, 0 à envoyer, 0 signalement (ou références « à envoyer » relevées), rien envoyé |
-| C7 Cartes | <PA-73> |
-| C8 Nettoyage | <PA-73> |
+| C6 Miroir | `mirror-sync --dry-run` dans `$R` : code 0, 2 miroirs, 0 à envoyer (ou références « à envoyer » relevées), 0 signalement ; rien envoyé ; trunk `CONFORME` |
+| C7 Carte NUCLEO-F429ZI | une seule sonde vue de la VM, droits sans sudo ; IP de la VM confirmée par l'utilisateur ; 3 `lepton.elf` reconfigurés = oracle `env-43-debian` (code 0) ; `ctest -L board` 20/20 pour chacun ; fumée `cortexM4-stm32f4` ; réseau ping 3/3, LIST 13 entrées, RETR 57 octets identique, `ECONNRESET=15` |
+| C8 Nettoyage | `essais/env-36-debian` et `~/env-36-journaux` supprimés par l'utilisateur (taille relevée), absents |
 
 Rapport `doc/devenv/rapports/env-43-debian.md` sur `devenv/env-43-debian`. Il contient :
 - l'hôte et les versions (§5, §6) ;

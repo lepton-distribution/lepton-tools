@@ -117,3 +117,44 @@ chemin du rootstock (piège d'ENV-42) ; `env-36-debian` a la même longueur.
 
 Points laissés au PA-73 : C6, C7, C8. Il faut aussi décider d'un essai préalable de
 `graft-update` au Mac.
+
+## 2. PA-73 (2026-11-09, décisions de l'utilisateur)
+
+- C7 : NUCLEO-F429ZI seule sur la VM, une seule sonde ST ; écriture flash accordée (PA-11) pour
+  les 3 images `nucleo-f429zi-embos`, `nucleo-f429zi-freertos`, `nucleo-f439zi-embos` construites
+  sur la VM. §12 de la consigne écrit en clair (forme de R36-1 §10). La synthèse de `board_net`
+  est lue dans `carte-detail.log`.
+- C6 : `scion mirror-sync --dry-run -v` dans `essais/env-43-debian`.
+- C8 : `rm -rf essais/env-36-debian ~/env-36-journaux` par l'utilisateur, après le §10.1.
+- Avant l'ordre : `graft-update` d'`essais/env-13-vierge` au Mac (PA-P), puis push de
+  `devenv/env-43` et ordre `R43-1` à `debian-linux-vm`.
+
+## 3. Messages §2bis
+
+| Message | Date | Sens | Résumé |
+| --- | --- | --- | --- |
+
+## 4. Vérification du rapport VM (tâche 4)
+
+À faire après `FIN-* R43-1`.
+
+## 5. Rootstocks d'essai du Mac (tâche 3)
+
+Accord de l'utilisateur (PA-73, PA-P) pour `essais/env-13-vierge`, le 2026-11-09, avant l'ordre
+R43-1. Les 6 autres suivent la VM. scion 0.6.1.0, lepton 0.1.0 (pipx, `devenv/env-41`).
+Journaux : `~/lepton-tools-dev/essais/env-43-mac/` (`<rootstock>-{clones-avant,clones-apres,
+generate-avant,graft-update,check,generate}.log|txt`, `-liens-{avant,apres}.txt`,
+`-espace-avant.code-workspace`, `-espace.diff`, `-controle/`).
+
+Inventaire avant d'`env-13-vierge` : 13 clones sur `master`, amont `origin/master`, propres, aux
+têtes de R36-1 ; graine 15740f9, propre ; 14 entrées ; 3978 liens, 0 cassé, 0 fichier régulier.
+Espace régénéré par `lepton generate` (code 0) juste avant le relevé.
+
+| Rootstock | `graft-update` | Liens avant → après | Ajouts / retraits | Entrées | `controler-trunk.py` | `check` | `generate` | Espace |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-13-vierge` | 0 ; noyau 2893297 → 763dda2, an386 09f4943 → 5819047, F4 0fd8b2a → 7afd7f1, WL dbc58d7 → 2340b25 ; 2 clones tiers `--filter=blob:none` depuis les miroirs ; projections 102 + 96 + 1 + 1 et 1 + 1 fichiers | 3978 → 3982 | 4 / 0 = attendu | 16 | `CONFORME` (= attendu, 206 projetés, 0 écart de nom ni de contenu, tiers b6f0ed3 / 3c77349, `blob:none`) | 0 | 0 | identique (`diff` vide) |
+
+`seed status` : 2 clés « projection » (200 et 6 fichiers), trunk sans fichier régulier ni lien
+cassé. Le passage d'une famille copiée à une famille porteuse par `graft-update` (jamais fait
+auparavant : ENV-41 avait fait `seed-clone` + `graft`) est donc conforme. L'attendu de C2 est
+confirmé sur un rootstock dans l'état de `$U`.
