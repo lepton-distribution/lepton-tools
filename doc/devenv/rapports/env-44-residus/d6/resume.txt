@@ -1,0 +1,4 @@
+# arm-none-eabi-gcc (Arm GNU Toolchain 14.2.Rel1 (Build arm-14.52)) 14.2.1 20241119
+# 90 sources, -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -O2 -Wall
+STM32F429xx cmsis5 : 90 sources, 0 en échec, 0 avertissement(s), core_cm4.h = kernel/core/ucore/cmsis-5/CMSIS/Core/Include/core_cm4.h
+STM32F439xx cmsis5 : 90 sources, 0 en échec, 0 avertissement(s), core_cm4.h = kernel/core/ucore/cmsis-5/CMSIS/Core/Include/core_cm4.h
