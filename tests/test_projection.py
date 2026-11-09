@@ -190,3 +190,21 @@ def test_seed_lock_projected(project, capsys):
     out = capsys.readouterr()
     assert "clé projetée au commit" in out.out + out.err
     assert _git(_tiers_clone(project), "rev-parse", "HEAD").strip() != head
+
+
+def _projected_links(project: Path) -> dict[str, str]:
+    trunk = project / "trunk"
+    return {str(p.relative_to(trunk)): os.readlink(p) for p in trunk.rglob("*")
+            if p.is_symlink() and "depots/tiers" in os.readlink(p)}
+
+
+def test_seed_replace_porteur_garde_les_projections(project, repos):
+    """ENV-44 (D1, P-G6 de scion 0.6.2.0) : seed replace du porteur rend ses fichiers projetés."""
+    before = _projected_links(project)
+    assert before
+    code = main(["seed", "replace", "fam-test", f"{url(repos['family'])}@master", "-C", str(project),
+                 "--no-cmake"])
+    assert code == 0
+    assert _projected_links(project) == before
+    assert (project / HAL / "Inc" / "t.h").read_text() == "/* t.h */\n"
+    assert_trunk_clean(project)
