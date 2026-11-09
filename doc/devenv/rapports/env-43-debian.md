@@ -180,8 +180,9 @@ miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : 0 ré
 | nucleo-f439zi-embos | 0 | 0, 20/20 | `cortexM4-stm32f4` | idem |
 
 Résultats identiques à R36-1, malgré les images changées (`.text` +64, §4). Trunk sans fichier
-régulier ni `__pycache__`. La carte garde l'image `nucleo-f439zi-embos` construite sur la VM, et
-reste rattachée à la VM. Journaux : `oracles/env-43-debian/<preset>/carte*.log`, `fumee-carte.log`,
+régulier ni `__pycache__`. La carte garde l'image `nucleo-f439zi-embos` construite sur la VM.
+Après le banc, l'utilisateur l'a rattachée de nouveau au Mac (vérifié : plus de sonde ST ni de
+`/dev/ttyACM*` sur la VM). Journaux : `oracles/env-43-debian/<preset>/carte*.log`, `fumee-carte.log`,
 `reseau-carte.log`.
 
 ## 8. Écarts et constats
@@ -219,10 +220,12 @@ reste rattachée à la VM. Journaux : `oracles/env-43-debian/<preset>/carte*.log
 | AVANCEMENT R43-1 (§8) | 2026-11-09 | VM → Mac | C3 avec l'écart `.text` | non (consigné) |
 | AVANCEMENT R43-1 (§9-§11) | 2026-11-09 | VM → Mac | C4, C5, C6 conformes | non (consigné) |
 | AVANCEMENT R43-1 (§12.1) | 2026-11-09 | VM → utilisateur | PORT et HOSTIP, confirmation obtenue | oui (utilisateur) |
+| FIN-SUCCÈS R43-1 | 2026-11-09 | VM → « Démarrage de session » | critères C1-C8, écart `.text`, contenu de l'ACCUSÉ | envoyé, lecture non confirmée |
 
 ## 10. Non fait
 
-- Aucun message remis à la session Mac. `FIN-*` à transmettre quand elle sera joignable.
+- `ACCUSÉ` et `AVANCEMENT` non remis à la session Mac. Le `FIN-SUCCÈS`, qui reprend le contenu de
+  l'`ACCUSÉ`, a été envoyé à « Démarrage de session » (Remote Control) : envoi réussi, lecture non
+  confirmée.
 - `nucleo-f439zi-freertos` et les autres presets de carte : construits, non flashés (hors PA-11).
-- Push de `devenv/env-43-debian` : soumis à l'accord de l'utilisateur (PA-P).
-- Carte non rattachée de nouveau au Mac : laissé à l'utilisateur.
+- `devenv/env-43-debian` : poussée avec l'accord de l'utilisateur (PA-P).
