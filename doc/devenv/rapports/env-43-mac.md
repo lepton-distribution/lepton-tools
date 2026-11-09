@@ -134,10 +134,59 @@ Points laissés au PA-73 : C6, C7, C8. Il faut aussi décider d'un essai préala
 | Message | Date | Sens | Résumé |
 | --- | --- | --- | --- |
 | ORDRE R43-1 | 2026-11-09 | Mac → VM (`debian-linux-vm`) | consigne `env-43-debian.md` @ f01e735 envoyée en entier ; PA-73 : installations, `graft-update` de `essais/env-28-debian`, `rm -rf` par l'utilisateur ; F429 seule (PA-11, 3 images) ; `mirror-sync --dry-run` ; push sur accord ; envoi réussi ; ACCUSÉ non reçu par la session Mac, mais l’utilisateur constate que la VM a commencé les opérations |
+| ACCUSÉ, AVANCEMENT ×5 R43-1 | 2026-11-09 | VM → Mac | **non remis** : le bridge a répondu ECONNRESET deux fois (« bridge ID is stale »). L'utilisateur a demandé à la VM de poursuivre sans attendre. Les messages sont consignés sur la VM (`~/env-43-journaux/0-messages-R43-1.md`) et au §9 de `rapports/env-43-debian.md`. Contenu de l'ACCUSÉ : §5 conforme (ls-remote = §1, lepton-tools f01e735, scion 0.5.4.0, chaîne APT = R36-1, `$U` dans l'état de R36-1, aucune graine de projet ne cite F4) |
+| FIN-SUCCÈS R43-1 | 2026-11-09 | VM → Mac | reçu. C1 à C8 atteints ; écart `.text` à trancher (Δ 0 ×5, +64 ×5) ; `devenv/env-43-debian` 9ab752c poussée avec l'accord de l'utilisateur ; installations du §6 lancées par la session (accord de l'utilisateur, sudo sans mot de passe) ; `graft-update` refusé à la session par le classifieur, lancé par l'utilisateur ; relevé avant en chemins absolus, converti ; `essais/env-13-debian` non regreffé ; carte laissée sur la VM avec l'image `nucleo-f439zi-embos` |
 
 ## 4. Vérification du rapport VM (tâche 4)
 
-À faire après `FIN-* R43-1`.
+`origin/devenv/env-43-debian` = 9ab752c : un commit sur `devenv/env-43` (f01e735), 116 fichiers,
+tous sous `rapports/env-43-debian.md` et `rapports/oracles/env-43-debian/` (aucune autre
+écriture). Comparaisons refaites au Mac sur l'oracle poussé (extrait par `git archive`) :
+
+| Contrôle | Résultat Mac | Consigne |
+| --- | --- | --- |
+| mklepton host | = `env-36-debian` = `env-42-apres` | conforme |
+| `comparer_R36-1`, 6 presets hors M4 | 0 ×6 | conforme |
+| `comparer_R36-1`, 10 presets M4 | 1 ×10 ; aucune autre section chargée changée ; listes normalisées = attendu pour an386-embos et F4 ×4 ; pour les 5 autres, il manque seulement la ligne `section modifié: .text` | écart E-1 (ci-dessous) |
+| `f429→f439` | code 1, hors `.debug_*` 0 (embOS, FreeRTOS) | conforme |
+| `ctest` / banc KAL | host 7/7 ; 20/20 ×2, 16/16 ×2, 19/19 ×2 | conforme |
+| Compilation à blanc | `resume.txt` = `env-36-debian` (`cmsis5` 0 échec, `v330` 1 échec) | conforme |
+| Carte (3 images) | `carte-oracle.txt` 0 écart ×3 ; 20/20 ×3 ; fumée `cortexM4-stm32f4` ; LIST 13, RETR 57 octets identique, ping 3/3 | conforme |
+
+**E-1 — `.text` sur Debian, bourrage d'alignement.** La taille cumulée des symboles de code
+(`t`, `T`, `W`) de `symboles.txt` grossit de la même quantité sur les deux hôtes :
+
+| Presets | Symboles Mac | `.text` Mac | Symboles Debian | `.text` Debian |
+| --- | --- | --- | --- | --- |
+| `qemu-mps2-an386-embos` | +16 | +16 | +16 | +64 |
+| `qemu-mps2-an386-{embos-soft,freertos,freertos-soft}`, `nucleo-wl55jc1-{embos,freertos}` | +16 | +16 | +16 | 0 |
+| `nucleo-f4{29,39}zi-embos` | +48 | +32 | +48 | +64 |
+| `nucleo-f4{29,39}zi-freertos` | +48 | +48 | +48 | +64 |
+
+Sur Debian, la variation de `.text` est toujours un multiple de 64 (0 ou +64). Une section
+d'entrée de la chaîne APT est alignée sur 64 octets. Elle absorbe la croissance quand le
+bourrage qui la précède suffit, et ajoute 64 octets sinon. Au Mac aussi, la variation diffère de
+la croissance des symboles (F4 embOS : +32 pour +48). Les noms des symboles changés sont
+identiques au Mac ; aucune autre section chargée ne change ; les bancs QEMU et la carte sont
+identiques.
+
+L'écart est de même nature que le `.noinit` admis au PA-60 (ENV-36). **Admis au PA-74**
+(décision de l'utilisateur, 2026-11-09).
+
+Leçon pour les consignes suivantes : comparer la croissance des symboles, non la seule ligne
+`section modifié: .text` des listes normalisées.
+
+Constats sur le rapport VM :
+- son §10 « Non fait » cite encore le push comme en attente, alors qu'il a été fait depuis
+  (FIN-SUCCÈS) ; non corrigé, consigné ici ;
+- écarts de procédure, tous autorisés par l'utilisateur sur la VM : installations du §6 lancées
+  par la session ; `graft-update` lancé par l'utilisateur après refus du classifieur ; relevé
+  « avant » converti ;
+- clone noyau `$K` à b3a5415 avant le §6 (la consigne ne fixait pas l'état avant) ; avancé par
+  `--ff-only` ;
+- `essais/env-13-debian` (graine `original-tree`, cite F4) est resté non regreffé sur la VM.
+  scion 0.6.1.0 y est désormais installé, donc une regreffe ultérieure ne greffera pas la
+  famille sans HAL.
 
 ## 5. Rootstocks d'essai du Mac (tâche 3)
 
@@ -197,3 +246,14 @@ script.
 régulier ni lien cassé. Le passage d'une famille copiée à une famille porteuse par `graft-update` (jamais fait
 auparavant : ENV-41 avait fait `seed-clone` + `graft`) est donc conforme. L'attendu de C2 est
 confirmé sur un rootstock dans l'état de `$U`.
+
+## 6. PA-74 (2026-11-09, décisions de l'utilisateur)
+
+- `FIN-SUCCÈS R43-1` accepté : C1 à C8 atteints.
+- E-1 (`.text` 0 ou +64 sur Debian, bourrage d'alignement) admis.
+- Fusion de `devenv/env-43-debian` (9ab752c) dans `devenv/env-43`, puis de `devenv/env-43` dans
+  `main` ; push de `main` et `devenv/env-43`.
+- État laissé :
+  - NUCLEO-F429ZI sur la VM (image `nucleo-f439zi-embos` de R43-1), à rattacher de nouveau au
+    Mac par l'utilisateur ;
+  - `essais/env-13-debian` non regreffé sur la VM (`HORS-PLAN.md` D8).
