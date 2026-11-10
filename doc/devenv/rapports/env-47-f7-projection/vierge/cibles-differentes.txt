@@ -1,0 +1,11 @@
+lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F7xx/LEPTON-PROVENANCE.md
+lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_eth_x.c
+lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_eth_x.h
+lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_hal_tick.c
+lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_uart_x.c
+lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_uart_x.h
+lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/hal_driver/LEPTON-PROVENANCE.md
+lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/lepton-greffon.json
+lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/LICENSE-Apache-2.0
+lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/README.md
+lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/STM32F746.svd

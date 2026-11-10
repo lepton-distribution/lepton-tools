@@ -1,0 +1,42 @@
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/original/master/scion)
+exclu (ignoré par git) : lepton/original::tree .DS_Store
+exclu (ignoré par git) : lepton/original::tree cmake/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/root/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/root/src/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/root/src/kernel/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/root/src/kernel/dev/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/user/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/user/tauon-basic/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/user/tauon-basic/src/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/user/tauon-basic/src/bin/.DS_Store
+exclu (ignoré par git) : lepton/original::tree tools/.DS_Store
+git init -q --bare /var/folders/g8/m09ync55449fmpq56d8d7x3w0000gq/T/scion-ignored-uhtj503p (cwd=None)
+git -c core.bare=false --git-dir /var/folders/g8/m09ync55449fmpq56d8d7x3w0000gq/T/scion-ignored-uhtj503p --work-tree depots/generation/building ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-47-copie/depots/generation/building/scion)
+exclu (ignoré par git) : lepton/building .DS_Store
+exclu (ignoré par git) : lepton/building building/.DS_Store
+exclu (ignoré par git) : lepton/building building/staging/.DS_Store
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/family-qemu-mps2/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/bsp-qemu-mps2-an386/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/bsp-qemu-mps2-an500/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/family-stm32f4xx/master/scion)
+exclu (ignoré par git) : lepton/family-stm32f4xx .DS_Store
+exclu (ignoré par git) : lepton/family-stm32f4xx sys/.DS_Store
+exclu (ignoré par git) : lepton/family-stm32f4xx sys/root/.DS_Store
+exclu (ignoré par git) : lepton/family-stm32f4xx sys/root/src/.DS_Store
+exclu (ignoré par git) : lepton/family-stm32f4xx sys/root/src/kernel/.DS_Store
+exclu (ignoré par git) : lepton/family-stm32f4xx sys/root/src/kernel/core/.DS_Store
+exclu (ignoré par git) : lepton/family-stm32f4xx sys/root/src/kernel/core/ucore/.DS_Store
+exclu (ignoré par git) : lepton/family-stm32f4xx sys/root/src/kernel/dev/.DS_Store
+exclu (ignoré par git) : lepton/family-stm32f4xx sys/root/src/kernel/dev/arch/.DS_Store
+exclu (ignoré par git) : lepton/family-stm32f4xx sys/root/src/kernel/dev/arch/cortexm/.DS_Store
+exclu (ignoré par git) : lepton/family-stm32f4xx sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/.DS_Store
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/bsp-nucleo-f429zi/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/family-stm32wlxx/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/bsp-nucleo-wl55jc1/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/family-stm32f7xx/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/bsp-stm32f746g-disco/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/family-samd21/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/bsp-samd21-xplained-pro/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=depots/lepton/bsp-nucleo-f439zi/master/scion)
+greffe : 26 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)

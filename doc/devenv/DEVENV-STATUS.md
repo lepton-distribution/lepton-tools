@@ -468,6 +468,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-11-10 | PA-81 (ENV-47) | Les 2 `LEPTON-PROVENANCE.md` conservés dans la famille et réécrits (forme du PA-69) ; `LICENSE.md` et `README.md` projetés ; `description` du manifeste réécrite, `sources` et `compilation` inchangés ; liste des chemins du trunk strictement inchangée. |
 | 2026-11-10 | PA-81 (ENV-47) | Aucune modification de lepton, de l'extension, du hook ni de la skill ; lepton-tools : aide de `scripts/tiers/verifier-import.sh` corrigée (F7 projeté). Rootstock à graine de projet `essais/env-47-projet` par `lepton seed new` (BSP `stm32f746g-disco`, famille en `file://` de `devenv/env-47`) pour `seed lock` et `--verify`, supprimé au PA-82. |
 | 2026-11-10 | PA-11 (ENV-47) | STM32F746G-DISCO branchée par l'utilisateur ; écriture flash accordée pour le banc du §6 (embOS et FreeRTOS), sonde 0671FF495351885087181231. |
+| 2026-11-10 | PA-P (ENV-47) | Accord : bascule de `<ROOTSTOCK>` (4 commits de la famille F7 repris de la copie d'essai en avance rapide sur `devenv/env-47`, `scion seed-clone --seed depots/lepton-seed.scions/original-tree`, `scion graft`, sans `graft-update` ni `seed-update`). |
 
 ## Journal
 

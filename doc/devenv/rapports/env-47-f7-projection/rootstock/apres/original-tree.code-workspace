@@ -1,0 +1,2139 @@
+// généré par lepton generate, ne pas éditer
+{
+  "folders": [
+    {
+      "name": "trunk",
+      "path": "trunk"
+    },
+    {
+      "name": "git · graine original-tree",
+      "path": "depots/lepton-seed.scions/original-tree"
+    },
+    {
+      "name": "git · lepton-noyau",
+      "path": "depots/lepton/original/master"
+    },
+    {
+      "name": "git · qemu-mps2",
+      "path": "depots/lepton/family-qemu-mps2/master"
+    },
+    {
+      "name": "git · qemu-mps2-an386",
+      "path": "depots/lepton/bsp-qemu-mps2-an386/master"
+    },
+    {
+      "name": "git · qemu-mps2-an500",
+      "path": "depots/lepton/bsp-qemu-mps2-an500/master"
+    },
+    {
+      "name": "git · stm32f4xx",
+      "path": "depots/lepton/family-stm32f4xx/master"
+    },
+    {
+      "name": "git · nucleo-f429zi",
+      "path": "depots/lepton/bsp-nucleo-f429zi/master"
+    },
+    {
+      "name": "git · stm32wlxx",
+      "path": "depots/lepton/family-stm32wlxx/master"
+    },
+    {
+      "name": "git · nucleo-wl55jc1",
+      "path": "depots/lepton/bsp-nucleo-wl55jc1/master"
+    },
+    {
+      "name": "git · stm32f7xx",
+      "path": "depots/lepton/family-stm32f7xx/master"
+    },
+    {
+      "name": "git · stm32f746g-disco",
+      "path": "depots/lepton/bsp-stm32f746g-disco/master"
+    },
+    {
+      "name": "git · samd21",
+      "path": "depots/lepton/family-samd21/master"
+    },
+    {
+      "name": "git · samd21-xplained-pro",
+      "path": "depots/lepton/bsp-samd21-xplained-pro/master"
+    },
+    {
+      "name": "git · nucleo-f439zi",
+      "path": "depots/lepton/bsp-nucleo-f439zi/master"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.DS_Store": true,
+      "**/._*": true,
+      "scion/[!.]*": true,
+      "project/scion": true
+    },
+    "cmake.useCMakePresets": "always",
+    "cmake.configureOnOpen": false,
+    "cmake.ignoreCMakeListsMissing": true,
+    "cmake.options.statusBarVisibility": "visible",
+    "cmake.copyCompileCommands": "/Users/cle_d_anton/lepton/build/.active/compile_commands.json",
+    "cmake.modifyLists.addNewSourceFiles": "no",
+    "cmake.modifyLists.removeDeletedSourceFiles": "no",
+    "clangd.arguments": [
+      "--compile-commands-dir=/Users/cle_d_anton/lepton/build/.active",
+      "--background-index",
+      "--query-driver=/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc"
+    ],
+    "cortex-debug.armToolchainPath": "/Users/cle_d_anton/opt/arm-gnu-toolchain-14.2.rel1-darwin-x86_64-arm-none-eabi/bin",
+    "cortex-debug.gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+    "clangd.path": "/opt/local/bin/clangd-mp-21",
+    "cortex-debug.openocdPath": "/opt/local/bin/openocd",
+    "json.schemas": [
+      {
+        "fileMatch": [
+          "**/lepton-greffon.json"
+        ],
+        "url": "file:///Users/cle_d_anton/Library/Application%20Support/pipx/venvs/lepton/lib/python3.11/site-packages/lepton/schemas/greffon.schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/lepton-graine.json"
+        ],
+        "url": "file:///Users/cle_d_anton/Library/Application%20Support/pipx/venvs/lepton/lib/python3.11/site-packages/lepton/schemas/graine.schema.json"
+      }
+    ],
+    "xml.fileAssociations": [
+      {
+        "pattern": "**/mkconf_*.xml",
+        "systemId": "/Users/cle_d_anton/Library/Application Support/pipx/venvs/lepton/lib/python3.11/site-packages/lepton/schemas/mklepton.xsd"
+      }
+    ],
+    "json.validate.enable": false
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Déboguer qemu-mps2-an386-embos (QEMU mps2-an386)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire qemu-mps2-an386-embos",
+        "servertype": "qemu",
+        "serverpath": "/opt/local/bin/qemu-system-arm",
+        "cpu": "cortex-m4",
+        "machine": "mps2-an386"
+      },
+      {
+        "name": "Déboguer qemu-mps2-an386-embos-soft (QEMU mps2-an386)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos-soft/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire qemu-mps2-an386-embos-soft",
+        "servertype": "qemu",
+        "serverpath": "/opt/local/bin/qemu-system-arm",
+        "cpu": "cortex-m4",
+        "machine": "mps2-an386"
+      },
+      {
+        "name": "Déboguer qemu-mps2-an386-freertos-soft (QEMU mps2-an386)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-freertos-soft/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire qemu-mps2-an386-freertos-soft",
+        "servertype": "qemu",
+        "serverpath": "/opt/local/bin/qemu-system-arm",
+        "cpu": "cortex-m4",
+        "machine": "mps2-an386"
+      },
+      {
+        "name": "Déboguer qemu-mps2-an386-freertos (QEMU mps2-an386)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-freertos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire qemu-mps2-an386-freertos",
+        "servertype": "qemu",
+        "serverpath": "/opt/local/bin/qemu-system-arm",
+        "cpu": "cortex-m4",
+        "machine": "mps2-an386"
+      },
+      {
+        "name": "Déboguer nucleo-f429zi-embos (carte, OpenOCD)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/nucleo-f429zi-embos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire nucleo-f429zi-embos",
+        "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F429.svd",
+        "servertype": "openocd",
+        "serverpath": "/opt/local/bin/openocd",
+        "configFiles": [
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg"
+        ]
+      },
+      {
+        "name": "Déboguer nucleo-f429zi-freertos (carte, OpenOCD)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/nucleo-f429zi-freertos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire nucleo-f429zi-freertos",
+        "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F429.svd",
+        "servertype": "openocd",
+        "serverpath": "/opt/local/bin/openocd",
+        "configFiles": [
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg"
+        ]
+      },
+      {
+        "name": "Déboguer nucleo-f439zi-embos (carte, OpenOCD)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire nucleo-f439zi-embos",
+        "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F439.svd",
+        "servertype": "openocd",
+        "serverpath": "/opt/local/bin/openocd",
+        "configFiles": [
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg"
+        ]
+      },
+      {
+        "name": "Déboguer nucleo-f439zi-freertos (carte, OpenOCD)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/nucleo-f439zi-freertos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire nucleo-f439zi-freertos",
+        "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F439.svd",
+        "servertype": "openocd",
+        "serverpath": "/opt/local/bin/openocd",
+        "configFiles": [
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg"
+        ]
+      },
+      {
+        "name": "Déboguer qemu-mps2-an500-embos (QEMU mps2-an500)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an500-embos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire qemu-mps2-an500-embos",
+        "servertype": "qemu",
+        "serverpath": "/opt/local/bin/qemu-system-arm",
+        "cpu": "cortex-m7",
+        "machine": "mps2-an500"
+      },
+      {
+        "name": "Déboguer qemu-mps2-an500-freertos (QEMU mps2-an500)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an500-freertos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire qemu-mps2-an500-freertos",
+        "servertype": "qemu",
+        "serverpath": "/opt/local/bin/qemu-system-arm",
+        "cpu": "cortex-m7",
+        "machine": "mps2-an500"
+      },
+      {
+        "name": "Déboguer stm32f746g-disco-embos (carte, OpenOCD)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/stm32f746g-disco-embos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire stm32f746g-disco-embos",
+        "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/STM32F746.svd",
+        "servertype": "openocd",
+        "serverpath": "/opt/local/bin/openocd",
+        "configFiles": [
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg"
+        ]
+      },
+      {
+        "name": "Déboguer stm32f746g-disco-freertos (carte, OpenOCD)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/stm32f746g-disco-freertos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire stm32f746g-disco-freertos",
+        "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/STM32F746.svd",
+        "servertype": "openocd",
+        "serverpath": "/opt/local/bin/openocd",
+        "configFiles": [
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg"
+        ]
+      },
+      {
+        "name": "Déboguer samd21-xplained-pro-embos (carte, OpenOCD)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/samd21-xplained-pro-embos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire samd21-xplained-pro-embos",
+        "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/samd21/svd/ATSAMD21J18A.svd",
+        "servertype": "openocd",
+        "serverpath": "/opt/local/bin/openocd",
+        "configFiles": [
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg"
+        ]
+      },
+      {
+        "name": "Déboguer samd21-xplained-pro-freertos (carte, OpenOCD)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/samd21-xplained-pro-freertos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire samd21-xplained-pro-freertos",
+        "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/samd21/svd/ATSAMD21J18A.svd",
+        "servertype": "openocd",
+        "serverpath": "/opt/local/bin/openocd",
+        "configFiles": [
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg"
+        ]
+      },
+      {
+        "name": "Déboguer nucleo-wl55jc1-embos (carte, OpenOCD)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/nucleo-wl55jc1-embos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire nucleo-wl55jc1-embos",
+        "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/svd/STM32WL5x_CM4.svd",
+        "servertype": "openocd",
+        "serverpath": "/opt/local/bin/openocd",
+        "configFiles": [
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg"
+        ]
+      },
+      {
+        "name": "Déboguer nucleo-wl55jc1-freertos (carte, OpenOCD)",
+        "type": "cortex-debug",
+        "request": "launch",
+        "cwd": "/Users/cle_d_anton/lepton/trunk",
+        "executable": "/Users/cle_d_anton/lepton/build/nucleo-wl55jc1-freertos/lepton.elf",
+        "gdbPath": "/opt/local/bin/arm-none-eabi-gdb",
+        "runToEntryPoint": "main",
+        "preLaunchTask": "lepton : construire nucleo-wl55jc1-freertos",
+        "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/svd/STM32WL5x_CM4.svd",
+        "servertype": "openocd",
+        "serverpath": "/opt/local/bin/openocd",
+        "configFiles": [
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg"
+        ]
+      },
+      {
+        "name": "Déboguer mklepton qemu-mps2-an386 (mkconf_tauon_basic_qemu_mps2.xml)",
+        "type": "lldb",
+        "request": "launch",
+        "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+        "args": [
+          "-s",
+          "/Users/cle_d_anton/lepton/trunk",
+          "-o",
+          "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an386",
+          "--cpu-freq",
+          "25000000",
+          "--kernel-config-header",
+          "sys/root/src/kernel/dev/bsp/qemu-mps2-an386/include/user_kernel_mkconf.h",
+          "sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml"
+        ],
+        "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an386",
+        "env": {
+          "SOURCE_DATE_EPOCH": "0"
+        },
+        "preLaunchTask": "lepton : préparer le débogage de mklepton"
+      },
+      {
+        "name": "Déboguer mklepton nucleo-f429zi (mkconf_tauon_basic_nucleo_f439zi.xml)",
+        "type": "lldb",
+        "request": "launch",
+        "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+        "args": [
+          "-s",
+          "/Users/cle_d_anton/lepton/trunk",
+          "-o",
+          "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f429zi",
+          "--cpu-freq",
+          "168000000",
+          "--kernel-config-header",
+          "sys/root/src/kernel/dev/bsp/nucleo-f429zi/include/user_kernel_mkconf.h",
+          "sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_f439zi.xml"
+        ],
+        "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f429zi",
+        "env": {
+          "SOURCE_DATE_EPOCH": "0"
+        },
+        "preLaunchTask": "lepton : préparer le débogage de mklepton"
+      },
+      {
+        "name": "Déboguer mklepton nucleo-f439zi (mkconf_tauon_basic_nucleo_f439zi.xml)",
+        "type": "lldb",
+        "request": "launch",
+        "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+        "args": [
+          "-s",
+          "/Users/cle_d_anton/lepton/trunk",
+          "-o",
+          "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f439zi",
+          "--cpu-freq",
+          "168000000",
+          "--kernel-config-header",
+          "sys/root/src/kernel/dev/bsp/nucleo-f439zi/include/user_kernel_mkconf.h",
+          "sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_f439zi.xml"
+        ],
+        "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f439zi",
+        "env": {
+          "SOURCE_DATE_EPOCH": "0"
+        },
+        "preLaunchTask": "lepton : préparer le débogage de mklepton"
+      },
+      {
+        "name": "Déboguer mklepton qemu-mps2-an500 (mkconf_tauon_basic_qemu_mps2.xml)",
+        "type": "lldb",
+        "request": "launch",
+        "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+        "args": [
+          "-s",
+          "/Users/cle_d_anton/lepton/trunk",
+          "-o",
+          "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an500",
+          "--cpu-freq",
+          "25000000",
+          "--kernel-config-header",
+          "sys/root/src/kernel/dev/bsp/qemu-mps2-an500/include/user_kernel_mkconf.h",
+          "sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml"
+        ],
+        "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an500",
+        "env": {
+          "SOURCE_DATE_EPOCH": "0"
+        },
+        "preLaunchTask": "lepton : préparer le débogage de mklepton"
+      },
+      {
+        "name": "Déboguer mklepton stm32f746g-disco (mkconf_tauon_basic_stm32f746g_disco.xml)",
+        "type": "lldb",
+        "request": "launch",
+        "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+        "args": [
+          "-s",
+          "/Users/cle_d_anton/lepton/trunk",
+          "-o",
+          "/Users/cle_d_anton/lepton/build/.mklepton/stm32f746g-disco",
+          "--cpu-freq",
+          "216000000",
+          "--kernel-config-header",
+          "sys/root/src/kernel/dev/bsp/stm32f746g-disco/include/user_kernel_mkconf.h",
+          "sys/user/tauon-basic/etc/mkconf_tauon_basic_stm32f746g_disco.xml"
+        ],
+        "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/stm32f746g-disco",
+        "env": {
+          "SOURCE_DATE_EPOCH": "0"
+        },
+        "preLaunchTask": "lepton : préparer le débogage de mklepton"
+      },
+      {
+        "name": "Déboguer mklepton samd21-xplained-pro (mkconf_tauon_basic_samd21_xplained_pro.xml)",
+        "type": "lldb",
+        "request": "launch",
+        "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+        "args": [
+          "-s",
+          "/Users/cle_d_anton/lepton/trunk",
+          "-o",
+          "/Users/cle_d_anton/lepton/build/.mklepton/samd21-xplained-pro",
+          "--cpu-freq",
+          "48000000",
+          "--kernel-config-header",
+          "sys/root/src/kernel/dev/bsp/samd21-xplained-pro/include/user_kernel_mkconf.h",
+          "sys/user/tauon-basic/etc/mkconf_tauon_basic_samd21_xplained_pro.xml"
+        ],
+        "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/samd21-xplained-pro",
+        "env": {
+          "SOURCE_DATE_EPOCH": "0"
+        },
+        "preLaunchTask": "lepton : préparer le débogage de mklepton"
+      },
+      {
+        "name": "Déboguer mklepton nucleo-wl55jc1 (mkconf_tauon_basic_nucleo_wl55jc1.xml)",
+        "type": "lldb",
+        "request": "launch",
+        "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+        "args": [
+          "-s",
+          "/Users/cle_d_anton/lepton/trunk",
+          "-o",
+          "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-wl55jc1",
+          "--cpu-freq",
+          "48000000",
+          "--kernel-config-header",
+          "sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/include/user_kernel_mkconf.h",
+          "sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_wl55jc1.xml"
+        ],
+        "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-wl55jc1",
+        "env": {
+          "SOURCE_DATE_EPOCH": "0"
+        },
+        "preLaunchTask": "lepton : préparer le débogage de mklepton"
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "lepton : regreffer",
+        "type": "process",
+        "command": "/Users/cle_d_anton/.local/bin/lepton",
+        "args": [
+          "graft",
+          "-C",
+          "/Users/cle_d_anton/lepton"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "lepton : vérifier",
+        "type": "process",
+        "command": "/Users/cle_d_anton/.local/bin/lepton",
+        "args": [
+          "check",
+          "-C",
+          "/Users/cle_d_anton/lepton"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton"
+        },
+        "problemMatcher": {
+          "owner": "lepton",
+          "source": "lepton check",
+          "severity": "error",
+          "pattern": {
+            "regexp": "^(?!lepton: )(\\S[^:]*): (?:(\\d+): )?(.*)$",
+            "file": 1,
+            "line": 2,
+            "message": 3
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton"
+          ]
+        }
+      },
+      {
+        "label": "lepton : configurer host",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "host"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "lepton : mklepton (preset host)",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "host",
+          "--target",
+          "mklepton"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer host"
+        ],
+        "dependsOrder": "sequence"
+      },
+      {
+        "label": "lepton : préparer le débogage de mklepton",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "-E",
+          "make_directory",
+          "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an386",
+          "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f429zi",
+          "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f439zi",
+          "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an500",
+          "/Users/cle_d_anton/lepton/build/.mklepton/stm32f746g-disco",
+          "/Users/cle_d_anton/lepton/build/.mklepton/samd21-xplained-pro",
+          "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-wl55jc1"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : configurer qemu-mps2-an386-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire qemu-mps2-an386-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "qemu-mps2-an386-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer qemu-mps2-an386-embos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : QEMU qemu-mps2-an386-embos (console série)",
+        "type": "process",
+        "command": "/opt/local/bin/qemu-system-arm",
+        "args": [
+          "-M",
+          "mps2-an386",
+          "-kernel",
+          "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos/lepton.elf",
+          "-nographic",
+          "-monitor",
+          "none",
+          "-serial",
+          "stdio"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-embos"
+        ],
+        "isBackground": false,
+        "presentation": {
+          "panel": "dedicated",
+          "focus": true
+        }
+      },
+      {
+        "label": "lepton : test de fumée qemu-mps2-an386-embos",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-embos",
+          "-L",
+          "smoke",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-embos"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : banc KAL qemu-mps2-an386-embos",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-embos",
+          "-L",
+          "kal",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-embos"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : tests des greffons qemu-mps2-an386-embos",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-embos",
+          "-L",
+          "greffon:",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-embos"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : configurer qemu-mps2-an386-embos-soft",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-embos-soft"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire qemu-mps2-an386-embos-soft",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "qemu-mps2-an386-embos-soft"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer qemu-mps2-an386-embos-soft"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : QEMU qemu-mps2-an386-embos-soft (console série)",
+        "type": "process",
+        "command": "/opt/local/bin/qemu-system-arm",
+        "args": [
+          "-M",
+          "mps2-an386",
+          "-kernel",
+          "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos-soft/lepton.elf",
+          "-nographic",
+          "-monitor",
+          "none",
+          "-serial",
+          "stdio"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-embos-soft"
+        ],
+        "isBackground": false,
+        "presentation": {
+          "panel": "dedicated",
+          "focus": true
+        }
+      },
+      {
+        "label": "lepton : test de fumée qemu-mps2-an386-embos-soft",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-embos-soft",
+          "-L",
+          "smoke",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-embos-soft"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : banc KAL qemu-mps2-an386-embos-soft",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-embos-soft",
+          "-L",
+          "kal",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-embos-soft"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : tests des greffons qemu-mps2-an386-embos-soft",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-embos-soft",
+          "-L",
+          "greffon:",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-embos-soft"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : configurer qemu-mps2-an386-freertos-soft",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-freertos-soft"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire qemu-mps2-an386-freertos-soft",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "qemu-mps2-an386-freertos-soft"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer qemu-mps2-an386-freertos-soft"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : QEMU qemu-mps2-an386-freertos-soft (console série)",
+        "type": "process",
+        "command": "/opt/local/bin/qemu-system-arm",
+        "args": [
+          "-M",
+          "mps2-an386",
+          "-kernel",
+          "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-freertos-soft/lepton.elf",
+          "-nographic",
+          "-monitor",
+          "none",
+          "-serial",
+          "stdio"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-freertos-soft"
+        ],
+        "isBackground": false,
+        "presentation": {
+          "panel": "dedicated",
+          "focus": true
+        }
+      },
+      {
+        "label": "lepton : test de fumée qemu-mps2-an386-freertos-soft",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-freertos-soft",
+          "-L",
+          "smoke",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-freertos-soft"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : banc KAL qemu-mps2-an386-freertos-soft",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-freertos-soft",
+          "-L",
+          "kal",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-freertos-soft"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : tests des greffons qemu-mps2-an386-freertos-soft",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-freertos-soft",
+          "-L",
+          "greffon:",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-freertos-soft"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : configurer qemu-mps2-an386-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire qemu-mps2-an386-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "qemu-mps2-an386-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer qemu-mps2-an386-freertos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : QEMU qemu-mps2-an386-freertos (console série)",
+        "type": "process",
+        "command": "/opt/local/bin/qemu-system-arm",
+        "args": [
+          "-M",
+          "mps2-an386",
+          "-kernel",
+          "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-freertos/lepton.elf",
+          "-nographic",
+          "-monitor",
+          "none",
+          "-serial",
+          "stdio"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-freertos"
+        ],
+        "isBackground": false,
+        "presentation": {
+          "panel": "dedicated",
+          "focus": true
+        }
+      },
+      {
+        "label": "lepton : test de fumée qemu-mps2-an386-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-freertos",
+          "-L",
+          "smoke",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-freertos"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : banc KAL qemu-mps2-an386-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-freertos",
+          "-L",
+          "kal",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-freertos"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : tests des greffons qemu-mps2-an386-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an386-freertos",
+          "-L",
+          "greffon:",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an386-freertos"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : configurer nucleo-f429zi-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "nucleo-f429zi-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire nucleo-f429zi-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "nucleo-f429zi-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer nucleo-f429zi-embos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : flasher nucleo-f429zi-embos",
+        "type": "process",
+        "command": "/opt/local/bin/openocd",
+        "args": [
+          "-f",
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg",
+          "-c",
+          "program /Users/cle_d_anton/lepton/build/nucleo-f429zi-embos/lepton.elf verify reset exit"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire nucleo-f429zi-embos"
+        ]
+      },
+      {
+        "label": "lepton : configurer nucleo-f429zi-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "nucleo-f429zi-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire nucleo-f429zi-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "nucleo-f429zi-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer nucleo-f429zi-freertos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : flasher nucleo-f429zi-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/openocd",
+        "args": [
+          "-f",
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg",
+          "-c",
+          "program /Users/cle_d_anton/lepton/build/nucleo-f429zi-freertos/lepton.elf verify reset exit"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire nucleo-f429zi-freertos"
+        ]
+      },
+      {
+        "label": "lepton : configurer nucleo-f439zi-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "nucleo-f439zi-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire nucleo-f439zi-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "nucleo-f439zi-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer nucleo-f439zi-embos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : flasher nucleo-f439zi-embos",
+        "type": "process",
+        "command": "/opt/local/bin/openocd",
+        "args": [
+          "-f",
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg",
+          "-c",
+          "program /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/lepton.elf verify reset exit"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire nucleo-f439zi-embos"
+        ]
+      },
+      {
+        "label": "lepton : configurer nucleo-f439zi-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "nucleo-f439zi-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire nucleo-f439zi-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "nucleo-f439zi-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer nucleo-f439zi-freertos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : flasher nucleo-f439zi-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/openocd",
+        "args": [
+          "-f",
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg",
+          "-c",
+          "program /Users/cle_d_anton/lepton/build/nucleo-f439zi-freertos/lepton.elf verify reset exit"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire nucleo-f439zi-freertos"
+        ]
+      },
+      {
+        "label": "lepton : configurer qemu-mps2-an500-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "qemu-mps2-an500-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire qemu-mps2-an500-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "qemu-mps2-an500-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer qemu-mps2-an500-embos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : QEMU qemu-mps2-an500-embos (console série)",
+        "type": "process",
+        "command": "/opt/local/bin/qemu-system-arm",
+        "args": [
+          "-M",
+          "mps2-an500",
+          "-kernel",
+          "/Users/cle_d_anton/lepton/build/qemu-mps2-an500-embos/lepton.elf",
+          "-nographic",
+          "-monitor",
+          "none",
+          "-serial",
+          "stdio"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an500-embos"
+        ],
+        "isBackground": false,
+        "presentation": {
+          "panel": "dedicated",
+          "focus": true
+        }
+      },
+      {
+        "label": "lepton : test de fumée qemu-mps2-an500-embos",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an500-embos",
+          "-L",
+          "smoke",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an500-embos"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : banc KAL qemu-mps2-an500-embos",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an500-embos",
+          "-L",
+          "kal",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an500-embos"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : configurer qemu-mps2-an500-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "qemu-mps2-an500-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire qemu-mps2-an500-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "qemu-mps2-an500-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer qemu-mps2-an500-freertos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : QEMU qemu-mps2-an500-freertos (console série)",
+        "type": "process",
+        "command": "/opt/local/bin/qemu-system-arm",
+        "args": [
+          "-M",
+          "mps2-an500",
+          "-kernel",
+          "/Users/cle_d_anton/lepton/build/qemu-mps2-an500-freertos/lepton.elf",
+          "-nographic",
+          "-monitor",
+          "none",
+          "-serial",
+          "stdio"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an500-freertos"
+        ],
+        "isBackground": false,
+        "presentation": {
+          "panel": "dedicated",
+          "focus": true
+        }
+      },
+      {
+        "label": "lepton : test de fumée qemu-mps2-an500-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an500-freertos",
+          "-L",
+          "smoke",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an500-freertos"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : banc KAL qemu-mps2-an500-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/ctest",
+        "args": [
+          "--preset",
+          "qemu-mps2-an500-freertos",
+          "-L",
+          "kal",
+          "--output-on-failure"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk",
+          "env": {
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire qemu-mps2-an500-freertos"
+        ],
+        "group": "test"
+      },
+      {
+        "label": "lepton : configurer stm32f746g-disco-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "stm32f746g-disco-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire stm32f746g-disco-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "stm32f746g-disco-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer stm32f746g-disco-embos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : flasher stm32f746g-disco-embos",
+        "type": "process",
+        "command": "/opt/local/bin/openocd",
+        "args": [
+          "-f",
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg",
+          "-c",
+          "program /Users/cle_d_anton/lepton/build/stm32f746g-disco-embos/lepton.elf verify reset exit"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire stm32f746g-disco-embos"
+        ]
+      },
+      {
+        "label": "lepton : configurer stm32f746g-disco-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "stm32f746g-disco-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire stm32f746g-disco-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "stm32f746g-disco-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer stm32f746g-disco-freertos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : flasher stm32f746g-disco-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/openocd",
+        "args": [
+          "-f",
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg",
+          "-c",
+          "program /Users/cle_d_anton/lepton/build/stm32f746g-disco-freertos/lepton.elf verify reset exit"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire stm32f746g-disco-freertos"
+        ]
+      },
+      {
+        "label": "lepton : configurer samd21-xplained-pro-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "samd21-xplained-pro-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire samd21-xplained-pro-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "samd21-xplained-pro-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer samd21-xplained-pro-embos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : flasher samd21-xplained-pro-embos",
+        "type": "process",
+        "command": "/opt/local/bin/openocd",
+        "args": [
+          "-f",
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg",
+          "-c",
+          "program /Users/cle_d_anton/lepton/build/samd21-xplained-pro-embos/lepton.elf verify reset exit"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire samd21-xplained-pro-embos"
+        ]
+      },
+      {
+        "label": "lepton : configurer samd21-xplained-pro-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "samd21-xplained-pro-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire samd21-xplained-pro-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "samd21-xplained-pro-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer samd21-xplained-pro-freertos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : flasher samd21-xplained-pro-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/openocd",
+        "args": [
+          "-f",
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg",
+          "-c",
+          "program /Users/cle_d_anton/lepton/build/samd21-xplained-pro-freertos/lepton.elf verify reset exit"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire samd21-xplained-pro-freertos"
+        ]
+      },
+      {
+        "label": "lepton : configurer nucleo-wl55jc1-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "nucleo-wl55jc1-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire nucleo-wl55jc1-embos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "nucleo-wl55jc1-embos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer nucleo-wl55jc1-embos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : flasher nucleo-wl55jc1-embos",
+        "type": "process",
+        "command": "/opt/local/bin/openocd",
+        "args": [
+          "-f",
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg",
+          "-c",
+          "program /Users/cle_d_anton/lepton/build/nucleo-wl55jc1-embos/lepton.elf verify reset exit"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire nucleo-wl55jc1-embos"
+        ]
+      },
+      {
+        "label": "lepton : configurer nucleo-wl55jc1-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--preset",
+          "nucleo-wl55jc1-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : mklepton (preset host)"
+        ]
+      },
+      {
+        "label": "lepton : construire nucleo-wl55jc1-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/cmake",
+        "args": [
+          "--build",
+          "--preset",
+          "nucleo-wl55jc1-freertos"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": {
+          "owner": "lepton-gcc",
+          "source": "gcc",
+          "pattern": {
+            "regexp": "^(.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "fileLocation": [
+            "autoDetect",
+            "/Users/cle_d_anton/lepton/trunk"
+          ]
+        },
+        "dependsOn": [
+          "lepton : configurer nucleo-wl55jc1-freertos"
+        ],
+        "group": "build"
+      },
+      {
+        "label": "lepton : flasher nucleo-wl55jc1-freertos",
+        "type": "process",
+        "command": "/opt/local/bin/openocd",
+        "args": [
+          "-f",
+          "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg",
+          "-c",
+          "program /Users/cle_d_anton/lepton/build/nucleo-wl55jc1-freertos/lepton.elf verify reset exit"
+        ],
+        "options": {
+          "cwd": "/Users/cle_d_anton/lepton/trunk"
+        },
+        "problemMatcher": [],
+        "dependsOn": [
+          "lepton : construire nucleo-wl55jc1-freertos"
+        ]
+      }
+    ]
+  },
+  "extensions": {
+    "recommendations": [
+      "llvm-vs-code-extensions.vscode-clangd",
+      "ms-vscode.cmake-tools",
+      "marus25.cortex-debug",
+      "vadimcn.vscode-lldb"
+    ]
+  }
+}
