@@ -1,0 +1,21 @@
+# ENV-49 §1.1 — composition de STM32CubeWL par version (relevé du 2026-11-10, clones ~/lepton-tools-dev/tiers)
+# tag cube | commit | date | HAL | CMSIS device | SubGHz_Phy  (sm = sous-module ; arbre = dans l'arbre du dépôt)
+v1.3.0 | 378e461 | 2022-12-08 | arbre | arbre | arbre
+v1.3.1 | 9d77b66 | 2025-01-30 | sm v1.3.1 (8188d40) | sm v1.2.0-1-gf005e57 (f005e57) | arbre
+v1.4.0 | cbbd003 | 2025-11-19 | sm v1.4.0 (6745046) | sm v1.3.0 (0191052) | arbre
+v1.5.0 | d28c690 | 2026-03-25 | sm v1.5.0 (3ebeee4) | sm v1.4.0 (71a0b78) | arbre
+v1.6.0 | f934cd2 | 2026-07-01 | sm v1.6.0 (5c87cf0) | sm v1.4.0 (71a0b78) | sm v1.5.0 (7dc059f)
+
+# Contenu des « arbre » comparé aux tags des dépôts séparés (cmptree.py, blobs) :
+cube v1.3.0:Drivers/STM32WLxx_HAL_Driver / stm32wlxx-hal-driver v1.3.0 : identiques 159 ; différents 1 ; seulement A 0 ; seulement B 4 ; ≠ : Inc/Legacy/stm32_hal_legacy.h 
+cube v1.3.0:Drivers/CMSIS/Device/ST/STM32WLxx / cmsis-device-wl v1.2.0 : identiques 71 ; différents 1 ; seulement A 0 ; seulement B 4 ; ≠ : README.md 
+cube v1.3.0:Drivers/CMSIS/Device/ST/STM32WLxx / cmsis-device-wl v1.1.1 : identiques 64 ; différents 8 ; seulement A 0 ; seulement B 4 ; ≠ : Include/stm32wl54xx.h Include/stm32wl55xx.h Include/stm32wl5mxx.h Include/stm32wle4xx.h Include/stm32wle5xx.h Include/stm32wlxx.h README.md Release_Notes.html 
+cube v1.3.0:Middlewares/Third_Party/SubGHz_Phy / stm32-mw-subghz-phy v1.3.0 : identiques 25 ; différents 1 ; seulement A 0 ; seulement B 9 ; ≠ : LICENSE.md 
+cube v1.3.1:Middlewares/Third_Party/SubGHz_Phy / stm32-mw-subghz-phy v1.3.0 : identiques 21 ; différents 5 ; seulement A 0 ; seulement B 9 ; ≠ : LICENSE.md Release_Notes.html stm32_radio_driver/radio.c stm32_radio_driver/radio_driver.c stm32_radio_driver/subghz_phy_version.h 
+cube v1.4.0:Middlewares/Third_Party/SubGHz_Phy / stm32-mw-subghz-phy v1.3.0 : identiques 21 ; différents 5 ; seulement A 0 ; seulement B 9 ; ≠ : LICENSE.md Release_Notes.html stm32_radio_driver/radio.c stm32_radio_driver/radio_driver.c stm32_radio_driver/subghz_phy_version.h 
+cube v1.5.0:Middlewares/Third_Party/SubGHz_Phy / stm32-mw-subghz-phy v1.4.0 : identiques 136 ; différents 1 ; seulement A 0 ; seulement B 9 ; ≠ : LICENSE.md 
+
+# Tags des dépôts séparés (tag, commit, date)
+stm32wlxx-hal-driver : v1.0.0=5dc2a4b v1.1.0=bd841be v1.2.0=abf07be v1.3.0=e3966ab v1.3.1=8188d40 v1.4.0=6745046 v1.5.0=3ebeee4 v1.6.0=5c87cf0 
+cmsis-device-wl : v1.0.0=35631ff v1.1.0=7bf5486 v1.1.1=d248c55 v1.2.0=baa994d v1.3.0=0191052 v1.4.0=71a0b78 
+stm32-mw-subghz-phy : v1.0.0=d44e730 v1.1.0=d2c8822 v1.2.0=589fd2a v1.3.0=1cad768 v1.4.0=bab7590 v1.5.0=7dc059f 
