@@ -1,0 +1,5 @@
+tiers	stm32wlxx-hal-driver	v1.3.0
+tiers	cmsis-device-wl	v1.1.1
+tiers	stm32-mw-subghz-phy	v1.3.0
+tiers	stm32cubewl::utilities	v1.3.0
+tiers	stm32cubewl::radio-core-inc	v1.3.0

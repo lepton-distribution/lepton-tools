@@ -1,0 +1,6 @@
+OK      Include/stm32wl55xx.h
+OK      Include/stm32wlxx.h
+OK      Include/system_stm32wlxx.h
+OK      Source/Templates/iar/startup_stm32wl55xx_cm4.s
+OK      Source/Templates/system_stm32wlxx.c
+verifier-import: d248c5514fe294fec6eb52f49ed3f1a53cea45b0 ; 5 identique(s), 0 écart(s)

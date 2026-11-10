@@ -1,0 +1,4 @@
+stm32wlxx-hal-driver v1.3.0 e3966ab429c1711e5dd2b40918e1d987eed7a249 tag
+cmsis-device-wl v1.1.1 d248c5514fe294fec6eb52f49ed3f1a53cea45b0 tag
+stm32-mw-subghz-phy v1.3.0 1cad76816effd9679a056e57c02dd4b23d7cb772 tag
+STM32CubeWL v1.3.0 378e461e469ef9826e857f8eda3346cea525b2fa tag

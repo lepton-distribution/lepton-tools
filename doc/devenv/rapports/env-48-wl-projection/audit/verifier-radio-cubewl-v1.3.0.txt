@@ -1,0 +1,25 @@
+OK      Middlewares/Third_Party/SubGHz_Phy/Conf/mw_log_conf_template.h
+OK      Middlewares/Third_Party/SubGHz_Phy/Conf/radio_conf_template.h
+OK      Middlewares/Third_Party/SubGHz_Phy/Conf/subghz_template.c
+OK      Middlewares/Third_Party/SubGHz_Phy/Conf/subghz_template.h
+OK      Middlewares/Third_Party/SubGHz_Phy/LICENSE
+TROP    Middlewares/Third_Party/SubGHz_Phy/LICENSE.txt
+OK      Middlewares/Third_Party/SubGHz_Phy/lr_fhss_v1_base_types.h
+OK      Middlewares/Third_Party/SubGHz_Phy/radio.h
+OK      Middlewares/Third_Party/SubGHz_Phy/radio_def.h
+OK      Middlewares/Third_Party/SubGHz_Phy/radio_ex.h
+TROP    Middlewares/Third_Party/SubGHz_Phy/stm32_radio_core_inc/platform.h
+TROP    Middlewares/Third_Party/SubGHz_Phy/stm32_radio_core_inc/subghz.h
+TROP    Middlewares/Third_Party/SubGHz_Phy/stm32_radio_core_inc/utilities_conf.h
+TROP    Middlewares/Third_Party/SubGHz_Phy/stm32_radio_core_inc/utilities_def.h
+OK      Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/lr_fhss_mac.c
+OK      Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/lr_fhss_mac.h
+DIFF    Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio.c
+OK      Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_driver.c
+OK      Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_driver.h
+OK      Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_fw.c
+OK      Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_fw.h
+OK      Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/subghz_phy_version.h
+OK      Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/wl_lr_fhss.c
+OK      Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/wl_lr_fhss.h
+verifier-import: 378e461e469ef9826e857f8eda3346cea525b2fa ; 18 identique(s), 6 écart(s)

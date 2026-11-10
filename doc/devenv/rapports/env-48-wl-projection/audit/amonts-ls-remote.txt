@@ -1,0 +1,16 @@
+== STM32CubeWL
+8
+f934cd298bf82d45f96aac2f335c0bbd26d0b946	HEAD
+       1
+== stm32wlxx-hal-driver
+8
+5c87cf00992c6e4ecf56c7c129b8dcfc6aa6f88e	HEAD
+       1
+== cmsis-device-wl
+6
+71a0b7860e700f7ca11afe4c4afd6cef684ad9bb	HEAD
+       1
+== stm32-mw-subghz-phy
+6
+7dc059f353f359ec65c60a0549d53c1ebeaafa79	HEAD
+       1
