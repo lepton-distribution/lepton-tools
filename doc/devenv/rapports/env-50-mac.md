@@ -130,3 +130,78 @@ presets FreeRTOS suivent le chemin du rootstock.
 
 C5, C7 et C8 suivent les orientations données par l'utilisateur au début de la session, à
 confirmer au PA-87.
+
+## 2. PA-87 (2026-11-10, décisions de l'utilisateur)
+
+- Consigne `consignes/env-50-debian.md` (42fc79e) validée telle qu'écrite, C1 à C8.
+- PA-11 : écriture flash sur la VM pour `nucleo-f429zi-embos`, `nucleo-f429zi-freertos`,
+  `nucleo-f439zi-embos` (NUCLEO-F429ZI) et `nucleo-wl55jc1-{embos,freertos}` (WL55 A et B),
+  construites sur la VM, sonde choisie par numéro.
+- C8 : `rm -rf essais/env-43-debian ~/env-43-journaux` par l'utilisateur, après le §10.1.
+- PA-P : push de `devenv/env-50` (93e1aa6), ordre `R50-1` à `debian-linux-vm`.
+- PA-P (tâche 3) : regreffe des 6 autres rootstocks d'essai pendant R50-1 ; suppression
+  d'`essais/env-41-vierge` et `essais/env-41-vierge-graine`.
+
+## 3. Messages §2bis
+
+| Message | Date | Sens | Résumé |
+| --- | --- | --- | --- |
+| ORDRE R50-1 | 2026-11-10 | Mac (`lepton-tools-9d`) → VM (`debian-linux-vm`) | consigne `env-50-debian.md` @ 42fc79e envoyée en entier, branche `devenv/env-50` @ 93e1aa6 ; actions de l'utilisateur (installations, 2 `graft-update`, venv, cartes, `rm -rf`, push) et flash accordé (PA-11) ; envoi réussi par Remote Control, lecture non confirmée |
+| ACCUSÉ R50-1 | 2026-11-10 | VM → Mac | reçu directement (non relayé). §5 sans écart : `devenv/env-50` = 93e1aa6, ls-remote = §1 ; scion 0.6.1.0 avant installation, chaîne APT = R43-1, embOS présent, 17 Go libres, `venv-test` présent ; `$U` dans l'état de R43-1 (16 entrées, 3982 liens, 2 clones tiers F4) ; `$E13` : graine 0f1275a (ancêtre de 15740f9), 9 entrées, 8 clones sur `master` propres (noyau 16a331b, F4 01b5528, WL 1eccc2f…), 4011 liens, aucun clone tiers ; graines citant F4/F7/WL : les 3 clones `original-tree` seuls |
+| AVANCEMENT R50-1 (§5.1, §6) | 2026-11-10 | VM → Mac | §5.1 : `generate` `$P`, `$R43`, `$U` et `check` `$P`, `$E13` à code 0 ; espaces copiés ; §6 : `$K` 763dda2 → 76f28bd, `SCION_REF` 0.6.2.0 (noyau, lepton-tools), `SCION_MIN_VERSION` (0, 6, 2, 0), `.vsix` 0.5.2 présent ; attente des installations par l'utilisateur |
+
+## 4. Rootstocks d'essai du Mac (tâche 3)
+
+Accord de l'utilisateur (PA-P) le 2026-11-10 : `env-13-vierge` avant l'ordre (§1.5) ; les 6 autres
+pendant R50-1. scion 0.6.2.0, lepton 0.1.0. Journaux : `~/lepton-tools-dev/essais/env-50-mac/`
+(`<rootstock>-{clones-avant,clones-apres,generate-avant,graft-update,check,generate}.*`,
+`-liens-{avant,apres}.txt`, `-ajoutes.txt`, `-retires.txt`, `-espace-avant.code-workspace`,
+`-espace.diff`, `-controle/`, `regreffes-bilan.txt`).
+
+Inventaire avant :
+- clones de greffons sur leur branche (`master`, graines sur la leur), amont réglé, propres ;
+- têtes de R43-1 : noyau 763dda2, an386 5819047, F4 7afd7f1, WL 2340b25, WL55 ef51ec1 ;
+- 0 lien cassé ; aucun fichier régulier hors `.DS_Store` du Finder (0 à 2 par trunk, tolérés) ;
+- espaces régénérés par `lepton generate` juste avant le relevé.
+
+Procédure (script de session, forme d'`env-43-mac.md` §5) :
+1. `generate` avant, puis copie de l'espace ;
+2. relevé `chemin -> cible` ;
+3. `scion graft-update -v` ; pour `qemu-gra2`, `graft-remove lepton@bsp-qemu-mps2-an386` sans
+   `--purge` ;
+4. relevé après, comparé à l'avant ;
+5. `controler-trunk.py` (noms et contenus projetés) ;
+6. `check`, `generate`, `diff` de l'espace.
+
+| Rootstock | `graft-update` | Liens avant → après | Ajouts / retraits | Cibles changées | Entrées | Projetés (clones tiers) | `check` | `generate` | Espace |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-13-vierge` | 0 (§1.5) | 3982 → 3889 | 11 / 104 = attendu | — | 16 → 23 | 629 (8) | 0 | 0 | identique |
+| `env-9` | 0 ; noyau, an386 avancés | 3058 → 3059 | 1 / 0 (D7) | 0 | 5 | 0 | 0 | 0 | identique |
+| `env-11/qemu` | 0 | 3058 → 3059 | 1 / 0 (D7) | 0 | 5 | 0 | 0 | 0 | identique |
+| `env-11/qemu-gra2` | 0 (BSP an386 réinscrit), puis `graft-remove` code 0, 8 feuilles | 3050 → 3051 | 1 / 0 (D7) | 0 | 4 | 0 | 1 (attendu, CFG-5) | 1 (attendu) | identique |
+| `env-11/bout-en-bout/rootstock` | 0 | 3058 → 3059 | 1 / 0 (D7) | 0 | 5 | 0 | 0 | 0 | identique |
+| `env-11/f429zi` | 0 ; noyau, F4 avancés | 3389 → 3294 | 1 / 96 (D7 ; SPL : 76 + 20) | 0 | 7 | 206 (2, inchangés) | 0 | 0 | identique |
+| `env-11/wl55jc1` | 0 ; noyau, WL, WL55 avancés ; 4 clones tiers `blob:none` depuis les miroirs | 3312 → 3315 | 11 / 8 (D7, 9 `LICENSE.md`, `radio_template.h` ; 8 `LICENSE.txt`) | 212 (WL vers `depots/tiers/`) | 5 → 10 | 222 (4) | 0 | 0 | identique |
+
+Partout : `controler-trunk.py` donne 0 écart de nom (casse) et 0 écart de contenu des projetés ;
+0 lien cassé ; 0 fichier régulier hors `.DS_Store`. Les clones sont sur leur branche, propres,
+aux têtes publiées. Pour `env-11/wl55jc1`, 212 = 222 projetés − 10 nouveaux chemins projetés.
+
+Constructions à neuf (`cmake --fresh`, `--clean-first`), comparées à `oracles/env-49-apres/` :
+
+| Rootstock | Presets | Construction | Écarts hors `.debug_*` | `.debug_line` | `.debug_str` |
+| --- | --- | --- | --- | --- | --- |
+| `env-11/f429zi` | host, `nucleo-f429zi-embos` | 0, 0 | 0 | 306684 → 330957 (+24273, = ENV-43) | 139391 → 143421 (+4030, = ENV-43) |
+| `env-11/wl55jc1` | host, `nucleo-wl55jc1-embos` | 0, 0 | 0 | 233731 → 250883 (+17152) | 134112 → 137248 (+3136) |
+
+Les chemins des sources sont propres au rootstock, d'où les deltas `.debug_*`. Pas de flash. Les
+trunks restent sans fichier régulier ni `__pycache__`.
+
+Constat : `scripts/lepton-env.sh` a écrit « aucun rootstock scion au-dessus de env-11/… ». La
+cause est le script de session : `set -- $couple` y laissait `$1` égal au chemin relatif
+`env-11/<rootstock>`, et `lepton-env.sh` cherche le rootstock à partir de `${1:-$PWD}` (l. 21).
+Ce n'est pas un défaut de `lepton-env.sh`. embOS est trouvé sans ce script, et les binaires sont
+identiques à la référence.
+
+`essais/env-41-vierge` et `essais/env-41-vierge-graine` sont supprimés (accord de l'utilisateur).
+Ils ne contenaient que le commit d'essai local c85ba56 d'ENV-41, non publié.
