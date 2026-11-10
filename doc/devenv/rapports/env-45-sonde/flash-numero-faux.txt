@@ -1,0 +1,16 @@
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 0672FF4952527172FAUX0000 (LEPTON_BOARD_PROBE_SERIAL)
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+Info : clock speed 2000 kHz
+Info : No device matches the serial string
+Error: open failed
+in procedure 'program'
+** OpenOCD init failed **
+shutdown command invoked
+
+FAILED: [code=1] CMakeFiles/flash /tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/88513d52-7e59-49fb-8181-9bfd10b0bdcb/scratchpad/cfg/f429-serie/CMakeFiles/flash 
+cd /tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/88513d52-7e59-49fb-8181-9bfd10b0bdcb/scratchpad/cfg/f429-serie && /opt/local/bin/openocd -f /tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/88513d52-7e59-49fb-8181-9bfd10b0bdcb/scratchpad/cfg/f429-serie/openocd-nucleo-f429zi.cfg -c "program /tmp/claude-503/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/88513d52-7e59-49fb-8181-9bfd10b0bdcb/scratchpad/cfg/f429-serie/lepton.elf verify reset exit"
+ninja: build stopped: subcommand failed.

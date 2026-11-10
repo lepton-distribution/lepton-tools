@@ -1,0 +1,44 @@
+Internal ctest changing into directory: /Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos-soft
+Test project /Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos-soft
+      Start  1: smoke.lsh
+ 1/15 Test  #1: smoke.lsh ........................   Passed    3.29 sec
+      Start  2: kal.T1
+ 2/15 Test  #2: kal.T1 ...........................   Passed    0.05 sec
+      Start  3: kal.T2
+ 3/15 Test  #3: kal.T2 ...........................   Passed    0.05 sec
+      Start  4: kal.T3
+ 4/15 Test  #4: kal.T3 ...........................   Passed    0.05 sec
+      Start  5: kal.T4
+ 5/15 Test  #5: kal.T4 ...........................   Passed    0.05 sec
+      Start  6: kal.T5
+ 6/15 Test  #6: kal.T5 ...........................   Passed    0.05 sec
+      Start  7: kal.T6
+ 7/15 Test  #7: kal.T6 ...........................   Passed    0.06 sec
+      Start  8: kal.T7
+ 8/15 Test  #8: kal.T7 ...........................   Passed    0.05 sec
+      Start  9: kal.T8
+ 9/15 Test  #9: kal.T8 ...........................   Passed    0.08 sec
+      Start 10: kal.TICI
+10/15 Test #10: kal.TICI .........................   Passed    0.05 sec
+      Start 11: kal.TCLK
+11/15 Test #11: kal.TCLK .........................   Passed    0.68 sec
+      Start 12: kal.TSBRK
+12/15 Test #12: kal.TSBRK ........................   Passed    0.05 sec
+      Start 13: kal.IRQ
+13/15 Test #13: kal.IRQ ..........................   Passed    0.07 sec
+      Start 14: kal.harness_fail
+14/15 Test #14: kal.harness_fail .................   Passed    0.05 sec
+      Start 15: qemu-mps2-an386.peripheriques
+15/15 Test #15: qemu-mps2-an386.peripheriques ....   Passed    0.75 sec
+
+100% tests passed, 0 tests failed out of 15
+
+Label Time Summary:
+arch:cortex-m4f            =   5.40 sec*proc (15 tests)
+backend:embos              =   5.40 sec*proc (15 tests)
+greffon:qemu-mps2-an386    =   0.75 sec*proc (1 test)
+kal                        =   4.65 sec*proc (14 tests)
+qemu                       =   0.75 sec*proc (1 test)
+smoke                      =   3.29 sec*proc (1 test)
+
+Total Test time (real) =   5.40 sec

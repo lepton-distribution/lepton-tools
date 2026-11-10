@@ -61,7 +61,10 @@ configurer … ») avant la première génération, sinon *clangd: Restart langu
 première configuration. Plusieurs sondes branchées : `lepton generate --probe-serial SERIE`
 (numéro de la sonde de la carte, `adapter serial` d'OpenOCD ; macOS : `system_profiler
 SPUSBDataType`, Debian : `lsusb -v`), conservé dans l'espace aux générations suivantes,
-`--probe-serial ""` le retire (`doc/devenv/rapports/env-9-r4.md`). gdb : le premier
+`--probe-serial ""` le retire (`doc/devenv/rapports/env-9-r4.md`). Ce réglage vaut pour l'éditeur
+(lancement, tâche « flasher ») ; la construction a le sien, `-DLEPTON_BOARD_PROBE_SERIAL=SERIE` à la
+configuration du preset (cible `flash`, tests sur carte ; tout BSP à champ `openocd`, ENV-45,
+`doc/devenv/rapports/env-45-sonde.md`) : donner le même numéro aux deux. gdb : le premier
 `arm-none-eabi-gdb` ou `gdb-multiarch` du PATH construit avec Python (commande `lepton-stacks` de
 `debug/gdbinit-lepton`), sinon le premier trouvé, avec un avertissement.
 
