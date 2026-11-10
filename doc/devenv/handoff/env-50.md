@@ -78,6 +78,7 @@ Ports à relever par `ioreg` avant tout banc ; pendant la panne, le Mac les voya
 | PA-88, PA-P : `FIN-SUCCÈS` accepté (C7 après reprise), fusions (29835e9 compris) et push | utilisateur | oui |
 | Fusion du complément 29835e9 (rapport seul, cartes rendues au Mac) sous l'accord du PA-88 donné pour 88e48b6 | proposition de la session, vérifiée (diff de 4 lignes du rapport) | oui (PA-88) |
 | Lecture de la panne Ethernet : cause côté carte, non côté pont VMware (constat Mac) | proposition de la session | rapport Mac §5, D12 |
+| Fin du chantier : D10 et D11 à traiter, D12 hors plan, A1-A4 et D4 hors plan confirmés | utilisateur | oui |
 
 ## Pièges rencontrés
 - **Remplacement Python ancré sur une chaîne non unique.** `s[s.index(a):s.index(b)]` avec un `b`
@@ -107,6 +108,6 @@ Ports à relever par `ioreg` avant tout banc ; pendant la panne, le Mac les voya
 Commande ou première action de la session suivante :
 ```
 révision du plan (skill devenv-session puis lepton-portage-instructions) en partant de
-doc/devenv/HORS-PLAN.md : présenter la liste en entier à l'utilisateur (A1-A4, D4, D10, D11, D12
-non traités) ; références Mac oracles/env-49-apres, Debian oracles/env-50-debian
+doc/devenv/HORS-PLAN.md : D10 et D11 à planifier (décision du 2026-11-10) ; A1-A4, D4, D12
+hors plan ; références Mac oracles/env-49-apres, Debian oracles/env-50-debian
 ```
