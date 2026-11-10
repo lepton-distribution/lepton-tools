@@ -12,10 +12,12 @@
 #                 ce répertoire ; lignes vides et « # » ignorées
 #   --liste-seule ne contrôle que les fichiers de la liste (le reste du répertoire est ignoré)
 #
-# Sert aux copies dans un clone de greffon (famille STM32WL). Familles STM32F4 et STM32F7 : HAL et
-# CMSIS device projetés par scion depuis ENV-41 (F4) et ENV-47 (F7) (clones sous depots/tiers/, au
-# commit épinglé), aucune copie à vérifier ; contrôle du contenu projeté :
-# doc/devenv/rapports/env-41-f4-projection.md, doc/devenv/rapports/env-47-f7-projection.md.
+# Sert aux copies de code tiers hors projection (par exemple une montée de version préparée à la
+# main, ou les copies de comparaison d'ENV-37). Familles STM32F4, STM32F7 et STM32WL : code tiers
+# projeté par scion depuis ENV-41 (F4), ENV-47 (F7) et ENV-48 (WL) (clones sous depots/tiers/, au
+# commit épinglé), aucune copie de famille à vérifier ; ne restent dans la famille WL que des
+# fichiers modifiés par Lepton ou hors amont. Contrôle du contenu projeté :
+# doc/devenv/rapports/env-41-f4-projection.md, env-47-f7-projection.md, env-48-wl-projection.md.
 #
 # Chaque fichier de <répertoire> (hors LEPTON-PROVENANCE.md et .DS_Store) est comparé par
 # SHA-256 à « git show <révision>:<chemin> ». Une ligne par fichier :
