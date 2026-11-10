@@ -1,0 +1,99 @@
+Test project /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos
+      Start  1: board.smoke_lsh
+ 1/16 Test  #1: board.smoke_lsh ..................***Failed    0.05 sec
+Traceback (most recent call last):
+  File "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/smoke_lsh.py", line 213, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/smoke_lsh.py", line 152, in main
+    proc = SerialLink(args.port, args.baud)
+  File "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/smoke_lsh.py", line 86, in __init__
+    fd = os.open(port, os.O_RDWR | os.O_NOCTTY)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/serial/by-id/usb-STMicroelectronics_STLINK-V3_002700253431510837393937-if02'
+
+      Start  2: kal.board_flash
+Failed test dependencies: board.smoke_lsh
+ 2/16 Test  #2: kal.board_flash ..................***Not Run   0.00 sec
+      Start  3: kal.T1
+Failed test dependencies: kal.board_flash
+ 3/16 Test  #3: kal.T1 ...........................***Not Run   0.00 sec
+      Start  4: kal.T2
+Failed test dependencies: kal.board_flash
+ 4/16 Test  #4: kal.T2 ...........................***Not Run   0.00 sec
+      Start  5: kal.T3
+Failed test dependencies: kal.board_flash
+ 5/16 Test  #5: kal.T3 ...........................***Not Run   0.00 sec
+      Start  6: kal.T4
+Failed test dependencies: kal.board_flash
+ 6/16 Test  #6: kal.T4 ...........................***Not Run   0.00 sec
+      Start  7: kal.T5
+Failed test dependencies: kal.board_flash
+ 7/16 Test  #7: kal.T5 ...........................***Not Run   0.00 sec
+      Start  8: kal.T6
+Failed test dependencies: kal.board_flash
+ 8/16 Test  #8: kal.T6 ...........................***Not Run   0.00 sec
+      Start  9: kal.T7
+Failed test dependencies: kal.board_flash
+ 9/16 Test  #9: kal.T7 ...........................***Not Run   0.00 sec
+      Start 10: kal.T8
+Failed test dependencies: kal.board_flash
+10/16 Test #10: kal.T8 ...........................***Not Run   0.00 sec
+      Start 11: kal.TICI
+Failed test dependencies: kal.board_flash
+11/16 Test #11: kal.TICI .........................***Not Run   0.00 sec
+      Start 12: kal.TCLK
+Failed test dependencies: kal.board_flash
+12/16 Test #12: kal.TCLK .........................***Not Run   0.00 sec
+      Start 13: kal.TSBRK
+Failed test dependencies: kal.board_flash
+13/16 Test #13: kal.TSBRK ........................***Not Run   0.00 sec
+      Start 14: kal.IRQ
+Failed test dependencies: kal.board_flash
+14/16 Test #14: kal.IRQ ..........................***Not Run   0.00 sec
+      Start 15: kal.harness_fail
+Failed test dependencies: kal.board_flash
+15/16 Test #15: kal.harness_fail .................***Not Run   0.00 sec
+      Start 16: nucleo-wl55jc1.radio
+16/16 Test #16: nucleo-wl55jc1.radio .............***Failed    0.05 sec
+Traceback (most recent call last):
+  File "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/tests/radio.py", line 126, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/tests/radio.py", line 104, in main
+    la, lb = SerialLink(a.port_a, a.baud), SerialLink(a.port_b, a.baud)
+             ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/smoke_lsh.py", line 86, in __init__
+    fd = os.open(port, os.O_RDWR | os.O_NOCTTY)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/serial/by-id/usb-STMicroelectronics_STLINK-V3_002700253431510837393937-if02'
+
+
+0% tests passed, 16 tests failed out of 16
+
+Label Time Summary:
+arch:cortex-m4f           =   0.10 sec*proc (16 tests)
+backend:freertos          =   0.10 sec*proc (16 tests)
+board                     =   0.10 sec*proc (16 tests)
+greffon:nucleo-wl55jc1    =   0.05 sec*proc (1 test)
+kal                       =   0.05 sec*proc (15 tests)
+radio                     =   0.05 sec*proc (1 test)
+
+Total Test time (real) =   0.10 sec
+
+The following tests FAILED:
+	  1 - board.smoke_lsh (Failed)                          arch:cortex-m4f backend:freertos board kal
+	  2 - kal.board_flash (Not Run)                         arch:cortex-m4f backend:freertos board kal
+	  3 - kal.T1 (Not Run)                                  arch:cortex-m4f backend:freertos board kal
+	  4 - kal.T2 (Not Run)                                  arch:cortex-m4f backend:freertos board kal
+	  5 - kal.T3 (Not Run)                                  arch:cortex-m4f backend:freertos board kal
+	  6 - kal.T4 (Not Run)                                  arch:cortex-m4f backend:freertos board kal
+	  7 - kal.T5 (Not Run)                                  arch:cortex-m4f backend:freertos board kal
+	  8 - kal.T6 (Not Run)                                  arch:cortex-m4f backend:freertos board kal
+	  9 - kal.T7 (Not Run)                                  arch:cortex-m4f backend:freertos board kal
+	 10 - kal.T8 (Not Run)                                  arch:cortex-m4f backend:freertos board kal
+	 11 - kal.TICI (Not Run)                                arch:cortex-m4f backend:freertos board kal
+	 12 - kal.TCLK (Not Run)                                arch:cortex-m4f backend:freertos board kal
+	 13 - kal.TSBRK (Not Run)                               arch:cortex-m4f backend:freertos board kal
+	 14 - kal.IRQ (Not Run)                                 arch:cortex-m4f backend:freertos board kal
+	 15 - kal.harness_fail (Not Run)                        arch:cortex-m4f backend:freertos board kal
+	 16 - nucleo-wl55jc1.radio (Failed)                     arch:cortex-m4f backend:freertos board greffon:nucleo-wl55jc1 radio
+Errors while running CTest

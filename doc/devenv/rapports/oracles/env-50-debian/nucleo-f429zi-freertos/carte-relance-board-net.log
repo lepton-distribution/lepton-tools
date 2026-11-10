@@ -1,0 +1,16 @@
+Test project /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f429zi-freertos
+    Start 1: board.smoke_lsh
+1/2 Test #1: board.smoke_lsh ..................   Passed   11.27 sec
+    Start 2: board.net
+2/2 Test #2: board.net ........................   Passed   14.16 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Label Time Summary:
+arch:cortex-m4f     =  25.43 sec*proc (2 tests)
+backend:freertos    =  25.43 sec*proc (2 tests)
+board               =  25.43 sec*proc (2 tests)
+kal                 =  11.27 sec*proc (1 test)
+net                 =  14.16 sec*proc (1 test)
+
+Total Test time (real) =  25.43 sec

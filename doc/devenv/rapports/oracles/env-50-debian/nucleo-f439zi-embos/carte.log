@@ -1,0 +1,59 @@
+Test project /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f439zi-embos
+      Start  1: board.smoke_lsh
+ 1/20 Test  #1: board.smoke_lsh ..................   Passed   11.33 sec
+      Start  2: board.net
+ 2/20 Test  #2: board.net ........................***Failed   44.29 sec
+ÉCHEC : ping 192.168.2.5 : 0/3 réponses (--- 192.168.2.5 ping statistics --- | 3 packets transmitted, 0 received, +1 errors, 100% packet loss, time 2015ms)
+journal : /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f439zi-embos/board_net.log
+
+      Start  3: kal.board_flash
+ 3/20 Test  #3: kal.board_flash ..................   Passed    1.68 sec
+      Start  4: kal.T1
+ 4/20 Test  #4: kal.T1 ...........................   Passed    1.06 sec
+      Start  5: kal.T2
+ 5/20 Test  #5: kal.T2 ...........................   Passed    1.39 sec
+      Start  6: kal.T3
+ 6/20 Test  #6: kal.T3 ...........................   Passed    1.07 sec
+      Start  7: kal.T4
+ 7/20 Test  #7: kal.T4 ...........................   Passed    1.06 sec
+      Start  8: kal.T5
+ 8/20 Test  #8: kal.T5 ...........................   Passed    1.07 sec
+      Start  9: kal.T6
+ 9/20 Test  #9: kal.T6 ...........................   Passed    1.07 sec
+      Start 10: kal.T7
+10/20 Test #10: kal.T7 ...........................   Passed    1.09 sec
+      Start 11: kal.T8
+11/20 Test #11: kal.T8 ...........................   Passed    2.09 sec
+      Start 12: kal.T1F
+12/20 Test #12: kal.T1F ..........................   Passed    1.07 sec
+      Start 13: kal.T4F
+13/20 Test #13: kal.T4F ..........................   Passed    1.07 sec
+      Start 14: kal.T6F
+14/20 Test #14: kal.T6F ..........................   Passed    1.07 sec
+      Start 15: kal.T7F
+15/20 Test #15: kal.T7F ..........................   Passed    1.08 sec
+      Start 16: kal.TICI
+16/20 Test #16: kal.TICI .........................   Passed    1.06 sec
+      Start 17: kal.TCLK
+17/20 Test #17: kal.TCLK .........................   Passed    2.20 sec
+      Start 18: kal.TSBRK
+18/20 Test #18: kal.TSBRK ........................   Passed    1.73 sec
+      Start 19: kal.IRQ
+19/20 Test #19: kal.IRQ ..........................   Passed    1.41 sec
+      Start 20: kal.harness_fail
+20/20 Test #20: kal.harness_fail .................   Passed    1.47 sec
+
+95% tests passed, 1 tests failed out of 20
+
+Label Time Summary:
+arch:cortex-m4f    =  79.36 sec*proc (20 tests)
+backend:embos      =  79.36 sec*proc (20 tests)
+board              =  79.36 sec*proc (20 tests)
+kal                =  35.07 sec*proc (19 tests)
+net                =  44.29 sec*proc (1 test)
+
+Total Test time (real) =  79.37 sec
+
+The following tests FAILED:
+	  2 - board.net (Failed)                                arch:cortex-m4f backend:embos board net
+Errors while running CTest

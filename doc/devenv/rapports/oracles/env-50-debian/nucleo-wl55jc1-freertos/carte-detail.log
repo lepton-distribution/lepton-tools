@@ -1,0 +1,453 @@
+Start testing: Nov 10 19:52 CET
+----------------------------------------------------------
+1/16 Testing: board.smoke_lsh
+1/16 Test: board.smoke_lsh
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/smoke_lsh.py" "--transport" "serial" "--port" "/dev/serial/by-id/usb-STMicroelectronics_STLINK-V3_002700253431510837393937-if02" "--reset-command" "/usr/bin/openocd -f /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg -c "program /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/lepton.elf verify reset exit"" "--expect-machine" "cortexM4-stm32wlxx" "--command" "ls" "--command" "ps" "--log" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/smoke_lsh_board.log"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos
+"board.smoke_lsh" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+smoke_lsh : /dev/serial/by-id/usb-STMicroelectronics_STLINK-V3_002700253431510837393937-if02, uname -a = cortexM4-stm32wlxx, 2 commande(s) ; journal /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/smoke_lsh_board.log
+<end of output>
+Test time =   9.21 sec
+----------------------------------------------------------
+Test Passed.
+"board.smoke_lsh" end time: Nov 10 19:52 CET
+"board.smoke_lsh" time elapsed: 00:00:09
+----------------------------------------------------------
+
+2/16 Testing: kal.board_flash
+2/16 Test: kal.board_flash
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--program" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal/kal_bench.elf"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.board_flash" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+** Programming Started **
+Warn : Adding extra erase range, 0x08004830 .. 0x08004fff
+** Programming Finished **
+** Verify Started **
+** Verified OK **
+shutdown command invoked
+<end of output>
+Test time =   1.72 sec
+----------------------------------------------------------
+Test Passed.
+"kal.board_flash" end time: Nov 10 19:52 CET
+"kal.board_flash" time elapsed: 00:00:01
+----------------------------------------------------------
+
+3/16 Testing: kal.T1
+3/16 Test: kal.T1
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=T1"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.T1" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench T1]
+
+kal_bench : T1
+kal_bench : OK
+<end of output>
+Test time =   1.26 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T1" end time: Nov 10 19:52 CET
+"kal.T1" time elapsed: 00:00:01
+----------------------------------------------------------
+
+4/16 Testing: kal.T2
+4/16 Test: kal.T2
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=T2"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.T2" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench T2]
+
+kal_bench : T2
+T2 : PC de départ = 0x08000850
+kal_bench : OK
+<end of output>
+Test time =   1.67 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T2" end time: Nov 10 19:52 CET
+"kal.T2" time elapsed: 00:00:01
+----------------------------------------------------------
+
+5/16 Testing: kal.T3
+5/16 Test: kal.T3
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=T3"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.T3" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench T3]
+
+kal_bench : T3
+kal_bench : OK
+<end of output>
+Test time =   1.26 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T3" end time: Nov 10 19:52 CET
+"kal.T3" time elapsed: 00:00:01
+----------------------------------------------------------
+
+6/16 Testing: kal.T4
+6/16 Test: kal.T4
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=T4"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.T4" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench T4]
+
+kal_bench : T4
+kal_bench : OK
+<end of output>
+Test time =   1.26 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T4" end time: Nov 10 19:52 CET
+"kal.T4" time elapsed: 00:00:01
+----------------------------------------------------------
+
+7/16 Testing: kal.T5
+7/16 Test: kal.T5
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=T5"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.T5" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench T5]
+
+kal_bench : T5
+kal_bench : OK
+<end of output>
+Test time =   1.25 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T5" end time: Nov 10 19:52 CET
+"kal.T5" time elapsed: 00:00:01
+----------------------------------------------------------
+
+8/16 Testing: kal.T6
+8/16 Test: kal.T6
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=T6"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.T6" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench T6]
+
+kal_bench : T6
+kal_bench : OK
+<end of output>
+Test time =   1.26 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T6" end time: Nov 10 19:52 CET
+"kal.T6" time elapsed: 00:00:01
+----------------------------------------------------------
+
+9/16 Testing: kal.T7
+9/16 Test: kal.T7
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=T7"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.T7" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench T7]
+
+kal_bench : T7
+kal_bench : OK
+<end of output>
+Test time =   1.25 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T7" end time: Nov 10 19:52 CET
+"kal.T7" time elapsed: 00:00:01
+----------------------------------------------------------
+
+10/16 Testing: kal.T8
+10/16 Test: kal.T8
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=T8"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.T8" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench T8]
+
+kal_bench : T8
+T8 : SP de la nouvelle image = 0x20002bf0
+kal_bench : OK
+<end of output>
+Test time =   1.81 sec
+----------------------------------------------------------
+Test Passed.
+"kal.T8" end time: Nov 10 19:52 CET
+"kal.T8" time elapsed: 00:00:01
+----------------------------------------------------------
+
+11/16 Testing: kal.TICI
+11/16 Test: kal.TICI
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=TICI"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.TICI" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench TICI]
+
+kal_bench : TICI
+kal_bench : OK
+<end of output>
+Test time =   1.26 sec
+----------------------------------------------------------
+Test Passed.
+"kal.TICI" end time: Nov 10 19:52 CET
+"kal.TICI" time elapsed: 00:00:01
+----------------------------------------------------------
+
+12/16 Testing: kal.TCLK
+12/16 Test: kal.TCLK
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=TCLK"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.TCLK" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench TCLK]
+
+kal_bench : TCLK
+TCLK : ticks = 0x000001f4
+TCLK : temps noyau (us) = 0x0007a120
+kal_bench : OK
+<end of output>
+Test time =   2.59 sec
+----------------------------------------------------------
+Test Passed.
+"kal.TCLK" end time: Nov 10 19:52 CET
+"kal.TCLK" time elapsed: 00:00:02
+----------------------------------------------------------
+
+13/16 Testing: kal.TSBRK
+13/16 Test: kal.TSBRK
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=TSBRK"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.TSBRK" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench TSBRK]
+
+kal_bench : TSBRK
+TSBRK : taille des blocs = 0x00001618
+TSBRK : blocs alloués = 0x00000007
+kal_bench : OK
+<end of output>
+Test time =   2.14 sec
+----------------------------------------------------------
+Test Passed.
+"kal.TSBRK" end time: Nov 10 19:52 CET
+"kal.TSBRK" time elapsed: 00:00:02
+----------------------------------------------------------
+
+14/16 Testing: kal.IRQ
+14/16 Test: kal.IRQ
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=IRQ"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.IRQ" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench IRQ]
+
+kal_bench : IRQ
+IRQ : itérations pour 5 ticks = 0x0000bb80
+kal_bench : OK
+<end of output>
+Test time =   1.82 sec
+----------------------------------------------------------
+Test Passed.
+"kal.IRQ" end time: Nov 10 19:52 CET
+"kal.IRQ" time elapsed: 00:00:01
+----------------------------------------------------------
+
+15/16 Testing: kal.harness_fail
+15/16 Test: kal.harness_fail
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/kal_openocd.py" "--openocd" "/usr/bin/openocd" "--cfg" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg" "--test=HARNESS_FAIL"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/tests/kal
+"kal.harness_fail" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+Open On-Chip Debugger 0.12.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Lepton : sonde demandée 002700253431510837393937 (LEPTON_BOARD_PROBE_SERIAL)
+[stm32wlx.cpu0] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080001cc msp: 0x20010000
+semihosting is enabled
+
+semihosting command line is [kal_bench HARNESS_FAIL]
+
+kal_bench : HARNESS_FAIL
+ÉCHEC : échec volontaire (le harnais doit rendre un code non nul)
+kal_bench : ÉCHEC
+<end of output>
+Test time =   1.85 sec
+----------------------------------------------------------
+Test Passed.
+"kal.harness_fail" end time: Nov 10 19:52 CET
+"kal.harness_fail" time elapsed: 00:00:01
+----------------------------------------------------------
+
+16/16 Testing: nucleo-wl55jc1.radio
+16/16 Test: nucleo-wl55jc1.radio
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/tests/radio.py" "--tests-noyau" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests" "--port-a" "/dev/serial/by-id/usb-STMicroelectronics_STLINK-V3_002700253431510837393937-if02" "--port-b" "/dev/serial/by-id/usb-STMicroelectronics_STLINK-V3_004F003E3431510937393937-if02" "--reset-a" "/usr/bin/openocd -f /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1.cfg -c "program /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/lepton.elf verify reset exit"" "--reset-b" "/usr/bin/openocd -f /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/openocd-nucleo-wl55jc1-paire.cfg -c "program /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/lepton.elf verify reset exit"" "--log" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/board_radio.log"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/greffons/nucleo-wl55jc1/tests
+"nucleo-wl55jc1.radio" start time: Nov 10 19:52 CET
+Output:
+----------------------------------------------------------
+A->B : radiotst tx : emis=20/20 | radiotst rx : recus=20/20 perdus=0 desordre=0 doublons=0
+B->A : radiotst tx : emis=20/20 | radiotst rx : recus=20/20 perdus=0 desordre=0 doublons=0
+ping A, pong B : radiotst ping : reponses=20/20 perdues=0 | radiotst pong : reponses=20/20
+fumée A->B : jeton reçu
+fumée B->A : jeton reçu
+board_radio : vert ; journal /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-wl55jc1-freertos/board_radio.log
+<end of output>
+Test time =  82.35 sec
+----------------------------------------------------------
+Test Passed.
+"nucleo-wl55jc1.radio" end time: Nov 10 19:54 CET
+"nucleo-wl55jc1.radio" time elapsed: 00:01:22
+----------------------------------------------------------
+
+End testing: Nov 10 19:54 CET
+
+arch:cortex-m4f = 113.96 sec*proc
+
+backend:freertos = 113.96 sec*proc
+
+board = 113.96 sec*proc
+
+greffon:nucleo-wl55jc1 =  82.35 sec*proc
+
+kal =  31.60 sec*proc
+
+radio =  82.35 sec*proc
+
