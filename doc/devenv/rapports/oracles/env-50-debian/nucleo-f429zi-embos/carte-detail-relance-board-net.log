@@ -1,0 +1,70 @@
+Start testing: Nov 10 19:48 CET
+----------------------------------------------------------
+1/20 Testing: board.smoke_lsh
+1/20 Test: board.smoke_lsh
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/smoke_lsh.py" "--transport" "serial" "--port" "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_0672FF495252717267243842-if02" "--reset-command" "/usr/bin/openocd -f /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f429zi-embos/openocd-nucleo-f429zi.cfg -c "program /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f429zi-embos/lepton.elf verify reset exit"" "--expect-machine" "cortexM4-stm32f4" "--command" "ls" "--command" "ps" "--log" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f429zi-embos/smoke_lsh_board.log"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f429zi-embos
+"board.smoke_lsh" start time: Nov 10 19:48 CET
+Output:
+----------------------------------------------------------
+smoke_lsh : /dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_0672FF495252717267243842-if02, uname -a = cortexM4-stm32f4, 2 commande(s) ; journal /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f429zi-embos/smoke_lsh_board.log
+<end of output>
+Test time =  11.47 sec
+----------------------------------------------------------
+Test Passed.
+"board.smoke_lsh" end time: Nov 10 19:48 CET
+"board.smoke_lsh" time elapsed: 00:00:11
+----------------------------------------------------------
+
+2/20 Testing: board.net
+2/20 Test: board.net
+Command: "/usr/bin/python3" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/tests/board_net.py" "--port" "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_0672FF495252717267243842-if02" "--reset-command" "/usr/bin/openocd -f /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f429zi-embos/openocd-nucleo-f429zi.cfg -c "program /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f429zi-embos/lepton.elf verify reset exit"" "--host-ip" "192.168.2.20" "--guest-ip" "192.168.2.5" "--ftp-file" "/usr/etc/.boot" "--ftp-reference" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/sys/user/tauon-basic/etc/nucleo-f439zi/.boot" "--errno-header" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/trunk/sys/root/src/kernel/core/errno.h" "--log" "/home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f429zi-embos/board_net.log"
+Directory: /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f429zi-embos
+"board.net" start time: Nov 10 19:48 CET
+Output:
+----------------------------------------------------------
+*resp* '220 You will be disconnected after 1800 seconds of inactivity.'
+*welcome* '220 You will be disconnected after 1800 seconds of inactivity.'
+*cmd* 'USER tauon'
+*resp* '331 User tauon OK.  Password required.'
+*cmd* 'PASS *****'
+*resp* '230 OK.  Current directory is /'
+*cmd* 'CWD /usr/sbin'
+*resp* '250 Changed to /usr/sbin'
+*cmd* 'TYPE A'
+*resp* '200 TYPE is now ASCII'
+*cmd* 'PASV'
+*resp* '227 Passive mode OK (192,168,2,5,119,17)'
+*cmd* 'LIST'
+*resp* '150 Accepted data connection from 192.168.2.20:49974'
+*resp* '226-Options: -l \n226 12 matches total'
+*cmd* 'TYPE I'
+*resp* '200 TYPE is now 8-bit binary'
+*cmd* 'PASV'
+*resp* '227 Passive mode OK (192,168,2,5,119,16)'
+*cmd* 'RETR /usr/etc/.boot'
+*resp* '150 Accepted data connection from 192.168.2.20:43726'
+*resp* '226 File written successfully'
+*cmd* 'QUIT'
+*resp* '221 Goodbye.  You uploaded 0 and downloaded 1 kbytes.'
+board_net : ping 3/3, FTP « 220 You will be disconnected after 1800 seconds of inactivity. », LIST 13 entrée(s), RETR /usr/etc/.boot 57 octets identique, errno ECONNRESET=15 ; journal /home/lepton-user/lepton-tools-dev/essais/env-50-debian/build/nucleo-f429zi-embos/board_net.log
+<end of output>
+Test time =  15.24 sec
+----------------------------------------------------------
+Test Passed.
+"board.net" end time: Nov 10 19:49 CET
+"board.net" time elapsed: 00:00:15
+----------------------------------------------------------
+
+End testing: Nov 10 19:49 CET
+
+arch:cortex-m4f =  26.71 sec*proc
+
+backend:embos =  26.71 sec*proc
+
+board =  26.71 sec*proc
+
+kal =  11.47 sec*proc
+
+net =  15.24 sec*proc
+

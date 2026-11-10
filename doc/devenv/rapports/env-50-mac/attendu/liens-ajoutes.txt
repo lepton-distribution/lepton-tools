@@ -1,0 +1,11 @@
+trunk/sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/LICENSE.md
+trunk/sys/root/src/kernel/core/ucore/cmsis/LEPTON-PROVENANCE.md
+trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/conf/LICENSE.md
+trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/lpm/tiny_lpm/LICENSE.md
+trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/misc/LICENSE.md
+trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/sequencer/LICENSE.md
+trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/timer/LICENSE.md
+trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/trace/adv_trace/LICENSE.md
+trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/cubemx_hal_driver/LICENSE.md
+trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/Conf/radio_template.h
+trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/LICENSE.md

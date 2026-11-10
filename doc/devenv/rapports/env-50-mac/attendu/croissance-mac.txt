@@ -1,0 +1,16 @@
+nucleo-f429zi-embos code_symboles +0 .text +0
+nucleo-f429zi-freertos code_symboles +0 .text +0
+nucleo-f439zi-embos code_symboles +0 .text +0
+nucleo-f439zi-freertos code_symboles +0 .text +0
+nucleo-wl55jc1-embos code_symboles +36 .text +48
+nucleo-wl55jc1-freertos code_symboles +36 .text +48
+qemu-mps2-an386-embos code_symboles +0 .text +0
+qemu-mps2-an386-embos-soft code_symboles +0 .text +0
+qemu-mps2-an386-freertos code_symboles +0 .text +0
+qemu-mps2-an386-freertos-soft code_symboles +0 .text +0
+qemu-mps2-an500-embos code_symboles +0 .text +0
+qemu-mps2-an500-freertos code_symboles +0 .text +0
+samd21-xplained-pro-embos code_symboles +0 .text +0
+samd21-xplained-pro-freertos code_symboles +0 .text +0
+stm32f746g-disco-embos code_symboles +0 .text +0
+stm32f746g-disco-freertos code_symboles +0 .text +0

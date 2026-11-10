@@ -1,0 +1,7 @@
+empreinte .bin : différente
+empreinte .elf : différente
+empreinte .hex : différente
+section modifié  : .debug_info ['921438'] -> ['921570']
+section modifié  : .debug_line ['284682'] -> ['284687']
+section modifié  : .debug_str ['129069'] -> ['129288']
+bilan : 3 écart(s) de sections ou de symboles
