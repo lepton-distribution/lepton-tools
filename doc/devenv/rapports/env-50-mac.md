@@ -160,6 +160,8 @@ confirmer au PA-87.
 | AVANCEMENT R50-1 (§12.2 relance, §12.3 essai 2) | 2026-11-10 | VM → Mac | rattachement par l'utilisateur : F429 à 19:47, WL55 A et B à 19:49, mêmes `by-id`, OpenOCD par numéro codes 0 ; ping avant reflash encore 0/3 ; relance unique `ctest -R '^board\.net$'` (reflash) : 2/2 ×3, ping 3/3, LIST 13, RETR 57 octets identique, `ECONNRESET=15` ; premier passage 19/20 ×3 consigné ; banc WL55 essai 2 en cours. Lecture de la VM : lien coupé pendant la coupure signalée (« non vérifié côté Mac ») ; constat Mac contraire, voir §5 |
 | AVANCEMENT R50-1 (§12.3 essai 2, C7) | 2026-11-10 | VM → Mac | WL55 embOS et FreeRTOS : cfg générées A `0027…` et paire B `004F…`, oracle=0, 16/16 ×2, « sonde demandée » ×14 (A seule), fumée `cortexM4-stm32wlxx`, radio 20/20 A→B et B→A, ping-pong 20/20, 2 jetons ; trunk 0 régulier, 0 `__pycache__` ; dernières images : `nucleo-f439zi-embos` (F429), `nucleo-wl55jc1-freertos` (A, B), cartes sur la VM ; §13 : attente du `rm -rf` par l'utilisateur |
 | FIN-SUCCÈS R50-1 | 2026-11-10 | VM → Mac | reçu. C1 à C8 atteints (C7 après relance) ; rapport `rapports/env-50-debian.md`, commit 88e48b6 sur `devenv/env-50-debian`, poussée avec l'accord de l'utilisateur. Écarts déclarés : coupure pendant le §12 (lien Ethernet de la F429, sondes détachées) ; ordre (§8 pendant §7.3, §10-§11 pendant §9.1) ; `lepton-env.sh` hors rootstock ; « sonde demandée » absente du `LastTest` de la relance de `board.net` ; messages 3 à 12 « accepted by the server, delivery not confirmed ». Non fait : presets hors PA-11 non flashés ; cartes laissées sur la VM ; `~/tmp-pytest` gardé |
+| AVANCEMENT R50-1 (complément) | 2026-11-10 | VM → Mac | cartes rendues au Mac par l'utilisateur à 20:03 ; rapport complété (29835e9, local) |
+| AVANCEMENT R50-1 (push) | 2026-11-10 | VM → Mac | `devenv/env-50-debian` poussée à 29835e9 (accord de l'utilisateur) ; rien d'autre en attente sur la VM |
 
 ## 4. Rootstocks d'essai du Mac (tâche 3)
 
@@ -261,3 +263,18 @@ Constats sur le rapport VM :
 `nucleo-wl55jc1-freertos` sur A et B), à rattacher de nouveau au Mac par l'utilisateur. Sur la VM :
 `essais/env-28-debian`, `env-13-debian`, `env-50-debian`, `env-11/qemu`, `~/env-50-journaux`,
 `~/tmp-pytest`.
+
+## 6. PA-88 (2026-11-10, décisions de l'utilisateur)
+
+- `FIN-SUCCÈS R50-1` accepté : C1 à C8 atteints, C7 après reprise (relance unique de `board.net`
+  ×3, essai 2 du banc WL55).
+- Publication :
+  - fusion `--no-ff` de `devenv/env-50-debian` dans `devenv/env-50`. Elle porte 29835e9 : 88e48b6
+    et le complément de la VM. Ce complément ne change que 4 lignes du rapport (cartes rendues au
+    Mac, ligne `FIN-SUCCÈS` du journal), vérifiées avant fusion ;
+  - état et passation ;
+  - fusion `--no-ff` de `devenv/env-50` dans `main` ;
+  - push de `main` et de `devenv/env-50`.
+- `HORS-PLAN.md` : D8 traité ; D12 ajouté (F429 muette en Ethernet au retour de la VM).
+- État laissé : les 3 cartes sont au Mac (rendues par l'utilisateur). La F429 porte
+  `nucleo-f439zi-embos`, les WL55 A et B `nucleo-wl55jc1-freertos`.
