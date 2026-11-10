@@ -9,7 +9,7 @@ import json
 import os
 import shutil
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from lepton.errors import EXIT_OK, EXIT_USER, LeptonError
@@ -28,6 +28,9 @@ class Owner:
     name: str
     stem: Path          # <clone>/scion, résolu ; clé projetée : racine du clone tiers (P-G3)
     porter: str | None = None   # clé projetée : nom du greffon porteur, « graine » si la graine la déclare
+    # clé projetée dont le clone est partagé avec d'autres clés (P-V2) : fichiers du clone qu'elle
+    # projette (P-G3, d'après `Rootstock.projection_tables`) ; None : tout le clone
+    files: frozenset[Path] | None = field(default=None, compare=False)
 
     @property
     def projected(self) -> bool:
@@ -56,23 +59,34 @@ class Target:
 def _owners(rs: Rootstock) -> list[Owner]:
     found, projected = [], rs.projected_keys()
     names = {}
-    for e in rs.grafted():
+    grafted = rs.grafted()
+    roots = [rs.clone(e).resolve() for e in grafted if e.key in projected]
+    shared = {r for r in roots if roots.count(r) > 1}
+    tables = rs.projection_tables() if shared else {}
+    for e in grafted:
         m = find_manifest(rs.clone(e))
         names[e.key] = m.name if m else e.name
         if e.key in projected:
             porter = rs.porter_of(e)
-            found.append(Owner(e.key, e.name, rs.clone(e).resolve(),
-                               names.get(porter.key, porter.name) if porter else "graine"))
+            stem = rs.clone(e).resolve()
+            files = frozenset(stem / rel for rel in tables.get(e.key, {})) if stem in shared else None
+            found.append(Owner(e.key, e.name, stem,
+                               names.get(porter.key, porter.name) if porter else "graine", files))
         else:
             found.append(Owner(e.key, names[e.key], (rs.clone(e) / STEM_DIR).resolve()))
     return found
 
 
 def _owner_of(owners: list[Owner], real: Path) -> Owner | None:
+    """Greffon dont le clone contient `real`. Clone partagé par plusieurs clés projetées : la clé qui
+    projette ce fichier (P-G3) ; un fichier qu'aucune ne projette va à la première."""
+    first = None
     for o in owners:
         if real == o.stem or o.stem in real.parents:
-            return o
-    return None
+            if o.files is None or real in o.files:
+                return o
+            first = first or o
+    return first
 
 
 def _locate(rs: Rootstock, owners: list[Owner], raw: str) -> Target:

@@ -1,0 +1,25 @@
+qemu-mps2-an386-embos          code 0
+qemu-mps2-an386-embos-soft     code 0
+qemu-mps2-an386-freertos       code 0
+qemu-mps2-an386-freertos-soft  code 0
+qemu-mps2-an500-embos          code 0
+qemu-mps2-an500-freertos       code 0
+nucleo-f429zi-embos            code 0
+nucleo-f429zi-freertos         code 0
+nucleo-f439zi-embos            code 0
+nucleo-f439zi-freertos         code 0
+nucleo-wl55jc1-embos           code 0
+nucleo-wl55jc1-freertos        code 0
+stm32f746g-disco-embos         code 0
+stm32f746g-disco-freertos      code 0
+samd21-xplained-pro-embos      code 0
+samd21-xplained-pro-freertos   code 0
+qemu-mps2-an386-embos            banc KAL identique (19 tests)   fumée identique
+qemu-mps2-an386-embos-soft       banc KAL identique (15 tests)   fumée identique
+qemu-mps2-an386-freertos         banc KAL identique (19 tests)   fumée identique
+qemu-mps2-an386-freertos-soft    banc KAL identique (15 tests)   fumée identique
+qemu-mps2-an500-embos            banc KAL identique (18 tests)   fumée identique
+qemu-mps2-an500-freertos         banc KAL identique (18 tests)   fumée identique
+host mklepton identiques
+host ctest : 100% tests passed, 0 tests failed out of 7 | 100% tests passed, 0 tests failed out of 7
+ctest -N : 17/17 identiques

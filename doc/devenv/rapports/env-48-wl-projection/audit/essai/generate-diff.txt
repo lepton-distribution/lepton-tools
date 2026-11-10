@@ -1,0 +1,773 @@
+76c76
+<     "cmake.copyCompileCommands": "/Users/cle_d_anton/lepton/build/.active/compile_commands.json",
+---
+>     "cmake.copyCompileCommands": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.active/compile_commands.json",
+80c80
+<       "--compile-commands-dir=/Users/cle_d_anton/lepton/build/.active",
+---
+>       "--compile-commands-dir=/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.active",
+117,118c117,118
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an386-embos/lepton.elf",
+131,132c131,132
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos-soft/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an386-embos-soft/lepton.elf",
+145,146c145,146
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-freertos-soft/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an386-freertos-soft/lepton.elf",
+159,160c159,160
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-freertos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an386-freertos/lepton.elf",
+173,174c173,174
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/nucleo-f429zi-embos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-f429zi-embos/lepton.elf",
+178c178
+<         "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F429.svd",
+---
+>         "svdFile": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F429.svd",
+182c182
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg"
+189,190c189,190
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/nucleo-f429zi-freertos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-f429zi-freertos/lepton.elf",
+194c194
+<         "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F429.svd",
+---
+>         "svdFile": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F429.svd",
+198c198
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg"
+205,206c205,206
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-f439zi-embos/lepton.elf",
+210c210
+<         "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F439.svd",
+---
+>         "svdFile": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F439.svd",
+214c214
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg"
+221,222c221,222
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/nucleo-f439zi-freertos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-f439zi-freertos/lepton.elf",
+226c226
+<         "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F439.svd",
+---
+>         "svdFile": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F439.svd",
+230c230
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg"
+237,238c237,238
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an500-embos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an500-embos/lepton.elf",
+251,252c251,252
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/qemu-mps2-an500-freertos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an500-freertos/lepton.elf",
+265,266c265,266
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/stm32f746g-disco-embos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/stm32f746g-disco-embos/lepton.elf",
+270c270
+<         "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/STM32F746.svd",
+---
+>         "svdFile": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/STM32F746.svd",
+274c274
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg"
+281,282c281,282
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/stm32f746g-disco-freertos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/stm32f746g-disco-freertos/lepton.elf",
+286c286
+<         "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/STM32F746.svd",
+---
+>         "svdFile": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/STM32F746.svd",
+290c290
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg"
+297,298c297,298
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/samd21-xplained-pro-embos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/samd21-xplained-pro-embos/lepton.elf",
+302c302
+<         "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/samd21/svd/ATSAMD21J18A.svd",
+---
+>         "svdFile": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/arch/cortexm/samd21/svd/ATSAMD21J18A.svd",
+306c306
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg"
+313,314c313,314
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/samd21-xplained-pro-freertos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/samd21-xplained-pro-freertos/lepton.elf",
+318c318
+<         "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/samd21/svd/ATSAMD21J18A.svd",
+---
+>         "svdFile": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/arch/cortexm/samd21/svd/ATSAMD21J18A.svd",
+322c322
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg"
+329,330c329,330
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/nucleo-wl55jc1-embos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-wl55jc1-embos/lepton.elf",
+334c334
+<         "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/svd/STM32WL5x_CM4.svd",
+---
+>         "svdFile": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/svd/STM32WL5x_CM4.svd",
+338c338
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg"
+345,346c345,346
+<         "cwd": "/Users/cle_d_anton/lepton/trunk",
+<         "executable": "/Users/cle_d_anton/lepton/build/nucleo-wl55jc1-freertos/lepton.elf",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+>         "executable": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-wl55jc1-freertos/lepton.elf",
+350c350
+<         "svdFile": "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/svd/STM32WL5x_CM4.svd",
+---
+>         "svdFile": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/svd/STM32WL5x_CM4.svd",
+354c354
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg"
+361c361
+<         "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+---
+>         "program": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/host/mklepton",
+364c364
+<           "/Users/cle_d_anton/lepton/trunk",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+366c366
+<           "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an386",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/qemu-mps2-an386",
+373c373
+<         "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an386",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/qemu-mps2-an386",
+383c383
+<         "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+---
+>         "program": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/host/mklepton",
+386c386
+<           "/Users/cle_d_anton/lepton/trunk",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+388c388
+<           "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f429zi",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/nucleo-f429zi",
+395c395
+<         "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f429zi",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/nucleo-f429zi",
+405c405
+<         "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+---
+>         "program": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/host/mklepton",
+408c408
+<           "/Users/cle_d_anton/lepton/trunk",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+410c410
+<           "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f439zi",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/nucleo-f439zi",
+417c417
+<         "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f439zi",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/nucleo-f439zi",
+427c427
+<         "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+---
+>         "program": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/host/mklepton",
+430c430
+<           "/Users/cle_d_anton/lepton/trunk",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+432c432
+<           "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an500",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/qemu-mps2-an500",
+439c439
+<         "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an500",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/qemu-mps2-an500",
+449c449
+<         "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+---
+>         "program": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/host/mklepton",
+452c452
+<           "/Users/cle_d_anton/lepton/trunk",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+454c454
+<           "/Users/cle_d_anton/lepton/build/.mklepton/stm32f746g-disco",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/stm32f746g-disco",
+461c461
+<         "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/stm32f746g-disco",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/stm32f746g-disco",
+471c471
+<         "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+---
+>         "program": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/host/mklepton",
+474c474
+<           "/Users/cle_d_anton/lepton/trunk",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+476c476
+<           "/Users/cle_d_anton/lepton/build/.mklepton/samd21-xplained-pro",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/samd21-xplained-pro",
+483c483
+<         "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/samd21-xplained-pro",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/samd21-xplained-pro",
+493c493
+<         "program": "/Users/cle_d_anton/lepton/build/host/mklepton",
+---
+>         "program": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/host/mklepton",
+496c496
+<           "/Users/cle_d_anton/lepton/trunk",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+498c498
+<           "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-wl55jc1",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/nucleo-wl55jc1",
+505c505
+<         "cwd": "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-wl55jc1",
+---
+>         "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/nucleo-wl55jc1",
+523c523
+<           "/Users/cle_d_anton/lepton"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie"
+526c526
+<           "cwd": "/Users/cle_d_anton/lepton"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie"
+537c537
+<           "/Users/cle_d_anton/lepton"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie"
+540c540
+<           "cwd": "/Users/cle_d_anton/lepton"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie"
+554c554
+<             "/Users/cle_d_anton/lepton"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie"
+567c567
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+583c583
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+598c598
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+613,619c613,619
+<           "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an386",
+<           "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f429zi",
+<           "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-f439zi",
+<           "/Users/cle_d_anton/lepton/build/.mklepton/qemu-mps2-an500",
+<           "/Users/cle_d_anton/lepton/build/.mklepton/stm32f746g-disco",
+<           "/Users/cle_d_anton/lepton/build/.mklepton/samd21-xplained-pro",
+<           "/Users/cle_d_anton/lepton/build/.mklepton/nucleo-wl55jc1"
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/qemu-mps2-an386",
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/nucleo-f429zi",
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/nucleo-f439zi",
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/qemu-mps2-an500",
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/stm32f746g-disco",
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/samd21-xplained-pro",
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/.mklepton/nucleo-wl55jc1"
+622c622
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+638c638
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+655c655
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+670c670
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+686c686
+<           "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos/lepton.elf",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an386-embos/lepton.elf",
+694c694
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+718c718
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+741c741
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+764c764
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+784c784
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+801c801
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+816c816
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+832c832
+<           "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-embos-soft/lepton.elf",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an386-embos-soft/lepton.elf",
+840c840
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+864c864
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+887c887
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+910c910
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+930c930
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+947c947
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+962c962
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+978c978
+<           "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-freertos-soft/lepton.elf",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an386-freertos-soft/lepton.elf",
+986c986
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1010c1010
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+1033c1033
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+1056c1056
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+1076c1076
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1093c1093
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1108c1108
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1124c1124
+<           "/Users/cle_d_anton/lepton/build/qemu-mps2-an386-freertos/lepton.elf",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an386-freertos/lepton.elf",
+1132c1132
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1156c1156
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+1179c1179
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+1202c1202
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+1222c1222
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1239c1239
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1254c1254
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1268c1268
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg",
+1270c1270
+<           "program /Users/cle_d_anton/lepton/build/nucleo-f429zi-embos/lepton.elf verify reset exit"
+---
+>           "program /Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-f429zi-embos/lepton.elf verify reset exit"
+1273c1273
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1289c1289
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1306c1306
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1321c1321
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1335c1335
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/debug/openocd-nucleo-f439zi.cfg",
+1337c1337
+<           "program /Users/cle_d_anton/lepton/build/nucleo-f429zi-freertos/lepton.elf verify reset exit"
+---
+>           "program /Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-f429zi-freertos/lepton.elf verify reset exit"
+1340c1340
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1356c1356
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1373c1373
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1388c1388
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1402c1402
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg",
+1404c1404
+<           "program /Users/cle_d_anton/lepton/build/nucleo-f439zi-embos/lepton.elf verify reset exit"
+---
+>           "program /Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-f439zi-embos/lepton.elf verify reset exit"
+1407c1407
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1423c1423
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1440c1440
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1455c1455
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1469c1469
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-f439zi/debug/openocd-nucleo-f439zi.cfg",
+1471c1471
+<           "program /Users/cle_d_anton/lepton/build/nucleo-f439zi-freertos/lepton.elf verify reset exit"
+---
+>           "program /Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-f439zi-freertos/lepton.elf verify reset exit"
+1474c1474
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1490c1490
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1507c1507
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1522c1522
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1538c1538
+<           "/Users/cle_d_anton/lepton/build/qemu-mps2-an500-embos/lepton.elf",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an500-embos/lepton.elf",
+1546c1546
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1570c1570
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+1593c1593
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+1613c1613
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1630c1630
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1645c1645
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1661c1661
+<           "/Users/cle_d_anton/lepton/build/qemu-mps2-an500-freertos/lepton.elf",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/qemu-mps2-an500-freertos/lepton.elf",
+1669c1669
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1693c1693
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+1716c1716
+<           "cwd": "/Users/cle_d_anton/lepton/trunk",
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk",
+1736c1736
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1753c1753
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1768c1768
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1782c1782
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg",
+1784c1784
+<           "program /Users/cle_d_anton/lepton/build/stm32f746g-disco-embos/lepton.elf verify reset exit"
+---
+>           "program /Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/stm32f746g-disco-embos/lepton.elf verify reset exit"
+1787c1787
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1803c1803
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1820c1820
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1835c1835
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1849c1849
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/stm32f746g-disco/debug/openocd-stm32f746g-disco.cfg",
+1851c1851
+<           "program /Users/cle_d_anton/lepton/build/stm32f746g-disco-freertos/lepton.elf verify reset exit"
+---
+>           "program /Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/stm32f746g-disco-freertos/lepton.elf verify reset exit"
+1854c1854
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1870c1870
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1887c1887
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1902c1902
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1916c1916
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg",
+1918c1918
+<           "program /Users/cle_d_anton/lepton/build/samd21-xplained-pro-embos/lepton.elf verify reset exit"
+---
+>           "program /Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/samd21-xplained-pro-embos/lepton.elf verify reset exit"
+1921c1921
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1937c1937
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1954c1954
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1969c1969
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+1983c1983
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/samd21-xplained-pro/debug/openocd-samd21-xplained-pro.cfg",
+1985c1985
+<           "program /Users/cle_d_anton/lepton/build/samd21-xplained-pro-freertos/lepton.elf verify reset exit"
+---
+>           "program /Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/samd21-xplained-pro-freertos/lepton.elf verify reset exit"
+1988c1988
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+2004c2004
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+2021c2021
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+2036c2036
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+2050c2050
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg",
+2052c2052
+<           "program /Users/cle_d_anton/lepton/build/nucleo-wl55jc1-embos/lepton.elf verify reset exit"
+---
+>           "program /Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-wl55jc1-embos/lepton.elf verify reset exit"
+2055c2055
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+2071c2071
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+2088c2088
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+2103c2103
+<             "/Users/cle_d_anton/lepton/trunk"
+---
+>             "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+2117c2117
+<           "/Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg",
+---
+>           "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk/sys/root/src/kernel/dev/bsp/nucleo-wl55jc1/debug/openocd-nucleo-wl55jc1.cfg",
+2119c2119
+<           "program /Users/cle_d_anton/lepton/build/nucleo-wl55jc1-freertos/lepton.elf verify reset exit"
+---
+>           "program /Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/build/nucleo-wl55jc1-freertos/lepton.elf verify reset exit"
+2122c2122
+<           "cwd": "/Users/cle_d_anton/lepton/trunk"
+---
+>           "cwd": "/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/trunk"
+identique aux chemins du rootstock près

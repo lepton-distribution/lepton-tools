@@ -1,0 +1,25 @@
+OK      Conf/mw_log_conf_template.h
+OK      Conf/radio_conf_template.h
+OK      Conf/subghz_template.c
+OK      Conf/subghz_template.h
+OK      LICENSE
+TROP    LICENSE.txt
+OK      lr_fhss_v1_base_types.h
+OK      radio.h
+OK      radio_def.h
+OK      radio_ex.h
+TROP    stm32_radio_core_inc/platform.h
+TROP    stm32_radio_core_inc/subghz.h
+TROP    stm32_radio_core_inc/utilities_conf.h
+TROP    stm32_radio_core_inc/utilities_def.h
+OK      stm32_radio_driver/lr_fhss_mac.c
+OK      stm32_radio_driver/lr_fhss_mac.h
+DIFF    stm32_radio_driver/radio.c
+OK      stm32_radio_driver/radio_driver.c
+OK      stm32_radio_driver/radio_driver.h
+OK      stm32_radio_driver/radio_fw.c
+OK      stm32_radio_driver/radio_fw.h
+OK      stm32_radio_driver/subghz_phy_version.h
+OK      stm32_radio_driver/wl_lr_fhss.c
+OK      stm32_radio_driver/wl_lr_fhss.h
+verifier-import: 1cad76816effd9679a056e57c02dd4b23d7cb772 ; 18 identique(s), 6 écart(s)

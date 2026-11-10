@@ -1,0 +1,34 @@
+tiers  stm32wlxx-hal-driver  Inc/**                          scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/cubemx_hal_driver/inc/
+tiers  stm32wlxx-hal-driver  Src/**                          scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/cubemx_hal_driver/src/
+tiers  stm32wlxx-hal-driver  README.md                       scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/cubemx_hal_driver/
+tiers  stm32wlxx-hal-driver  Release_Notes.html              scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/cubemx_hal_driver/
+tiers  stm32wlxx-hal-driver  LICENSE.md                      scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/cubemx_hal_driver/
+tiers  stm32wlxx-hal-driver  !Inc/Legacy/stm32_hal_legacy.h
+tiers  cmsis-device-wl  Include/stm32wl55xx.h                           scion/sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/
+tiers  cmsis-device-wl  Include/stm32wlxx.h                             scion/sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/
+tiers  cmsis-device-wl  Include/system_stm32wlxx.h                      scion/sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/
+tiers  cmsis-device-wl  Source/Templates/system_stm32wlxx.c             scion/sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/
+tiers  cmsis-device-wl  Source/Templates/iar/startup_stm32wl55xx_cm4.s  scion/sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/startup/iar/
+tiers  cmsis-device-wl  LICENSE.md                                      scion/sys/root/src/kernel/core/ucore/cmsis/Device/st/stm32wlxx/
+tiers  stm32-mw-subghz-phy  *.h                     scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/
+tiers  stm32-mw-subghz-phy  LICENSE                 scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/
+tiers  stm32-mw-subghz-phy  LICENSE.md              scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/
+tiers  stm32-mw-subghz-phy  Conf/*                  scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/Conf/
+tiers  stm32-mw-subghz-phy  stm32_radio_driver/*    scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/stm32_radio_driver/
+tiers  stm32-mw-subghz-phy  !stm32_radio_driver/radio.c
+tiers  stm32cubewl::utilities  Utilities/conf/*.[ch]             scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/conf/
+tiers  stm32cubewl::utilities  Utilities/Fonts/*.[ch]            scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/Fonts/
+tiers  stm32cubewl::utilities  Utilities/lcd/*.[ch]              scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/lcd/
+tiers  stm32cubewl::utilities  Utilities/lpm/tiny_lpm/*.[ch]     scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/lpm/tiny_lpm/
+tiers  stm32cubewl::utilities  Utilities/misc/*.[ch]             scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/misc/
+tiers  stm32cubewl::utilities  Utilities/sequencer/*.[ch]        scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/sequencer/
+tiers  stm32cubewl::utilities  Utilities/timer/*.[ch]            scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/timer/
+tiers  stm32cubewl::utilities  Utilities/trace/adv_trace/*.[ch]  scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/trace/adv_trace/
+tiers  stm32cubewl::utilities  Utilities/conf/LICENSE.md                  scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/conf/
+tiers  stm32cubewl::utilities  Utilities/lpm/tiny_lpm/LICENSE.md          scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/lpm/tiny_lpm/
+tiers  stm32cubewl::utilities  Utilities/misc/LICENSE.md                  scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/misc/
+tiers  stm32cubewl::utilities  Utilities/sequencer/LICENSE.md             scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/sequencer/
+tiers  stm32cubewl::utilities  Utilities/timer/LICENSE.md                 scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/timer/
+tiers  stm32cubewl::utilities  Utilities/trace/adv_trace/LICENSE.md       scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/trace/adv_trace/
+tiers  stm32cubewl::utilities  !Utilities/timer/stm32_timer.h
+tiers  stm32cubewl::radio-core-inc  Projects/NUCLEO-WL55JC/Applications/SubGHz_Phy/SubGHz_Phy_PingPong/Core/Inc/utilities_def.h  scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/stm32_radio_core_inc/

@@ -1,0 +1,13 @@
+019105270be54cb33acf431b2f5f83371d10a0b5	refs/tags/v1.3.0^{}
+2974f936c941f61275c3a06bf2b62d83cebc87d8	refs/tags/v1.3.0
+35631ff4d3a3cc361241af5f62190d0ea43bd65b	refs/tags/v1.0.0^{}
+47a8c114d4d52f4179b0c456f2029e4ad5dd9799	refs/tags/v1.2.0
+71a0b7860e700f7ca11afe4c4afd6cef684ad9bb	refs/heads/main
+71a0b7860e700f7ca11afe4c4afd6cef684ad9bb	refs/tags/v1.4.0^{}
+7bf548678b1132d829072ce86443c8036d538460	refs/tags/v1.1.0^{}
+a5f4296f4eb085de56ab1d13f161ae3acdc58014	refs/tags/v1.0.0
+b531ec0a1dafc2dd11d82e191b81e70a2b9b616f	refs/tags/v1.1.0
+baa994d7bd83d7984675d6fce847cb7538118bf0	refs/tags/v1.2.0^{}
+bcf70ea941f6b15cf3cb0c1200c5374fa87ed9bd	refs/tags/v1.1.1
+cf326d5ce19ce198f872f6ec7bba13f8a71d67e8	refs/tags/v1.4.0
+d248c5514fe294fec6eb52f49ed3f1a53cea45b0	refs/tags/v1.1.1^{}

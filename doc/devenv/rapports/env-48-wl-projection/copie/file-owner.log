@@ -1,0 +1,8 @@
+stm32wlxx-hal-driver (tiers@stm32wlxx-hal-driver, projeté par stm32wlxx) : depots/tiers/stm32wlxx-hal-driver/v1.3.0/Src/stm32wlxx_hal_subghz.c
+stm32wlxx-hal-driver (tiers@stm32wlxx-hal-driver, projeté par stm32wlxx) : depots/tiers/stm32wlxx-hal-driver/v1.3.0/LICENSE.md
+cmsis-device-wl (tiers@cmsis-device-wl, projeté par stm32wlxx) : depots/tiers/cmsis-device-wl/v1.1.1/LICENSE.md
+stm32cubewl::utilities (tiers@stm32cubewl::utilities, projeté par stm32wlxx) : depots/tiers/stm32cubewl/v1.3.0/Utilities/timer/LICENSE.md
+stm32cubewl::radio-core-inc (tiers@stm32cubewl::radio-core-inc, projeté par stm32wlxx) : depots/tiers/stm32cubewl/v1.3.0/Projects/NUCLEO-WL55JC/Applications/SubGHz_Phy/SubGHz_Phy_PingPong/Core/Inc/utilities_def.h
+stm32wlxx (lepton@family-stm32wlxx) : depots/lepton/family-stm32wlxx/master/scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/stm32_radio_driver/radio.c
+stm32wlxx (lepton@family-stm32wlxx) : depots/lepton/family-stm32wlxx/master/scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/cubemx_hal_driver/inc/Legacy/stm32_hal_legacy.h
+stm32wlxx (lepton@family-stm32wlxx) : depots/lepton/family-stm32wlxx/master/scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/LEPTON-PROVENANCE.md
