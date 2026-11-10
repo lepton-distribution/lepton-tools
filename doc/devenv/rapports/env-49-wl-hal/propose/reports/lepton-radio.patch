@@ -1,0 +1,20 @@
+--- stm32-mw-subghz-phy v1.3.0:stm32_radio_driver/radio.c
++++ family-stm32wlxx master dfaf331:scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/stm32_radio_driver/radio.c	2026-10-30 18:49:08
+@@ -807,6 +807,7 @@
+ 
+ static bool RadioIsChannelFree( uint32_t freq, uint32_t rxBandwidth, int16_t rssiThresh, uint32_t maxCarrierSenseTime )
+ {
++#if 0
+     bool status = true;
+     int16_t rssi = 0;
+     uint32_t carrierSenseTime = 0;
+@@ -840,6 +841,9 @@
+     RadioStandby( );
+ 
+     return status;
++#else
++    return false;
++#endif
+ }
+ 
+ static uint32_t RadioRandom( void )

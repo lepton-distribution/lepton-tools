@@ -1,0 +1,10 @@
+prvCheckTasksWaitingTermination () at /Users/cle_d_anton/lepton/trunk/sys/root/src/kernel/core/ucore/freeRTOS_11-3-0/tasks.c:6120
+6120	        while( uxDeletedTasksWaitingCleanUp > ( UBaseType_t ) 0U )
+$1 = 6
+$2 = 1
+$3 = "IDLE", '\000' <repeats 11 times>
+$4 = 0x20005f1c <xIdleTaskTCB.3+52> "IDLE"
+$5 = 0x20005ae8
+$6 = 0xbb
+prvCheckTasksWaitingTermination + 8 in section .text
+[Inferior 1 (Remote target) detached]

@@ -1,0 +1,7 @@
+sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/Conf/mw_log_conf_template.h	Conf/mw_log_conf_template.h
+sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/Conf/radio_conf_template.h	Conf/radio_conf_template.h
+sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/Conf/radio_template.h	Conf/radio_template.h
+sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/Conf/subghz_template.c	Conf/subghz_template.c
+sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/Conf/subghz_template.h	Conf/subghz_template.h
+sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/LICENSE	LICENSE
+sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/LICENSE.md	LICENSE.md

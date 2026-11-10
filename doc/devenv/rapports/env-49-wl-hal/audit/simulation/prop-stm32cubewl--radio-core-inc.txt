@@ -1,0 +1,1 @@
+sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/radio_subghz_phy/stm32_radio_core_inc/utilities_def.h	Projects/NUCLEO-WL55JC/Applications/SubGHz_Phy/SubGHz_Phy_PingPong/Core/Inc/utilities_def.h

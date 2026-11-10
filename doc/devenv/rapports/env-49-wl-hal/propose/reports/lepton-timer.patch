@@ -1,0 +1,14 @@
+--- STM32CubeWL v1.3.0:Utilities/timer/stm32_timer.h
++++ family-stm32wlxx master dfaf331:scion/sys/root/src/kernel/dev/arch/cortexm/stm32wlxx/Utilities/timer/stm32_timer.h	2026-10-30 18:49:08
+@@ -54,8 +54,9 @@
+ /* Includes ------------------------------------------------------------------*/
+ #include <stdbool.h>
+ #include <stdint.h>
+-#include <stddef.h>   
+-#include <cmsis_compiler.h>
++#include <stddef.h> 
++// lepton removed
++//#include <cmsis_compiler.h>
+ #include "utilities_conf.h"
+    
+ /* Exported types ------------------------------------------------------------*/
