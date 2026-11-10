@@ -493,6 +493,7 @@ Décisions prises pendant le chantier (une ligne chacune, avec date et point d'a
 | 2026-11-10 | PA-86 (ENV-49) | Rapport `rapports/env-49-wl-hal.md` accepté ; nouvel oracle de référence Mac `oracles/env-49-apres/` (WL55 : 26 symboles, `.text` +48, critère du PA-85 respecté ; 14 autres presets et host identiques ; bancs WL55 A/B 16/16 ×4 avant et après, radio 20/20 dans les deux sens). |
 | 2026-11-10 | PA-86 (ENV-49, PA-P) | Publication, dans l'ordre : `family-stm32wlxx` (fusion `--no-ff` de `devenv/env-49` dans `master`, push de `master` et de la branche, clone de `<ROOTSTOCK>` sur `master`), puis lepton-tools (état et passation, fusion `--no-ff` dans `main`, push de `main` et de la branche). Miroirs : rien à envoyer. BSP, F4, F7, graine, seed.scions non touchés. |
 | 2026-11-10 | PA-86 (ENV-49) | Copie d'essai `essais/env-49-copie` supprimée. `HORS-PLAN.md` : B2 traité en ENV-49 ; D11 atténué (STM32CubeWL `v1.6.0` : 8 947 fichiers, environ 156 Mo extraits au lieu de 358 Mo), toujours hors plan. Anciens clones WL de `<ROOTSTOCK>` : suppression par l'utilisateur (PA-85 Q4). |
+| 2026-11-10 | PA-P (ENV-49) | Push de `main` et de `devenv/env-49` de lepton-tools accordé après la fin de session (consignation de la suppression des anciens clones WL). |
 
 ## Journal
 
