@@ -122,3 +122,72 @@ Forme générique, `LEPTON_BOARD_PROBE_SERIAL` ; cfg générée seulement si le 
 `LEPTON_RADIO_PEER_STLINK_SERIAL` inchangée ; deux réglages (construction, éditeur) documentés
 ensemble ; `nucleo-f439zi` contrôlé par son image sur la NUCLEO-F429ZI ; flash autorisé sur les
 cinq cartes du §1.7.
+
+## 2. Oracle avant
+`oracles/env-45-avant/` (`env-45-sonde/oracle-16.sh` = `rejouer-oracle.sh` aux arguments d'ENV-41 :
+6 QEMU, 10 cartes, constructions à neuf), contre la référence `oracles/env-44-apres/` :
+16 × code 0 ; mklepton identiques ; host 7/7 ; bancs KAL et fumée des 6 presets QEMU identiques
+(`env-45-sonde/comparer-journaux.py`, repris d'ENV-44, mêmes éléments ignorés) ; `ctest -N`
+17/17 identiques.
+
+## 3. Mise en œuvre
+| Dépôt | Branche | Commit | Contenu |
+| --- | --- | --- | --- |
+| clone noyau | `devenv/env-45` (depuis `master` cde728f) | 36ef800 | `cmake/lepton_greffons.cmake` : `_lepton_sonde_cfg` (cache `LEPTON_BOARD_PROBE_SERIAL` ; posée : `${CMAKE_BINARY_DIR}/openocd-<bsp>.cfg` par `file(CONFIGURE)`, `echo` du numéro, `source {<cfg BSP>}`, `adapter serial` ; contrôle du numéro `^[A-Za-z0-9._:-]+$` ; alias `LEPTON_BOARD_STLINK_SERIAL` avec `DEPRECATION`) ; `LEPTON_BOARD_OPENOCD_CFG_BSP` |
+| `bsp-nucleo-wl55jc1` | `devenv/env-45` (depuis `master` ef51ec1) | 93ddcec | mécanisme propre retiré ; cfg de la carte paire sur `LEPTON_BOARD_OPENOCD_CFG_BSP` |
+| lepton-tools | `devenv/env-45` (depuis `main` fbfe076) | 34ddabe, 7f50880 | skill `lepton-cibles` (choix de la sonde, numéros) ; `README.md` (deux réglages) ; `banc-wl55.sh` au nouveau nom ; `env-45-sonde/banc-sonde.sh`, `bancs.sh` |
+
+Aucun fichier ajouté au trunk : pas de regreffe (3983 liens, 0 lien cassé). Code de lepton
+inchangé (PA-77 : deux réglages) ; pytest 362 réussis.
+
+Essais de configuration (répertoires jetables) : vide → cfg du BSP dans `flash` et les tests, pas
+de cfg générée ; numéro posé (F429, SAMD21) → cfg générée ; ancien nom (WL55) → `DEPRECATION`,
+valeur reprise, cfg de la paire sur la cfg du BSP ; `a b` → erreur de configuration. Chaque cfg
+générée attache sa carte par `openocd -f <cfg> -c init -c shutdown`.
+
+## 4. Contrôles → PA-78
+
+### 4.1 Oracle après
+`oracles/env-45-apres/`, mêmes arguments, comparé à `env-45-avant` (`comparaisons/`) :
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| 6 presets QEMU | code 0 | différente (date) | identique | identique (19/15/19/15/18/18) | — |
+| 10 presets de carte | code 0 | différente (date) | — | — | — |
+| `host` | mklepton identiques | | | ctest 7/7 | — |
+
+`ctest -N` : 17/17 identiques. Binaires identiques, critère atteint.
+
+### 4.2 Bancs sur carte, cinq sondes branchées ensemble
+`env-45-sonde/bancs.sh` (ports et numéros du §1.7 ; hôte réseau 192.168.2.10, `en0`, F429
+seulement). Chaque banc reconfigure `build/<preset>` avec `LEPTON_BOARD_PROBE_SERIAL`, vérifie la
+cfg générée, exige `lepton.elf` = oracle après (code 0), puis `ctest -L board`. Journaux :
+`oracles/env-45-apres/<preset>/carte*.log`, `cfg-sonde.cfg`.
+
+| Preset | Sonde | Résultat | Annonce « sonde demandée » (journal détaillé) | Référence |
+| --- | --- | --- | --- | --- |
+| `nucleo-f429zi-embos` | 0672FF…3842 | 20/20 (fumée, réseau, KAL) | 18 | 20/20, ENV-42 (WL55 débranchées alors) |
+| `nucleo-f429zi-freertos` | idem | 20/20 | 18 | 20/20, ENV-42 |
+| `nucleo-f439zi-embos` (image sur la F429) | idem | 20/20 | 18 | 20/20, ENV-35, R43-1 |
+| `stm32f746g-disco-embos` | 0671FF…1231 | 19/19 (sans réseau) | 18 | 19/19, ENV-19 |
+| `stm32f746g-disco-freertos` | idem | 19/19 | 18 | 19/19, ENV-19 |
+| `samd21-xplained-pro-embos` | ATML…3505 (EDBG) | 15/15 | 14 | 15/15, ENV-24 |
+| `samd21-xplained-pro-freertos` | idem | fumée en échec (E-5 hérité d'ENV-19 : invite atteinte, `uname`/`ls`/`ps` sans sortie) ; KAL 14/14 (`-FS board_t0 -E board.smoke_lsh`, `carte-kal.log`) | 14 | idem, ENV-24 |
+| `nucleo-wl55jc1-embos` | A 0027…3937, paire B 004F…3937 | 16/16, radio A→B et B→A reçue | 14 | 16/16, ENV-42 |
+| `nucleo-wl55jc1-freertos` | idem | 16/16, radio reçue dans les deux sens | 14 | 16/16, ENV-42 |
+
+Le flash de SAMD21 FreeRTOS a eu lieu par la bonne sonde (l'image démarre jusqu'à l'invite) :
+l'échec de fumée est celui d'ENV-19, sans lien avec la sonde.
+
+### 4.3 Variable vide, numéro faux
+- **Vide** : cfg du BSP inchangée dans `flash` et les tests (§3) ; avec plusieurs sondes, première
+  sonde trouvée, comme avant (§1.7 : la cfg F429 prend le ST-LINK du F746 et échoue sur l'IDCODE).
+- **Numéro faux** (`cmake --build --target flash`, NUCLEO-F429ZI, `env-45-sonde/flash-numero-faux.txt`) :
+  « Lepton : sonde demandée 0672FF4952527172FAUX0000 », `Info : No device matches the serial
+  string`, `Error: open failed`, `** OpenOCD init failed **`, code 1 : aucune écriture, aucune autre
+  sonde prise. CMSIS-DAP : `unable to find a matching CMSIS-DAP device` (§1.7).
+
+### 4.4 État laissé
+Images `lepton` embOS remises en flash par la cible `flash` et le numéro de chaque carte
+(« Verified OK ») : NUCLEO-F429ZI, STM32F746G-DISCO, SAMD21 Xplained Pro, WL55 A ; WL55 B porte
+l'image `nucleo-wl55jc1-freertos` du dernier test radio.

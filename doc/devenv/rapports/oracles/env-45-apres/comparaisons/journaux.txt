@@ -1,0 +1,6 @@
+qemu-mps2-an386-embos            banc KAL identique (19 tests)   fumée identique
+qemu-mps2-an386-embos-soft       banc KAL identique (15 tests)   fumée identique
+qemu-mps2-an386-freertos         banc KAL identique (19 tests)   fumée identique
+qemu-mps2-an386-freertos-soft    banc KAL identique (15 tests)   fumée identique
+qemu-mps2-an500-embos            banc KAL identique (18 tests)   fumée identique
+qemu-mps2-an500-freertos         banc KAL identique (18 tests)   fumée identique
