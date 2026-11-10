@@ -434,3 +434,16 @@ ports sont relevés de nouveau par `ioreg` et n'ont pas changé. Journaux :
 | Banc WL55 A/B, radio comprise, identique à la référence ; host et 14 presets hors WL55 à code 0 | oui (§4.1, §4.2) |
 
 Nouvel oracle de référence proposé : `oracles/env-49-apres/`.
+
+## 5. PA-86 (2026-11-10, utilisateur)
+- Le rapport est accepté ; `oracles/env-49-apres/` devient l'oracle de référence Mac.
+- Publication (PA-P) :
+  - `family-stm32wlxx` : fusion `--no-ff` de `devenv/env-49` dans `master` (9349be2, même arbre
+    que bfbeb1b), push de `master` et de la branche. Le clone de `<ROOTSTOCK>` est sur `master`,
+    trunk inchangé (`cmp` de la liste `chemin -> cible`) ;
+  - lepton-tools : fusion `--no-ff` de `devenv/env-49` dans `main`, push de `main` et de la
+    branche.
+- `essais/env-49-copie` est supprimée.
+- `HORS-PLAN.md` : B2 traité ; D11 atténué (156 Mo en `v1.6.0`).
+- Les 4 anciens clones WL de `<ROOTSTOCK>` seront supprimés par l'utilisateur, avec la commande
+  de `handoff/env-49.md`.
