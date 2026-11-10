@@ -3,12 +3,12 @@
   "nom": "stm32f4xx",
   "type": "famille",
   "version": "1.0.0",
-  "description": "Famille STM32F4 : couche Lepton, SPL ST, CMSIS device, tables de vecteurs par MCU.",
+  "description": "Famille STM32F4 : couche Lepton, HAL ST, CMSIS device, tables de vecteurs par MCU.",
   "destination": "kernel/dev/arch/cortexm/stm32f4xx",
   "bibliotheque": "kernel",
   "sources": [
     "dev_stm32f4xx",
-    "driverlib/src"
+    "hal_driver/Src/stm32f4xx_hal_gpio.c"
   ],
   "dependances": [
     "lepton-noyau"
@@ -27,7 +27,7 @@
   "compilation": {
     "publique": {
       "definitions": [
-        "USE_STDPERIPH_DRIVER"
+        "USE_HAL_DRIVER"
       ]
     }
   }
