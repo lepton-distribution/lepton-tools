@@ -328,3 +328,227 @@ Un `graft-update` de ces rootstocks avancera la famille et créera les 4 clones 
   `dev_stm32wlxx_util_timer.c` corrigé.
 - Proposition 6 : option (a). Les 8 `LICENSE.txt` sont retirés et les 9 `LICENSE.md` de l'amont
   projetés. Les écarts accordés de la liste des chemins du trunk sont −8 et +9.
+
+## 2. Miroirs (accord PA-P du PA-83)
+
+Journaux : `env-48-wl-projection/miroirs/`.
+
+| Action | Résultat |
+| --- | --- |
+| `gh repo create lepton-distribution/mirror-{stm32wlxx-hal-driver,cmsis-device-wl,stm32-mw-subghz-phy,STM32CubeWL}` (`--public`, description seule) | créés, vides, publics (`creation.log`) |
+| 4 lignes WL ajoutées au `.scion.mirrors` de `essais/env-40-publication/graine/scion/.scion/` (avant : `publication-mirrors-avant.txt`) | 8 lignes (F4, F7, WL) |
+| `scion mirror-sync rootstock --seed graine --dry-run` | code 0 ; WL : 9, 7, 7 et 9 références « à envoyer » (`main` + tous les tags) ; F4 et F7 : 0 |
+| `scion mirror-sync rootstock --seed graine` | code 0 ; 9, 7, 7 et 9 références envoyées, 0 signalement ; F4, F7 : 0 |
+| seconde passe | code 0 ; 0 référence envoyée sur les 8 miroirs |
+| `git ls-remote --heads --tags` miroir contre amont (`comparaison.txt`) | identiques (`cmp`) : 17, 13, 13 et 17 lignes ; `v1.3.0^{}` e3966ab, `v1.1.1^{}` d248c55, `v1.3.0^{}` 1cad768, `v1.3.0^{}` 378e461 ; branche par défaut `main` |
+
+Dépôt de travail du miroir STM32CubeWL :
+`essais/env-40-publication/rootstock/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git`,
+66 Mo.
+
+## 3. Oracle avant
+
+`rapports/oracles/env-48-avant/` : `env-46-spl/oracle-complet.sh <ROOTSTOCK>`, repris sans
+changement (6 presets QEMU, 10 de carte, constructions à neuf, « tout a réussi », puis `ctest -N`).
+La comparaison à `oracles/env-47-apres/` se fait par `env-46-spl/comparer.sh` (journal
+`env-48-wl-projection/oracle-avant.out`) :
+
+| Preset | Sections/symboles | Fumée | Banc KAL |
+| --- | --- | --- | --- |
+| host | mklepton identiques ; ctest 7/7 | — | — |
+| 6 QEMU (an386 ×4, an500 ×2) | code 0 ×6 | identique | identique (19, 15, 19, 15, 18, 18) |
+| 10 de carte (F429, F439, WL55, F746, SAMD21 ; embOS et FreeRTOS) | code 0 ×10 | — | — |
+
+- `ctest -N` : 17/17 identiques.
+- Trunk : 3887 chemins (`c65ee399…`), liste `chemin -> cible` `70cc91c2…`, égale au relevé de
+  l'audit (§1.2) ; 0 anomalie.
+
+## 4. Bascule
+
+### 4.1 lepton-tools (branche `devenv/env-48`)
+| Commit | Contenu |
+| --- | --- |
+| 777a7a0 | audit §1 et décisions PA-83 |
+| 2a8900a | lepton : propriété d'un lien dans un clone partagé (P-G3, §1.5, décision 4a). `ProjectionLine`, `read_projection_lines`, `projected_paths` (motifs P-M1, P-M2, P-T2, P-T3, P-X1) dans `lepton/rootstock.py`. `projection_tables` relit les motifs **seulement** pour un clone partagé. `Owner.files` et `_owner_of` dans `lepton/files.py`. Tests : 15 nouveaux dans `tests/test_projection.py` (clone partagé de bout en bout, 13 formes de motif, exclusion). Le test du clone partagé échoue sans le correctif. Suite complète : 377 réussis |
+| 2403711 | aide de `scripts/tiers/verifier-import.sh` : WL projeté, copies hors projection seulement |
+
+lepton reste en 0.1.0. Il est réinstallé par `pipx install --force <LEPTON_TOOLS>` depuis
+`devenv/env-48` (2a8900a) le 2026-11-10.
+
+### 4.2 Famille (`family-stm32wlxx`, branche `devenv/env-48`) et copie d'essai
+La copie d'essai `essais/env-48-copie` est refaite à neuf par `rsync -a` de `<ROOTSTOCK>`, sans
+`build/` ni `third_party/` : 3887 liens, 0 cassé. Les clones tiers WL sont donc créés depuis les
+miroirs. Commits dans son clone famille, depuis `master` 2340b25 :
+
+| Commit | Contenu |
+| --- | --- |
+| 9747755 | `scion/.scion/` : sources (miroirs), ramifications, 34 lignes de projection (25 du §1.3 + 9 `LICENSE.md`, C2), `.scion.mirrors` (`env-48-wl-projection/propose/`) |
+| ca75c40 | mécanique : `git rm` de la HAL (155 fichiers) |
+| f47fb55 | mécanique : `git rm` du CMSIS device (5) |
+| b897cc3 | mécanique : `git rm` de SubGHz_Phy (18) |
+| 0659c4d | mécanique : `git rm` des utilitaires et de `utilities_def.h` (33) |
+| 9829095 | mécanique : `git rm` des 8 `LICENSE.txt` (C2) |
+| c3c7494 | `LEPTON-PROVENANCE.md` ×4 réécrits (projection, clé, révision, miroir, scion ≥ 0.6.1.0, fichiers restés, C1, C2) ; `description` du manifeste ; `sources` et `compilation` inchangés |
+| 205387c | commentaire de `dev_stm32wlxx/dev_stm32wlxx_util_timer.c` (C1) : fonctions non liées. Même nombre de lignes, pour ne pas décaler les numéros de ligne des informations de débogage |
+
+Aucun répertoire vide après `git rm`. Restent dans la famille, sous les 4 ensembles :
+`stm32_hal_legacy.h`, `radio.c`, `stm32_timer.h`, `subghz.h`, `utilities_conf.h`, `platform.h` et
+les 4 `LEPTON-PROVENANCE.md`.
+
+Attendu : `attendu-apres.py … --c2` → `attendu-liens-apres-c2.txt`. Il compte 3888 liens : les
+3887 d'avant, −8 `LICENSE.txt`, +9 `LICENSE.md` ; 220 cibles WL projetées, 627 en tout.
+
+Regreffe de la copie (journaux `env-48-wl-projection/copie/`) :
+- `scion seed-clone --seed depots/lepton-seed.scions/original-tree` : code 0. Il crée les 4
+  clones WL depuis les miroirs.
+- `scion graft` : code 0 ; 3888 feuilles ; 23 entrées.
+
+| Contrôle | Résultat |
+| --- | --- |
+| `controler-trunk.py` contre `attendu-liens-apres-c2.txt` | **CONFORME** : liste `chemin -> cible` identique (3888) ; 0 régulier, 0 cassé ; 627 projetés, 0 nom absent du HEAD (casse), 0 contenu ≠ HEAD ; clones WL aux commits épinglés, `origin` = miroirs, `blob:none` |
+| contenu des 3879 chemins communs contre `<ROOTSTOCK>` (`cmp`) | 6 écarts, exactement les 6 fichiers modifiés par c3c7494 et 205387c (`copie/contenu-diffs.txt`) |
+| `lepton check` | code 0 (19 fichiers conformes) |
+| `lepton seed status` | 5 clés WL « projection » : 156, 6, 19, 38 et 1 fichiers (= 220), « projeté par stm32wlxx » |
+| `lepton file owner` | `…/src/stm32wlxx_hal_subghz.c` → `tiers@stm32wlxx-hal-driver` ; `…/STM32WL…/LICENSE.md` → `tiers@cmsis-device-wl` ; `…/Utilities/timer/LICENSE.md` → `tiers@stm32cubewl::utilities` ; `…/utilities_def.h` → `tiers@stm32cubewl::radio-core-inc` ; `radio.c`, `stm32_hal_legacy.h`, `LEPTON-PROVENANCE.md` → `lepton@family-stm32wlxx` |
+| `lepton generate` | code 0 ; espace de travail identique à celui de `<ROOTSTOCK>`, aux chemins du rootstock près ; aucun dossier `depots/tiers` |
+
+### 4.3 Rootstock neuf `essais/env-48-vierge`
+La graine d'essai locale `essais/env-48-vierge-graine` est un clone d'`original-tree` 15740f9
+depuis GitHub. Sa branche `devenv/env-48` (25c0d35, non publiée) déclare la famille WL en version
+`devenv/env-48`, en `file://localhost/…/env-48-copie/depots/lepton/family-stm32wlxx/master`.
+
+Commandes, toutes à code 0 : `scion rootstock-install`, `seed-add --version devenv/env-48
+file://localhost/…/env-48-vierge-graine` (57 s), `graft`. Résultat : 3888 feuilles, 23 entrées.
+
+| Contrôle | Résultat |
+| --- | --- |
+| chemins | 3888, identiques à l'attendu (`2d317c4b…`) ; 0 ajouté, 0 retiré |
+| cibles | 24 lignes diffèrent de l'attendu : les 24 fichiers propres à la famille WL, liés sous `depots/lepton/family-stm32wlxx/devenv/env-48/`, car le clone est rangé sous le nom de la version, comme en ENV-47 (`vierge/cibles-differentes.txt`) |
+| projetés | 627 liens identiques à l'attendu ; contenu = HEAD ; 0 écart de casse ; clones WL aux commits épinglés, `origin` = miroirs |
+| contenu des 3888 fichiers contre la copie | 0 écart |
+| fichiers réguliers, liens cassés | 0, 0 |
+| `lepton check` | code 0 |
+
+### 4.4 Rootstock à graine de projet `essais/env-48-projet`
+Journaux : `env-48-wl-projection/projet/`.
+
+| Action | Résultat |
+| --- | --- |
+| `lepton seed new wl55 -C essais/env-48-projet --bsp nucleo-wl55jc1 --mkconf sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_wl55jc1.xml --origin stm32wlxx=file://localhost/…/env-48-copie/depots/lepton/family-stm32wlxx/master@devenv/env-48 --origin nucleo-wl55jc1=https://github.com/lepton-distribution/lepton-bsp-nucleo-wl55jc1.git@master` | code 0 |
+| liste greffée | 10 entrées, dont les 5 clés WL à 6 colonnes ; 3313 liens, 0 cassé, 0 fichier régulier |
+| `lepton check` / `seed status` | code 0 (5 fichiers conformes) / code 0 : 5 clés « projection » (156, 6, 19, 38, 1) |
+| `lepton seed lock --no-cmake` | code 0 ; verrou (`projet/verrou.json`) : les 5 clés WL, dont `stm32cubewl::utilities` et `stm32cubewl::radio-core-inc` au même commit 378e461, `projected_by` `lepton@family-stm32wlxx` |
+| `lepton seed lock --verify` | code 0, « clones conformes au verrou » |
+
+### 4.5 `<ROOTSTOCK>` (accord PA-P du PA-83)
+Journaux : `env-48-wl-projection/rootstock/`.
+
+Relevé juste avant la bascule (`rootstock/avant/`) :
+- `lepton generate` code 0, espace copié ;
+- `lepton check` code 0 (19 fichiers conformes) ;
+- tous les clones sur `master` (graine sur `original-tree`), propres.
+
+| Action | Résultat |
+| --- | --- |
+| `git fetch` des 8 commits du clone de la copie, `switch -c devenv/env-48`, `merge --ff-only` | `family-stm32wlxx` `devenv/env-48` = 205387c, = la copie, propre |
+| `scion seed-clone --seed depots/lepton-seed.scions/original-tree` | code 0 ; 4 clones WL sous `depots/tiers/` (origine = miroirs) |
+| `scion graft` (ni `graft-update` ni `seed-update`) | code 0 ; 3888 feuilles ; 23 entrées ; 26 `.DS_Store` ignorés |
+| `controler-trunk.py` contre `attendu-liens-apres-c2.txt` | **CONFORME** : liste = attendu = copie (`c3e20325…`), chemins `2d317c4b…` ; 0 régulier, 0 cassé ; 627 projetés, contenu = HEAD, 0 écart de casse ; clones WL e3966ab, d248c55, 1cad768, 378e461, `origin` = miroirs, 0 modification, `blob:none` |
+| contenu des 3888 fichiers contre la copie | 0 écart |
+| autres clones | tous sur `master`, propres ; seul `family-stm32wlxx` est sur `devenv/env-48` |
+| `lepton check`, `lepton generate`, `seed status` | code 0, 0, 0 ; espace de travail **identique** à celui d'avant (`cmp`) ; 9 clés « projection » (WL : 156, 6, 19, 38, 1) |
+| `lepton file owner` | `…/inc/stm32wlxx_hal_subghz.h` → `tiers@stm32wlxx-hal-driver` ; `…/utilities_def.h` → `tiers@stm32cubewl::radio-core-inc` ; `…/Utilities/misc/stm32_mem.c` → `tiers@stm32cubewl::utilities` ; `…/radio.c` → `lepton@family-stm32wlxx` |
+
+## 5. Contrôles (PA-84)
+
+### 5.1 Oracle après
+`rapports/oracles/env-48-apres/` : mêmes commandes que l'oracle avant, sur `<ROOTSTOCK>` basculé.
+Comparaison à `oracles/env-48-avant/` par `env-46-spl/comparer.sh` (journal
+`env-48-wl-projection/oracle-apres.out`) :
+
+| Preset | Sections/symboles | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- |
+| host | mklepton identiques ; ctest 7/7 | — | — | aucun |
+| 6 QEMU (an386 ×4, an500 ×2) | code 0 ×6 | identique | identique (19, 15, 19, 15, 18, 18) | aucun |
+| 10 de carte, dont `nucleo-wl55jc1-embos` et `-freertos` | code 0 ×10 | — | — | aucun |
+
+- `ctest -N` : 17/17 identiques.
+- Trunk : 3888 chemins (`2d317c4b…`), liste `chemin -> cible` `c3e20325…` = attendu ; 0 anomalie.
+  Écarts accordés seulement : −8 `LICENSE.txt`, +9 `LICENSE.md` (C2).
+- Empreintes (`empreintes.txt`) : différentes sur les 16 presets, comme d'un oracle au suivant sans
+  aucune modification (`env-47-apres` → `env-48-avant` : 16/16 différentes ; ENV-47 avant → après :
+  16/16). Elles ne sont pas reproductibles d'une construction à l'autre ; la skill `lepton-oracle`
+  ne les retient pas (code 0 = mêmes sections, mêmes symboles).
+- Éléments ignorés par `comparer-journaux.py` : date de compilation, jeton `lepton-uart1-<n>`,
+  `rcv SIGCHLD`, lignes vides.
+
+Fichiers suivis restés sous les 4 ensembles de la famille (`rootstock/famille-restent.txt`) : 10.
+Ce sont les 4 `LEPTON-PROVENANCE.md`, `stm32_hal_legacy.h` (autre révision), et `radio.c`,
+`stm32_timer.h`, `subghz.h`, `utilities_conf.h`, `platform.h` (modifiés par Lepton). La famille
+suit 28 fichiers en tout.
+
+### 5.2 Banc de la paire NUCLEO-WL55JC1 (PA-11)
+Script `env-48-wl-projection/bancs.sh` : `banc-wl55.sh` d'ENV-42 sur les deux presets. Ports
+relevés par `ioreg` le 2026-11-10, **inversés** depuis ENV-45 §1.7 :
+- A 002700253431510837393937 : `/dev/cu.usbmodem1454303` ;
+- B 004F003E3431510937393937 : `/dev/cu.usbmodem145103`.
+
+Journaux : `oracles/env-48-apres/<preset>/carte*.log`, `radio-carte.log` ; bilan
+`env-48-wl-projection/bancs.out`.
+
+| Preset | `lepton.elf` du banc contre l'oracle après | `ctest -L board` | Radio |
+| --- | --- | --- | --- |
+| `nucleo-wl55jc1-embos` | code 0, empreintes `.elf` et `.bin` identiques | 16/16 (fumée, flash, KAL ×13, radio) | A→B 20/20, B→A 20/20, ping-pong 20/20, jeton reçu dans les deux sens |
+| `nucleo-wl55jc1-freertos` | idem | 16/16 | idem |
+
+Résultat identique à la référence (ENV-45 : 16/16 sur les deux presets, radio reçue dans les deux
+sens). En fin de session, les deux cartes portent l'image `nucleo-wl55jc1-freertos` du dernier
+test radio.
+
+### 5.3 Bilan des critères
+| Critère (fichier d'étape) | Résultat |
+| --- | --- |
+| PA-83 et PA-84 tranchés et consignés | PA-83 : §1.12 et `DEVENV-STATUS.md` ; PA-84 : §5.6 |
+| Binaires identiques (code 0) | oui : code 0 ×16, KAL, fumée, mklepton et `ctest -N` identiques (§5.1) |
+| Liste des chemins identique, casse comprise | oui, aux écarts accordés près (−8 `LICENSE.txt`, +9 `LICENSE.md`, C2). Les noms sont comparés dans la liste des liens, triée par octets ; la casse sur disque relève de la VM (ENV-50) |
+| +211 cibles WL sous `depots/tiers/`, 618 en tout, au sort des `LICENSE.md` près | 211 + 9 = 220 cibles WL ; 627 en tout (F4 206, F7 201, WL 220) ; 0 cassé, 0 fichier régulier |
+| Contenu projeté = commits épinglés | oui : contenu = blob du HEAD, clones aux commits des tags (§4.5) |
+| Rootstock neuf : même liste, `lepton check` code 0 | oui (§4.3) |
+| `lepton check`, `generate`, `seed status`, `file owner` sur `<ROOTSTOCK>` ; `seed lock` sur un rootstock à graine de projet, clone partagé compris | oui (§4.4, §4.5) ; attribution correcte depuis le correctif 2a8900a |
+| Banc WL55 A/B embOS et FreeRTOS, radio comprise | oui, 16/16 ×2 (§5.2) |
+| Ne restent dans la famille que les fichiers modifiés ou hors amont, et la provenance | oui : 10 fichiers sous les 4 ensembles (§5.1) ; `stm32_hal_legacy.h` vient d'une autre révision |
+| `RadioIsChannelFree` documentée (C1) ; C2 tranché et appliqué | oui : `radio_subghz_phy/LEPTON-PROVENANCE.md`, commentaire de `dev_stm32wlxx_util_timer.c` ; 8 `LICENSE.txt` retirés, 9 `LICENSE.md` projetés |
+
+### 5.4 Rootstocks à regreffer en ENV-50
+Tous ont aujourd'hui la famille WL en `master` 2340b25. Un `graft-update` avancera la famille au
+commit de fusion de `devenv/env-48`. Il créera alors les 4 clones tiers WL depuis les miroirs,
+dont celui de STM32CubeWL, avec son extraction complète d'environ 360 Mo. Il réorientera
+211 cibles, retirera 8 chemins et en ajoutera 9. Il exige scion ≥ 0.6.1.0.
+- Mac : `essais/env-13-vierge`, `essais/env-41-vierge` s'il est gardé, et `essais/env-11/wl55jc1`
+  (graine de projet `env11wl`, §1.9).
+- VM : `essais/env-28-debian` et `essais/env-43-debian`, après l'installation de scion 0.6.2.0.
+- Copies d'étape `env-34-copie`, `env-35-copie`, `env-37-copie`, `env-39-copie` : hors des regreffes.
+
+lepton de la VM : à réinstaller depuis `main` (correctif 2a8900a) avant les contrôles de
+`seed status` et `file owner` sur le WL.
+
+### 5.5 Propositions soumises au PA-84
+1. Rapport accepté. Nouvel oracle de référence Mac : `oracles/env-48-apres/`.
+2. Publication complète, dans l'ordre d'ENV-47 (PA-P) :
+   - `family-stm32wlxx` : fusion `--no-ff` de `devenv/env-48` dans `master` ; push de `master` et
+     de la branche ; clone de `<ROOTSTOCK>` remis sur `master` ;
+   - lepton-tools : fusion `--no-ff` dans `main` ; push de `main` et de la branche ;
+   - seed.scions, graine `original-tree`, clone noyau, BSP : non touchés.
+3. Suppression des essais de l'étape :
+   - `essais/env-48-copie`, `env-48-vierge`, `env-48-vierge-graine` (branche non publiée),
+     `env-48-projet`, `env-48-compare` ;
+   - la graine de publication `essais/env-40-publication/`, désormais à 8 miroirs, est gardée.
+4. `HORS-PLAN.md` :
+   - B1 traité (WL), C1 et C2 traités ;
+   - ajout d'un point D11 : extraction complète de STM32CubeWL, environ 360 Mo par rootstock
+     pour 33 fichiers (scion n'a pas de `sparse-checkout`, §C de la spécification), sans suite
+     dans le plan.
+
+### 5.6 Décisions du PA-84 (utilisateur, 2026-11-10) et publication
+- Propositions 1 à 4 acceptées telles quelles : rapport accepté, référence `oracles/env-48-apres/`,
+  publication complète (PA-P), suppression des 5 essais, `HORS-PLAN.md` (B1, C1, C2 traités ; D11).

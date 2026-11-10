@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ENV-48 : liste « chemin -> cible » attendue après la bascule du WL.
 
-Usage : python3 -I attendu-apres.py <liens-avant.txt> <attendus-wl.txt> <sortie.txt>
+Usage : python3 -I attendu-apres.py <liens-avant.txt> <attendus-wl.txt> <sortie.txt> [--c2]
 
 Part de la liste relevée avant la bascule (controler-trunk.py, liens.txt) et réoriente vers les
 clones tiers projetés les cibles des seuls chemins de <attendus-wl.txt> (les 211 chemins des
@@ -18,7 +18,9 @@ depots/lepton/family-stm32wlxx/master/scion/sys/root/src/kernel/) :
       -> tiers/stm32cubewl/v1.3.0/Projects/NUCLEO-WL55JC/Applications/SubGHz_Phy/SubGHz_Phy_PingPong/Core/Inc/utilities_def.h
   dev/arch/cortexm/stm32wlxx/radio_subghz_phy/       -> tiers/stm32-mw-subghz-phy/v1.3.0/
   dev/arch/cortexm/stm32wlxx/Utilities/              -> tiers/stm32cubewl/v1.3.0/Utilities/
-Écrit aussi <sortie>.projetes-wl (chemins réorientés). Code 1 si un attendu n'est pas un lien de
+--c2 (décision C2 du PA-83) : retire les 8 LICENSE.txt de la famille WL et ajoute les 9 LICENSE.md
+projetés (HAL, CMSIS device, pile radio, 6 utilitaires), cibles relatives comme scion les écrit.
+Écrit aussi <sortie>.projetes-wl (chemins réorientés ou ajoutés). Code 1 si un attendu n'est pas un lien de
 la liste, ou si un attendu ne relève d'aucune règle.
 """
 import sys
@@ -42,8 +44,22 @@ REGLES = [  # du plus précis au plus général
 ]
 
 
+TR = "./sys/root/src/kernel/"
+C2_RETIRES = [D + r + "/LICENSE.txt" for r in (
+    "cubemx_hal_driver", "radio_subghz_phy", "Utilities/conf", "Utilities/lpm/tiny_lpm", "Utilities/misc",
+    "Utilities/sequencer", "Utilities/timer", "Utilities/trace/adv_trace")]
+C2_AJOUTS = {  # chemin sous kernel/ -> cible sous depots/tiers/
+    D + "cubemx_hal_driver/LICENSE.md": "stm32wlxx-hal-driver/v1.3.0/LICENSE.md",
+    C + "LICENSE.md": "cmsis-device-wl/v1.1.1/LICENSE.md",
+    D + "radio_subghz_phy/LICENSE.md": "stm32-mw-subghz-phy/v1.3.0/LICENSE.md",
+    **{D + f"Utilities/{r}/LICENSE.md": f"stm32cubewl/v1.3.0/Utilities/{r}/LICENSE.md"
+       for r in ("conf", "lpm/tiny_lpm", "misc", "sequencer", "timer", "trace/adv_trace")},
+}
+
+
 def main():
-    if len(sys.argv) != 4:
+    c2 = sys.argv[4:] == ["--c2"]
+    if len(sys.argv) != (5 if c2 else 4):
         print(__doc__, file=sys.stderr)
         return 2
     attendus = {l.strip() for l in open(sys.argv[2], encoding="utf-8") if l.strip()}
@@ -68,6 +84,18 @@ def main():
                     erreurs.append(f"aucune règle : {ligne}")
         sortie.append(f"{chemin} -> {cible}")
     erreurs += [f"attendu absent de la liste : {a}" for a in sorted(attendus - vus)]
+    if c2:
+        retires = {TR + r for r in C2_RETIRES}
+        avant = len(sortie)
+        sortie = [l for l in sortie if l.split(" -> ", 1)[0] not in retires]
+        if avant - len(sortie) != len(retires):
+            erreurs.append(f"C2 : {avant - len(sortie)} LICENSE.txt retirés au lieu de {len(retires)}")
+        for rel, cible in C2_AJOUTS.items():
+            chemin = TR + rel
+            profondeur = chemin.count("/")          # « ./a/b » : 2 segments → « ../../ »
+            sortie.append(f"{chemin} -> {'../' * profondeur}{T}{cible}")
+            projetes.append(chemin)
+        sortie.sort(key=lambda l: l.encode())
     with open(sys.argv[3], "w", encoding="utf-8") as f:
         f.write("\n".join(sortie) + "\n")
     with open(sys.argv[3] + ".projetes-wl", "w", encoding="utf-8") as f:

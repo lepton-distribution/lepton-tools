@@ -1,0 +1,10 @@
+Test project /Users/cle_d_anton/lepton/build/host
+  Test #1: host.vfs_ufs
+  Test #2: host.ufs_format_host
+  Test #3: host.ufs_format_arm
+  Test #4: host.kernel_stub
+  Test #5: host.mklepton
+  Test #6: host.mklepton_format
+  Test #7: host.mklepton_empreintes
+
+Total Tests: 7

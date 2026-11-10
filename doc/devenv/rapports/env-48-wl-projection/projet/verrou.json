@@ -1,0 +1,82 @@
+{
+  "lepton": "0.1.0",
+  "scions": [
+    {
+      "key": "lepton@building",
+      "name": "building",
+      "location": "depots/generation/building",
+      "version": "*",
+      "path": "",
+      "commit": null
+    },
+    {
+      "key": "lepton@original::tree",
+      "name": "lepton-noyau",
+      "location": "https://github.com/lepton-distribution/lepton-original-tree.scions.git",
+      "version": "master",
+      "path": "",
+      "commit": "76f28bda3aeca6f42f324d3df5d28f956423f6fa"
+    },
+    {
+      "key": "lepton@family-stm32wlxx",
+      "name": "stm32wlxx",
+      "location": "file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-48-copie/depots/lepton/family-stm32wlxx/master",
+      "version": "devenv/env-48",
+      "path": "",
+      "commit": "205387c755ef7ed337521ab3a3ed81a3c380d8ec"
+    },
+    {
+      "key": "lepton@bsp-nucleo-wl55jc1",
+      "name": "nucleo-wl55jc1",
+      "location": "https://github.com/lepton-distribution/lepton-bsp-nucleo-wl55jc1.git",
+      "version": "master",
+      "path": "",
+      "commit": "4d7cf8090b5d1fedb7d0de4714bec2c5270964e1"
+    },
+    {
+      "key": "tiers@stm32wlxx-hal-driver",
+      "name": "stm32wlxx-hal-driver",
+      "location": "https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git",
+      "version": "v1.3.0",
+      "path": "",
+      "commit": "e3966ab429c1711e5dd2b40918e1d987eed7a249",
+      "projected_by": "lepton@family-stm32wlxx"
+    },
+    {
+      "key": "tiers@cmsis-device-wl",
+      "name": "cmsis-device-wl",
+      "location": "https://github.com/lepton-distribution/mirror-cmsis-device-wl.git",
+      "version": "v1.1.1",
+      "path": "",
+      "commit": "d248c5514fe294fec6eb52f49ed3f1a53cea45b0",
+      "projected_by": "lepton@family-stm32wlxx"
+    },
+    {
+      "key": "tiers@stm32-mw-subghz-phy",
+      "name": "stm32-mw-subghz-phy",
+      "location": "https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git",
+      "version": "v1.3.0",
+      "path": "",
+      "commit": "1cad76816effd9679a056e57c02dd4b23d7cb772",
+      "projected_by": "lepton@family-stm32wlxx"
+    },
+    {
+      "key": "tiers@stm32cubewl::utilities",
+      "name": "stm32cubewl::utilities",
+      "location": "https://github.com/lepton-distribution/mirror-STM32CubeWL.git",
+      "version": "v1.3.0",
+      "path": "",
+      "commit": "378e461e469ef9826e857f8eda3346cea525b2fa",
+      "projected_by": "lepton@family-stm32wlxx"
+    },
+    {
+      "key": "tiers@stm32cubewl::radio-core-inc",
+      "name": "stm32cubewl::radio-core-inc",
+      "location": "https://github.com/lepton-distribution/mirror-STM32CubeWL.git",
+      "version": "v1.3.0",
+      "path": "",
+      "commit": "378e461e469ef9826e857f8eda3346cea525b2fa",
+      "projected_by": "lepton@family-stm32wlxx"
+    }
+  ]
+}

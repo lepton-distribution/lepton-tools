@@ -1,0 +1,1 @@
+  24 depots/lepton/family-stm32wlxx/devenv/env-48

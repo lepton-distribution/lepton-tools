@@ -1,0 +1,12 @@
+https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver
+code 0
+https://github.com/lepton-distribution/mirror-cmsis-device-wl
+code 0
+https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy
+code 0
+https://github.com/lepton-distribution/mirror-STM32CubeWL
+code 0
+mirror-stm32wlxx-hal-driver PUBLIC vide=true
+mirror-cmsis-device-wl PUBLIC vide=true
+mirror-stm32-mw-subghz-phy PUBLIC vide=true
+mirror-STM32CubeWL PUBLIC vide=true
