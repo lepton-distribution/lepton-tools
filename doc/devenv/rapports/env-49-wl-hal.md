@@ -266,3 +266,15 @@ Q4. **Reste du PA-85** :
   nouvelles lignes SubGHz, reports, `stm32_hal_legacy.h` projeté) ;
 - **anciens clones** : leur suppression par l'utilisateur, après le PA-86, avec la commande exacte
   fournie ; ou leur conservation jusqu'à ENV-50.
+
+### 1.9 Décisions du PA-85 (2026-11-10, utilisateur)
+- Q1 : couple de STM32CubeWL `v1.6.0`, périmètre complet.
+- Q2 : lignes « A », chemins du trunk conservés ; `Conf/radio_template.h` projeté (+1 accordé).
+- Q3 : `stm32_hal_legacy.h` de la HAL `v1.6.0` projeté ; la copie de la famille est retirée.
+- Q4 : propositions du §1.8 acceptées :
+  - reports ;
+  - couche Lepton et BSP non modifiés ;
+  - critère d'écart ;
+  - PA-11 sur les deux WL55 ;
+  - description et provenances ;
+  - anciens clones supprimés par l'utilisateur après le PA-86.
