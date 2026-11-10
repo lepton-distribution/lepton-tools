@@ -302,7 +302,7 @@
           "items": { "type": "string", "pattern": "^-" }
         },
         "inclusions": {
-          "description": "Répertoires d'inclusion, relatifs à sys/root/src/ (forme des #include de Lepton), ex. kernel/dev/arch/cortexm/stm32f4xx/driverlib.",
+          "description": "Répertoires d'inclusion, relatifs à sys/root/src/ (forme des #include de Lepton), ex. kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc.",
           "$comment": "PA-7 Q1 (ENV-6).",
           "type": "array",
           "items": { "$ref": "#/$defs/chemin_relatif" },
