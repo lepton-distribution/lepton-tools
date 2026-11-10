@@ -1,0 +1,17 @@
+host	47	47	0	0	0	-
+nucleo-f429zi-embos	172	172	0	0	0	kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f4xx.h 
+nucleo-f429zi-freertos	179	179	0	0	0	kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f4xx.h 
+nucleo-f439zi-embos	172	172	0	0	0	kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f4xx.h 
+nucleo-f439zi-freertos	173	173	0	0	0	kernel/core/ucore/cmsis-5/Device/ST/STM32F4xx/Include/stm32f4xx.h 
+nucleo-wl55jc1-embos	138	138	0	0	0	-
+nucleo-wl55jc1-freertos	145	145	0	0	0	-
+qemu-mps2-an386-embos	164	164	0	0	0	-
+qemu-mps2-an386-embos-soft	163	163	0	0	0	-
+qemu-mps2-an386-freertos	171	171	0	0	0	-
+qemu-mps2-an386-freertos-soft	170	170	0	0	0	-
+qemu-mps2-an500-embos	164	164	0	0	0	-
+qemu-mps2-an500-freertos	171	171	0	0	0	-
+samd21-xplained-pro-embos	111	111	0	0	0	-
+samd21-xplained-pro-freertos	119	119	0	0	0	-
+stm32f746g-disco-embos	169	169	0	0	0	-
+stm32f746g-disco-freertos	176	176	0	0	0	-
