@@ -149,6 +149,17 @@ confirmer au PA-87.
 | ORDRE R50-1 | 2026-11-10 | Mac (`lepton-tools-9d`) → VM (`debian-linux-vm`) | consigne `env-50-debian.md` @ 42fc79e envoyée en entier, branche `devenv/env-50` @ 93e1aa6 ; actions de l'utilisateur (installations, 2 `graft-update`, venv, cartes, `rm -rf`, push) et flash accordé (PA-11) ; envoi réussi par Remote Control, lecture non confirmée |
 | ACCUSÉ R50-1 | 2026-11-10 | VM → Mac | reçu directement (non relayé). §5 sans écart : `devenv/env-50` = 93e1aa6, ls-remote = §1 ; scion 0.6.1.0 avant installation, chaîne APT = R43-1, embOS présent, 17 Go libres, `venv-test` présent ; `$U` dans l'état de R43-1 (16 entrées, 3982 liens, 2 clones tiers F4) ; `$E13` : graine 0f1275a (ancêtre de 15740f9), 9 entrées, 8 clones sur `master` propres (noyau 16a331b, F4 01b5528, WL 1eccc2f…), 4011 liens, aucun clone tiers ; graines citant F4/F7/WL : les 3 clones `original-tree` seuls |
 | AVANCEMENT R50-1 (§5.1, §6) | 2026-11-10 | VM → Mac | §5.1 : `generate` `$P`, `$R43`, `$U` et `check` `$P`, `$E13` à code 0 ; espaces copiés ; §6 : `$K` 763dda2 → 76f28bd, `SCION_REF` 0.6.2.0 (noyau, lepton-tools), `SCION_MIN_VERSION` (0, 6, 2, 0), `.vsix` 0.5.2 présent ; attente des installations par l'utilisateur |
+| AVANCEMENT R50-1 (§6, C1) | 2026-11-10 | VM → Mac | installations par l'utilisateur, codes 0 : scion 0.6.2.0 (`seed.scions.git@0.6.2.0`), lepton 0.1.0 (scion 0.6.2.0 accepté), `install-vscodium.sh` ×2 `changements 0` (extension 0.5.2 inchangée) ; extensions = attendu ; §7.1 : 3982 liens avant ; attente du `graft-update` de `$U` par l'utilisateur |
+| AVANCEMENT R50-1 (§7.1, §7.2, C2) | 2026-11-10 | VM → Mac | `$U` (`graft-update` par l'utilisateur) : code 0, 0 conflit ; 6 clones avancés, 6 clones tiers `blob:none` depuis les miroirs ; 3889 feuilles ; 23 entrées ; ajouts 11 et retraits 104 = attendu ; `CONFORME` (629 projetés, 0 écart de casse ni de contenu). `$R` neuf : codes 0, 23 entrées, `CONFORME`, liste = `$U`. §7.3 : `$E13` 4011 liens avant, attente du `graft-update` par l'utilisateur. Réordonnancement annoncé : §8 sur `$R` lancé pendant l'attente (ne touche ni `$U` ni `$E13`) |
+| AVANCEMENT R50-1 (§7.3, C4) | 2026-11-10 | VM → Mac | `$E13` (`graft-update` par l'utilisateur) : code 0, 0 conflit ; graine 0f1275a → 15740f9 par avance rapide ; 6 clones avancés (noyau 16a331b → 76f28bd, an386, F4 01b5528 → acdd24c, F429, WL 1eccc2f → 9349be2, WL55) ; 5 greffons nouveaux clonés (F439, F7, F746, SAMD21 ×2) ; 8 clones tiers ; 4011 → 3889 feuilles ; 23 entrées ; `CONFORME`, liste = `$U` ; `lepton check` code 0 (19 fichiers conformes), `generate` 0. D8 traité |
+| AVANCEMENT R50-1 (§8, §8.1, C3) | 2026-11-10 | VM → Mac | `rejouer-oracle` code 0 ; host 7/7 ; 16 presets ; fumée ×6 ; bancs 20/20 ×2, 16/16 ×2, 19/19 ×2 ; `peripheriques` ×4 ; mklepton = `env-43-debian` = `env-49-apres` ; 10 presets `comparer_R43-1` 0 ; an386 ×4 : 1, `hors_debug=0`, code +0 ; WL55 embOS : symboles = attendu (26), code +36, `.text` +64 ; WL55 FreeRTOS : symboles = attendu, code +36, `.text` +0 ; aucune autre section chargée ; `f429→f439` `hors_debug=0` ; §9.1 en cours |
+| AVANCEMENT R50-1 (§9-§11, C5, C6) | 2026-11-10 | VM → Mac | pytest (`venv-test`, Python 3.13.5) : 377 passed, 0 ignoré ; hook 118 passed ; compilation à blanc code 0, résumé = Mac hors ligne du compilateur ; `$R` : `check`, `generate`, `seed status` 0, 9 projections, espace = `$R43` ; `$U` : espace = avant ; `$P` : identiques ; `mirror-sync --dry-run` : 8 miroirs, 0 à envoyer, 0 signalement, rien envoyé ; §13 relevé : `env-43-debian` 392 Mo, `~/env-43-journaux` 7,3 Mo ; les 3 sondes déjà vues de la VM, passage au §12.1 |
+| AVANCEMENT R50-1 (§12.1) | 2026-11-10 | VM → utilisateur, Mac | 3 cartes déjà rattachées à la VM ; `0483:374b` ×1, `0483:374e` ×2, aucune sonde de plus ; ports `/dev/serial/by-id/…-if02` : F429 `ttyACM0`, WL55 A `ttyACM1`, B `ttyACM2` ; droits `plugdev` + ACL, sans sudo ; OpenOCD par numéro code 0 ×3 (`stm32f4x.cpu`, `stm32wlx.cpu0` ×2) ; numéro faux : code 1, « No device matches the serial string » ; `HOSTIP=192.168.2.20` (`ens37`) ; ping de la carte 0/3 (ARP FAILED, R43-1 : 3/3), pas un arrêt ; attente de la confirmation des ports et de l'IP par l'utilisateur |
+| AVANCEMENT R50-1 (§12.2) | 2026-11-10 | VM → Mac | F429, 3 images : cfg générée avec `adapter serial 0672FF…`, oracle=0 ×3, « sonde demandée 0672FF… » seule (×18 par image), fumée `cortexM4-stm32f4`, banc KAL sur carte Passed ; **`board.net` en échec ×3** (ping 192.168.2.5 0/3, ARP non résolu ; la carte démarre) → 19/20 ×3 ; `ens37` UP, aucun voisin ARP ; §12.3 (WL55) lancé ; relance unique de `board.net` par image prévue après vérification du lien par l'utilisateur. Constat : `lepton-env.sh` sourcé hors rootstock (défaut de la consigne, voir §5) |
+| AVANCEMENT R50-1 (§12.3, arrêt) | 2026-11-10 | VM → Mac | essai 1 (19:45) : configuration et oracle=0 ×2, cfg générées A `0027…` et paire B `004F…` ; 0/16 : `FileNotFoundError` sur le port de A, rien flashé ; à 19:45:50 plus aucune sonde vue de la VM (coupure signalée par l'utilisateur) ; attente du rattachement des 3 cartes. Constat Mac au même moment : les 3 sondes (0672FF…, 0027…, 004F…) sont revenues sur le Mac (`/dev/cu.usbmodem14303`, `145103`, `1454303`) ; `en0` toujours `active` 100baseTX, ping 192.168.2.5 depuis le Mac 0/3 (ARP incomplet) |
+| AVANCEMENT R50-1 (§12.2 relance, §12.3 essai 2) | 2026-11-10 | VM → Mac | rattachement par l'utilisateur : F429 à 19:47, WL55 A et B à 19:49, mêmes `by-id`, OpenOCD par numéro codes 0 ; ping avant reflash encore 0/3 ; relance unique `ctest -R '^board\.net$'` (reflash) : 2/2 ×3, ping 3/3, LIST 13, RETR 57 octets identique, `ECONNRESET=15` ; premier passage 19/20 ×3 consigné ; banc WL55 essai 2 en cours. Lecture de la VM : lien coupé pendant la coupure signalée (« non vérifié côté Mac ») ; constat Mac contraire, voir §5 |
+| AVANCEMENT R50-1 (§12.3 essai 2, C7) | 2026-11-10 | VM → Mac | WL55 embOS et FreeRTOS : cfg générées A `0027…` et paire B `004F…`, oracle=0, 16/16 ×2, « sonde demandée » ×14 (A seule), fumée `cortexM4-stm32wlxx`, radio 20/20 A→B et B→A, ping-pong 20/20, 2 jetons ; trunk 0 régulier, 0 `__pycache__` ; dernières images : `nucleo-f439zi-embos` (F429), `nucleo-wl55jc1-freertos` (A, B), cartes sur la VM ; §13 : attente du `rm -rf` par l'utilisateur |
+| FIN-SUCCÈS R50-1 | 2026-11-10 | VM → Mac | reçu. C1 à C8 atteints (C7 après relance) ; rapport `rapports/env-50-debian.md`, commit 88e48b6 sur `devenv/env-50-debian`, poussée avec l'accord de l'utilisateur. Écarts déclarés : coupure pendant le §12 (lien Ethernet de la F429, sondes détachées) ; ordre (§8 pendant §7.3, §10-§11 pendant §9.1) ; `lepton-env.sh` hors rootstock ; « sonde demandée » absente du `LastTest` de la relance de `board.net` ; messages 3 à 12 « accepted by the server, delivery not confirmed ». Non fait : presets hors PA-11 non flashés ; cartes laissées sur la VM ; `~/tmp-pytest` gardé |
 
 ## 4. Rootstocks d'essai du Mac (tâche 3)
 
@@ -205,3 +216,48 @@ identiques à la référence.
 
 `essais/env-41-vierge` et `essais/env-41-vierge-graine` sont supprimés (accord de l'utilisateur).
 Ils ne contenaient que le commit d'essai local c85ba56 d'ENV-41, non publié.
+
+## 5. Vérification du rapport VM (tâche 4)
+
+`origin/devenv/env-50-debian` = 88e48b6 : un commit sur `devenv/env-50` (93e1aa6), 141 fichiers,
+tous sous `rapports/env-50-debian.md` et `rapports/oracles/env-50-debian/`. Aucune autre écriture.
+Comparaisons refaites au Mac sur l'oracle poussé, extrait par `git archive` :
+
+| Contrôle | Résultat Mac | Consigne |
+| --- | --- | --- |
+| mklepton host | = `env-43-debian` = `env-49-apres` | conforme |
+| `comparer_R43-1`, 10 presets sans changement de code | 0 ×10, `code_symboles +0 .text +0` | conforme |
+| an386 ×4 | 1 ×4, `hors_debug=0`, `code_symboles +0 .text +0` | conforme |
+| WL55 ×2 | 1 ×2 ; symboles = `attendu/<preset>.noms.txt` ; `code_symboles +36` ×2 ; `.text` +64 (embOS) et 0 (FreeRTOS), bourrage E-1 (PA-74) ; aucune autre section chargée | conforme |
+| `f429→f439` | code 1, `hors_debug=0` (embOS, FreeRTOS) | conforme |
+| `ctest` / banc KAL | host 7/7 ; 20/20 ×2, 16/16 ×2, 19/19 ×2 ; `peripheriques` Passed ×4 | conforme |
+| Compilation à blanc | `resume.txt` = attendu Mac hors ligne du compilateur | conforme |
+| F429, 3 images | premier passage 19/20 ×3 (`board.net`) ; relance unique 2/2 ×3 : ping 3/3, LIST 13, RETR 57 octets identique, `ECONNRESET=15` ; « sonde demandée 0672FF… » seule, ×18 par image | conforme après relance (règle « un test en échec : relancer une fois » de la consigne) |
+| WL55, 2 images | 16/16 ×2 ; radio `emis=20/20`, `recus=20/20 perdus=0` ×2, ping-pong 20/20 | conforme (essai 2) |
+
+Constats sur le rapport VM :
+- **Écart 1 (lien Ethernet).** La VM l'attribue au pont VMware ou au lien de la carte, « non
+  vérifié côté Mac ». Or le Mac l'a vérifié pendant la panne (§3) : `en0` était `active`
+  (100baseTX full-duplex), et `ping 192.168.2.5` depuis le Mac donnait 0/3, ARP `incomplete`. La
+  carte ne répondait donc à personne. Le lien physique et le pont ne sont pas en cause : la panne
+  venait de la carte. Elle a disparu après le débranchement et le nouveau rattachement de la F429
+  (19:47), puis la vérification du câble par l'utilisateur. Cela rappelle le piège d'ENV-44 (reset de
+  la F429 revenue de la VM), sans preuve qu'il s'agisse du même mécanisme. Internet passe par `en1`
+  au Mac : la coupure d'internet signalée n'explique pas directement l'état d'`en0`.
+- **Écart 2 (sondes détachées).** Au Mac, les 3 sondes sont réapparues pendant la panne
+  (`/dev/cu.usbmodem14303`, `145103`, `1454303`) : VMware Fusion les avait rendues à l'hôte.
+- **Écart 4 (`lepton-env.sh`).** C'est un défaut de la consigne. Le §12.2 source le script avant
+  tout `cd`, alors qu'il cherche le rootstock à partir de `${1:-$PWD}`. Même constat au Mac (§4).
+  À corriger dans la consigne suivante : `source "$R"/…/lepton-env.sh "$R"`.
+- **Écart 5 (trace de sonde à la relance).** Sans effet. La commande de la relance
+  (`carte-detail-relance-board-net.log`, l. 5 et 21) passe par la cfg générée
+  `build/nucleo-f429zi-embos/openocd-nucleo-f429zi.cfg`, qui porte `adapter serial 0672FF…`.
+- **Écart 7 (messages).** Les 12 messages de la VM sont tous arrivés à la session Mac, directement,
+  sans relais. La mention « delivery not confirmed » de l'outil de la VM est sans effet : la
+  règle D9 n'a pas eu à s'appliquer. La session Mac n'a pas répondu, ce que le protocole n'exige pas.
+- Écart 3 (ordre) : annoncé par `AVANCEMENT`, sans effet sur les attendus.
+
+État laissé : les 3 cartes sont sur la VM (`nucleo-f439zi-embos` sur la F429,
+`nucleo-wl55jc1-freertos` sur A et B), à rattacher de nouveau au Mac par l'utilisateur. Sur la VM :
+`essais/env-28-debian`, `env-13-debian`, `env-50-debian`, `env-11/qemu`, `~/env-50-journaux`,
+`~/tmp-pytest`.
