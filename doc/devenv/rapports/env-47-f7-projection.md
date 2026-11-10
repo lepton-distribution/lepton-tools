@@ -351,3 +351,20 @@ avance la famille et crée les 2 clones tiers F7 depuis les miroirs, ce qui exig
    La graine de publication `env-40-publication`, désormais à 4 miroirs, est gardée pour les
    miroirs WL d'ENV-48.
 4. Validation Debian : ENV-50.
+
+### 6.6 Décisions du PA-82 (utilisateur, 2026-11-10) et publication
+- Propositions 1 à 4 acceptées : publication complète, référence `env-47-apres`, suppression des
+  4 essais.
+- `family-stm32f7xx` : fusion `--no-ff` de `devenv/env-47` dans `master` (12280a5, arbre =
+  a13b162) ; `master` et `devenv/env-47` poussés, `git ls-remote` vérifié ; le clone de
+  `<ROOTSTOCK>` est sur `master`. Ensuite : `controler-trunk.py` **CONFORME**, `lepton check` 0.
+- **Incident**. Le premier essai de fusion passait le message par `git merge -F -`, que git refuse
+  (« could not read file '-' »). La commande enchaînait sans arrêt sur erreur, donc la ligne de push
+  qui suivait a été exécutée : elle a poussé la branche `devenv/env-47`, alors que `master` était
+  inchangé (d2d9aa9 = `origin/master`, rien à pousser). Entre-temps, le clone de `<ROOTSTOCK>` est
+  resté sur `master` avec l'ancienne copie de la HAL dans son répertoire de travail ; le trunk
+  n'était pas touché (liens vers `depots/tiers/`). La fusion a été refaite avec un fichier de
+  message, sous `set -euo pipefail`, et le trunk recontrôlé avant le push de `master`. Il n'y a
+  aucune conséquence : la branche publiée est celle prévue au PA-82.
+- lepton-tools : fusion `--no-ff` de `devenv/env-47` dans `main`, push de `main` et de la branche.
+- Essais `env-47-copie`, `env-47-projet`, `env-47-vierge`, `env-47-vierge-graine` supprimés.
