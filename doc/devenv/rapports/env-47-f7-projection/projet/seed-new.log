@@ -1,0 +1,7 @@
+XML du projet : sys/user/f746/etc/mkconf_f746.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_stm32f746g_disco.xml, avec .boot, .init)
+rootstock : /Users/cle_d_anton/lepton-tools-dev/essais/env-47-projet
+graine    : /Users/cle_d_anton/lepton-tools-dev/essais/env-47-projet/depots/lepton-seed/f746
+  noyau    lepton@original::tree            master   https://github.com/lepton-distribution/lepton-original-tree.scions.git
+  famille  lepton@family-stm32f7xx          devenv/env-47 file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-47-copie/depots/lepton/family-stm32f7xx/master
+  bsp      lepton@bsp-stm32f746g-disco      master   https://github.com/lepton-distribution/lepton-bsp-stm32f746g-disco.git
+presets et espace de travail VSCodium : lepton generate -C /Users/cle_d_anton/lepton-tools-dev/essais/env-47-projet

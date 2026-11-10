@@ -1,0 +1,13 @@
+rootstock : /Users/cle_d_anton/lepton-tools-dev/essais/env-47-projet
+graine    : /Users/cle_d_anton/lepton-tools-dev/essais/env-47-projet/depots/lepton-seed/f746  main             44b0349   0     
+            projet f746 0.1.0, backend embos, XML sys/user/f746/etc/mkconf_f746.xml
+            configurations : debug-board (Debug, carte)
+greffon               rôle           version       branche          commit    modif.  origine
+building              sans manifeste *             (hors git)                         depots/generation/building
+lepton-noyau          noyau          master        master           76f28bd   0       https://github.com/lepton-distribution/lepton-original-tree.scions.git
+stm32f7xx             famille        devenv/env-47 devenv/env-47    a13b162   0       file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-47-copie/depots/lepton/family-stm32f7xx/master
+stm32f746g-disco      bsp            master        master           6266908   0       https://github.com/lepton-distribution/lepton-bsp-stm32f746g-disco.git
+stm32f7xx-hal-driver  projection     v1.3.3        HEAD             e1446fa   0       https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git (projeté par stm32f7xx, 196 fichier(s))
+cmsis-device-f7       projection     v1.2.10       HEAD             2352e88   0       https://github.com/lepton-distribution/mirror-cmsis_device_f7.git (projeté par stm32f7xx, 5 fichier(s))
+project-f746          projet         *             main             44b0349   0       depots/lepton-seed/f746
+trunk : aucun fichier régulier, aucun lien cassé

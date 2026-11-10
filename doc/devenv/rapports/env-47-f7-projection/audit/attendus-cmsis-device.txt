@@ -1,0 +1,5 @@
+sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F7xx/Include/stm32f746xx.h
+sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F7xx/Include/stm32f7xx.h
+sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F7xx/Include/system_stm32f7xx.h
+sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F7xx/LICENSE.md
+sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F7xx/README.md

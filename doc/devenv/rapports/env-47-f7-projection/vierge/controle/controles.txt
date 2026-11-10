@@ -1,0 +1,20 @@
+liste chemin -> cible : DIFFÈRE (3887 liens, attendu 3887) ; chemins ajoutés 0, retirés 0, lignes différentes 11
+  ≠ ./sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F7xx/LEPTON-PROVENANCE.md -> ../../../../../../../../../../../depots/lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/core/ucore/cmsis-5/Device/ST/STM32F7xx/LEPTON-PROVENANCE.md
+  ≠ ./sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_eth_x.c -> ../../../../../../../../../../depots/lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_eth_x.c
+  ≠ ./sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_eth_x.h -> ../../../../../../../../../../depots/lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_eth_x.h
+  ≠ ./sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_hal_tick.c -> ../../../../../../../../../../depots/lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_hal_tick.c
+  ≠ ./sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_uart_x.c -> ../../../../../../../../../../depots/lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_uart_x.c
+  ≠ ./sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_uart_x.h -> ../../../../../../../../../../depots/lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/dev_stm32f7xx/dev_stm32f7xx_uart_x.h
+  ≠ ./sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/hal_driver/LEPTON-PROVENANCE.md -> ../../../../../../../../../../depots/lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/hal_driver/LEPTON-PROVENANCE.md
+  ≠ ./sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/lepton-greffon.json -> ../../../../../../../../../depots/lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/lepton-greffon.json
+  ≠ ./sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/LICENSE-Apache-2.0 -> ../../../../../../../../../../depots/lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/LICENSE-Apache-2.0
+  ≠ ./sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/README.md -> ../../../../../../../../../../depots/lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/README.md
+  ≠ ./sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/STM32F746.svd -> ../../../../../../../../../../depots/lepton/family-stm32f7xx/devenv/env-47/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f7xx/svd/STM32F746.svd
+fichiers réguliers 0 []
+liens cassés 0 []
+projetés 407 ; nom non suivi au HEAD (casse) 0 [] ; contenu ≠ HEAD 0 []
+depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1 HEAD 3c77349ce04c8af401454cc51f85ea9a50e34fc1 origin https://github.com/lepton-distribution/mirror-cmsis_device_f4.git modifs 0 filtre blob:none
+depots/tiers/cmsis-device-f7/v1.2.10 HEAD 2352e888e821aa0f4fe549bd5ea81d29c67a3222 origin https://github.com/lepton-distribution/mirror-cmsis_device_f7.git modifs 0 filtre blob:none
+depots/tiers/stm32f4xx-hal-driver/v1.8.5 HEAD b6f0ed3829f3829eb358a2e7417d80bba1a42db7 origin https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git modifs 0 filtre blob:none
+depots/tiers/stm32f7xx-hal-driver/v1.3.3 HEAD e1446fa12ffda80ea1016faf349e45b2047fff12 origin https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git modifs 0 filtre blob:none
+NON CONFORME

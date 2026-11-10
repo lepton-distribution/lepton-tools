@@ -1,0 +1,55 @@
+{
+  "lepton": "0.1.0",
+  "scions": [
+    {
+      "key": "lepton@building",
+      "name": "building",
+      "location": "depots/generation/building",
+      "version": "*",
+      "path": "",
+      "commit": null
+    },
+    {
+      "key": "lepton@original::tree",
+      "name": "lepton-noyau",
+      "location": "https://github.com/lepton-distribution/lepton-original-tree.scions.git",
+      "version": "master",
+      "path": "",
+      "commit": "76f28bda3aeca6f42f324d3df5d28f956423f6fa"
+    },
+    {
+      "key": "lepton@family-stm32f7xx",
+      "name": "stm32f7xx",
+      "location": "file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-47-copie/depots/lepton/family-stm32f7xx/master",
+      "version": "devenv/env-47",
+      "path": "",
+      "commit": "a13b162242935a4e1f637c270688d6a92300b426"
+    },
+    {
+      "key": "lepton@bsp-stm32f746g-disco",
+      "name": "stm32f746g-disco",
+      "location": "https://github.com/lepton-distribution/lepton-bsp-stm32f746g-disco.git",
+      "version": "master",
+      "path": "",
+      "commit": "6266908d02b936b8da48c712621583e506c6b406"
+    },
+    {
+      "key": "tiers@stm32f7xx-hal-driver",
+      "name": "stm32f7xx-hal-driver",
+      "location": "https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git",
+      "version": "v1.3.3",
+      "path": "",
+      "commit": "e1446fa12ffda80ea1016faf349e45b2047fff12",
+      "projected_by": "lepton@family-stm32f7xx"
+    },
+    {
+      "key": "tiers@cmsis-device-f7",
+      "name": "cmsis-device-f7",
+      "location": "https://github.com/lepton-distribution/mirror-cmsis_device_f7.git",
+      "version": "v1.2.10",
+      "path": "",
+      "commit": "2352e888e821aa0f4fe549bd5ea81d29c67a3222",
+      "projected_by": "lepton@family-stm32f7xx"
+    }
+  ]
+}
