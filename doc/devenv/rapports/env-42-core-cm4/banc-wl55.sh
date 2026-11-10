@@ -3,7 +3,8 @@
 # variables d'ENV-32), ENV-42.
 #
 # Usage : banc-wl55.sh <ROOTSTOCK> <répertoire-oracle> <preset> <port-A> <n°-A> <port-B> <n°-B>
-#   1. reconfigure <ROOTSTOCK>/build/<preset> avec LEPTON_BOARD_SERIAL_PORT, LEPTON_BOARD_STLINK_SERIAL,
+#   1. reconfigure <ROOTSTOCK>/build/<preset> avec LEPTON_BOARD_SERIAL_PORT, LEPTON_BOARD_PROBE_SERIAL (ENV-45 ;
+#      LEPTON_BOARD_STLINK_SERIAL jusqu'à ENV-44),
 #      LEPTON_RADIO_PEER_SERIAL_PORT, LEPTON_RADIO_PEER_STLINK_SERIAL, construit : carte-config.log ;
 #   2. recapture lepton.elf et la compare à <répertoire-oracle>/<preset> (code 0 exigé) ;
 #   3. ctest -L board (flash « verify » de A, fumée, banc KAL, radio avec flash de B) : carte.log,
@@ -20,7 +21,7 @@ export PYTHONDONTWRITEBYTECODE=1
 source "$ROOT/depots/lepton/original/master/scripts/lepton-env.sh" >/dev/null
 {
   cmake -S "$ROOT/trunk" -B "$B" --preset "$P" \
-        -DLEPTON_BOARD_SERIAL_PORT="$PA" -DLEPTON_BOARD_STLINK_SERIAL="$SA" \
+        -DLEPTON_BOARD_SERIAL_PORT="$PA" -DLEPTON_BOARD_PROBE_SERIAL="$SA" \
         -DLEPTON_RADIO_PEER_SERIAL_PORT="$PB" -DLEPTON_RADIO_PEER_STLINK_SERIAL="$SB" &&
   cmake --build "$B"
 } > "$D/carte-config.log" 2>&1 || { echo "$P : configuration ou construction en échec"; exit 1; }

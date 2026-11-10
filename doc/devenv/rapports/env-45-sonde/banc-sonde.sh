@@ -24,7 +24,7 @@ net=()
 [ -n "$HOSTIP" ] && net=(-DLEPTON_NET_TEST_HOST_IP="$HOSTIP")
 {
   cmake -S "$ROOT/trunk" -B "$B" --preset "$P" \
-        -DLEPTON_BOARD_SERIAL_PORT="$PORT" -DLEPTON_BOARD_PROBE_SERIAL="$SERIE" "${net[@]}" &&
+        -DLEPTON_BOARD_SERIAL_PORT="$PORT" -DLEPTON_BOARD_PROBE_SERIAL="$SERIE" ${net[@]+"${net[@]}"} &&
   cmake --build "$B"
 } > "$D/carte-config.log" 2>&1 || { echo "$P : configuration ou construction en échec"; exit 1; }
 CFG=$B/openocd-$BSP.cfg
