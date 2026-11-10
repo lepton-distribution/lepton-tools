@@ -59,32 +59,53 @@ openocd -f <cfg> -c "init; targets; shutdown"
 | Carte | Fichiers OpenOCD | Console série |
 | --- | --- | --- |
 | NUCLEO-F429ZI | `-f <BSP>/debug/openocd-nucleo-f439zi.cfg` (→ `board/st_nucleo_f4.cfg`, ST-LINK/V2-1) | `/dev/cu.usbmodem145103` (relevé ENV-11 S2, deux cartes branchées), 115200 8N1 |
-| NUCLEO-WL55JC1 | `-f <ROOTSTOCK>/build/<preset>/openocd-nucleo-wl55jc1.cfg` (généré par le `CMakeLists.txt` du BSP : `<BSP-WL>/debug/openocd-nucleo-wl55jc1.cfg` — autonome depuis ENV-9 : `interface/stlink.cfg` + `target/stm32wlx.cfg`, STLINK-V3 — puis `adapter serial` si `LEPTON_BOARD_STLINK_SERIAL`) (cœur M4 uniquement) | carte A `/dev/cu.usbmodem1454303` (relevé ENV-11 S2), carte B `/dev/cu.usbmodem1454403`, 115200 8N1 |
+| NUCLEO-WL55JC1 | `-f <BSP-WL>/debug/openocd-nucleo-wl55jc1.cfg` (autonome depuis ENV-9 : `interface/stlink.cfg` + `target/stm32wlx.cfg`, STLINK-V3) (cœur M4 uniquement) | carte A `/dev/cu.usbmodem1454303` (relevé ENV-11 S2), carte B `/dev/cu.usbmodem1454403`, 115200 8N1 |
+
+Sonde choisie par numéro de série (ENV-45, tout BSP à champ `openocd`) : `-DLEPTON_BOARD_PROBE_SERIAL=<n°>`
+à la configuration. Le lecteur du noyau génère alors `<build>/openocd-<bsp>.cfg` (annonce « Lepton :
+sonde demandée <n°> », `source` de la cfg du BSP, `adapter serial <n°>`), utilisée par la cible
+`flash`, la fumée, le banc KAL et les tests de greffon. Vide : cfg du BSP, première sonde trouvée.
+Ancien nom `LEPTON_BOARD_STLINK_SERIAL` (WL55) : accepté, avertissement `DEPRECATION`. Numéro faux :
+OpenOCD s'arrête (code 1 ; ST-LINK `Error: open failed`, CMSIS-DAP `unable to find a matching
+CMSIS-DAP device`), sans prendre une autre sonde. L'éditeur a son propre réglage :
+`lepton generate --probe-serial <n°>` (espace de travail, non versionné).
+
+Sondes relevées en ENV-45 (`doc/devenv/rapports/env-45-sonde.md` §1.7 ; ports à relever à chaque
+banc, ils suivent la topologie USB : `ioreg -lrw0 -c IOUSBHostDevice | grep -E '"USB Serial Number"|"IOCalloutDevice"'`) :
+
+| Carte | Sonde | N° |
+| --- | --- | --- |
+| NUCLEO-F429ZI | ST-LINK/V2-1 | 0672FF495252717267243842 |
+| STM32F746G-DISCO | ST-LINK/V2-1 | 0671FF495351885087181231 |
+| SAMD21 Xplained Pro | EDBG (CMSIS-DAP) | ATML2130021800003505 |
+| NUCLEO-WL55JC1 A | STLINK-V3 | 002700253431510837393937 |
+| NUCLEO-WL55JC1 B | STLINK-V3 | 004F003E3431510937393937 |
 
 <!-- <BSP> = sys/root/src/kernel/dev/bsp/nucleo-f429zi, <BSP-WL> = sys/root/src/kernel/dev/bsp/nucleo-wl55jc1,
      relatifs au trunk (champ openocd du manifeste, ENV-6). Sources : debug/openocd-nucleo-f439zi.cfg du BSP F429 ;
-     CMakeLists.txt du BSP nucleo-wl55jc1 (cfg générée) ;
+     cmake/lepton_greffons.cmake du noyau (_lepton_sonde_cfg, cfg générée, ENV-45) ;
      doc/migration/validation-macos.md:26-30 (ports relevés en étape 10, à revérifier : ils
      dépendent du port USB) ; tests/smoke_lsh.py:126 (débit). Sondes : F429 ST-LINK/V2-1
      n° 0672FF495252717267243842 ; WL55 A 002700253431510837393937, B 004F003E3431510937393937
      (doc/migration/validation-nucleo-wl55jc1.md:7-10). Cible CMake équivalente : `cmake --build <build> --target flash`
      (cible flash de cmake/components/firmware.cmake). -->
 
-Test radio entre les deux NUCLEO-WL55JC1 (seules branchées) : `nucleo-wl55jc1.radio`, fourni par le
+Test radio entre les deux NUCLEO-WL55JC1 : `nucleo-wl55jc1.radio`, fourni par le
 BSP (`<BSP-WL>/tests/`, champ `tests` ; `board.radio` du noyau jusqu'à ENV-32). Créé si
 `LEPTON_BOARD_SERIAL_PORT`, `LEPTON_RADIO_PEER_STLINK_SERIAL` et `LEPTON_RADIO_PEER_SERIAL_PORT`
 sont posés ; la même image est flashée sur B (`<build>/openocd-nucleo-wl55jc1-paire.cfg`) :
 ```bash
 cmake --preset nucleo-wl55jc1-<embos|freertos> -DLEPTON_BOARD_SERIAL_PORT=<console A> \
-    -DLEPTON_BOARD_STLINK_SERIAL=<n° A> -DLEPTON_RADIO_PEER_SERIAL_PORT=<console B> \
+    -DLEPTON_BOARD_PROBE_SERIAL=<n° A> -DLEPTON_RADIO_PEER_SERIAL_PORT=<console B> \
     -DLEPTON_RADIO_PEER_STLINK_SERIAL=<n° B>
 caffeinate -i ctest --preset nucleo-wl55jc1-<embos|freertos> -L board   # 16 tests, radio en dernier
 ctest --preset nucleo-wl55jc1-<embos|freertos> -L radio                 # test radio seul
 ```
 Journal : `<build>/board_radio.log`. Consoles relevées en ENV-31 : A `/dev/cu.usbmodem145103`.
 
-Deux cartes ST-Link branchées : `interface/stlink.cfg` prend la première sonde trouvée ; toujours
-ajouter `-c "adapter serial <n°>"` après `-f <cfg>` (ENV-11 S2, O8). Console série en test :
+Plusieurs sondes branchées, OpenOCD lancé à la main sur la cfg du BSP : elle prend la première sonde
+trouvée ; toujours ajouter `-c "adapter serial <n°>"` après `-f <cfg>` (ENV-11 S2, O8), ou passer
+la cfg générée `<build>/openocd-<bsp>.cfg`. Console série en test :
 `tests/smoke_lsh.py --transport serial --port <port> --reset-command "openocd -f <cfg> -c 'adapter serial <n°>' -c 'init; reset run; shutdown'" --expect-machine <machine>`.
 
 Flash puis vérification :
@@ -112,9 +133,10 @@ WL55JC1 `<BSP-WL>/debug/gdbinit-nucleo-wl55jc1` ; tous sourcent `debug/gdbinit-l
   *Pause* après le démarrage du RTOS (l'arrêt initial dans `main` précède `OS_Start`).
 - FreeRTOS : taille, usage et pic de pile affichés depuis ENV-31 (`configRECORD_STACK_HIGH_ADDRESS`
   1 dans `FreeRTOSConfig.h`) ; colonne ID « ?? » attendue (`configUSE_TRACE_FACILITY` reste 0, PA-49).
-- Deux sondes ST ou plus branchées : la cfg OpenOCD du F746 (et des BSP sans
-  `LEPTON_BOARD_STLINK_SERIAL`) prend la première sonde trouvée, STLINK-V3 compris ; tests sur carte
-  avec ce seul F746 branché. Un OpenOCD de Cortex-Debug resté actif tient la sonde : l'arrêter d'abord.
+- Deux sondes ou plus branchées : sans `LEPTON_BOARD_PROBE_SERIAL` (construction) ni
+  `--probe-serial` (éditeur), la cfg OpenOCD du BSP prend la première sonde trouvée, d'un autre
+  modèle compris (constaté en ENV-45 : la cfg F429 prend le ST-LINK du F746 et échoue sur l'IDCODE).
+  Un OpenOCD de Cortex-Debug resté actif tient la sonde : l'arrêter d'abord.
 - embOS : avec rtos-views 0.0.16, la liste reste vide (« No embOS threads detected ») tant que les
   variables sont au format naturel : `OS_Global.IsRunning` (`unsigned char`) est rendu `1 '\001'`
   et refusé par `isNaN`. Contournement : bouton « Enable Hex mode » de la vue VARIABLES (à l'arrêt),
