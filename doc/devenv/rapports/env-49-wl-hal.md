@@ -332,3 +332,105 @@ Contrôles sur la copie, regreffée par `scion graft` (code 0, 3889 feuilles) :
 - `lepton check` code 0 ;
 - `nucleo-wl55jc1-embos` et `-freertos` reconstruits à neuf : 0 écart de sections et de symboles
   contre les captures du §1.6, mêmes avertissements.
+
+### 3.2 Bascule de `<ROOTSTOCK>` (PA-P accordé le 2026-11-10)
+Journaux : `env-49-wl-hal/rootstock/`.
+
+| Commande | Résultat |
+| --- | --- |
+| `git -C <clone famille> fetch <clone de la copie> devenv/env-49:devenv/env-49` ; `git switch devenv/env-49` | bfbeb1b, clone propre |
+| `scion seed-clone --seed depots/lepton-seed.scions/original-tree` | code 0, 17 s ; 4 clones depuis les miroirs : `stm32wlxx-hal-driver/v1.6.0` 5c87cf0, `cmsis-device-wl/v1.4.0` 71a0b78, `stm32-mw-subghz-phy/v1.5.0` 7dc059f, `stm32cubewl/v1.6.0` f934cd2 ; partiels `blob:none`, au tag, propres |
+| `scion graft` | code 0 ; 3889 feuilles ; 23 entrées dans la liste greffée |
+
+| Contrôle | Résultat |
+| --- | --- |
+| trunk | 3889 liens, 0 cassé, 0 fichier régulier |
+| liste `chemin -> cible` (`rootstock/liens-apres.txt`) | **égale à l'attendu** (liste de la copie, `audit/copie/liens-copie.txt`) ; contre l'état d'avant : +1 chemin (`Conf/radio_template.h`, accordé), 222 cibles réorientées, 0 vers les anciens clones |
+| `lepton check` | code 0 (19 fichiers conformes) |
+| `lepton seed status` | 5 clés WL « projection » `v1.6.0`, `v1.4.0`, `v1.5.0`, `v1.6.0` ×2 ; 0 modification |
+| autres clones | `master`, propres ; famille WL sur `devenv/env-49` ; graine sur `original-tree` |
+| `lepton generate` | code 0 ; espace de travail inchangé (`cmp`) |
+
+Les anciens clones `v1.3.0` et `v1.1.1` restent sous `depots/tiers/` (P-V5). Leur suppression
+revient à l'utilisateur, après le PA-86.
+
+## 4. Contrôles
+
+### 4.1 Oracle après
+`rapports/oracles/env-49-apres/` : même script que l'oracle avant (2 min 34, « tout a réussi »).
+Comparaison à `env-49-avant` : `env-49-wl-hal/oracle-apres.out`.
+
+| Preset | Sections/symboles | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- |
+| host | mklepton identiques ; ctest 7/7 | — | — | — |
+| 6 QEMU | code 0 ×6 | identique | identique (19, 15, 19, 15, 18, 18) | — |
+| 8 de carte hors WL55 (F429, F439, F746, SAMD21) | code 0 ×8 | — | — | — |
+| `nucleo-wl55jc1-embos` | code 1 : 26 symboles ; `.text` +48 ; `.debug_*` | — | — | oui, ci-dessous |
+| `nucleo-wl55jc1-freertos` | code 1 : 26 symboles ; `.text` +48 ; `.debug_*` | — | — | oui, ci-dessous |
+
+`ctest -N` : 17/17 identiques.
+
+Écarts des presets WL55, comparés au critère du PA-85 (Q4) :
+- `.data` (828 / 832), `.bss` (6600 / 6896) et `.isr_vector` (320) sont identiques.
+- Les 26 lignes `symbole` sont **exactement celles de l'essai** du §1.6 : même liste, mêmes
+  types et tailles, vérifiée par `diff`. Leur origine est expliquée symbole par symbole au §1.6 :
+  - HAL SUBGHZ : −48 octets (fonctions devenues `static`, attente BUSY réécrite) ;
+  - HAL UART : +60 octets (`UART_WaitOnFlagUntilTimeout` réécrite, DMA) ;
+  - `radio.c` : +8 octets (2 corrections amont) ;
+  - `radio_driver.c` : +16 octets (sections critiques).
+- `.text` : +48 sur les deux presets. Cela fait 36 de symboles et 12 de bourrage et d'octets non
+  dimensionnés (moins de 16, conforme). En FreeRTOS, l'écart de +150 vu sur la copie a disparu :
+  il venait de la longueur du chemin du trunk dans les `__FILE__`, comme prévu au §1.6.
+- Les sections `.debug_*` sont libres.
+
+### 4.2 Banc de la paire NUCLEO-WL55JC1 après la montée de version (PA-11)
+Même script que le banc de référence (`bancs.sh`), lancé contre l'oracle `env-49-apres`. Les
+ports sont relevés de nouveau par `ioreg` et n'ont pas changé. Journaux :
+`env-49-wl-hal/bancs/apres-<n>/<preset>/` ; bilan : `env-49-wl-hal/bancs-apres.out` (7 min 26).
+
+| Preset | Passe | `lepton.elf` contre l'oracle après | `ctest -L board` | Radio |
+| --- | --- | --- | --- | --- |
+| `nucleo-wl55jc1-embos` | 1, 2 | 0 écart ×2 | 16/16 ×2 | tx 20/20 et rx 20/20 dans les deux sens, ping-pong 20/20, 2 jetons reçus (×2) |
+| `nucleo-wl55jc1-freertos` | 1, 2 | 0 écart ×2 | 16/16 ×2 | idem (×2) |
+
+- Les 16 tests ont les mêmes noms et les mêmes résultats qu'au banc de référence.
+- **Le résultat est identique à la référence, sur les quatre passes** : aucune variation,
+  intermittente ou non.
+- Le banc éprouve l'attente BUSY réécrite de la HAL SUBGHZ et l'UART réécrite.
+- En fin de banc, les deux cartes portent l'image `nucleo-wl55jc1-freertos`.
+
+### 4.3 Contenu projeté, liste des chemins et liens
+- Les 4 clones WL sont aux commits épinglés : 5c87cf0, 71a0b78, 7dc059f, f934cd2. Chacun est
+  extrait au tag, propre (0 modification), avec le miroir pour origine.
+- Les liens WL désignent des fichiers suivis de leur clone : le contenu projeté est le commit
+  épinglé.
+- Liste des chemins : celle d'avant, plus `Conf/radio_template.h` ; ce sont exactement les ajouts
+  et retraits de l'amont retenus au PA-85.
+- 3889 liens, `chemins-cibles.txt` 5dbbc69f…, 0 anomalie, 0 lien cassé.
+- 629 liens projetés : F4 206, F7 201, WL 222. Aucun lien vers les anciens clones.
+
+### 4.4 Vue des périphériques (SVD) et rtos-views
+- **Statique** :
+  - le SVD `svd/STM32WL5x_CM4.svd` n'a pas changé dans la famille (`git diff` vide) ;
+  - le `svdFile` de l'espace de travail est inchangé (`lepton generate`, `cmp`) ;
+  - aucun symbole d'embOS ni de FreeRTOS ne figure parmi les 26 écarts. `UART_CheckIdleState`
+    n'est qu'un faux positif de la recherche.
+- **Sur la carte**, WL55 A, image FreeRTOS du banc (`rootstock/gdb-rtos-freertos.log`) :
+  - OpenOCD par la cfg générée (sonde A) et `arm-none-eabi-gdb` en lot ;
+  - `uxCurrentNumberOfTasks` = 6, `xSchedulerRunning` = 1, tâche courante « IDLE » ;
+  - `RCC_CR` lu à l'adresse donnée par le SVD (RCC 0x58000000, décalage 0) : 0xbb (MSI 48 MHz,
+    prêt) ;
+  - reprise, sans écriture.
+- Les vues de VSCodium n'ont pas été ouvertes à la main. Leurs entrées (SVD, symboles des RTOS,
+  informations de débogage) sont lisibles et inchangées. Le défaut D4 de rtos-views avec embOS
+  est sans rapport.
+
+### 4.5 Bilan des critères
+| Critère (fichier d'étape) | Résultat |
+| --- | --- |
+| PA-85 et PA-86 tranchés et consignés | PA-85 : oui (§1.9). PA-86 : à trancher |
+| Code tiers WL à la version retenue, couple cohérent, version du CMSIS device inscrite | oui : couple de STM32CubeWL `v1.6.0` ; CMSIS device V1.4.0 dans la `description` et la provenance |
+| Modifications Lepton reportées et documentées dans la provenance | oui : `radio.c`, `stm32_timer.h` (§1.4, provenances, correctifs dans `propose/reports/`) |
+| Banc WL55 A/B, radio comprise, identique à la référence ; host et 14 presets hors WL55 à code 0 | oui (§4.1, §4.2) |
+
+Nouvel oracle de référence proposé : `oracles/env-49-apres/`.
