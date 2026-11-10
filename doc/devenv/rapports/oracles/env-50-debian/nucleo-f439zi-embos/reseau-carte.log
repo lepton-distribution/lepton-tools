@@ -1,0 +1,22 @@
+lepton (tauon) posix os
+scion version
+
+
+version 4.10.0.2 kernel compilation date: Nov 10 2026 - 19:21:53
+
+Thu Jan 01 00:00:00 1970
+
+
+
+type ctrl-x: .init script not run or any key to continue
+
+lepton start!
+
+
+
+rcv SIGCHLD
+3
+	lepton shell
+
+lepton#2$ 
+le
