@@ -208,3 +208,74 @@ def test_seed_replace_porteur_garde_les_projections(project, repos):
     assert _projected_links(project) == before
     assert (project / HAL / "Inc" / "t.h").read_text() == "/* t.h */\n"
     assert_trunk_clean(project)
+
+
+# --- clone partagé par deux clés projetées (P-V2, P-G3 ; ENV-48, cas STM32CubeWL) ------------------
+
+KEY2 = "tiers@tiers-lib::extra"
+
+
+def _share_clone(project: Path, repos) -> None:
+    """Seconde clé `tiers-lib::extra` (même préfixe, même version : même clone) qui projette
+    `LICENSE.md` à côté des fichiers de la première ; regreffe par scion."""
+    fam = repos["family"]
+    dot = fam / "scion" / ".scion"
+    dest = f"scion/{FAMILY_DIR}/hal"
+    with open(dot / ".scion.sources.list", "a") as f:
+        f.write(f"tiers\ttiers-lib::extra\tv1.0\t{url(repos['tiers'])}\n")
+    with open(dot / ".scion.ramifications", "a") as f:
+        f.write("tiers\ttiers-lib::extra\tv1.0\n")
+    with open(dot / ".scion.projections", "a") as f:
+        f.write(f"tiers tiers-lib::extra LICENSE.md {dest}/\n")
+    _git(fam, "add", "-A")
+    _git(fam, "commit", "-q", "-m", "clé partagée")
+    grafted = (project / "trunk" / ".scion.grafted.list").read_text().split()
+    seed = next(f for f in grafted if f.endswith("/scion/.scion"))[: -len("/scion/.scion")]
+    for argv in (["seed-clone", "--seed", seed], ["graft"]):
+        subprocess.run(["scion", *argv], cwd=project, check=True, capture_output=True, text=True)
+
+
+def test_shared_clone_tables_and_owner(project, repos, capsys):
+    _share_clone(project, repos)
+    link = project / HAL / "LICENSE.md"
+    assert link.is_symlink() and link.resolve() == (_tiers_clone(project) / "LICENSE.md").resolve()
+    code, r = _json(capsys, "seed", "status", "-C", str(project))
+    assert code == 0
+    tables = {s["key"]: s["projection"] for s in r["scions"] if s.get("role") == "projection"}
+    assert tables[KEY] == {"Inc/t.h": f"{FAMILY_DIR}/hal/Inc/t.h", "Src/t.c": f"{FAMILY_DIR}/hal/Src/t.c"}
+    assert tables[KEY2] == {"LICENSE.md": f"{FAMILY_DIR}/hal/LICENSE.md"}
+    for trunk_path, key in ((link, KEY2), (project / HAL / "Inc" / "t.h", KEY)):
+        code, o = _json(capsys, "file", "owner", str(trunk_path), "-C", str(project))
+        assert code == 0 and o["owner"]["key"] == key
+    # fichier du clone qu'aucune clé ne projette : première clé, écriture refusée
+    code, o = _json(capsys, "file", "owner", str(_tiers_clone(project) / "Src" / "u.c"), "-C", str(project))
+    assert code == 0 and o["owner"]["key"] == KEY
+    assert_trunk_clean(project)
+
+
+@pytest.mark.parametrize("motif, dest, rel, attendu", [
+    ("Inc/**", "scion/a/inc/", "Inc/Legacy/x.h", {"a/inc/Legacy/x.h"}),
+    ("Inc/**", "scion/a/inc/", "Src/x.c", set()),
+    ("**", "scion/t/", "d/e.c", {"t/d/e.c"}),
+    ("Conf/*", "scion/r/Conf/", "Conf/a.h", {"r/Conf/a.h"}),
+    ("Conf/*", "scion/r/Conf/", "Conf/sub/a.h", set()),
+    ("*.h", "scion/r/", "radio.h", {"r/radio.h"}),
+    ("*.h", "scion/r/", "Conf/a.h", set()),
+    ("Utilities/conf/*.[ch]", "scion/u/conf/", "Utilities/conf/x.c", {"u/conf/x.c"}),
+    ("Utilities/conf/*.[ch]", "scion/u/conf/", "Utilities/conf/LICENSE.md", set()),
+    ("Include/stm32f4[23]9xx.h", "scion/i/", "Include/stm32f439xx.h", {"i/stm32f439xx.h"}),
+    ("Inc/a.h", "scion/x/", "inc/a.h", set()),                     # casse exacte (P-K1)
+    ("Source/Templates/iar/s.s", "scion/c/startup/iar/", "Source/Templates/iar/s.s", {"c/startup/iar/s.s"}),
+    ("LICENSE", "scion/r/COPYING", "LICENSE", {"r/COPYING"}),     # forme fichier renommée (P-T3)
+])
+def test_projected_paths(motif, dest, rel, attendu):
+    from lepton.rootstock import ProjectionLine, projected_paths
+    assert projected_paths([ProjectionLine("tiers@k", motif, dest)], rel) == attendu
+
+
+def test_projected_paths_exclusion():
+    from lepton.rootstock import ProjectionLine, projected_paths
+    lines = [ProjectionLine("tiers@k", "Inc/**", "scion/a/inc/"),
+             ProjectionLine("tiers@k", "Inc/Legacy/stm32_hal_legacy.h")]
+    assert projected_paths(lines, "Inc/Legacy/stm32_hal_legacy.h") == set()
+    assert projected_paths(lines, "Inc/a.h") == {"a/inc/a.h"}

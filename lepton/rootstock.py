@@ -7,6 +7,7 @@ tiers, ENV-41) : 6ᵉ colonne facultative de la liste greffée (`.scion/` porteu
 `.scion.projections` d'une graine ou d'un porteur.
 """
 
+import fnmatch
 import json
 import os
 import re
@@ -109,6 +110,64 @@ def read_ramifications(path: Path) -> list[str]:
 def read_projection_keys(path: Path) -> set[str]:
     """Clés `shelf@nom` qui ont au moins une ligne dans `.scion.projections` (clés projetées)."""
     return {f"{f[0]}@{f[1]}" for f in _lines(path) if len(f) >= 4}
+
+
+@dataclass(frozen=True)
+class ProjectionLine:
+    """Ligne de `.scion.projections` : inclusion (`destination` non vide) ou exclusion (`!motif`)."""
+    key: str
+    motif: str
+    destination: str = ""
+
+    @property
+    def exclusion(self) -> bool:
+        return not self.destination
+
+
+def read_projection_lines(path: Path) -> list[ProjectionLine]:
+    """Lignes de `.scion.projections`, dans l'ordre ; les lignes mal formées sont ignorées (scion les
+    refuse à la greffe : un trunk greffé n'en contient pas)."""
+    found = []
+    for f in _lines(path):
+        if len(f) == 4 and not f[2].startswith("!"):
+            found.append(ProjectionLine(f"{f[0]}@{f[1]}", f[2], f[3]))
+        elif len(f) == 3 and f[2].startswith("!"):
+            found.append(ProjectionLine(f"{f[0]}@{f[1]}", f[2][1:]))
+    return found
+
+
+def _motif_base(motif: str, rel: str) -> str | None:
+    """Base du motif (P-T2) s'il désigne le fichier `rel` du dépôt tiers (P-M1, P-M2), sinon None.
+    Jokers `fnmatch` sensibles à la casse dans le dernier segment seulement ; `d/**` et `**`
+    récursifs."""
+    if motif == "**":
+        return ""
+    if motif.endswith("/**"):
+        base = motif[:-3]
+        return base if rel.startswith(base + "/") else None
+    directory, _, last = motif.rpartition("/")
+    rel_dir, _, rel_last = rel.rpartition("/")
+    return directory if rel_dir == directory and fnmatch.fnmatchcase(rel_last, last) else None
+
+
+def projected_paths(lines: list[ProjectionLine], rel: str) -> set[str]:
+    """Chemins du trunk (relatifs au trunk) où les lignes d'une clé placent le fichier `rel` de son
+    dépôt tiers : vide s'il n'est désigné par aucune inclusion, ou s'il est exclu (P-X1)."""
+    if any(l.exclusion and _motif_base(l.motif, rel) is not None for l in lines):
+        return set()
+    found = set()
+    for line in lines:
+        if line.exclusion:
+            continue
+        base = _motif_base(line.motif, rel)
+        if base is None:
+            continue
+        dest = line.destination[len(STEM_DIR) + 1:] if line.destination.startswith(STEM_DIR + "/") else ""
+        if line.destination.endswith("/"):
+            found.add(dest + (rel[len(base) + 1:] if base else rel))
+        else:
+            found.add(dest)     # forme fichier renommée (P-T3)
+    return found
 
 
 @dataclass
@@ -249,11 +308,20 @@ class Rootstock:
 
     def projection_tables(self) -> dict[str, dict[str, str]]:
         """Par clé projetée : chemin relatif au clone tiers → chemin relatif au trunk, d'après les
-        liens du trunk (résultat réel de la greffe, P-G3 ; aucune relecture des motifs)."""
-        roots = {e.key: os.path.realpath(self.clone(e)) for e in self.grafted() if e.key in self.projected_keys()}
+        liens du trunk (résultat réel de la greffe, P-G3). Un clone partagé par plusieurs clés
+        (P-V2, ENV-48) : le lien va à la clé dont une ligne de projection place son fichier source
+        à ce chemin du trunk (seul cas où les motifs sont relus) ; à défaut, à la première clé."""
+        projected = self.projected_keys()
+        entries = [e for e in self.grafted() if e.key in projected]
+        roots = {e.key: os.path.realpath(self.clone(e)) for e in entries}
         tables: dict[str, dict[str, str]] = {key: {} for key in roots}
         if not roots:
             return tables
+        by_root: dict[str, list[str]] = {}
+        for key, root in roots.items():
+            by_root.setdefault(root, []).append(key)
+        lines = {e.key: [l for l in read_projection_lines(self.resolve(e.dot) / PROJECTIONS) if l.key == e.key]
+                 for e in entries if len(by_root[roots[e.key]]) > 1}
         trunk = str(self.trunk)
         for directory, dirs, files in os.walk(trunk):
             for name in dirs + files:
@@ -261,9 +329,12 @@ class Rootstock:
                 if not os.path.islink(p):
                     continue
                 real = os.path.realpath(p)
-                for key, root in roots.items():
+                for root, keys in by_root.items():
                     if real.startswith(root + os.sep):
-                        tables[key][os.path.relpath(real, root)] = os.path.relpath(p, trunk)
+                        rel, trunk_rel = os.path.relpath(real, root), os.path.relpath(p, trunk)
+                        key = next((k for k in keys if len(keys) > 1 and trunk_rel in projected_paths(lines[k], rel)),
+                                   keys[0])
+                        tables[key][rel] = trunk_rel
                         break
         return tables
 
