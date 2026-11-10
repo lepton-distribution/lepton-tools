@@ -26,8 +26,9 @@ tranchés, et tout est publié.
 - clones tiers WL actifs : `depots/tiers/stm32wlxx-hal-driver/v1.6.0`, `cmsis-device-wl/v1.4.0`,
   `stm32-mw-subghz-phy/v1.5.0`, `stm32cubewl/v1.6.0` (partagé par les deux clés `stm32cubewl::*`,
   156 Mo) ;
-- **anciens clones encore présents** (P-V5), sans aucun lien vers eux : `stm32wlxx-hal-driver/v1.3.0`,
-  `cmsis-device-wl/v1.1.1`, `stm32-mw-subghz-phy/v1.3.0`, `stm32cubewl/v1.3.0` (372 Mo) ;
+- anciens clones `stm32wlxx-hal-driver/v1.3.0`, `cmsis-device-wl/v1.1.1`, `stm32-mw-subghz-phy/v1.3.0`,
+  `stm32cubewl/v1.3.0` (372 Mo, P-V5) : **supprimés par l'utilisateur** le 2026-11-10, absence
+  contrôlée par la session (0 lien cassé, `lepton check` code 0) ;
 - `lepton check` code 0 ; espace de travail inchangé ; tous les clones sur `master` et propres.
 
 Outils : scion 0.6.2.0 et lepton 0.1.0, inchangés (pas de réinstallation). La VM a toujours
@@ -75,7 +76,7 @@ Ports relevés par `ioreg` deux fois dans la session, identiques à ENV-48.
 
 ## Reste à faire dans l'étape
 - [x] Rien pour la session.
-- [ ] **Action de l'utilisateur** (PA-85 Q4) : supprimer les 4 anciens clones WL de `<ROOTSTOCK>`.
+- [x] **Action de l'utilisateur** (PA-85 Q4), faite le 2026-11-10 et contrôlée : supprimer les 4 anciens clones WL de `<ROOTSTOCK>`.
   Le hook interdit à la session d'écrire sous `depots/tiers/`. Aucun lien ne les vise (vérifié). Commande :
   ```
   ! rm -rf ~/lepton/depots/tiers/stm32wlxx-hal-driver/v1.3.0 ~/lepton/depots/tiers/cmsis-device-wl/v1.1.1 ~/lepton/depots/tiers/stm32-mw-subghz-phy/v1.3.0 ~/lepton/depots/tiers/stm32cubewl/v1.3.0
@@ -133,8 +134,7 @@ Les liens du trunk sont ceux d'ENV-48 (−8 `LICENSE.txt`, +9 `LICENSE.md`), plu
 ## Reprise
 Commande ou première action de la session suivante :
 ```
-vérifier que l'utilisateur a supprimé les 4 anciens clones WL de ~/lepton/depots/tiers/ (sinon le
-lui rappeler) ; démarre la session ENV-50 (skill devenv-session) ; référence Mac oracles/env-49-apres ;
+démarre la session ENV-50 (skill devenv-session) ; référence Mac oracles/env-49-apres ;
 méthode et scripts de rapports/env-49-wl-hal.md (bancs.sh, liens.py) ; relever les ports des WL55
 par ioreg avant le banc
 ```
