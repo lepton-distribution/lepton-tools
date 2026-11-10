@@ -257,8 +257,8 @@ trunk `CONFORME`.
 - 16 tests : `board.smoke_lsh`, `kal.board_flash`, 13 tests KAL, `nucleo-wl55jc1.radio`.
 
 Trunk sans fichier régulier ni `__pycache__`. Les cartes gardent les dernières images de la VM :
-`nucleo-f439zi-embos` sur la F429, `nucleo-wl55jc1-freertos` sur A et B. Elles restent rattachées à
-la VM. Les autres presets de carte ont été construits, jamais flashés.
+`nucleo-f439zi-embos` sur la F429, `nucleo-wl55jc1-freertos` sur A et B. Après le rapport,
+l'utilisateur les a rendues au Mac (20:03 : aucune sonde ST vue de la VM). Les autres presets de carte ont été construits, jamais flashés.
 
 ## 8. Écarts et constats
 
@@ -307,11 +307,11 @@ la VM. Les autres presets de carte ont été construits, jamais flashés.
 | AVANCEMENT R50-1 (§12.2) | 2026-11-10 | VM → Mac | relance `board.net` réussie ×3 | accepté, non confirmé |
 | AVANCEMENT R50-1 (§12, §13) | 2026-11-10 | VM → Mac | C7 atteint, attente du `rm -rf` | accepté, non confirmé |
 | QUESTION R50-1 (push) | 2026-11-10 | VM → utilisateur | push de `devenv/env-50-debian` (PA-P) | oui (utilisateur) |
+| FIN-SUCCÈS R50-1 | 2026-11-10 | VM → Mac | C1 à C8 atteints, branche poussée | accepté, non confirmé |
 
 ## 10. Non fait
 
 - `nucleo-f439zi-freertos`, `samd21-xplained-pro-*`, `stm32f746g-disco-*` : construits, non flashés
   (hors PA-11).
-- Push de `devenv/env-50-debian` : soumis à l'accord de l'utilisateur (PA-P).
-- Cartes non rattachées de nouveau au Mac : laissé à l'utilisateur.
+- Push de `devenv/env-50-debian` : accordé par l'utilisateur (PA-P), fait après le commit 88e48b6.
 - `~/tmp-pytest` conservé (à vider par l'utilisateur s'il le souhaite).
