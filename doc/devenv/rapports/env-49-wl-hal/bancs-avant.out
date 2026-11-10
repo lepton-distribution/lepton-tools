@@ -1,0 +1,57 @@
+== passe 1 nucleo-wl55jc1-embos
+100% tests passed, 0 tests failed out of 16
+   code 0
+   ctest : 100% tests passed, 0 tests failed out of 16
+   radio : radiotst rx : pret
+   radio : radiotst tx : emis=20/20
+   radio : radiotst rx : recus=20/20 perdus=0 desordre=0 doublons=0
+   radio : radiotst rx : pret
+   radio : radiotst tx : emis=20/20
+   radio : lepton#2$ radiotst rx : recus=20/20 perdus=0 desordre=0 doublons=0
+   radio : radiotst pong : pretradiotst ping 20 1000
+   radio : radiotst ping : reponses=20/20 perdues=0
+   radio : radiotst pong : reponses=20/20
+   jetons reçus : 2
+== passe 1 nucleo-wl55jc1-freertos
+100% tests passed, 0 tests failed out of 16
+   code 0
+   ctest : 100% tests passed, 0 tests failed out of 16
+   radio : radiotst rx : pret
+   radio : radiotst tx : emis=20/20
+   radio : lepton#2$ radiotst rx : recus=20/20 perdus=0 desordre=0 doublons=0
+   radio : radiotst rx : pretradiotst tx 20 1000
+   radio : radiotst tx : emis=20/20
+   radio : radiotst rx : recus=20/20 perdus=0 desordre=0 doublons=0
+   radio : radiotst pong : pret
+   radio : radiotst ping : reponses=20/20 perdues=0
+   radio : lepton#2$ radiotst pong : reponses=20/20
+   jetons reçus : 2
+== passe 2 nucleo-wl55jc1-embos
+100% tests passed, 0 tests failed out of 16
+   code 0
+   ctest : 100% tests passed, 0 tests failed out of 16
+   radio : radiotst rx : pret
+   radio : radiotst tx : emis=20/20
+   radio : lepton#2$ radiotst rx : recus=20/20 perdus=0 desordre=0 doublons=0
+   radio : radiotst rx : pret
+   radio : radiotst tx : emis=20/20
+   radio : lepton#2$ radiotst rx : recus=20/20 perdus=0 desordre=0 doublons=0
+   radio : radiotst pong : pret
+   radio : radiotst ping : reponses=20/20 perdues=0
+   radio : lepton#2$ radiotst pong : reponses=20/20
+   jetons reçus : 2
+== passe 2 nucleo-wl55jc1-freertos
+100% tests passed, 0 tests failed out of 16
+   code 0
+   ctest : 100% tests passed, 0 tests failed out of 16
+   radio : radiotst rx : pret
+   radio : radiotst tx : emis=20/20
+   radio : lepton#2$ radiotst rx : recus=20/20 perdus=0 desordre=0 doublons=0
+   radio : radiotst rx : pretradiotst tx 20 1000
+   radio : radiotst tx : emis=20/20
+   radio : radiotst rx : recus=20/20 perdus=0 desordre=0 doublons=0
+   radio : radiotst pong : pretradiotst ping 20 1000
+   radio : radiotst ping : reponses=20/20 perdues=0
+   radio : radiotst pong : reponses=20/20
+   jetons reçus : 2
+bash doc/devenv/rapports/env-49-wl-hal/bancs.sh /Users/cle_d_anton/lepton    13,19s user 24,91s system 8% cpu 7:25,75 total

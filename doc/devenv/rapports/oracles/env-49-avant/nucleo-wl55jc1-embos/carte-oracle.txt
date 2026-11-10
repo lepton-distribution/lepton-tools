@@ -1,0 +1,4 @@
+empreinte .bin : identique
+empreinte .elf : identique
+empreinte .hex : identique
+bilan : 0 écart(s) de sections ou de symboles

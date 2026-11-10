@@ -278,3 +278,57 @@ Q4. **Reste du PA-85** :
   - PA-11 sur les deux WL55 ;
   - description et provenances ;
   - anciens clones supprimés par l'utilisateur après le PA-86.
+
+## 2. Oracle avant
+`rapports/oracles/env-49-avant/` : `env-46-spl/oracle-complet.sh <ROOTSTOCK>`, repris sans
+changement. Il fait la liste du trunk, 6 presets QEMU (fumée et KAL), 10 presets de carte, host,
+des constructions à neuf (2 min 40), puis `ctest -N`. Résultat : « tout a réussi ».
+
+La comparaison à `oracles/env-48-apres/` se fait par `env-46-spl/comparer.sh` (journal
+`env-49-wl-hal/oracle-avant.out`) :
+
+| Preset | Sections/symboles | Fumée | Banc KAL |
+| --- | --- | --- | --- |
+| host | mklepton identiques ; ctest 7/7 | — | — |
+| 6 QEMU (an386 ×4, an500 ×2) | code 0 ×6 | identique | identique (19, 15, 19, 15, 18, 18) |
+| 10 de carte (F429, F439, WL55, F746, SAMD21 ; embOS et FreeRTOS) | code 0 ×10 | — | — |
+
+- `ctest -N` : 17/17 identiques.
+- Trunk : 3888 chemins, `sha256.txt` identique à `env-48-apres`, 0 anomalie.
+
+### 2.1 Banc de référence de la paire NUCLEO-WL55JC1 (PA-11)
+Le script `env-49-wl-hal/bancs.sh` lance `banc-wl55.sh` d'ENV-42 : deux passes par preset, contre
+l'oracle `env-49-avant`. Journaux : `env-49-wl-hal/bancs/avant-<n>/<preset>/` ; bilan :
+`env-49-wl-hal/bancs-avant.out` (7 min 26).
+
+Ports relevés par `ioreg` le 2026-11-10, identiques à ENV-48 :
+- A 002700253431510837393937 : `/dev/cu.usbmodem1454303` ;
+- B 004F003E3431510937393937 : `/dev/cu.usbmodem145103`.
+
+| Preset | Passe | `lepton.elf` contre l'oracle | `ctest -L board` | Radio |
+| --- | --- | --- | --- | --- |
+| `nucleo-wl55jc1-embos` | 1, 2 | 0 écart ×2 | 16/16 ×2 | tx 20/20 et rx 20/20 dans les deux sens, ping-pong 20/20, 2 jetons reçus (×2) |
+| `nucleo-wl55jc1-freertos` | 1, 2 | 0 écart ×2 | 16/16 ×2 | idem (×2) |
+
+Le résultat est identique à la référence d'ENV-48.
+
+## 3. Montée de version
+
+### 3.1 Famille (`family-stm32wlxx`, branche `devenv/env-49`) sur la copie d'essai
+Branche `devenv/env-49` créée depuis `master` dfaf331, dans le clone famille de
+`essais/env-49-copie`. La branche d'essai `essai/env-49` du §1.6 est gardée pour comparaison.
+
+| Commit | Lot | Contenu |
+| --- | --- | --- |
+| c85859b | 1 | `scion/.scion/` : sources et ramifications (`v1.6.0`, `v1.4.0`, `v1.5.0`, `v1.6.0` ×2), 41 lignes de projection (`propose/porteur/`) ; les miroirs sont inchangés et déjà à jour (§1.1) |
+| b86aaf3 | mécanique | `git rm` de `stm32_hal_legacy.h` (Q3) |
+| 9377ad1 | 2 | `radio.c` et `stm32_timer.h` reportés (`propose/reports/reporter.sh`) |
+| — | 3 | couche Lepton et BSP : aucune modification (Q4) |
+| bfbeb1b | 4 | 4 `LEPTON-PROVENANCE.md` ; `description` du manifeste (seul champ changé) |
+
+Contrôles sur la copie, regreffée par `scion graft` (code 0, 3889 feuilles) :
+- liste `chemin -> cible` identique à l'essai du §1.6 (`audit/copie/liens-copie.txt`) ;
+- 0 lien cassé, 0 fichier régulier ;
+- `lepton check` code 0 ;
+- `nucleo-wl55jc1-embos` et `-freertos` reconstruits à neuf : 0 écart de sections et de symboles
+  contre les captures du §1.6, mêmes avertissements.
