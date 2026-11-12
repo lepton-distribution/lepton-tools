@@ -2,7 +2,9 @@
 
 Fichier autonome : avec `ORCHESTRATION.md` §2bis, il suffit à conduire la session VM. Rédigé le
 2026-11-12 par la session Mac `lepton-tools-3b` (tâche 1 d'ENV-53), repris de
-`consignes/env-50-debian.md`. Son texte est envoyé tel quel dans l'ordre `R53-1`.
+`consignes/env-50-debian.md`. Validé par l'utilisateur au PA-93 (2026-11-12), avec une précision
+reportée au §2 : la session VM lance elle-même les commandes marquées « l'utilisateur lance ».
+Son texte est envoyé tel quel dans l'ordre `R53-1`.
 
 ## 1. Objet
 
@@ -77,7 +79,7 @@ La session VM ne développe pas : elle exécute, constate et rapporte.
 | Autorisé | Interdit |
 | --- | --- |
 | `git fetch` / `switch` de `~/lepton-tools-dev/lepton-tools` (`devenv/env-53`) et `git fetch` / `merge --ff-only` du clone noyau `$K` sur `master` | Modifier `DEVENV-STATUS.md`, `ORCHESTRATION.md`, `SPECIFICATION.md`, `handoff/*.md`, les consignes, `rapports/env-53-mac*` |
-| Lire les journaux des commandes lancées **par l'utilisateur** : installations (§6), `scion graft-update` (§7.1, §7.3), clonages refusés (§9.2), essai dans VSCodium (§9.3), suppressions (§13), création éventuelle du venv (§9.1) | Lancer soi-même `sudo`, `pipx install`, `pip install`, les scripts d'installation, `codium --install-extension`, `scion graft-update`, `rm -rf` |
+| Lancer soi-même (PA-93, voir ci-dessous) les commandes de la consigne marquées « l'**utilisateur** lance » : installations (§6, `sudo` sans mot de passe sur la VM), venv (§9.1), les deux `scion graft-update` (§7.1, §7.3), `rm -rf` (§13), telles qu'écrites ; lire les journaux de l'essai dans VSCodium (§9.3), fait par l'utilisateur | Toute autre commande `sudo`, tout autre `rm -rf`, `pip install` hors du venv du §9.1, `codium --install-extension` hors `install-vscodium.sh`, `graft-update` d'un autre rootstock que `$U` et `$E13` |
 | Lectures dans `$U`, `$E13`, `$P`, `$R50` ; `lepton check` / `generate` / `seed status` dans `$U`, `$E13`, `$P`, `$R50` et `$R` | Toute écriture dans les clones de `$U` ou de `$E13` ; tout `seed-update` ; regreffer `$P` ou `$R50`, commiter dans leur graine |
 | Créer `~/lepton-tools-dev/essais/env-53-debian` (rootstock neuf, **sous ce nom** : même longueur de chemin qu'`env-50-debian`, §8) et y tout faire, `build/` compris | Écrire un fichier régulier dans un `trunk/` ou sous `depots/tiers/` ; corriger quoi que ce soit (consigner l'écart pour la session Mac) |
 | Créer `~/lepton-tools-dev/essais/env-53-c5` (copie de `$P`, §9.2) et y tout faire, `seed add` / `seed remove` compris | `git config` (même en lecture) et `git sparse-checkout` (même `list`) dans un clone de `depots/tiers/` : relever par `releve-clones.sh` (§7) |
@@ -87,10 +89,15 @@ La session VM ne développe pas : elle exécute, constate et rapporte.
 | `git push origin devenv/env-53-debian` **après accord explicite de l'utilisateur** (PA-P) | Pousser toute autre branche |
 
 Règles des consignes VM (ORCHESTRATION §2bis) :
-- **Commandes confiées à l'utilisateur.** Les installations (§6), les deux `scion graft-update`
-  (§7.1, §7.3), l'essai dans VSCodium (§9.3), la création éventuelle du venv (§9.1) et les
-  `rm -rf` (§13) sont lancés par l'utilisateur dès le départ ; les commandes exactes sont données
-  plus bas. La session annonce l'attente par un `AVANCEMENT`, puis vérifie l'effet et le consigne.
+- **Commandes marquées « l'utilisateur lance » — précision de l'utilisateur au PA-93
+  (2026-11-12), pour R53-1 seulement.** Les installations (§6), les deux `scion graft-update`
+  (§7.1, §7.3), la création éventuelle du venv (§9.1) et les `rm -rf` (§13) peuvent être lancés
+  **par la session VM elle-même**, exactement comme écrits (bloc entier, mêmes journaux) ; `sudo`
+  ne demande pas de mot de passe sur la VM. La session annonce chaque commande par un
+  `AVANCEMENT` avant de la lancer, puis vérifie l'effet et le consigne. Si le classifieur de
+  permissions en refuse une, la session ne contourne pas : `AVANCEMENT` avec la commande exacte,
+  et l'utilisateur la lance. L'essai dans VSCodium (§9.3, interface graphique) reste fait par
+  l'utilisateur.
 - **Commandes lancées par la session.** `scion rootstock-install`, `seed-add`, `graft` (§7.2) et
   `rejouer-oracle.sh` (§8) ont été acceptés de R28-1 à R50-1. `lepton seed add` (§9.2) clone
   depuis GitHub. Si le classifieur de permissions refuse l'une de ces commandes, ou pytest
@@ -120,8 +127,9 @@ attendre.
   - les résultats de `git ls-remote` du §5 ;
   - les branches et têtes des clones de `$U` et de `$E13` ;
   - les étapes prévues (§6 à §13) et les écarts déjà visibles.
-- `AVANCEMENT` : quand l'utilisateur doit agir (§6, §7.1, §7.3, §9.1 si besoin, §9.2 si refus,
-  §9.3, §13), après chacun des §6 à §11, et à chaque arrêt.
+- `AVANCEMENT` : avant chaque commande marquée « l'utilisateur lance » (§6, §7.1, §7.3, §9.1 si
+  besoin, §13 ; lancée par la session, §2), quand l'utilisateur doit agir (§9.2 si refus, §9.3,
+  tout refus du classifieur), après chacun des §6 à §11, et à chaque arrêt.
 - `FIN-SUCCÈS` / `FIN-ÉCHEC` : résultat par critère du §14, commits et branche (poussée ou non),
   chemin du rapport, versions relevées, écarts, ce qui n'a pas été fait.
 - **Remise en échec** (règle D9 du §2bis) : un envoi en erreur (ECONNRESET, « bridge ID is
@@ -261,7 +269,7 @@ Attendu :
 - `SCION_MIN_VERSION = (0, 6, 2, 0)` (inchangé, PA-91) ;
 - extension 0.5.2, `.vsix` présent.
 
-Puis `AVANCEMENT` : l'**utilisateur** lance, dans un terminal de la VM (sudo avec mot de passe),
+Puis `AVANCEMENT` : l'**utilisateur** lance (ou la session, §2, PA-93 ; sudo sans mot de passe),
 **sans** `SCION_REF` dans l'environnement (défaut du noyau), dans cet ordre :
 
 ```bash
@@ -703,11 +711,11 @@ au §7 ; `$R` (`essais/env-53-debian`) ; `$P` ; `$C5` (`essais/env-53-c5`) ; `$J
 | C1 Versions | `git ls-remote` = Mac (§5) ; git 2.47.3 (≥ 2.35) ; scion 0.6.3.0 par `install-debian.sh` (défaut `SCION_REF`) ; lepton `pipx` code 0, `lepton 0.1.0`, scion 0.6.3.0 accepté ; extension 0.5.2, seconde exécution d'`install-vscodium.sh` `changements 0` ; chaîne APT relevée |
 | C2 `graft-update` et rootstock neuf | §7.1 : `$U` code 0, 0 conflit ; seul le noyau avancé (76f28bd → 58e421e) ; 8 clones tiers convertis ; liens inchangés ; `CONFORME` (3889 liens = attendu, casse et cibles comprises, 0 cassé, 0 régulier, 629 projetés = HEAD) ; 23 entrées ; extraits et `sparse-checkout` = Mac (16 fichiers) ; `clones = Mac` hors `ignorecase` et tailles ; `ignorecase` et tailles relevés ; §7.2 : rootstock neuf, 23 entrées, mêmes contrôles, liste identique à `$U`, tailles relevées |
 | C3 Constructions | host ctest 7/7, mklepton = `env-50-debian` = `env-52-apres` ; 16 presets construits ; QEMU fumée et banc 20/20, 16/16, 19/19, `peripheriques` ×4 ; `comparer_R50-1` 0 pour les 16 presets |
-| C4 `essais/env-13-debian` | `graft-update` par l'utilisateur code 0, 0 conflit ; mêmes contrôles qu'au §7.1 ; `lepton check` code 0 ; espace = avant |
+| C4 `essais/env-13-debian` | `graft-update` (session ou utilisateur, §2) code 0, 0 conflit ; mêmes contrôles qu'au §7.1 ; `lepton check` code 0 ; espace = avant |
 | C5 pytest, relais, fichiers générés | pytest 384 passed (hook 118) ; §9.2 : 12 relevés = Mac (5, 3 et 2 lignes `scion: `, échec non préfixé une seule fois), clones F7 partiels = Mac, `--json` valide, liens et graine restaurés ; §9.3 : 3 notifications attendues, 8 lignes `scion: ` dans le canal, aucune dans la notification d'échec ; §10 : `$R` codes 0, 9 clés projetées, espace = `$R50` au chemin près ; `$U` : espace = avant ; `$P` : générés, graine et `check` identiques |
 | C6 Miroir | `mirror-sync --dry-run` dans `$R` : code 0, 8 miroirs, 0 à envoyer (ou références « à envoyer » expliquées par l'amont), 0 signalement ; rien envoyé ; trunk `CONFORME` |
 | C7 Cartes | écarté (PA-93) |
-| C8 Nettoyage | `essais/env-50-debian` et `~/env-50-journaux` supprimés par l'utilisateur (taille relevée), absents |
+| C8 Nettoyage | `essais/env-50-debian` et `~/env-50-journaux` supprimés (session ou utilisateur, §2 ; taille relevée), absents |
 
 Rapport `doc/devenv/rapports/env-53-debian.md` sur `devenv/env-53-debian`. Il contient :
 - l'hôte et les versions (§5, §6) ;

@@ -162,9 +162,18 @@ Les blocs de contrôle de la consigne (contrôles communs du §7, comparaison de
 ont été éprouvés en bash au Mac, sur `env-13-vierge` et `env-53-c5` : `CONFORME`, écarts=0,
 `clones = Mac`, 12 relevés = Mac.
 
-## 2. PA-93
+## 2. PA-93 (2026-11-12, décisions de l'utilisateur)
 
-En attente.
+- Consigne `consignes/env-53-debian.md` validée telle quelle, C1 à C8 : C3 sans écart admis ;
+  C5 en ligne de commande et dans VSCodium ; C7 écarté ; C8 forme d'ENV-50.
+- Écart au fichier d'étape accepté : pas de regreffe d'`essais/env-50-debian` en C4.
+- Précision : pour R53-1, la session VM lance elle-même les commandes marquées « l'utilisateur
+  lance » (`sudo` sans mot de passe sur la VM). Reportée au §2 de la consigne avant l'envoi ;
+  un refus du classifieur reste confié à l'utilisateur ; l'essai dans VSCodium reste à
+  l'utilisateur.
+- PA-P : push de `devenv/env-53`, ordre `R53-1` à `debian-linux-vm`.
+- PA-P (tâche 3) : regreffe des 6 autres rootstocks d'essai pendant R53-1 ; suppression
+  d'`essais/env-39-copie` et d'`essais/env-53-c5`.
 
 ## 3. Messages §2bis
 
