@@ -1,0 +1,13 @@
+lepton: exécute : scion rootstock-install  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new)
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new/depots/lepton-seed/env51 init -q
+lepton: exécute : scion seed-scion-add --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new/depots/lepton-seed/env51 lepton@original::tree master file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-51-sources/lepton-original-tree.scions.git  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new)
+lepton: exécute : scion seed-scion-add --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new/depots/lepton-seed/env51 lepton@family-stm32f4xx master file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-51-sources/lepton-famille-stm32f4xx.git  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new)
+lepton: exécute : scion seed-scion-add --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new/depots/lepton-seed/env51 lepton@bsp-nucleo-f429zi master file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-51-sources/lepton-bsp-nucleo-f429zi.git  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new)
+lepton: exécute : scion seed-add /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new/depots/lepton-seed/env51 /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new)
+lepton: exécute : scion graft  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new)
+lepton: exécute : xmllint --noout --schema '/Users/cle_d_anton/Library/Application Support/pipx/venvs/lepton/lib/python3.11/site-packages/lepton/schemas/mklepton.xsd' /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new/depots/lepton-seed/env51/project/scion/sys/user/env51/etc/mkconf_env51.xml
+lepton: exécute : scion seed-scion-add --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new/depots/lepton-seed/env51 lepton@project-env51 '*' depots/lepton-seed/env51 project  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new)
+lepton: exécute : scion seed-clone --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new/depots/lepton-seed/env51  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new)
+lepton: exécute : scion graft --scion lepton@project-env51  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new)
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new/depots/lepton-seed/env51 add -A
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new/depots/lepton-seed/env51 commit -q -m 'Graine env51 créée par lepton seed new'

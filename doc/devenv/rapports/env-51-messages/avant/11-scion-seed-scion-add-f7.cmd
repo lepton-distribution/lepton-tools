@@ -1,0 +1,1 @@
+scion seed-scion-add --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4 lepton@family-stm32f7xx master file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-51-sources/lepton-famille-stm32f7xx.git

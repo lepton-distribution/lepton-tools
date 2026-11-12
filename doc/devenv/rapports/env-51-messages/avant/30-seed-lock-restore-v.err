@@ -1,0 +1,13 @@
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/bsp-nucleo-f429zi/master rev-parse HEAD
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/bsp-nucleo-f429zi/master rev-parse --is-inside-work-tree
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/bsp-nucleo-f429zi/master rev-parse --abbrev-ref HEAD
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/bsp-nucleo-f429zi/master rev-parse --short HEAD
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/bsp-nucleo-f429zi/master status --porcelain -- .
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/bsp-nucleo-f429zi/master rev-list --left-right --count '@{u}...HEAD'
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/bsp-nucleo-f429zi/master cat-file -e 'b9fe2bf93db3f1523556b110e2975602e7b710dc^{commit}'
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/original/master rev-parse HEAD
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/family-stm32f4xx/master rev-parse HEAD
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/bsp-nucleo-f429zi/master checkout -q b9fe2bf93db3f1523556b110e2975602e7b710dc
+lepton: exécute : scion graft  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai)
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/tiers/stm32f4xx-hal-driver/v1.8.5 rev-parse HEAD
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1 rev-parse HEAD

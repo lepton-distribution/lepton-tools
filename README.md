@@ -21,7 +21,11 @@ Commandes disponibles (0.1.0) : `lepton --version`, `lepton check [FILE...]` (sa
 graine, greffons greffés et XML du rootstock), `lepton seed new | status | tree | add | remove |
 replace | lock`, `lepton seed mkconf import`, `lepton seed config add | remove`, `lepton scion new | remove`,
 `lepton file add | remove | mv | owner`, `lepton dir add | remove`, `lepton graft`, `lepton generate`
-(`lepton <commande> [<action>] --help`). Exemple :
+(`lepton <commande> [<action>] --help`). Messages : résultats de lepton sur
+stdout ; erreurs (`lepton: erreur:`), avertissements et, sous `-v`, commandes externes exécutées
+sur stderr. Les messages de scion d'un appel réussi y sont relayés, préfixés `scion: `, par exemple
+`scion: clés projetées retirées avec leur porteur …` (ENV-51,
+`doc/devenv/rapports/env-8-interface.md` §21). Exemple :
 
 ```
 lepton seed new demo -C ~/demo --bsp qemu-mps2-an386 \

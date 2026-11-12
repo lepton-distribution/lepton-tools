@@ -14,7 +14,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import assert_trunk_clean, url
+from conftest import app_manifest, assert_trunk_clean, make_scion_repo, url
 from lepton.cli import main
 from test_generate import KERNEL_PRESETS, TOOLS, _workspace
 
@@ -279,3 +279,111 @@ def test_projected_paths_exclusion():
              ProjectionLine("tiers@k", "Inc/Legacy/stm32_hal_legacy.h")]
     assert projected_paths(lines, "Inc/Legacy/stm32_hal_legacy.h") == set()
     assert projected_paths(lines, "Inc/a.h") == {"a/inc/a.h"}
+
+
+# --- ENV-51 (D10, PA-89) : messages de scion relayés sur stderr, préfixe « scion: » --------------
+
+RELAY = "scion: "
+RETIREES = "scion: clés projetées retirées avec leur porteur "      # P-P6
+REGREFFEES = "scion: clés projetées regreffées avec leur porteur "   # P-G6
+LIB_DIR = "sys/root/src/lib/lib-p"
+
+
+def _relayed(err: str) -> list[str]:
+    return [line for line in err.splitlines() if line.startswith(RELAY)]
+
+
+def _carried(lines: list[str], start: str, key: str) -> int:
+    """Rang de la ligne relayée `start` … `: <clé>` (P-P6, P-G6) ; -1 si absente."""
+    return next((i for i, line in enumerate(lines) if line.startswith(start) and line.endswith(f": {key}")), -1)
+
+
+def _carrier_lib(base: Path) -> Path:
+    """Bibliothèque porteuse d'une seconde clé projetée `tiers@tiers-b` : fam-test, famille du BSP,
+    ne peut être retirée (seed remove), d'où ce second porteur pour seed add / seed remove."""
+    tiers = _tiers_repo(base / "tiers-b")
+    lib = make_scion_repo(base / "lib-p", app_manifest("lib-p", "bibliotheque"),
+                          {f"{LIB_DIR}/lib-p.c": "int lib_p(void){return 0;}\n"})
+    dot = lib / "scion" / ".scion"
+    dot.mkdir(parents=True)
+    (dot / ".scion.sources.list").write_text(f"tiers\ttiers-b\tv1.0\t{url(tiers)}\n")
+    (dot / ".scion.ramifications").write_text("tiers\ttiers-b\tv1.0\n")
+    (dot / ".scion.projections").write_text(f"tiers tiers-b Inc/** scion/{LIB_DIR}/ext/Inc/\n")
+    _git(lib, "add", "-A")
+    _git(lib, "commit", "-q", "-m", "projection tiers-b")
+    return lib
+
+
+def test_seed_replace_porteur_relaie_p_p6_p_g6(project, repos, capsys):
+    capsys.readouterr()
+    assert main(["seed", "replace", "fam-test", f"{url(repos['family'])}@master", "-C", str(project),
+                 "--no-cmake"]) == 0
+    out = capsys.readouterr()
+    lines = _relayed(out.err)
+    removed, regrafted = _carried(lines, RETIREES, "tiers/tiers-lib"), _carried(lines, REGREFFEES, "tiers/tiers-lib")
+    assert 0 <= removed < regrafted, out.err
+    assert "fam-test remplacé" in out.out and not _relayed(out.out)     # stdout : messages de lepton seuls
+
+
+def test_graft_porteur_relaie_p_g6(project, capsys):
+    capsys.readouterr()
+    assert main(["graft", "--scion", "fam-test", "-C", str(project), "--no-cmake"]) == 0
+    out = capsys.readouterr()
+    lines = _relayed(out.err)
+    assert _carried(lines, REGREFFEES, "tiers/tiers-lib") >= 0, out.err
+    assert any(line.startswith("scion: greffe partielle : ") for line in lines)
+    assert "regreffe de fam-test faite" in out.out
+
+
+def test_seed_add_remove_porteur_relaie_p_g6_p_p6(project, tmp_path, capsys):
+    lib = _carrier_lib(tmp_path / "repos")
+    ext = project / "trunk" / LIB_DIR / "ext" / "Inc" / "t.h"
+    capsys.readouterr()
+    assert main(["seed", "add", "lib-p", f"{url(lib)}@master", "--type", "bibliotheque", "-C", str(project),
+                 "--no-cmake"]) == 0
+    err = capsys.readouterr().err
+    assert _carried(_relayed(err), REGREFFEES, "tiers/tiers-b") >= 0, err
+    assert ext.is_symlink() and ext.read_text() == "/* t.h */\n"
+    assert main(["seed", "remove", "lib-p", "-C", str(project), "--no-cmake"]) == 0
+    err = capsys.readouterr().err
+    assert _carried(_relayed(err), RETIREES, "tiers/tiers-b") >= 0, err
+    assert not (project / "trunk" / LIB_DIR).exists()
+    assert_trunk_clean(project)
+
+
+def test_file_add_relaie_la_greffe(project, capsys):
+    capsys.readouterr()
+    assert main(["file", "add", str(project / HAL / "local.c"), "-C", str(project)]) == 0
+    out = capsys.readouterr()
+    assert any(line.startswith("scion: greffe partielle : ") for line in out.err.splitlines()), out.err
+    assert not _relayed(out.out)
+
+
+def test_echec_de_scion_sans_double_affichage(project, tmp_path, capsys):
+    """Appel en échec : stderr de scion repris une fois, dans « lepton: erreur: », non relayé."""
+    capsys.readouterr()
+    assert main(["seed", "add", "absent", url(tmp_path / "absent"), "--type", "bibliotheque", "-C", str(project),
+                 "--no-cmake"]) == 2
+    err = capsys.readouterr().err
+    scion_errors = [line for line in err.splitlines() if "erreur :" in line and not line.startswith("lepton:")]
+    assert len(scion_errors) == 1 and not scion_errors[0].startswith(RELAY), err
+    assert "lepton: erreur: échec de « scion seed-clone" in err
+
+
+def test_git_non_relaye(repos, capsys):
+    """git passe par `run` sans relais, même quand il écrit sur stderr en cas de succès."""
+    from lepton import scion_runner
+    capsys.readouterr()
+    res = scion_runner.git(repos["tiers"], "checkout", "v1.0")
+    assert res.returncode == 0 and res.stderr            # « HEAD is now at … » / détachée
+    out = capsys.readouterr()
+    assert out.out == "" and out.err == ""
+
+
+def test_json_inchange(project, capsys):
+    code, r = _json(capsys, "seed", "status", "-C", str(project))
+    assert code == 0 and any(s["key"] == KEY for s in r["scions"])
+    capsys.readouterr()
+    main(["seed", "status", "-C", str(project), "--json"])
+    out = capsys.readouterr()
+    assert not _relayed(out.out) and not _relayed(out.err)

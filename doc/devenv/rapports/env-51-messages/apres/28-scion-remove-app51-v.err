@@ -1,0 +1,5 @@
+lepton: exécute : scion seed-scion-remove --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4 lepton@application-app51  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai)
+scion: scion lepton/application-app51 retiré de /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4/scion/.scion
+lepton: exécute : scion graft-remove lepton@application-app51  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai)
+scion: scion lepton/application-app51 retiré : 3 feuilles
+lepton: exécute : xmllint --noout --schema '/Users/cle_d_anton/Library/Application Support/pipx/venvs/lepton/lib/python3.11/site-packages/lepton/schemas/mklepton.xsd' /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4/project/scion/sys/user/env11f4/etc/mkconf_env11f4.xml

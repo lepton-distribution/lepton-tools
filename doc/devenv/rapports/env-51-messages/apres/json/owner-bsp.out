@@ -1,0 +1,21 @@
+{
+  "path": "trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F429.svd",
+  "relative": "sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F429.svd",
+  "trunk_path": "/Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F429.svd",
+  "kind": "link",
+  "status": "owned",
+  "source": "link",
+  "owner": {
+    "name": "stm32f4xx",
+    "key": "lepton@family-stm32f4xx",
+    "in_seed": true,
+    "clone_path": "/Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/family-stm32f4xx/master/scion/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/svd/STM32F429.svd"
+  },
+  "candidates": [
+    {
+      "name": "stm32f4xx",
+      "key": "lepton@family-stm32f4xx",
+      "in_seed": true
+    }
+  ]
+}

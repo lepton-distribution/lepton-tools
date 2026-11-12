@@ -1,0 +1,6 @@
+scion: scion lepton/family-stm32f4xx retiré : 239 feuilles
+scion: clés projetées retirées avec leur porteur lepton/family-stm32f4xx : tiers/stm32f4xx-hal-driver, tiers/cmsis-device-f4
+scion: clone /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/family-stm32f4xx/master supprimé
+scion: scion lepton/family-stm32f4xx déclaré dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4/scion/.scion (version master)
+scion: clés projetées regreffées avec leur porteur lepton/family-stm32f4xx : tiers/stm32f4xx-hal-driver, tiers/cmsis-device-f4
+scion: greffe partielle : 239 feuilles liées dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/trunk

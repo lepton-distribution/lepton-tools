@@ -1,0 +1,3 @@
+lepton: exécute : scion graft  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai)
+scion: greffe : 6 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+scion: greffe : 3294 feuilles liées dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/trunk

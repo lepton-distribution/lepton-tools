@@ -1,0 +1,10 @@
+{
+  "files": [
+    "trunk/sys/root/src/lepton-greffon.json",
+    "trunk/sys/root/src/kernel/dev/bsp/nucleo-f429zi/lepton-greffon.json",
+    "trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/lepton-greffon.json",
+    "depots/lepton-seed/env11f4/scion/.scion/lepton-graine.json",
+    "trunk/sys/user/env11f4/etc/mkconf_env11f4.xml"
+  ],
+  "anomalies": []
+}
