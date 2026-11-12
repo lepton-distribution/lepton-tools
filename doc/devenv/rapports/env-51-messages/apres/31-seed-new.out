@@ -1,0 +1,7 @@
+XML du projet : sys/user/env51/etc/mkconf_env51.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_nucleo_f439zi.xml, avec .boot, .init)
+rootstock : /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new-apres
+graine    : /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new-apres/depots/lepton-seed/env51
+  noyau    lepton@original::tree            master   file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-51-sources/lepton-original-tree.scions.git
+  famille  lepton@family-stm32f4xx          master   file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-51-sources/lepton-famille-stm32f4xx.git
+  bsp      lepton@bsp-nucleo-f429zi         master   file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-51-sources/lepton-bsp-nucleo-f429zi.git
+presets et espace de travail VSCodium : lepton generate -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new-apres

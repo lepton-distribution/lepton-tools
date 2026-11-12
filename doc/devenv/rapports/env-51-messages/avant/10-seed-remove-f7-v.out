@@ -1,0 +1,2 @@
+stm32f7xx retiré (lepton@family-stm32f7xx)
+graine modifiée, non commitée : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4 commit -am "…"

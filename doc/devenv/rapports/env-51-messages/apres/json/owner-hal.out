@@ -1,0 +1,23 @@
+{
+  "path": "trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal.h",
+  "relative": "sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal.h",
+  "trunk_path": "/Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/trunk/sys/root/src/kernel/dev/arch/cortexm/stm32f4xx/hal_driver/Inc/stm32f4xx_hal.h",
+  "kind": "link",
+  "status": "owned",
+  "source": "link",
+  "owner": {
+    "name": "stm32f4xx-hal-driver",
+    "key": "tiers@stm32f4xx-hal-driver",
+    "in_seed": false,
+    "projected_by": "stm32f4xx",
+    "clone_path": "/Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/tiers/stm32f4xx-hal-driver/v1.8.5/Inc/stm32f4xx_hal.h"
+  },
+  "candidates": [
+    {
+      "name": "stm32f4xx-hal-driver",
+      "key": "tiers@stm32f4xx-hal-driver",
+      "in_seed": false,
+      "projected_by": "stm32f4xx"
+    }
+  ]
+}

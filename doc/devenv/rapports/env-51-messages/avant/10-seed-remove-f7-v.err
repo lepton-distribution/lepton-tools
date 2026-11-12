@@ -1,0 +1,2 @@
+lepton: exécute : scion seed-scion-remove --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4 lepton@family-stm32f7xx  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai)
+lepton: exécute : scion graft-remove lepton@family-stm32f7xx  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai)

@@ -1,0 +1,3 @@
+lepton: exécute : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/application-app51/master/scion/sys/root/src/bin/app51 ls-files -- /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton/application-app51/master/scion/sys/root/src/bin/app51/extra.c
+lepton: exécute : scion graft --scion lepton@application-app51  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai)
+scion: greffe partielle : 4 feuilles liées dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/trunk

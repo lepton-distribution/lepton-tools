@@ -1,0 +1,8 @@
+  building                 (hors git)    *        depots/generation/building
+  nucleo-f429zi            b9fe2bf93db3  master   https://github.com/lepton-distribution/lepton-bsp-nucleo-f429zi.git
+  lepton-noyau             76f28bda3aec  master   https://github.com/lepton-distribution/lepton-original-tree.scions.git
+  stm32f4xx                acdd24c62528  master   file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-51-sources/lepton-famille-stm32f4xx.git
+  stm32f4xx-hal-driver     b6f0ed3829f3  v1.8.5   https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git
+  cmsis-device-f4          3c77349ce04c  3c77349ce04c8af401454cc51f85ea9a50e34fc1 https://github.com/lepton-distribution/mirror-cmsis_device_f4.git
+verrou écrit : /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4/scion/.scion/lepton-graine.lock.json
+graine modifiée, non commitée : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4 commit -am "…"

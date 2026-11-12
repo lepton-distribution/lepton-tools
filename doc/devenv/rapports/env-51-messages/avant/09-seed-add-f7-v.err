@@ -1,0 +1,3 @@
+lepton: exécute : scion seed-scion-add --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4 lepton@family-stm32f7xx master file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-51-sources/lepton-famille-stm32f7xx.git  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai)
+lepton: exécute : scion seed-clone --seed /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai)
+lepton: exécute : scion graft --scion lepton@family-stm32f7xx  (dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai)

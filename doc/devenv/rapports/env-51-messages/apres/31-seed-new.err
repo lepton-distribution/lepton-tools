@@ -1,0 +1,7 @@
+scion: rootstock installé dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new-apres (trunk : trunk)
+scion: scion lepton/original::tree déclaré dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new-apres/depots/lepton-seed/env51/scion/.scion (version master)
+scion: scion lepton/family-stm32f4xx déclaré dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new-apres/depots/lepton-seed/env51/scion/.scion (version master)
+scion: scion lepton/bsp-nucleo-f429zi déclaré dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new-apres/depots/lepton-seed/env51/scion/.scion (version master)
+scion: greffe : 3290 feuilles liées dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new-apres/trunk
+scion: scion lepton/project-env51 déclaré dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new-apres/depots/lepton-seed/env51/scion/.scion (version *)
+scion: greffe partielle : 3 feuilles liées dans /Users/cle_d_anton/lepton-tools-dev/essais/env-51-new-apres/trunk

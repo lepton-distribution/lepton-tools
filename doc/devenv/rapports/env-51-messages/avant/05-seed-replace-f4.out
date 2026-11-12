@@ -1,0 +1,2 @@
+stm32f4xx remplacé (lepton@family-stm32f4xx : master https://github.com/lepton-distribution/lepton-famille-stm32f4xx.git → master file://localhost/Users/cle_d_anton/lepton-tools-dev/essais/env-51-sources/lepton-famille-stm32f4xx.git)
+graine modifiée, non commitée : git -C /Users/cle_d_anton/lepton-tools-dev/essais/env-51-essai/depots/lepton-seed/env11f4 commit -am "…"
