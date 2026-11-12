@@ -18,7 +18,7 @@ CFG-5, INS-6, NF), schémas d'ENV-3 (`schemas/`), scion 0.5.1.0 (`rapports/env-7
 | Git | Aucune opération git implicite hors celles listées (§3.5 `file`) ; aucun fetch, aucun push ; `lepton` ne commite pas dans la graine ni dans les clones (sauf commit initial des dépôts qu'il crée : `seed new`, `scion new`) |
 | Reconfiguration CMake (GRA-4) | Après toute opération qui change la liste des greffons ou un manifeste : `cmake -S <trunk> -B <rép>` pour chaque `<ROOTSTOCK>/build/*/CMakeCache.txt` dont `CMAKE_HOME_DIRECTORY` est le trunk ; `--no-cmake` pour l'éviter. Ajout ou retrait de fichier source : pas de reconfiguration forcée (GLOB `CONFIGURE_DEPENDS` du lecteur, FIC-4) |
 | Contrôle final | Après chaque commande qui modifie : trunk sans fichier régulier (hors `.scion.grafted.list`) ni lien cassé ; sinon code 1 avec la liste (critère ENV-8) |
-| Messages (NF-6) | Erreurs sur stderr : `lepton: erreur: <constat>` puis `  → <action corrective>` ; `-v` affiche chaque commande externe exécutée ; données (status, check) sur stdout |
+| Messages (NF-6) | Erreurs sur stderr : `lepton: erreur: <constat>` puis `  → <action corrective>` ; `-v` affiche chaque commande externe exécutée ; données (status, check) sur stdout ; messages de scion d'un appel réussi relayés sur stderr, une ligne `scion: <message>` chacune (ENV-51, §21) |
 | Sortie machine | `--json` sur `seed status` et `check` (consommés par l'extension, ENV-12) |
 | Hors ligne (NF-8) | Aucun accès réseau propre à `lepton` ; seuls les clones demandés par scion (`seed-add`, `seed-clone`) peuvent en faire |
 
@@ -497,3 +497,15 @@ Tâche de l'éditeur « tests des greffons ». Décisions de l'utilisateur, `rap
 | Configurations | `execution` `qemu` seules ; aucune tâche pour la carte (`LEPTON_BOARD_SERIAL_PORT` posé par aucun preset) |
 | Présence | Seulement si un greffon actif de la configuration déclare `tests` : BSP de la configuration, sa famille, applications, bibliothèques (règle `_lepton_greffon_actif` du lecteur CMake) ; lu dans les manifestes greffés, jamais par `ctest -N` ; relancer `generate` après l'ajout de tests à un greffon |
 | Test | `tests/test_tasks_greffons.py` (6 tests) |
+
+## 21. Amendement d'ENV-51 (2026-11-12 ; D10, PA-89)
+Messages de scion relayés. Décisions de l'utilisateur, `rapports/env-51-messages.md` §2.
+
+| Sujet | Règle |
+| --- | --- |
+| Portée | Tout appel de scion par `scion_runner.scion()` : `seed new`, `add`, `remove`, `replace`, `lock --restore`, `scion new`, `remove`, `file`, `dir`, `graft`. git, xmllint et cmake ne sont pas relayés. Aucune commande `--json` n'appelle scion |
+| Forme | stderr de scion d'un appel réussi, en entier : une ligne `scion: <message>` par ligne non vide. Cela comprend P-P6 (« clés projetées retirées avec leur porteur … ») et P-G6 (« … regreffées avec leur porteur … ») |
+| Flux et ordre | stderr, au retour de chaque appel, après vidage de stdout : les lignes relayées prennent leur place parmi les messages de lepton |
+| Échec | Inchangé : le stderr de scion est repris une fois dans `lepton: erreur: échec de « scion … » (code n) :` (code 2), sans relais |
+| Extension | Les lignes relayées apparaissent dans le canal de sortie. Comme elles ne commencent pas par `lepton:`, `lastMessage` les ignore |
+| Test | `tests/test_projection.py` (7 tests, section ENV-51) |

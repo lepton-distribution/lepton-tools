@@ -77,12 +77,33 @@ def require_scion() -> None:
 
 
 def scion(*args: str, cwd: Path | None = None) -> subprocess.CompletedProcess:
-    """Appel de scion par sous-processus (version contrôlée une fois par processus)."""
+    """Appel de scion par sous-processus (version contrôlée une fois par processus) ; ses messages
+    sont relayés s'il réussit (`relay`)."""
     global _SCION_CHECKED
     if not _SCION_CHECKED:
         require_scion()
         _SCION_CHECKED = True
-    return run(["scion", *args], cwd=cwd)
+    res = run(["scion", *args], cwd=cwd)
+    relay(res.stderr)
+    return res
+
+
+# Préfixe des messages de scion relayés (PA-89 d'ENV-51) : sans « lepton: », pour que l'extension
+# (`lastMessage`) ne les prenne pas pour le message de lepton
+RELAY_PREFIX = "scion: "
+
+
+def relay(text: str) -> None:
+    """Messages d'un appel de scion réussi (son stderr, `logging`) sur stderr, une ligne préfixée
+    par ligne non vide, à leur place parmi ceux de lepton (stdout vidé d'abord). Un appel en échec
+    n'est pas relayé : `run` reprend son stderr dans l'erreur."""
+    lines = [line for line in text.splitlines() if line.strip()]
+    if not lines:
+        return
+    sys.stdout.flush()
+    for line in lines:
+        print(f"{RELAY_PREFIX}{line}", file=sys.stderr)
+    sys.stderr.flush()
 
 
 _SCION_CHECKED = False
