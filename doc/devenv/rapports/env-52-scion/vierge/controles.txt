@@ -1,0 +1,13 @@
+liste chemin -> cible : identique à l'attendu (3889 liens)
+fichiers réguliers 0 []
+liens cassés 0 []
+projetés 629 ; nom non suivi au HEAD (casse) 0 [] ; contenu ≠ HEAD 0 []
+depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1 HEAD 3c77349ce04c8af401454cc51f85ea9a50e34fc1 origin https://github.com/lepton-distribution/mirror-cmsis_device_f4.git modifs 0 filtre blob:none
+depots/tiers/cmsis-device-f7/v1.2.10 HEAD 2352e888e821aa0f4fe549bd5ea81d29c67a3222 origin https://github.com/lepton-distribution/mirror-cmsis_device_f7.git modifs 0 filtre blob:none
+depots/tiers/cmsis-device-wl/v1.4.0 HEAD 71a0b7860e700f7ca11afe4c4afd6cef684ad9bb origin https://github.com/lepton-distribution/mirror-cmsis-device-wl.git modifs 0 filtre blob:none
+depots/tiers/stm32-mw-subghz-phy/v1.5.0 HEAD 7dc059f353f359ec65c60a0549d53c1ebeaafa79 origin https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git modifs 0 filtre blob:none
+depots/tiers/stm32cubewl/v1.6.0 HEAD f934cd298bf82d45f96aac2f335c0bbd26d0b946 origin https://github.com/lepton-distribution/mirror-STM32CubeWL.git modifs 0 filtre blob:none
+depots/tiers/stm32f4xx-hal-driver/v1.8.5 HEAD b6f0ed3829f3829eb358a2e7417d80bba1a42db7 origin https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git modifs 0 filtre blob:none
+depots/tiers/stm32f7xx-hal-driver/v1.3.3 HEAD e1446fa12ffda80ea1016faf349e45b2047fff12 origin https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git modifs 0 filtre blob:none
+depots/tiers/stm32wlxx-hal-driver/v1.6.0 HEAD 5c87cf00992c6e4ecf56c7c129b8dcfc6aa6f88e origin https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git modifs 0 filtre blob:none
+CONFORME

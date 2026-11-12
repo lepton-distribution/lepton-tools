@@ -233,3 +233,171 @@ git depuis 2.37, qui imposerait d'échapper les chemins (rapport d'ENV-52 du cha
 | `SCION_MIN_VERSION`, `SCION_REF` | `SCION_MIN_VERSION` inchangé (0.6.2.0) ; `SCION_REF` 0.6.3.0 dans `install-vscodium.sh` et dans `install-{macos,debian}.sh` du clone noyau (branche `devenv/env-52`) |
 | Binaires | oracle après : `oracles/env-52-apres/` comparé à `oracles/env-49-apres/` (code 0 attendu) |
 | Amendement | texte du §1.7 validé tel quel ; le point git est complété par l'erreur explicite |
+
+## 3. Spécification et implémentation (seed.scions `devenv/env-52`)
+
+| Commit | Objet |
+| --- | --- |
+| 5c8c217 | amendement validé au PA-91 (§1.7) |
+| 0b4e83d | précision de fait sur P-V7 : le mode cône extrait aussi les fichiers placés directement dans chaque répertoire ancêtre d'un répertoire de l'ensemble (constaté avec git 2.50.1), pas seulement ceux de la racine. Le §1.1 comptait déjà ces fichiers ; le choix du PA-91 ne change pas |
+| 51b6421 | 13 tests `TestExtractionPartielle` (`tests/test_projection.py`). Sur 0.6.2.0, 11 échouent et 2 garde-fous réussissent (emplacement local, fichier non suivi) |
+| 950981d | `gitops` : `version()`, `run(input=…)`, `sparse_directories()`, `sparse_set()` ; sans effet sur le comportement |
+| eefd23c | `graft` : P-V7 (détail ci-dessous) |
+| 87dc108 | 0.6.3.0 : `scion/__init__.py`, test de version, `CHANGELOG.md`, `README.md` ; table §A.11 précisée (`seed-update` ne regreffe pas : seul son nouveau clone suit P-V7) |
+
+Tag annoté local `0.6.3.0` sur 87dc108.
+
+Implémentation (`scion/graft.py`) :
+- **`_fetch`** :
+  - contrôle de git ≥ 2.35 avant le premier clonage d'une clé projetée ;
+  - après `clone_partial`, `sparse_set(clone, [])` : seule la racine est extraite ;
+  - puis `checkout --detach`, comme avant.
+- **`_extraction`** :
+  - par clone distant, l'union des répertoires parents des sources des tables de ses clés (P-V2),
+    sans les répertoires inclus dans un autre (`_outermost`) ;
+  - distant ou local se lit dans la ligne de sources du `.scion/` déclarant (P-V3 exclu) ;
+  - contrôle de git ≥ 2.35 dès qu'un clone est concerné.
+- **`_widen`**, appelé après `_projections` (P-E1) et avant `ungraft` ou `_unlink` : union de
+  l'ensemble en place et de l'ensemble calculé. Un clone extrait en entier n'est pas touché.
+- **`_narrow`**, appelé après une greffe réussie :
+  - l'ensemble calculé exactement ;
+  - un message de niveau info si l'ensemble a changé depuis le début de la greffe ;
+  - `-v` liste les répertoires.
+- **Points d'appel** : `regraft` (`graft` complet, `graft-update`) et `graft_scions` (`graft
+  --scion`, clones des seules clés choisies). `graft-remove`, `ungraft` et `graft-clean` ne sont
+  pas touchés.
+
+Tests modifiés, en plus des 13 nouveaux :
+- `TestCommands.test_seed_add_clone_projections` vérifiait `Inc/a.h` extrait après `seed-add`.
+  P-V7 change ce comportement (racine seule jusqu'à la greffe). Le test vérifie désormais
+  `README.md` présent et `Inc/a.h` absent.
+- Deux des nouveaux tests lisaient d'abord les messages d'information sur stderr. Ils passent par
+  `assertLogs`, comme les tests existants, car `logging.basicConfig` ne s'installe qu'une fois par
+  processus.
+
+Suite complète : 282 tests réussis (269 + 13), 1 sauté (réseau), 5 min 3 s. Contrôle NF-2 :
+`git diff 0.6.2.0 -- scion tests | grep -ci '^+.*lepton'` → 0.
+
+## 4. Essais (scion de la branche, venv `essais/env-52-venv`)
+
+### 4.1 Copie d'essai `essais/env-52-copie`
+
+La copie est faite par `rsync -a` de `<ROOTSTOCK>`, sans `build/` ni `third_party/`. Elle est
+ensuite regreffée par `scion graft`, avec le scion 0.6.3.0 du venv.
+
+| Contrôle | Résultat |
+| --- | --- |
+| `scion graft` | code 0 ; 3 889 feuilles ; 8 messages « extraction partielle » (2, 1, 2, 1, 2, 2, 2, 9 répertoires) |
+| liste `chemin -> cible` | identique à `<ROOTSTOCK>` avant et après (`cmp` ; SHA-256 385c0f20… pour les quatre listes, `env-52-scion/liens-sha256.txt`) |
+| liens cassés, fichiers réguliers | 0, 0 |
+| `controler-trunk.py` | `CONFORME` : 629 projetés, casse et contenu = `HEAD` épinglé, 8 clones à leur commit, `modifs 0`, filtre `blob:none` (`env-52-scion/copie/controles.txt`) |
+| fichiers extraits | égaux à la prévision du cône (§1.1) : 31, 22, 70, 28, 103, 204, 200, 161 (`ls-files -t` : `H`) ; `status --porcelain --untracked-files=no` vide pour les 8 clones ; STM32CubeWL : 106 fichiers sur disque = 103 + 3 `.DS_Store` ignorés, déjà présents dans l'original |
+| tailles | arbre extrait de STM32CubeWL : 118,8 → 1,7 Mo ; `.git` inchangé (24,8 Mo) |
+| `lepton check` (venv en tête du PATH) | code 0, 19 fichiers conformes |
+| `lepton generate` | code 0 ; espace de travail identique, chemins du rootstock neutralisés (diff vide) |
+| `lepton seed status` | code 0 ; 9 clés projetées, 0 modification |
+
+### 4.2 Rootstock neuf `essais/env-52-vierge`
+
+Commandes : `scion rootstock-install`, puis `scion seed-add --version original-tree
+https://github.com/lepton-distribution/lepton-seed.scions.git` (33 s), puis `scion graft`
+(13,7 s), avec le scion du venv.
+
+| Contrôle | Résultat |
+| --- | --- |
+| après `seed-add` | 8 clones tiers à la racine seule (6 à 10 fichiers chacun) |
+| `scion graft` | code 0 (seconde greffe : code 0, aucun message « extraction partielle », l'ensemble n'a pas changé) |
+| liste `chemin -> cible` | identique à `<ROOTSTOCK>` (`cmp`) |
+| `controler-trunk.py` | `CONFORME` (`env-52-scion/vierge/controles.txt`) |
+| `lepton check`, `generate` | code 0, code 0 |
+| `depots/tiers` | 85 Mo, contre 242 Mo pour `<ROOTSTOCK>` avant la regreffe |
+
+`.git` de chaque clone neuf, ce qui mesure le téléchargement :
+
+| clone | neuf (0.6.3.0) | `<ROOTSTOCK>` (extraction complète) |
+| --- | --- | --- |
+| `stm32cubewl` | 3,5 Mo | 24,7 Mo |
+| `stm32-mw-subghz-phy` | 0,1 Mo | 0,5 Mo |
+| `cmsis-device-f4` | 0,3 Mo | 0,4 Mo |
+| les 5 autres | ≈ identique (déjà presque tout extrait) | |
+
+## 5. Version, lepton, `<ROOTSTOCK>`
+
+### 5.1 Version et références
+
+| Élément | État |
+| --- | --- |
+| seed.scions | tag annoté local `0.6.3.0` sur 87dc108 (`devenv/env-52`) ; `pipx install --force "git+file://<SEED_SCIONS>@0.6.3.0"` → `scion version: 0.6.3.0` (`~/.local/bin/scion`) |
+| lepton-tools | `SCION_REF="0.6.3.0"` (`scripts/install-vscodium.sh`), `README.md`, note dans `lepton/__init__.py` ; `SCION_MIN_VERSION` inchangé (0, 6, 2, 0) (b0c3f75) ; skill `lepton-rootstock`, section Projection (9aa62a6) ; `pytest` : 384 réussis avec scion 0.6.3.0 |
+| clone noyau | branche `devenv/env-52` (depuis `master` 76f28bd) : 41c9384, `SCION_REF` 0.6.3.0 dans `scripts/install-{macos,debian}.sh`, `README.md`, `README-PAQUET.md`, `doc/BUILDING.md` (fichiers hors de `scion/`, non greffés). Tant que la branche n'est pas fusionnée dans `master`, `graft-update` refuse ce clone (`rapports/env-29-scion.md` §4). `scion graft` ne contrôle pas la version |
+
+Le hook refuse `git -C <clone tiers> sparse-checkout list` : ce n'est pas une lecture admise,
+comme prévu. Il n'est pas modifié (PA-91). La skill indique les lectures admises (`ls-files -t`,
+`cat .git/info/sparse-checkout`, `find`).
+
+### 5.2 Regreffe de `<ROOTSTOCK>` (accord de l'utilisateur, 2026-11-12)
+
+État avant :
+- 13 clones de greffons sur `master` ;
+- graine `original-tree` 15740f9 ;
+- 8 clones tiers en `HEAD` détaché à leur commit épinglé ;
+- 3 889 liens.
+
+La regreffe est faite par `cd <ROOTSTOCK> && scion graft`, avec scion 0.6.3.0 installé par pipx ;
+journal : `env-52-scion/rootstock/graft.log`.
+
+| Contrôle | Résultat |
+| --- | --- |
+| `scion graft` | code 0 ; 3 889 feuilles ; 8 clones convertis (mêmes nombres de répertoires que sur la copie) |
+| liste `chemin -> cible` | identique avant et après (`cmp`), et identique à `oracles/env-49-apres/trunk/chemins-cibles.txt` (SHA-256 5dbbc69f…) |
+| liens cassés | 0 |
+| fichiers réguliers | 0, hors 61 `.DS_Store`. Ces fichiers du Finder datent du 2026-11-12 à 15:37 ; la session ne les a pas créés. Ils sont tolérés (`.scion.trunk.tolerated`, ENV-22) |
+| `controler-trunk.py` | `CONFORME` (`env-52-scion/rootstock/controles-apres.txt`) |
+| `lepton check` | code 0 |
+| clone noyau | `status` propre |
+
+| clone | fichiers extraits | arbre extrait | `.git` |
+| --- | --- | --- | --- |
+| `cmsis-device-f4` | 152 → 31 | 26,2 → 24,5 Mo | 0,4 Mo |
+| `cmsis-device-f7` | 113 → 22 | 20,9 → 19,6 Mo | 0,3 Mo |
+| `cmsis-device-wl` | 79 → 70 | 4,7 → 4,6 Mo | 0,2 Mo |
+| `stm32-mw-subghz-phy` | 147 → 28 | 2,3 → 0,4 Mo | 0,5 Mo |
+| `stm32cubewl` | 8 950 → 106 (103 + 3 `.DS_Store`) | 118,8 → 1,7 Mo | 24,8 Mo (objets déjà reçus) |
+| `stm32f4xx-hal-driver` | 209 → 204 | 10,3 → 10,3 Mo | 1,6 Mo |
+| `stm32f7xx-hal-driver` | 206 → 200 | 9,5 → 9,4 Mo | 1,5 Mo |
+| `stm32wlxx-hal-driver` | 168 → 161 | 7,3 → 7,2 Mo | 1,1 Mo |
+| `depots/tiers` (`du`) | | **242 → 106 Mo** | |
+
+Le relevé du trunk est rangé dans `env-52-scion/rootstock/`, et non dans `oracles/env-52-apres/trunk/`
+comme en ENV-49 : le hook refuse toute écriture shell dans un chemin `…/trunk/`, même sous
+`doc/devenv/`.
+
+### 5.3 Oracle après (PA-91)
+
+`oracles/env-52-apres/` a été produit par `env-45-sonde/oracle-16.sh`, c'est-à-dire
+`rejouer-oracle.sh` aux arguments d'ENV-41, sur `<ROOTSTOCK>` regreffé : constructions à neuf,
+« tout a réussi », 2 min 18. Il est comparé à `oracles/env-49-apres/` par
+`env-52-scion/comparer-oracle-apres.sh` (journal `env-52-scion/oracle-apres.out`).
+
+| Preset | Sections/symboles | Empreinte | Fumée | Banc KAL | Écarts expliqués |
+| --- | --- | --- | --- | --- | --- |
+| host | — | mklepton identiques | — | ctest 7/7 | — |
+| qemu-mps2-an386-embos, -embos-soft, -freertos, -freertos-soft | code 0 ×4 | non comparée (constructions non reproductibles, ENV-41 §4.1) | identique | identique (19, 15, 19, 15) | aucun |
+| qemu-mps2-an500-embos, -freertos | code 0 ×2 | idem | identique | identique (18, 18) | aucun |
+| nucleo-f429zi, nucleo-f439zi, nucleo-wl55jc1, stm32f746g-disco, samd21-xplained-pro (embOS, FreeRTOS) | code 0 ×10 | idem | — | — | aucun |
+
+`ctest -N` : 17/17 identiques. La première comparaison donnait 0/17 : le script lançait
+`ctest --test-dir`, qui ajoute la ligne « Internal ctest changing into directory ». Le script lance
+désormais `ctest` depuis le répertoire de construction, comme en ENV-49.
+
+Conclusion : l'extraction partielle ne change ni le trunk ni les binaires.
+
+### 5.4 Reste au PA-92
+
+- Sort des essais : `essais/env-52-copie`, `essais/env-52-vierge` (209 Mo et 178 Mo),
+  `essais/env-52-venv` (25 Mo).
+- Publication (PA-P) :
+  - tag `0.6.3.0` et `master` de seed.scions ;
+  - branches `devenv/env-52` (seed.scions, clone noyau, lepton-tools) ;
+  - fusions `--no-ff` dans `master`, `master`, `main`.
+- Validation Debian (casse, git 2.47.3) : ENV-53.

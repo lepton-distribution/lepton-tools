@@ -1,0 +1,10 @@
+greffe : 26 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+greffe : 3889 feuilles liées dans /Users/cle_d_anton/lepton/trunk
+clone /Users/cle_d_anton/lepton/depots/tiers/stm32f4xx-hal-driver/v1.8.5 : extraction partielle, 2 répertoire(s)
+clone /Users/cle_d_anton/lepton/depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1 : extraction partielle, 1 répertoire(s)
+clone /Users/cle_d_anton/lepton/depots/tiers/stm32f7xx-hal-driver/v1.3.3 : extraction partielle, 2 répertoire(s)
+clone /Users/cle_d_anton/lepton/depots/tiers/cmsis-device-f7/v1.2.10 : extraction partielle, 1 répertoire(s)
+clone /Users/cle_d_anton/lepton/depots/tiers/stm32wlxx-hal-driver/v1.6.0 : extraction partielle, 2 répertoire(s)
+clone /Users/cle_d_anton/lepton/depots/tiers/cmsis-device-wl/v1.4.0 : extraction partielle, 2 répertoire(s)
+clone /Users/cle_d_anton/lepton/depots/tiers/stm32-mw-subghz-phy/v1.5.0 : extraction partielle, 2 répertoire(s)
+clone /Users/cle_d_anton/lepton/depots/tiers/stm32cubewl/v1.6.0 : extraction partielle, 9 répertoire(s)
