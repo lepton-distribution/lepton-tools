@@ -216,11 +216,27 @@ déjà là en ENV-50 et scion ne les compte pas.
 | Rootstock | `graft-update` | Liens avant → après | Ajouts / retraits | `controler-trunk.py` | Clones tiers | `check` | `generate` | Espace |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `env-9` | 0 ; noyau 76f28bd → 58e421e seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | 0 | identique |
+| `env-11/qemu` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | 0 | identique |
+| `env-11/qemu-gra2` | 0 ; noyau seul (BSP an386 réinscrit), puis `graft-remove lepton@bsp-qemu-mps2-an386` code 0, 8 feuilles, clone conservé | 3051 → 3051 | 0 / 0 | `CONFORME` | — | 1 (attendu, CFG-5) | 1 (attendu) | identique |
+| `env-11/bout-en-bout/rootstock` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | 0 | identique |
+| `env-11/f429zi` | 0 ; noyau seul ; 2 lignes `extraction partielle` | 3294 → 3294 | 0 / 0 | `CONFORME` | 2 convertis, extraits et `sparse-checkout` = attendu (0 / 4) ; 38 572 → 36 528 Ko | 0 | 0 | identique |
+| `env-11/wl55jc1` | 0 ; noyau seul ; 4 lignes `extraction partielle` | 3315 → 3315 | 0 / 0 | `CONFORME` | 4 convertis, = attendu (0 / 8) ; 176 652 → 41 416 Ko | 0 | 0 | identique |
 
-Le classifieur de permissions du Mac a refusé la commande suivante (« Modify Shared
+Entrées inchangées : 5, 5, 4, 5, 7, 10. Partout : aucun `git clone`, 0 conflit ni refus, 0 lien
+cassé, 0 fichier régulier, 0 `.DS_Store`. Les clones des 2 rootstocks à clones projetés ont les
+nombres `H` / `S` de `<ROOTSTOCK>`. Le clone partagé STM32CubeWL d'`env-11/wl55jc1` (porteur WL
+seul) a le même ensemble que celui de `<ROOTSTOCK>`. Bilans :
+`essais/env-53-mac/regreffes/<rootstock>-bilan.txt`.
+
+Le classifieur de permissions du Mac a refusé la deuxième commande de la session (« Modify Shared
 Resources »). Elle enchaînait `env-11/qemu`, `qemu-gra2` et `bout-en-bout`, avec un `sed -i` du
-script. Elle n'a rien exécuté : les noyaux de ces rootstocks sont restés à 76f28bd. Le refus
-n'est pas contourné : la suite est soumise à l'utilisateur.
+script. Elle n'a rien exécuté. Le refus n'a pas été contourné, et l'utilisateur a choisi de lancer
+lui-même la suite :
+- les 4 rootstocks sans `graft-remove`, par une commande qu'il a envoyée comme message, puis que
+  la session a lancée telle quelle ;
+- `qemu-gra2`, dans son propre terminal (`!`) ;
+- `rm -rf ~/lepton-tools-dev/essais/env-39-copie ~/lepton-tools-dev/essais/env-53-c5`, dans son
+  terminal ; la session a vérifié que les deux copies sont absentes.
 
 `essais/env-39-copie`, relevé avant suppression (2026-11-12) :
 - 169 Mo ;
