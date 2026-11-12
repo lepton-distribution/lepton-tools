@@ -1,0 +1,5 @@
+scion: scion lepton/family-stm32f7xx déclaré dans /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton-seed/env11/scion/.scion (version master)
+scion: clés projetées regreffées avec leur porteur lepton/family-stm32f7xx : tiers/stm32f7xx-hal-driver, tiers/cmsis-device-f7
+scion: clone /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/tiers/stm32f7xx-hal-driver/v1.3.3 : extraction partielle, 2 répertoire(s)
+scion: clone /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/tiers/cmsis-device-f7/v1.2.10 : extraction partielle, 1 répertoire(s)
+scion: greffe partielle : 212 feuilles liées dans /home/lepton-user/lepton-tools-dev/essais/env-53-c5/trunk
