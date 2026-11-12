@@ -1,0 +1,6 @@
+scion: scion lepton/library-absent déclaré dans /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton-seed/env11/scion/.scion (version master)
+scion: scion lepton/library-absent retiré de /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton-seed/env11/scion/.scion
+lepton: attention: ajout de lepton@library-absent annulé (graine et trunk restaurés)
+lepton: erreur: échec de « scion seed-clone --seed /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton-seed/env11 » (code 2) :
+erreur : échec de « git clone file://localhost/home/lepton-user/lepton-tools-dev/essais/env-53-absent.git /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton/library-absent/master » (code 128) : et que le dépôt existe.
+  → corriger la cause signalée par scion, puis relancer

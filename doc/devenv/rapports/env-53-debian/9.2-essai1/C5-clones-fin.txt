@@ -1,0 +1,6 @@
+depots/lepton-application/salut branche=master head=71e1641 amont=aucun modifs=2
+depots/lepton-seed/env11 branche=master head=6d3d2a5 amont=aucun modifs=0
+depots/lepton/bsp-qemu-mps2-an386/master branche=master head=046779e amont=origin/master modifs=0
+depots/lepton/family-qemu-mps2/master branche=master head=3954357 amont=origin/master modifs=0
+depots/lepton/family-stm32f7xx/master branche=master head=12280a5 amont=origin/master modifs=0
+depots/lepton/original/master branche=master head=1dde0af amont=origin/master modifs=0

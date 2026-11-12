@@ -1,0 +1,8 @@
+cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1 head=3c77349 origin=https://github.com/lepton-distribution/mirror-cmsis_device_f4.git sparseCheckout= cone= ignorecase= H=152 S=0 extraits=152 extraits=H:oui ko_hors_git=25972 ko_git=588
+cmsis-device-f7/v1.2.10 head=2352e88 origin=https://github.com/lepton-distribution/mirror-cmsis_device_f7.git sparseCheckout= cone= ignorecase= H=113 S=0 extraits=113 extraits=H:oui ko_hors_git=20696 ko_git=492
+cmsis-device-wl/v1.4.0 head=71a0b78 origin=https://github.com/lepton-distribution/mirror-cmsis-device-wl.git sparseCheckout= cone= ignorecase= H=79 S=0 extraits=79 extraits=H:oui ko_hors_git=4820 ko_git=380
+stm32-mw-subghz-phy/v1.5.0 head=7dc059f origin=https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git sparseCheckout= cone= ignorecase= H=147 S=0 extraits=147 extraits=H:oui ko_hors_git=2592 ko_git=636
+stm32cubewl/v1.6.0 head=f934cd2 origin=https://github.com/lepton-distribution/mirror-STM32CubeWL.git sparseCheckout= cone= ignorecase= H=8962 S=0 extraits=8947 extraits=H:non ko_hors_git=146900 ko_git=24324
+stm32f4xx-hal-driver/v1.8.5 head=b6f0ed3 origin=https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git sparseCheckout= cone= ignorecase= H=209 S=0 extraits=209 extraits=H:oui ko_hors_git=10516 ko_git=1700
+stm32f7xx-hal-driver/v1.3.3 head=e1446fa origin=https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git sparseCheckout= cone= ignorecase= H=206 S=0 extraits=206 extraits=H:oui ko_hors_git=9756 ko_git=1644
+stm32wlxx-hal-driver/v1.6.0 head=5c87cf0 origin=https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git sparseCheckout= cone= ignorecase= H=168 S=0 extraits=168 extraits=H:oui ko_hors_git=7452 ko_git=1288
