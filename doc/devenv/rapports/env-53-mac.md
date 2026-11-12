@@ -179,11 +179,88 @@ ont été éprouvés en bash au Mac, sur `env-13-vierge` et `env-53-c5` : `CONFO
 
 | Message | Date | Sens | Résumé |
 | --- | --- | --- | --- |
+| ORDRE R53-1 | 2026-11-12 | Mac (`lepton-tools-3b`) → VM (`debian-linux-vm`) | consigne `env-53-debian.md` @ 087dd49 envoyée en entier, branche `devenv/env-53` @ 087dd49 (poussée) ; précision du PA-93 (la session VM lance les commandes, `sudo` sans mot de passe ; refus du classifieur → utilisateur) ; essai VSCodium par l'utilisateur ; pas de cartes ; envoi réussi par Remote Control, lecture non confirmée |
+| ACCUSÉ R53-1 | 2026-11-12 | VM → Mac | reçu directement (non relayé). §5 sans arrêt : `devenv/env-53` = 087dd49 ; `têtes publiées = Mac` ; Debian 13.7, noyau 6.12.107, utilisateur `lepton-user`, git 2.47.3 ; scion 0.6.2.0 et lepton 0.1.0 avant installation ; chaîne = R50-1 ; embOS et `venv-test` présents, node absent ; 17 Go libres ; `$U` et `$E13` identiques : graine 15740f9, 23 entrées, 13 clones sur `master` aux commits de R50-1 (noyau 76f28bd), `modifs=0`, 3889 liens, 8 clones tiers, `depots/tiers` 259 792 Ko (Mac : 247 600 Ko, écart de système de fichiers, sans effet sur les critères) ; `$R50`, `$P`, `~/env-50-journaux` présents, `$R` et `$C5` absents ; 13 étapes prévues, commandes lancées par la session avec `AVANCEMENT` préalable |
+| AVANCEMENT R53-1 (§5.1, §6) | 2026-11-12 | VM → Mac | §5.1 : `generate` et `check` de `$P`, `$R50`, `$U`, `$E13` à code 0 ; graine `env11` propre ; §6 : noyau 76f28bd → 58e421e par avance rapide, `SCION_REF` 0.6.3.0 (noyau, lepton-tools), `SCION_MIN_VERSION` (0, 6, 2, 0), `.vsix` 0.5.2 présent ; installations du §6 lancées par la session (PA-93) |
+| AVANCEMENT R53-1 (§6, C1 ; §7.1 avant) | 2026-11-12 | VM → Mac | 4 commandes du §6 à code 0, lancées par la session : scion 0.6.3.0 depuis `seed.scions.git@0.6.3.0`, lepton 0.1.0 (« scion 0.6.3.0 (requis ≥ 0.6.2.0) »), `install-vscodium.sh` ×2 `changements 0` (la première comprise) ; chaîne = R50-1, OpenOCD 0.12.0 ; codium 1.135.06055 ; extensions = attendu. §7.1 avant : `$U` 3889 liens, 8 clones tiers en extraction complète (`sparseCheckout`, `ignorecase` vides, `S=0`), `depots/tiers` 259 792 Ko ; `graft-update` de `$U` lancé par la session |
+| AVANCEMENT R53-1 (§7.1, refus) | 2026-11-12 | VM → Mac | `graft-update` de `$U` refusé par le classifieur de la VM (« Modify Shared Resources », comme R28-1) ; rien exécuté, `$U` intact ; pas de contournement ; attente de l'utilisateur pour la commande exacte du §7.1 ; refus attendu aussi pour `$E13` (§7.3) |
+| AVANCEMENT R53-1 (§7.1, §7.2, C2) | 2026-11-12 | VM → Mac | `$U` (`graft-update` par l'utilisateur) : code 0, 0 conflit, aucun `git clone` ; seul le noyau avancé (76f28bd → 58e421e) ; 8 lignes `extraction partielle` aux nombres attendus ; 3889 feuilles, 23 entrées ; liens inchangés ; `CONFORME` ; extraits et `sparse-checkout` : écarts=0 sur 16 ; `clones = Mac` ; `ignorecase` vide ×8 ; `depots/tiers` 259 792 → 108 760 Ko. `$R` neuf : codes 0, mêmes conversions, `CONFORME`, écarts=0, liste = `$U`, `.git` neufs (STM32CubeWL 3 588 Ko), `depots/tiers` 87 512 Ko. §7.3 avant : `$E13` conforme au §5 ; `graft-update` confié à l'utilisateur |
+| AVANCEMENT R53-1 (§7.3, C4 ; §8 lancé) | 2026-11-12 | VM → Mac | `$E13` (`graft-update` par l'utilisateur) : code 0, 0 conflit, aucun `git clone` ; seul le noyau avancé ; 8 conversions ; 3889 feuilles, 23 entrées ; liens inchangés ; `CONFORME`, écarts=0 sur 16, `clones = Mac`, `ignorecase` vide ; tailles = `$U` ; `depots/tiers` 259 792 → 108 760 Ko ; `check` 0 (19 fichiers), `generate` 0, espace = avant. §8 : `devenv/env-53-debian` créée depuis 087dd49 ; `rejouer-oracle.sh` en cours |
+| AVANCEMENT R53-1 (§8, C3 ; §10.2, §10.3) | 2026-11-12 | VM → Mac | `rejouer-oracle.sh` code 0 ; host 7/7 ; 16 presets ; fumée ×6 ; bancs an386 20/20 ×2, soft 16/16 ×2, an500 19/19 ×2 ; `peripheriques` ×4 ; trunk de `$R` 3889, 0 cassé, 0 régulier, 0 `__pycache__` ; §8.1 : mklepton = R50-1 = `env-52-apres` ; `comparer_R50-1` 0 et `hors_debug=0` ×16 ; `comparer_Mac` 1 (informatif). Réordonnancement annoncé : §10.2 (`$U` : codes 0, 9 projections, espace = avant) et §10.3 (`$P` : générés, graine, `check` identiques) faits pendant le §8 ; relevé du §13 : `$R50` 655 Mo, `~/env-50-journaux` 6,5 Mo ; pytest (§9.1) lancé |
+| QUESTION R53-1 (§9.2) | 2026-11-12 | VM → Mac | 01 (`seed add stm32f7xx`) code 2 : 208 conflits de greffe (« déjà fourni par lepton/original::tree »). Cause : `$P` de la VM pas dans l'état du `$P` du Mac. Sur la VM, `$P` n'a pas été regreffé depuis ENV-10 : noyau 1dde0af (2026-10-15), qui porte encore le F7 ; an386 046779e ; `salut` `modifs=2` ; copie à 3428 liens (Mac : 3059). Défaut de la consigne : elle supposait cet état sans l'avoir relevé. Le relais de l'échec est conforme (4 lignes `scion:` préfixées, stderr de l'erreur une seule fois, non préfixé) ; liens et graine restaurés ; restent dans `$C5` les clones F7 créés avant l'échec. Options : O1 C5 partiel, O2 remettre `$C5` à la base du Mac, O3 autre. La VM poursuit §9.1, §10.1 et §11 en attendant |
+| ORDRE R53-1 (réponse à la QUESTION du §9.2) | 2026-11-12 | Mac → VM | option O2, décision de l'utilisateur : premier essai conservé dans `$J/9.2-essai1/` (écart de base) ; `rm -rf` de `$C5` par l'utilisateur ; nouvelle copie par la session ; `graft-update -v` de la copie seule par l'utilisateur (noyau → 58e421e, an386 → 10a8889), contrôles, puis §9.2 et §9.3 en entier ; `$P` non touché ; envoi réussi, lecture non confirmée |
+| AVANCEMENT R53-1 (§10.1, §11, C6) | 2026-11-12 | VM → Mac | (croisé avec la réponse) §10.1 : `$R` `check`, `generate`, `seed status` 0, 9 projections, espace 23/10/7/4/0, espace = `$R50` au chemin près ; §11 : `mirror-sync --dry-run` code 0, 8 miroirs à 0 référence et 0 signalement, 78 Mo sous `depots/.mirrors`, trunk `CONFORME`, rien envoyé ; §13 possible ; attente de la réponse et de pytest |
+| AVANCEMENT R53-1 (§9.1 ; O2 étape 1 ; §13) | 2026-11-12 | VM → Mac | complément O2 reçu ; pytest (`venv-test`, pytest 9.1.1) : 384 passed en 177,56 s, rien d'ignoré ; hook 118 passed ; lepton-tools propre hors `oracles/env-53-debian/` ; premier essai rangé dans `$J/9.2-essai1/` (avec l'inventaire final de la copie : `family-stm32f7xx` résiduel, noyau 1dde0af, 143 Mo) ; suppressions confiées à l'utilisateur en une fois, le classifieur ayant déjà refusé des `rm -rf` : `env-53-c5`, puis `env-50-debian` (655 Mo) et `~/env-50-journaux` (6,5 Mo) |
+| AVANCEMENT R53-1 (§13, C8 ; O2 étapes 2 et 3) | 2026-11-12 | VM → Mac | `rm -rf` lancés par l'utilisateur ; `env-53-c5`, `env-50-debian`, `~/env-50-journaux` absents (C8). Copie refaite (`copie=0`) : 3428 liens, 0 cassé, 0 régulier ; `salut` 71e1641, sans amont, `modifs=2` (`salut.c` modifié, `salut_message.c` non suivi : état d'origine de `$P` ; au Mac, `salut` 4e1df4c, `modifs=0`) ; graine `env11` 6d3d2a5 ; an386 046779e, noyau 1dde0af ; `graft-update` de la copie confié à l'utilisateur (étape 4) |
+| AVANCEMENT R53-1 (O2 étapes 4 à 6 ; §9.2) | 2026-11-12 | VM → Mac | `graft-update` de `$C5` par l'utilisateur : code 0, 0 conflit ; noyau 1dde0af → 58e421e, an386 046779e → 10a8889 ; `salut` accepté (sans amont, `modifs=2`) ; 3059 feuilles ; liens 3059 = Mac ; `generate` et `check` 0. §9.2 repris : 01 code 0, 5 `scion:` dans l'ordre attendu, 3271 liens, clones F7 partiels = Mac ; `--json` valide ; 02 code 0, 3 `scion:` (P-P6) ; 03 code 2, 2 `scion:`, erreur non préfixée une seule fois ; liens et graine restaurés ; 11 relevés sur 12 = Mac, `03-seed-add-echec.err` ligne 5 = message de git en français (« et que le dépôt existe. »), prévu au §9.2 ; résidu `library-absent` retiré. §9.3 en cours avec l'utilisateur |
+| AVANCEMENT R53-1 (§9.3, C5 ; rapport) | 2026-11-12 | VM → Mac | essai dans VSCodium par l'utilisateur : 3 notifications attendues ; texte de l'échec relevé, sans ligne `scion:` ; canal « Lepton » de 60 lignes, dont 8 `scion:` (3 + 3 + 2) ; `→ code` 0, 0, 2 pour les actions, plus 6 `→ code 0` des `seed status --json` que l'extension lance d'elle-même ; lignes de 04-ext et 05-ext présentes, 06-ext 5 sur 6 (langue de git) ; liens et graine restaurés ; `library-absent` retiré. Rapport et oracle commités en f8090af sur `devenv/env-53-debian`, non poussés ; accord du push demandé à l'utilisateur (PA-P) |
+| FIN-SUCCÈS R53-1 | 2026-11-12 | VM → Mac | reçu. C1 à C6 et C8 atteints, C7 écarté ; C5 après la reprise O2 ; commit f8090af sur `devenv/env-53-debian`, poussé avec l'accord de l'utilisateur ; rapport `rapports/env-53-debian.md`. Écarts déclarés : base de `$P` (premier essai conservé), `graft-update` et `rm -rf` lancés par l'utilisateur après refus du classifieur (installations par la session), ordre (§10.2, §10.3 pendant le §8 ; §9.1, §10.1, §11 pendant la QUESTION), git en français, `ignorecase` vide, tailles, 6 `seed status --json` de l'extension, `library-absent` ×2. Non fait : C7, regreffe de `$P`, `~/tmp-pytest` |
 
 ## 4. Rootstocks d'essai du Mac (tâche 3)
 
-En attente de l'accord (PA-P).
+Accord de l'utilisateur (PA-P, PA-93) : regreffe des 6 autres rootstocks pendant R53-1 ;
+suppression d'`essais/env-39-copie` et d'`essais/env-53-c5`. scion 0.6.3.0, lepton 0.1.0.
+Script `env-53-mac/regreffer-essai.sh` (forme d'`env-50-mac.md` §4, plus le relevé des clones
+tiers avant et après). Attendu des liens : la liste d'avant du rootstock, puisque 58e421e ne
+change rien de greffé. Journaux : `~/lepton-tools-dev/essais/env-53-mac/regreffes/`.
+
+Inventaire avant (`inventaire-clones.sh`) :
+- clones de greffons sur `master`, amont `origin/master`, propres ;
+- graines de projet locales sur `main`, sans amont, propres ;
+- noyau à 76f28bd partout, les autres aux têtes publiées.
+
+La graine de `bout-en-bout` porte 2 fichiers non suivis du 2026-11-02 :
+`project/scion/CMakeUserPresets.json` et `scion/.scion/lepton-graine.lock.json`. Ils étaient
+déjà là en ENV-50 et scion ne les compte pas.
+
+| Rootstock | `graft-update` | Liens avant → après | Ajouts / retraits | `controler-trunk.py` | Clones tiers | `check` | `generate` | Espace |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-9` | 0 ; noyau 76f28bd → 58e421e seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | 0 | identique |
+
+Le classifieur de permissions du Mac a refusé la commande suivante (« Modify Shared
+Resources »). Elle enchaînait `env-11/qemu`, `qemu-gra2` et `bout-en-bout`, avec un `sed -i` du
+script. Elle n'a rien exécuté : les noyaux de ces rootstocks sont restés à 76f28bd. Le refus
+n'est pas contourné : la suite est soumise à l'utilisateur.
+
+`essais/env-39-copie`, relevé avant suppression (2026-11-12) :
+- 169 Mo ;
+- clone noyau à 2893297, sur `master`, propre ;
+- `family-stm32f4xx` sur `master` avec 207 suppressions non commitées (`git rm` d'ENV-39), sans
+  rien de publié à garder ;
+- 2 clones tiers d'origine `file://localhost/…/tiers/…`, en extraction complète (42 Mo). Ils
+  ne relèvent pas de P-V7, qui exclut les emplacements locaux.
 
 ## 5. Vérification du rapport VM (tâche 4)
 
-En attente.
+Branche `devenv/env-53-debian` récupérée à f8090af (un commit sur `devenv/env-53` 087dd49). Elle
+n'ajoute que `rapports/env-53-debian.md`, `rapports/env-53-debian/` et
+`rapports/oracles/env-53-debian/` (124 fichiers), et ne touche à aucun autre chemin. Contrôles
+refaits au Mac sur le contenu poussé, extrait par `git archive` dans le répertoire de session :
+
+| Critère | Contrôle refait au Mac | Résultat |
+| --- | --- | --- |
+| C2, C4 | `clones.txt` de `$U`, `$R`, `$E13` après la greffe, contre `attendu/clones-rootstock-mac.txt` (hors `ignorecase` et tailles) | identiques ×3 ; `ignorecase` vide pour les 8 clones ×3 ; avant la greffe, `$U` et `$E13` : 8 × `sparseCheckout=` vide, `S=0` |
+| C2, C4 | `controle.log` de `$U`, `$R`, `$E13` | `CONFORME`, code 0 ×3 : 3889 liens identiques à l'attendu, 0 régulier, 0 cassé, 629 projetés, 0 écart de casse ni de contenu |
+| C3 | `comparer-oracle.py` `env-50-debian` → `env-53-debian`, 16 presets | **0 ×16** ; contre `env-52-apres` : 1 ×16 (chaînes différentes, informatif) |
+| C3 | `mklepton-empreintes.sha256` | = `env-50-debian` et = `env-52-apres` |
+| C3 | `ctest.log`, `banc-kal.log` | host 7/7 ; 20/20 ×2, 16/16 ×2, 19/19 ×2 ; `peripheriques` Passed ×4 |
+| C5 | `9.2-releves/` normalisés (`/home/lepton-user/…/env-53-c5` → `<C>`, `/home/lepton-user` → `<HOME>`) contre `attendu/c5/` | 11 sur 12 identiques ; `03-seed-add-echec.err` ligne 5 : seule la fin du message de git diffère (« et que le dépôt existe. » au lieu de « and the repository exists. ») |
+| C5 | `9.3-sortie-lepton.txt` | 8 lignes `scion: ` ; `→ code` : 11 × 0 (3 actions et 8 appels `--json` de l'extension) et 1 × 2 |
+
+Le rapport VM a bien les rubriques demandées au §14 de la consigne : hôte et versions, critères,
+presets, contrôles du trunk et des clones, pytest, relais, fichiers générés, miroir, écarts,
+messages, non fait.
+
+Écarts retenus pour la clôture :
+- **Défaut de la consigne** (session Mac) : l'état de `$P` sur la VM n'avait pas été relevé.
+  La reprise O2, décidée par l'utilisateur, a fourni la preuve complète. Le premier essai est
+  conservé (`env-53-debian/9.2-essai1/`) : il montre le relais d'un échec conforme sur une
+  autre base.
+- `graft-update` et `rm -rf` refusés par le classifieur de la VM malgré la précision du PA-93,
+  puis lancés par l'utilisateur, comme en R28-1. Les installations du §6 ont été lancées par la
+  session.
+- Messages de git localisés en français sur la VM.
+- `core.ignoreCase` non posé sur la VM (attendu).
+
+Les constats O-1 et O-2 (§1.5) sont confirmés sur la VM pour O-2 : `library-absent` vide, deux
+fois.
