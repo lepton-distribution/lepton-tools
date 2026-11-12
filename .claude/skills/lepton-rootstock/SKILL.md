@@ -51,6 +51,17 @@ pas lu. Tests : `tests/test_proteger_trunk.py`.
   0.6.1.0, il les laissait sans aucun lien.
   Pour remplacer un fichier tiers : l'exclure (`!motif`) et le fournir par un greffon ordinaire.
 - Regreffe d'une seule clé projetée : `scion graft --scion tiers@<clé>`.
+- **Extraction partielle** (scion ≥ 0.6.3.0, P-V7, ENV-52) : un clone tiers n'extrait que les
+  répertoires parents des fichiers projetés, plus les fichiers de sa racine et de leurs répertoires
+  ancêtres (`git sparse-checkout`, mode cône, git ≥ 2.35). C'est scion qui tient cet ensemble à
+  chaque greffe : il l'élargit avant de poser les liens, puis le réduit après la greffe. Un clone
+  encore extrait en entier est converti par sa prochaine greffe.
+  - Un fichier non projeté est absent du disque. Il se lit par `git -C <clone> show HEAD:<chemin>`
+    ou dans le miroir.
+  - Ne jamais lancer `git sparse-checkout` à la main, même `list` : le hook le refuse, et la greffe
+    suivante réécrirait l'ensemble.
+  - Lectures admises : `git -C <clone> ls-files -t` (`H` extrait, `S` hors de l'ensemble),
+    `cat <clone>/.git/info/sparse-checkout`, `find <clone> -type f`.
 - Les sources des clés projetées désignent les miroirs `lepton-distribution/mirror-*` ; `scion
   mirror-sync` les tient à jour (jamais de `git push` à la main depuis `depots/.mirrors/`).
 - `lepton file owner` nomme la clé projetée et son porteur ; `lepton file …` refuse d'y écrire.
