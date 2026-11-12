@@ -1,0 +1,60 @@
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+clangd relancé quand /home/lepton-user/lepton-tools-dev/essais/env-53-c5/build/.active/compile_commands.json change
+
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+→ code 0
+
+Observation de 5 greffon(s) et du trunk /home/lepton-user/lepton-tools-dev/essais/env-53-c5/trunk
+
+$ /home/lepton-user/.local/bin/lepton seed add stm32f7xx https://github.com/lepton-distribution/lepton-famille-stm32f7xx.git --type famille --version master    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+scion: scion lepton/family-stm32f7xx déclaré dans /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton-seed/env11/scion/.scion (version master)
+scion: clés projetées regreffées avec leur porteur lepton/family-stm32f7xx : tiers/stm32f7xx-hal-driver, tiers/cmsis-device-f7
+scion: greffe partielle : 212 feuilles liées dans /home/lepton-user/lepton-tools-dev/essais/env-53-c5/trunk
+stm32f7xx ajouté (lepton@family-stm32f7xx, master, https://github.com/lepton-distribution/lepton-famille-stm32f7xx.git)
+graine modifiée, non commitée : git -C /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton-seed/env11 commit -am "…"
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+Observation de 6 greffon(s) et du trunk /home/lepton-user/lepton-tools-dev/essais/env-53-c5/trunk
+
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed remove stm32f7xx    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+scion: scion lepton/family-stm32f7xx retiré de /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton-seed/env11/scion/.scion
+scion: scion lepton/family-stm32f7xx retiré : 212 feuilles
+scion: clés projetées retirées avec leur porteur lepton/family-stm32f7xx : tiers/stm32f7xx-hal-driver, tiers/cmsis-device-f7
+stm32f7xx retiré (lepton@family-stm32f7xx)
+graine modifiée, non commitée : git -C /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton-seed/env11 commit -am "…"
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+Observation de 5 greffon(s) et du trunk /home/lepton-user/lepton-tools-dev/essais/env-53-c5/trunk
+
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed add absent file://localhost/home/lepton-user/lepton-tools-dev/essais/env-53-absent.git --type bibliotheque --version master    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+scion: scion lepton/library-absent déclaré dans /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton-seed/env11/scion/.scion (version master)
+scion: scion lepton/library-absent retiré de /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton-seed/env11/scion/.scion
+lepton: attention: ajout de lepton@library-absent annulé (graine et trunk restaurés)
+lepton: erreur: échec de « scion seed-clone --seed /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton-seed/env11 » (code 2) :
+erreur : échec de « git clone file://localhost/home/lepton-user/lepton-tools-dev/essais/env-53-absent.git /home/lepton-user/lepton-tools-dev/essais/env-53-c5/depots/lepton/library-absent/master » (code 128) : et que le dépôt existe.
+  → corriger la cause signalée par scion, puis relancer
+→ code 2
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-53-c5)
+→ code 0
+

@@ -1,0 +1,2 @@
+stm32f7xx ajouté (lepton@family-stm32f7xx, master, https://github.com/lepton-distribution/lepton-famille-stm32f7xx.git)
+graine modifiée, non commitée : git -C <C>/depots/lepton-seed/env11 commit -am "…"
