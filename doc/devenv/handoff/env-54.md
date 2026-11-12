@@ -86,6 +86,9 @@ l'utilisateur l'a supprimé depuis (D15).
     `<ROOTSTOCK>/depots/lepton/original/master/.claude/skills/lepton-portage-instructions/references/archetypes-portage.md`
     (version du 8 octobre, commit 1996d6b).
   - La révision a été rédigée sans lui, puis relue contre lui : rien à changer.
+  - Rétabli le 2026-11-12 : l'utilisateur a republié la skill sur claude.ai avec `references/`.
+    Depuis 19:47, la copie synchronisée contient `references/archetypes-portage.md`, identique à
+    celui du clone noyau.
 - `regreffer-essai.sh` d'ENV-53 est versionné sous `rapports/env-53-mac/`, pas sous
   `essais/env-53-mac/`. Ce dernier ne contient que les journaux.
 - Le piège « lepton n'accepte une URL `file://` qu'avec un hôte » figurait déjà dans ENV-51 : c'est
