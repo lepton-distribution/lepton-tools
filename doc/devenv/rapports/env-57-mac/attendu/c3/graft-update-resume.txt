@@ -1,0 +1,82 @@
+clone <R>/depots/lepton/original/master avancé : 58e421e -> ed2a41f
+projection tiers/stm32f4xx-hal-driver : <R>/depots/lepton/family-stm32f4xx/master/scion/.scion/.scion.projections:1 « Inc/** » -> 102 fichier(s)
+projection tiers/stm32f4xx-hal-driver : <R>/depots/lepton/family-stm32f4xx/master/scion/.scion/.scion.projections:2 « Src/** » -> 96 fichier(s)
+projection tiers/stm32f4xx-hal-driver : <R>/depots/lepton/family-stm32f4xx/master/scion/.scion/.scion.projections:3 « LICENSE.md » -> 1 fichier(s)
+projection tiers/stm32f4xx-hal-driver : <R>/depots/lepton/family-stm32f4xx/master/scion/.scion/.scion.projections:4 « README.md » -> 1 fichier(s)
+projection tiers/cmsis-device-f4 : <R>/depots/lepton/family-stm32f4xx/master/scion/.scion/.scion.projections:5 « Include/stm32f4xx.h » -> 1 fichier(s)
+projection tiers/cmsis-device-f4 : <R>/depots/lepton/family-stm32f4xx/master/scion/.scion/.scion.projections:6 « Include/system_stm32f4xx.h » -> 1 fichier(s)
+projection tiers/cmsis-device-f4 : <R>/depots/lepton/family-stm32f4xx/master/scion/.scion/.scion.projections:7 « Include/stm32f4[23]9xx.h » -> 2 fichier(s)
+projection tiers/cmsis-device-f4 : <R>/depots/lepton/family-stm32f4xx/master/scion/.scion/.scion.projections:8 « LICENSE.md » -> 1 fichier(s)
+projection tiers/cmsis-device-f4 : <R>/depots/lepton/family-stm32f4xx/master/scion/.scion/.scion.projections:9 « README.md » -> 1 fichier(s)
+projection tiers/stm32wlxx-hal-driver : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:1 « Inc/** » -> 82 fichier(s)
+projection tiers/stm32wlxx-hal-driver : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:2 « Src/** » -> 72 fichier(s)
+projection tiers/stm32wlxx-hal-driver : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:3 « README.md » -> 1 fichier(s)
+projection tiers/stm32wlxx-hal-driver : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:4 « Release_Notes.html » -> 1 fichier(s)
+projection tiers/stm32wlxx-hal-driver : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:5 « LICENSE.md » -> 1 fichier(s)
+projection tiers/cmsis-device-wl : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:6 « Include/stm32wl55xx.h » -> 1 fichier(s)
+projection tiers/cmsis-device-wl : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:7 « Include/stm32wlxx.h » -> 1 fichier(s)
+projection tiers/cmsis-device-wl : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:8 « Include/system_stm32wlxx.h » -> 1 fichier(s)
+projection tiers/cmsis-device-wl : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:9 « Source/Templates/system_stm32wlxx.c » -> 1 fichier(s)
+projection tiers/cmsis-device-wl : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:10 « Source/Templates/iar/startup_stm32wl55xx_cm4.s » -> 1 fichier(s)
+projection tiers/cmsis-device-wl : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:11 « LICENSE.md » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:12 « radio_driver/radio.h » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:13 « radio_driver/radio_def.h » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:14 « radio_driver/radio_ex.h » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:15 « radio_driver/lr_fhss_v1_base_types.h » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:16 « LICENSE » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:17 « LICENSE.md » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:18 « Conf/* » -> 5 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:19 « radio_driver/*.c » -> 4 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:20 « radio_driver/lr_fhss_mac.h » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:21 « radio_driver/radio_driver.h » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:22 « radio_driver/radio_fw.h » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:23 « radio_driver/subghz_phy_version.h » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:24 « radio_driver/wl_lr_fhss.h » -> 1 fichier(s)
+projection tiers/stm32-mw-subghz-phy : exclu radio_driver/radio.c
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:26 « Utilities/conf/*.[ch] » -> 1 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:27 « Utilities/Fonts/*.[ch] » -> 6 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:28 « Utilities/lcd/*.[ch] » -> 2 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:29 « Utilities/lpm/tiny_lpm/*.[ch] » -> 4 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:30 « Utilities/misc/*.[ch] » -> 10 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:31 « Utilities/sequencer/*.[ch] » -> 2 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:32 « Utilities/timer/*.[ch] » -> 3 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:33 « Utilities/trace/adv_trace/*.[ch] » -> 4 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:34 « Utilities/conf/LICENSE.md » -> 1 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:35 « Utilities/lpm/tiny_lpm/LICENSE.md » -> 1 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:36 « Utilities/misc/LICENSE.md » -> 1 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:37 « Utilities/sequencer/LICENSE.md » -> 1 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:38 « Utilities/timer/LICENSE.md » -> 1 fichier(s)
+projection tiers/stm32cubewl::utilities : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:39 « Utilities/trace/adv_trace/LICENSE.md » -> 1 fichier(s)
+projection tiers/stm32cubewl::utilities : exclu Utilities/timer/stm32_timer.h
+projection tiers/stm32cubewl::radio-core-inc : <R>/depots/lepton/family-stm32wlxx/master/scion/.scion/.scion.projections:41 « Projects/NUCLEO-WL55JC/Applications/SubGHz_Phy/SubGHz_Phy_PingPong/Core/Inc/utilities_def.h » -> 1 fichier(s)
+projection tiers/stm32f7xx-hal-driver : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:1 « Inc/** » -> 101 fichier(s)
+projection tiers/stm32f7xx-hal-driver : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:2 « Src/** » -> 93 fichier(s)
+projection tiers/stm32f7xx-hal-driver : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:3 « LICENSE.md » -> 1 fichier(s)
+projection tiers/stm32f7xx-hal-driver : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:4 « README.md » -> 1 fichier(s)
+projection tiers/cmsis-device-f7 : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:5 « Include/stm32f7xx.h » -> 1 fichier(s)
+projection tiers/cmsis-device-f7 : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:6 « Include/system_stm32f7xx.h » -> 1 fichier(s)
+projection tiers/cmsis-device-f7 : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:7 « Include/stm32f746xx.h » -> 1 fichier(s)
+projection tiers/cmsis-device-f7 : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:8 « LICENSE.md » -> 1 fichier(s)
+projection tiers/cmsis-device-f7 : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:9 « README.md » -> 1 fichier(s)
+greffe : 3889 feuilles liées dans <R>/trunk
+clone <R>/depots/tiers/stm32f4xx-hal-driver/v1.8.5 : répertoire extrait Inc
+clone <R>/depots/tiers/stm32f4xx-hal-driver/v1.8.5 : répertoire extrait Src
+clone <R>/depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1 : répertoire extrait Include
+clone <R>/depots/tiers/stm32wlxx-hal-driver/v1.6.0 : répertoire extrait Inc
+clone <R>/depots/tiers/stm32wlxx-hal-driver/v1.6.0 : répertoire extrait Src
+clone <R>/depots/tiers/cmsis-device-wl/v1.4.0 : répertoire extrait Include
+clone <R>/depots/tiers/cmsis-device-wl/v1.4.0 : répertoire extrait Source/Templates
+clone <R>/depots/tiers/stm32-mw-subghz-phy/v1.5.0 : répertoire extrait Conf
+clone <R>/depots/tiers/stm32-mw-subghz-phy/v1.5.0 : répertoire extrait radio_driver
+clone <R>/depots/tiers/stm32cubewl/v1.6.0 : répertoire extrait Projects/NUCLEO-WL55JC/Applications/SubGHz_Phy/SubGHz_Phy_PingPong/Core/Inc
+clone <R>/depots/tiers/stm32cubewl/v1.6.0 : répertoire extrait Utilities/Fonts
+clone <R>/depots/tiers/stm32cubewl/v1.6.0 : répertoire extrait Utilities/conf
+clone <R>/depots/tiers/stm32cubewl/v1.6.0 : répertoire extrait Utilities/lcd
+clone <R>/depots/tiers/stm32cubewl/v1.6.0 : répertoire extrait Utilities/lpm/tiny_lpm
+clone <R>/depots/tiers/stm32cubewl/v1.6.0 : répertoire extrait Utilities/misc
+clone <R>/depots/tiers/stm32cubewl/v1.6.0 : répertoire extrait Utilities/sequencer
+clone <R>/depots/tiers/stm32cubewl/v1.6.0 : répertoire extrait Utilities/timer
+clone <R>/depots/tiers/stm32cubewl/v1.6.0 : répertoire extrait Utilities/trace/adv_trace
+clone <R>/depots/tiers/stm32f7xx-hal-driver/v1.3.3 : répertoire extrait Inc
+clone <R>/depots/tiers/stm32f7xx-hal-driver/v1.3.3 : répertoire extrait Src
+clone <R>/depots/tiers/cmsis-device-f7/v1.2.10 : répertoire extrait Include

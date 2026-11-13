@@ -1,0 +1,18 @@
+rootstock <R>
+graft-update code=0 ; avancés : 1 ; git clone : 0 ; extraction partielle : 0 ; conflit/refus : 0
+  depots/lepton/original/master avancé : 58e421e -> ed2a41f
+clones : 1 ligne(s) changée(s)
+liens avant liens=3889 casses=0 reguliers=0 ; après liens=3889 casses=0 reguliers=0
+liens ajoutés 0 retirés 0
+controler-trunk CONFORME code=0 
+tiers : 8 clone(s) ; depots/tiers 107992 → 107992 Ko ; extraits et sparse-checkout ≠ attendu : 0 / 16
+  cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1 sparseCheckout=true cone=true H=31 S=121 extraits=H:oui ko_hors_git=23956 ko_git=528
+  cmsis-device-f7/v1.2.10 sparseCheckout=true cone=true H=22 S=91 extraits=H:oui ko_hors_git=19128 ko_git=432
+  cmsis-device-wl/v1.4.0 sparseCheckout=true cone=true H=70 S=9 extraits=H:oui ko_hors_git=4668 ko_git=320
+  stm32-mw-subghz-phy/v1.5.0 sparseCheckout=true cone=true H=28 S=119 extraits=H:oui ko_hors_git=436 ko_git=576
+  stm32cubewl/v1.6.0 sparseCheckout=true cone=true H=103 S=8859 extraits=H:oui ko_hors_git=1828 ko_git=24280
+  stm32f4xx-hal-driver/v1.8.5 sparseCheckout=true cone=true H=204 S=5 extraits=H:oui ko_hors_git=10404 ko_git=1640
+  stm32f7xx-hal-driver/v1.3.3 sparseCheckout=true cone=true H=200 S=6 extraits=H:oui ko_hors_git=9636 ko_git=1584
+  stm32wlxx-hal-driver/v1.6.0 sparseCheckout=true cone=true H=161 S=7 extraits=H:oui ko_hors_git=7332 ko_git=1228
+check code=0 ; generate avant code=0 après code=0 ; espace diff=0
+trunk : réguliers hors .DS_Store 0 ; .DS_Store 0 ; cassés 0
