@@ -253,3 +253,12 @@ commit (QUESTION du push, §14, `FIN-SUCCÈS`) figurent au §3 ci-dessus.
   VM ; sans effet.
 - Empreintes binaires différentes de R53-1 pour les 16 presets (`__DATE__`, `__TIME__`), `comparer`
   à 0 : forme attendue, comme aux validations précédentes.
+
+## 6. PA-102 et fin du plan (2026-11-13, décisions de l'utilisateur)
+
+- PA-102 (PA-P) : rapport VM accepté (vérifié au §5). Fusion `--no-ff` de `devenv/env-57-debian`
+  (6df0de1) dans `devenv/env-57`, commit d'état et de passation, fusion `--no-ff` de
+  `devenv/env-57` dans `main`, push de `main` et de `devenv/env-57`.
+- `HORS-PLAN.md` présenté (fin du plan) : D17, D18, D19 et D20 **à traiter**, à planifier à la
+  prochaine révision du plan ; A1 à A4, D4 et D12 reconfirmés hors plan ; D14, D16 prouvés sur la
+  VM et D15 clos par ENV-57.
