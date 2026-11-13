@@ -67,7 +67,7 @@ Démarrer ENV-56 (skill `devenv-session`) : scion, répertoires laissés par un 
 | ENV-53 | Validation Debian groupée (ENV-51, ENV-52) | terminée (2026-11-12) ; rapports `rapports/env-53-mac.md`, `rapports/env-53-debian.md` ; oracle `oracles/env-53-debian/` ; fin du plan | lepton-tools `devenv/env-53` (depuis `main` fb61b9a, fusionnée dans `main`, poussée) ; `devenv/env-53-debian` (VM, ordre R53-1, f8090af, poussée, fusionnée) | `handoff/env-53.md` |
 | ENV-54 | Claude Code : règles de permission ciblées (D16) | terminée (2026-11-13) ; rapport `rapports/env-54-permissions.md` ; règles `.claude/settings.json`, enveloppe `scripts/supprimer-essai.sh` | lepton-tools `devenv/env-54` (depuis `main` 4bed93c, fusionnée dans `main`, poussée) | `handoff/env-54.md` |
 | ENV-55 | lepton : URL `file:///` reconnue (D13) | terminée (2026-11-13) ; rapport `rapports/env-55-url-file.md` ; `file:///`, `file:/`, `FILE:` normalisés en `file://localhost/` (`lepton/seed.py`) | lepton-tools `devenv/env-55` (depuis `main` 7d55bf1, fusionnée dans `main`, poussée) | `handoff/env-55.md` |
-| ENV-56 | scion : répertoires laissés par un clonage en échec (D14) | à faire | — | — |
+| ENV-56 | scion : répertoires laissés par un clonage en échec (D14) | en cours (2026-11-13) | seed.scions `devenv/env-56` (depuis `master` 6416c33) ; lepton-tools `devenv/env-56` (depuis `main` 298de7a) | — |
 | ENV-57 | Validation Debian groupée (ENV-54 à ENV-56) | à faire | — | — |
 
 Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), abandonnée (décision).
