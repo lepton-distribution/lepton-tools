@@ -1,0 +1,18 @@
+test_nothing_logged_when_nothing_was_created (test_failed_clone.TestMessage.test_nothing_logged_when_nothing_was_created) ... ok
+test_removal_is_logged_under_verbose_only (test_failed_clone.TestMessage.test_removal_is_logged_under_verbose_only) ... FAIL
+test_absent_mirror_leaves_nothing (test_failed_clone.TestMirrorWork.test_absent_mirror_leaves_nothing) ... FAIL
+test_ancestors_made_for_another_mirror_are_kept (test_failed_clone.TestMirrorWork.test_ancestors_made_for_another_mirror_are_kept) ... ok
+Unchanged (M-C6): the work repository was cloned; it serves the next pass. ... ok
+Unchanged: the clone succeeded; the next pass refuses it (version check). ... ok
+test_empty_parent_already_there_is_kept (test_failed_clone.TestOrdinaryScion.test_empty_parent_already_there_is_kept) ... ok
+test_existing_shelf_keeps_only_what_was_there (test_failed_clone.TestOrdinaryScion.test_existing_shelf_keeps_only_what_was_there) ... FAIL
+test_new_shelf_leaves_nothing (test_failed_clone.TestOrdinaryScion.test_new_shelf_leaves_nothing) ... FAIL
+test_parent_holding_another_version_is_kept (test_failed_clone.TestOrdinaryScion.test_parent_holding_another_version_is_kept) ... ok
+test_single_branch_version_missing_upstream_leaves_nothing (test_failed_clone.TestOrdinaryScion.test_single_branch_version_missing_upstream_leaves_nothing) ... FAIL
+Unchanged (P-V1): the clone succeeded and is left in place, as the message says. ... ok
+test_existing_shelf_keeps_the_other_clone (test_failed_clone.TestProjectedKey.test_existing_shelf_keeps_the_other_clone) ... FAIL
+test_new_shelf_leaves_nothing (test_failed_clone.TestProjectedKey.test_new_shelf_leaves_nothing) ... FAIL
+test_parent_holding_another_version_is_kept (test_failed_clone.TestProjectedKey.test_parent_holding_another_version_is_kept) ... ok
+test_absent_remote_seed_leaves_nothing (test_failed_clone.TestRemoteSeed.test_absent_remote_seed_leaves_nothing) ... FAIL
+Ran 16 tests in 13.572s
+FAILED (failures=8)

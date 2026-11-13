@@ -1,0 +1,1 @@
+erreur : échec de « git checkout nope » (code 1) : error: pathspec 'nope' did not match any file(s) known to git

@@ -160,3 +160,100 @@ Aucune règle ne fixe le sort des répertoires créés pour un clonage en échec
   `README.md`) et dans le clone noyau (`install-{macos,debian}.sh`, `README.md`,
   `README-PAQUET.md`, `doc/BUILDING.md`), sur une branche `devenv/env-56`. ENV-57 l'installera
   ainsi sur la VM. Précédent : ENV-52 (PA-91).
+
+## 2. Décisions du PA-99 (2026-11-13, utilisateur)
+
+Les propositions du §1.8 sont retenues :
+- **Portée.** Seuls les répertoires vides créés par l'appel sont retirés, par `rmdir`, du plus profond
+  au plus haut. Un répertoire préexistant ou non vide n'est jamais touché.
+- **Cas couverts.** R1, R2 et R3. Les clones gardés exprès (f06, f08, f12a) ne changent pas. f06, un
+  clone gardé sans que le message le dise, est noté au hors-plan (D18).
+- **Message.** Une ligne de journal sous `-v`, rien au niveau normal.
+- **Documentation.** `README.md` (§Utilisation) et `CHANGELOG.md` de seed.scions ;
+  `doc/projection-miroir.md` reste inchangé.
+- **Version.** 0.6.3.1.
+- **Références.** `SCION_MIN_VERSION` reste (0, 6, 2, 0). `SCION_REF` passe à 0.6.3.1 dans
+  lepton-tools et dans le clone noyau.
+
+## 3. Implémentation (seed.scions, `devenv/env-56`)
+
+| Commit | Contenu |
+| --- | --- |
+| 95d55eb | Tests d'abord, `tests/test_failed_clone.py` : 16 tests. Sur 0.6.3.0, 8 échouent : clé ordinaire (étagère nouvelle, étagère existante, `--single-branch` sur une version absente), graine distante, clé projetée (étagère nouvelle, étagère existante), miroir absent (`--dry-run`), ligne de journal sous `-v`. Les 8 autres réussissent : répertoires préexistants et clones gardés exprès (`env-56-scion/tests-avant-correction.txt`) |
+| 54fc27b | `gitops.clone_parents(dest)`, gestionnaire de contexte : relève les ancêtres absents de `dest`, crée le parent, et sur exception retire par `rmdir` les répertoires créés, du plus profond au plus haut ; arrêt au premier répertoire non vide. Ligne `log.debug` : « clonage en échec : répertoire(s) créé(s) pour <dest> retiré(s) : … ». Employé par `clone` et `clone_partial` : R1 (dont `cli._clone_seed`) et R2 |
+| b8767dc | `mirror.sync_one` : `git clone --mirror` dans `gitops.clone_parents(work)` (R3) |
+| c51ee1a | 0.6.3.1 : `scion/__init__.py`, `tests/test_cli.py`, `CHANGELOG.md` (« Corrections »), `README.md` (§Utilisation) |
+
+Un clone réussi dont le `checkout` échoue (f06) laisse un parent non vide : `rmdir` échoue, et rien
+n'est retiré. Les étapes qui suivent un clone réussi dans `_fetch` (`sparse_set`, `_pinned`,
+`checkout_detached`) sont hors du gestionnaire : le clone reste en place (P-V1).
+
+Contrôles :
+- tests de scion : 298, tous verts, plus 1 sauté (`test_network`, désactivé sans
+  `SCION_TEST_NETWORK=1`, comme sur `master`) ;
+- NF-2 : `git diff 0.6.3.0 -- scion tests | grep -ci '^+.*lepton'` donne 0 ;
+- `git diff --stat 0.6.3.0` : 7 fichiers, +272 −14.
+
+## 4. Essais avec la branche (venv `essais/env-56-venv`, scion 0.6.3.1)
+
+Le venv est installé par `pip install "git+file://<SEED_SCIONS>@devenv/env-56"`, et son `bin/` est
+placé en tête du PATH pour lepton.
+
+- **Rootstock d'essai, e01 à e06** (`apres/`) :
+  - aucun résidu, et les préexistants sont gardés (e04, e05) ;
+  - `diff -r avant apres` ne diffère que par les lignes `résidu` et `rmdir` des `*.etat` et par
+    `scion.txt` : `.out`, `.err` et `.code` sont identiques ;
+  - graine, trunk et liens sont égaux au départ.
+- **Ligne sous `-v`** (`apres/e07-verbeux.err`, `scion seed-add -v <URL absente>`) :
+  - `clonage en échec : répertoire(s) créé(s) pour <C>/depots/env-56-absent/master retiré(s) :
+    <C>/depots/env-56-absent`, entre la commande git et l'erreur ;
+  - aucun résidu.
+- **Fixture, f01 à f12b** (`fixture-apres/`) :
+  - chaque cas de D14 (f01, f02, f05, f07, f09b, f10, f11) crée 0 répertoire durable ;
+  - préexistants gardés (f03, f04, f09c, f12b) et clones gardés exprès (f06, f08, f12a) : comme
+    avant ;
+  - `.cmd`, `.out`, `.err` et `.code` sont identiques à l'avant pour les 15 cas ;
+  - les `.depots` ne diffèrent que pour f01, f02, f05, f07, f09b, f10, f11, et pour f09c, qui
+    hérite du rootstock de f09b, sans le résidu `depots/tiers/hal2`.
+- **`seed add` réussi, puis `seed remove`** (forme des relevés 01 et 02 d'ENV-53, `succes.sh`) :
+  - `lepton seed add stm32f7xx --type famille https://github.com/lepton-distribution/lepton-famille-stm32f7xx.git@master --no-cmake`,
+    puis `lepton seed remove stm32f7xx --no-cmake` ;
+  - deux copies neuves d'`essais/env-11/qemu`, `essais/env-56-succes-0630` (scion 0.6.3.0) et
+    `essais/env-56-succes-0631` (branche). `seed remove` garde les clones tiers d'un porteur
+    (P-P6) : une seconde passe sur la même copie ne reclonerait pas ;
+  - résultat, dans les deux cas : 3059 → 3271 → 3059 liens, 0 cassé, graine et liste greffée
+    égales au départ ;
+  - `diff -r succes-0630 succes-0631` ne diffère que par `scion.txt`. Sont donc identiques : les
+    messages, les codes, les liens, les clones tiers (tête, `sparse-checkout`, fichiers extraits,
+    tailles) et la tête du clone de la famille.
+
+## 5. Version, lepton, noyau
+
+- seed.scions :
+  - tag annoté local `0.6.3.1` sur c51ee1a ;
+  - `pipx install --force "git+file://<SEED_SCIONS>@0.6.3.1"` : `scion version: 0.6.3.1` ;
+  - les 10 modules installés sont identiques au tag (`cmp`).
+- lepton-tools, 01d4991 :
+  - `SCION_REF="0.6.3.1"` (`scripts/install-vscodium.sh`), `README.md`, note dans
+    `lepton/__init__.py` ;
+  - `SCION_MIN_VERSION` inchangé, (0, 6, 2, 0) ;
+  - `lepton --version` donne `scion 0.6.3.1 (requis ≥ 0.6.2.0)`.
+- `pytest` de lepton-tools (venv `~/lepton-tools-dev/venv-lepton-tools`, scion 0.6.3.1 du PATH) :
+  453 verts, `test_echec_de_scion_sans_double_affichage` compris.
+- Clone noyau, branche `devenv/env-56` (depuis `master` 58e421e), 79354a0 :
+  - `SCION_REF` 0.6.3.1 dans `scripts/install-{macos,debian}.sh`, `README.md`, `README-PAQUET.md`,
+    `doc/BUILDING.md` ;
+  - ces fichiers sont hors de `scion/` : rien n'est greffé, et le trunk ne change pas ;
+  - contrôles de `<ROOTSTOCK>` : 0 lien cassé ; 7 fichiers réguliers, tous des `.DS_Store` du
+    Finder datés du 12 novembre et tolérés (`.scion.trunk.tolerated`), antérieurs à la session.
+- lepton n'est pas réinstallé par pipx : son code ne change pas, seul un commentaire change.
+
+## 6. Binaires
+
+Pas d'oracle :
+- le correctif ne touche que les chemins d'échec d'un clonage ;
+- `<ROOTSTOCK>` n'est pas regreffé ;
+- le seul essai de greffe réussie (§4) donne, avec 0.6.3.0 et avec 0.6.3.1, des liens et des clones
+  identiques ;
+- l'arbre composé ne change donc pas, et aucune reconstruction n'est nécessaire (forme
+  d'`env-15-scion.md` §6).

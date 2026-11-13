@@ -1,0 +1,8 @@
+lepton building * depots/generation/building depots/lepton-seed/env11/scion/.scion
+lepton original::tree master depots/lepton/original/master depots/lepton-seed/env11/scion/.scion
+lepton family-qemu-mps2 master depots/lepton/family-qemu-mps2/master depots/lepton-seed/env11/scion/.scion
+lepton bsp-qemu-mps2-an386 master depots/lepton/bsp-qemu-mps2-an386/master depots/lepton-seed/env11/scion/.scion
+lepton project-env11 * depots/lepton-seed/env11/project depots/lepton-seed/env11/scion/.scion
+lepton family-stm32f7xx master depots/lepton/family-stm32f7xx/master depots/lepton-seed/env11/scion/.scion
+tiers stm32f7xx-hal-driver v1.3.3 depots/tiers/stm32f7xx-hal-driver/v1.3.3 depots/lepton-seed/env11/scion/.scion depots/lepton/family-stm32f7xx/master/scion/.scion
+tiers cmsis-device-f7 v1.2.10 depots/tiers/cmsis-device-f7/v1.2.10 depots/lepton-seed/env11/scion/.scion depots/lepton/family-stm32f7xx/master/scion/.scion
