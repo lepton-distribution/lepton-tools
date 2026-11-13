@@ -134,7 +134,7 @@ reprennent le résultat sans la décision, avaient d'abord donné des décisions
 | C3 | Regreffe de `$U`, `$E13` et `$C5` par la session, sur invite confirmée par l'utilisateur ; attendu du §1.3 |
 | C4 | D13 : `env-55-url-file/essai.sh` sur une copie de `$C5`, = `attendu/c4/` (231 relevés) |
 | C5 | D14 : `env-56-scion/essai.sh`, = `attendu/c5/` (48 relevés), aucun résidu ; pytest 453 (`--junitxml`) |
-| C6 | `mirror-sync --dry-run` dans `essais/env-53-debian` ; reconstruction écartée |
+| C6 | regreffe d'`essais/env-53-debian` (`$R53`), host et 16 presets par `rejouer-oracle.sh`, `comparer` 0 ×16 contre `env-53-debian` (PA-101) ; `mirror-sync --dry-run` |
 | C7 | écarté |
 | C8 | copie et dépôt d'essai, `~/env-53-journaux` par l'enveloppe ; `essais/env-11/qemu` par l'utilisateur |
 
@@ -146,13 +146,26 @@ et les décisions `subcommandResults` le prouvent.
 - `$C5` regreffé en C3, en plus de `$U` et `$E13` : sinon la graine de projet de référence de la VM
   resterait à 58e421e quand celle du Mac passe à ed2a41f (tâche 3), la dérive qui a causé la
   QUESTION de R53-1 (D15). La copie de C4 et C5 est faite avant cette regreffe ;
-- C6 sans reconstruction des 16 presets (forme d'`env-56-scion.md` §6) ;
+- C6 : proposé sans reconstruction (forme d'`env-56-scion.md` §6) ; l'utilisateur l'a maintenue au
+  PA-101 (§2), d'où la regreffe de `$R53` avant `rejouer-oracle.sh` ;
 - `install-vscodium.sh` lancé une fois (la seconde exécution de R53-1 n'apportait rien :
   `changements 0` dès la première).
 
-## 2. PA-101
+## 2. PA-101 (2026-11-13, décisions de l'utilisateur)
 
-(À compléter.)
+- C3 : regreffe de `$U`, `$E13` **et `$C5`** (graine de projet de référence de la VM, D15), la copie
+  d'essai de C4 et C5 étant faite avant ; écart au fichier d'étape accepté.
+- C6 : **reconstruction maintenue** (host et 16 presets), dans `$R53` regreffé au §9 de la consigne
+  (même procédure que C3), comparée à `oracles/env-53-debian/` ; puis `mirror-sync --dry-run`. La
+  consigne a été complétée en conséquence (§1, §2, §9, §12, §15).
+- C7 : écarté (pas de cartes).
+- C8 : tel qu'écrit (copie, dépôt et `~/env-53-journaux` par l'enveloppe ; `essais/env-11/qemu` par
+  l'utilisateur).
+- Lecture des règles : préalable du §0 — l'utilisateur fait `git switch devenv/env-57` sur la VM et
+  relance la session Claude Code de la VM dans `~/lepton-tools-dev/lepton-tools` ; l'ordre est
+  envoyé à la nouvelle session.
+- PA-P : push de `devenv/env-57`, envoi de `R57-1` ; regreffe des 7 rootstocks d'essai du Mac
+  pendant R57-1 (tâche 3).
 
 ## 3. Messages §2bis
 

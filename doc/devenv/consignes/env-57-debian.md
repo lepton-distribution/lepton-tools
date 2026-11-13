@@ -2,8 +2,10 @@
 
 Fichier autonome : avec `ORCHESTRATION.md` §2bis, il suffit à conduire la session VM. Rédigé le
 2026-11-13 par la session Mac `lepton-tools-30` (tâche 1 d'ENV-57), repris de
-`consignes/env-53-debian.md`. À valider par l'utilisateur au PA-101. Son texte est envoyé tel quel
-dans l'ordre `R57-1`.
+`consignes/env-53-debian.md`. Validé par l'utilisateur au PA-101 (2026-11-13) : regreffe de `$U`,
+`$E13` et `$C5` (C3) ; reconstruction des 16 presets maintenue (C6, après regreffe de `$R53`) ;
+cartes écartées (C7) ; préalable du §0 (switch et relance de la session VM par l'utilisateur).
+Son texte est envoyé tel quel dans l'ordre `R57-1`.
 
 ## 0. Préalable, avant l'ordre (utilisateur) — PA-101
 
@@ -31,11 +33,12 @@ Valider sur Debian x86_64 l'état publié après ENV-54, ENV-55 et ENV-56 :
   `file://localhost/abs` ;
 - **D14** (ENV-56) : scion **0.6.3.1** ne laisse plus de répertoire dans `depots/` après un clonage
   en échec ;
-- regreffe de `$U`, `$E13` et `$C5` : seul le clone noyau avance (58e421e → **ed2a41f** : scripts
-  d'installation et documentation, hors de `scion/`). Aucun lien ne change.
+- regreffe de `$U`, `$E13`, `$C5` et `$R53` : seul le clone noyau avance (58e421e → **ed2a41f** :
+  scripts d'installation et documentation, hors de `scion/`). Aucun lien ne change ;
+- constructions host et 16 presets dans `$R53` regreffé : **aucun binaire changé** depuis R53-1
+  (PA-101 : reconstruction maintenue, bien qu'aucune source compilée ne change).
 
-**Pas de cartes, pas de reconstruction** dans cette session (PA-101) : aucune source compilée ne
-change. Aucune écriture flash.
+**Pas de cartes** dans cette session (PA-101). Aucune écriture flash.
 
 Références publiées (toutes poussées) :
 
@@ -57,7 +60,7 @@ Références Mac (`rapports/env-57-mac.md` §1, `rapports/env-57-mac/attendu/`) 
   du Mac, scion 0.6.3.1) ;
 - C5 : `attendu/c5/` (D14, `rapports/env-56-scion/essai.sh`, même copie).
 
-Référence Debian : `rapports/env-53-debian.md`.
+Référence Debian : `rapports/env-53-debian.md` et `oracles/env-53-debian/`.
 
 La session VM ne développe pas : elle exécute, constate et rapporte.
 
@@ -67,13 +70,13 @@ La session VM ne développe pas : elle exécute, constate et rapporte.
 | --- | --- |
 | `git fetch` / `switch` / `merge --ff-only` de `$T` (`devenv/env-57`) et du clone noyau `$K` (`master`) | Modifier `DEVENV-STATUS.md`, `ORCHESTRATION.md`, `SPECIFICATION.md`, `handoff/*.md`, les consignes, `rapports/env-57-mac*`, `.claude/` |
 | Installations du §6 (`sudo` sans mot de passe sur la VM), dans les formes écrites | Toute autre commande `sudo`, `pip install` hors de `venv-test`, `codium --install-extension` hors `install-vscodium.sh` |
-| `scion graft-update` de `$U`, `$E13`, `$C5` (§9), dans la forme écrite : l'invite de Claude Code est confirmée par l'utilisateur | `graft-update` d'un autre rootstock ; tout `seed-update` ; toute écriture dans les clones de `$U`, `$E13`, `$C5` |
-| Lectures dans `$U`, `$E13`, `$C5`, `$R53`, `$P11` ; `lepton check` / `generate` / `seed status` dans `$U`, `$E13`, `$C5` | Écrire un fichier régulier dans un `trunk/` ou sous `depots/tiers/` (le hook refuse) ; corriger quoi que ce soit |
+| `scion graft-update` de `$U`, `$E13`, `$C5`, `$R53` (§9), dans la forme écrite : l'invite de Claude Code est confirmée par l'utilisateur | `graft-update` d'un autre rootstock ; tout `seed-update` ; toute écriture dans les clones de `$U`, `$E13`, `$C5`, `$R53` |
+| Lectures dans `$U`, `$E13`, `$C5`, `$R53`, `$P11` ; `lepton check` / `generate` / `seed status` dans `$U`, `$E13`, `$C5`, `$R53` ; `rejouer-oracle.sh` dans `$R53` (`build/` compris, §12) | Écrire un fichier régulier dans un `trunk/` ou sous `depots/tiers/` (le hook refuse) ; corriger quoi que ce soit |
 | Créer `$S`, `$D` (§7), `essais/env-57-clone`, `essais/env-57-clone-local` (§8) et y tout faire, `seed add` / `seed remove` compris | `git config` (même en lecture) et `git sparse-checkout` dans un clone de `depots/tiers/` : relever par `releve-clones.sh` |
 | `scion mirror-sync --dry-run` dans `$R53` (§12) | `mirror-sync` sans `--dry-run` ; tout envoi vers un miroir |
 | Les contrôles négatifs du §8 (cibles absentes) | Toute écriture flash, toute commande OpenOCD ; modifier la configuration réseau de la VM |
 | Suppressions par `scripts/supprimer-essai.sh` (§8, §14) | `rm -rf` direct, hors du contrôle N3 (§8, cible absente) |
-| Créer `devenv/env-57-debian` (depuis `devenv/env-57`) ; y écrire `doc/devenv/rapports/env-57-debian.md` et `doc/devenv/rapports/env-57-debian/` | Commiter sur une autre branche |
+| Créer `devenv/env-57-debian` (depuis `devenv/env-57`) ; y écrire `doc/devenv/rapports/env-57-debian.md`, `doc/devenv/rapports/env-57-debian/` et `doc/devenv/rapports/oracles/env-57-debian/` | Commiter sur une autre branche |
 | `git push origin devenv/env-57-debian` **après accord explicite de l'utilisateur** (PA-P ; invite `ask`) | Pousser toute autre branche |
 
 Règles des consignes VM (ORCHESTRATION §2bis, amendé en ENV-54) :
@@ -345,9 +348,10 @@ Une acceptation par le classifieur là où une règle est attendue (`reasonType`
 écart à exposer (règles non lues ou dossier non approuvé : le relever), sans arrêt. Une invite non
 apparue pour N4 ou N5 : arrêt, `QUESTION` (la commande serait exécutée sans accord).
 
-## 9. Regreffe de `$U`, `$E13` et `$C5` (C3)
+## 9. Regreffe de `$U`, `$E13`, `$C5` (C3) et `$R53` (pour C6)
 
-Pour chaque rootstock `Z` de la liste `env-28-debian`, `env-13-debian`, `env-53-c5` :
+Pour chaque rootstock `Z` de la liste `env-28-debian`, `env-13-debian`, `env-53-c5`,
+`env-53-debian`, dans cet ordre (`$C5` après la copie du §7) :
 1. par la session, depuis `$T` :
    ```bash
    bash "$T/$RG" avant ~/lepton-tools-dev/essais/<nom> "$J/regreffes"
@@ -356,7 +360,7 @@ Pour chaque rootstock `Z` de la liste `env-28-debian`, `env-13-debian`, `env-53-
    ```bash
    scion graft-update -v ~/lepton-tools-dev/essais/<nom> > ~/env-57-journaux/regreffes/<nom>-graft-update.log 2>&1; echo "code=$?" >> ~/env-57-journaux/regreffes/<nom>-graft-update.log
    ```
-   L'utilisateur confirme l'invite de Claude Code (PA-P accordé au PA-101 pour ces trois
+   L'utilisateur confirme l'invite de Claude Code (PA-P accordé au PA-101 pour ces quatre
    rootstocks).
 3. par la session :
    ```bash
@@ -366,7 +370,7 @@ Pour chaque rootstock `Z` de la liste `env-28-debian`, `env-13-debian`, `env-53-
    resume() { sed -e "s|$Z|<R>|g" -e "s|$HOME|<HOME>|g" "$1" | grep -v -E '^git |\(cwd=|^  |\.DS_Store|chemin\(s\) ignoré\(s\)|^code='; }
    grep -E 'feuilles liées|ignoré' "$L"
    ```
-   et, pour `$U` et `$E13` seulement :
+   et, pour `$U`, `$E13` et `$R53` (rootstocks de la graine `original-tree`) :
    ```bash
    diff "$T/$A/c3/graft-update-resume.txt" <(resume "$L") && echo "journal = Mac"
    python3 -I "$T/$C" "$Z" "$T/$A50/trunk-liens.txt" "$J/9-<nom>-controle" > "$J/9-<nom>-controle.log" 2>&1; echo "code=$?" >> "$J/9-<nom>-controle.log"; tail -3 "$J/9-<nom>-controle.log"
@@ -374,7 +378,7 @@ Pour chaque rootstock `Z` de la liste `env-28-debian`, `env-13-debian`, `env-53-
    diff <(normc "$T/$Y/attendu/clones-rootstock-mac.txt") <(normc "$J/regreffes/<nom>-tiers-apres/clones.txt") && echo "clones = Mac (hors ignorecase et tailles)"
    ```
 
-Attendu, `$U` et `$E13` (Mac, `essais/env-13-vierge`, `attendu/c3/env-13-vierge-bilan.txt`) :
+Attendu, `$U`, `$E13` et `$R53` (Mac, `essais/env-13-vierge`, `attendu/c3/env-13-vierge-bilan.txt`) :
 - `graft-update code=0 ; avancés : 1 ; git clone : 0 ; extraction partielle : 0 ; conflit/refus : 0` ;
   `depots/lepton/original/master avancé : 58e421e -> ed2a41f` ; « 3889 feuilles liées » ; aucune
   ligne `.DS_Store` sur la VM ;
@@ -469,7 +473,53 @@ Un test ignoré ou en échec : relever son nom et son message, le relancer seul 
 (`~/lepton-tools-dev/venv-test/bin/pytest -q -rs -p no:cacheprovider --basetemp
 ~/tmp-pytest/env-57 <test>`), consigner les deux résultats ; pas de correction.
 
-## 12. Commande de miroir, à blanc (C6)
+## 12. Reconstructions et commande de miroir (C6)
+
+### 12.1 Reconstructions (PA-101)
+
+Périmètre : host et les 16 presets croisés (QEMU : construction, fumée, banc KAL ; cartes :
+construction et capture seulement, **aucun flash**), dans `$R53` regreffé au §9. `$R53` garde le
+chemin d'`env-53-debian` : les chaînes `__FILE__` des presets FreeRTOS sont celles de l'oracle de
+référence. Commande longue (≈ 1 h en R53-1) : `AVANCEMENT` au lancement.
+
+```bash
+cd "$T" && git switch -c devenv/env-57-debian devenv/env-57
+scripts/oracle/rejouer-oracle.sh ~/lepton-tools-dev/essais/env-53-debian doc/devenv/rapports/oracles/env-57-debian --qemu qemu-mps2-an386-embos --qemu qemu-mps2-an386-embos-soft --qemu qemu-mps2-an386-freertos --qemu qemu-mps2-an386-freertos-soft --qemu qemu-mps2-an500-embos --qemu qemu-mps2-an500-freertos --carte nucleo-f429zi-embos --carte nucleo-f429zi-freertos --carte nucleo-f439zi-embos --carte nucleo-f439zi-freertos --carte nucleo-wl55jc1-embos --carte nucleo-wl55jc1-freertos --carte samd21-xplained-pro-embos --carte samd21-xplained-pro-freertos --carte stm32f746g-disco-embos --carte stm32f746g-disco-freertos > ~/env-57-journaux/12-rejouer.log 2>&1; echo "code=$?" >> ~/env-57-journaux/12-rejouer.log
+```
+Puis :
+```bash
+cd "$T"; O=doc/devenv/rapports/oracles
+tail -25 "$J/12-rejouer.log"
+grep -h "tests passed" $O/env-57-debian/*/ctest.log $O/env-57-debian/*/banc-kal.log
+grep -h "peripheriques" $O/env-57-debian/qemu-mps2-an386-*/banc-kal.log
+python3 -I "$T/$LI" "$R53/trunk" > /dev/null; find "$R53/trunk" -name __pycache__ | wc -l
+```
+Attendu : code 0 ; host ctest 7/7 ; 16 presets construits ; fumée réussie ; banc QEMU identique à
+R53-1 : an386 20/20, an386 soft 16/16, an500 19/19 ; `qemu-mps2-an386.peripheriques` **Passed**
+dans les 4 `banc-kal.log` an386 ; trunk sans fichier régulier, lien cassé ni `__pycache__`.
+
+### 12.2 Comparaisons
+
+```bash
+cd "$T"; O=doc/devenv/rapports/oracles
+norm() { grep -E '^(section|symbole)' "$1" | sed -E 's/ \[.*$//; s/ +: /: /' | grep -v -E '^section [^:]*: \.debug_' | LC_ALL=C sort; }
+diff -q $O/env-53-debian/host/mklepton-empreintes.sha256 $O/env-57-debian/host/mklepton-empreintes.sha256 && echo "mklepton = R53-1"
+diff -q $O/env-52-apres/host/mklepton-empreintes.sha256 $O/env-57-debian/host/mklepton-empreintes.sha256 && echo "mklepton = Mac env-52-apres"
+for p in $(ls $O/env-57-debian | grep -v -e host -e ctest-N -e compilation -e '\.log$'); do
+  python3 scripts/oracle/comparer-oracle.py $O/env-53-debian/$p $O/env-57-debian/$p > "$J/12-cmp-R53-$p.txt" 2>&1; a=$?
+  python3 scripts/oracle/comparer-oracle.py $O/env-52-apres/$p $O/env-57-debian/$p > "$J/12-cmp-Mac-$p.txt" 2>&1; b=$?
+  echo "$p comparer_R53-1=$a comparer_Mac=$b hors_debug=$(norm $J/12-cmp-R53-$p.txt | wc -l)"
+done | tee "$J/12-bilan.txt"
+```
+Attendu :
+- mklepton : empreintes identiques à `env-53-debian` et à `env-52-apres` ;
+- `comparer_R53-1` **0** pour les **16 presets**, `hors_debug=0` (aucun écart admis) ;
+- `comparer_Mac` : informatif (1 attendu partout, chaînes différentes).
+
+Un `comparer_R53-1` non nul : écart à exposer, avec l'extrait du `12-cmp-R53-<preset>.txt` ; si
+seules des sections `.debug_*` changent, le dire (`hors_debug=0`) ; pas de correction.
+
+### 12.3 Commande de miroir, à blanc
 
 ```bash
 scion mirror-sync --dry-run -v ~/lepton-tools-dev/essais/env-53-debian > ~/env-57-journaux/12-mirror-sync.log 2>&1; echo "code=$?" >> ~/env-57-journaux/12-mirror-sync.log
@@ -485,9 +535,6 @@ de `$R53` `CONFORME`. Une référence « à envoyer » n'est admise que si une p
 postérieure au 2026-11-12 l'explique : la relever, puis relever la référence de l'amont
 (`git ls-remote https://github.com/STMicroelectronics/<nom>.git`), sans arrêt. Un signalement :
 écart à exposer. Jamais sans `--dry-run`.
-
-Reconstruction des presets : écartée au PA-101 (aucune source compilée ne change ; liens prouvés
-inchangés au §9).
 
 ## 13. Cartes (C7)
 
@@ -519,11 +566,11 @@ vérifie l'absence (`ls -d …`) et le consigne. Conservés : `$U`, `$E13`, `$C5
 | Critère | Attendu |
 | --- | --- |
 | C1 Versions | `git ls-remote` = Mac (§5) ; `settings.json`, hook, enveloppe = Mac ; Claude Code relevé ; git 2.47.3 ; scion 0.6.3.1 par `install-debian.sh` (défaut `SCION_REF`) ; lepton `pipx` code 0, `scion 0.6.3.1 (requis ≥ 0.6.2.0)` ; extension 0.5.2, `install-vscodium.sh` `changements 0` ; chaîne relevée |
-| C2 D16 | `8-decisions.tsv` : P3 à P5, N1, N2, N2b par la règle (`subcommandResults`) ; `pipx install` par la règle ; `graft-update` ×3 sur invite confirmée ; pytest par la règle ; N3 relevé ; N4, N5 invites refusées ; N6 `deny` ; N7 hook ; aucune cible créée ni supprimée à tort |
-| C3 Regreffes | `$U`, `$E13` : code 0, seul le noyau avance (58e421e → ed2a41f), aucun clone, journal = Mac, liens inchangés (3889), `CONFORME` (attendu de R50-1), clones tiers 0 / 16, `clones = Mac`, `check` 0, espace = avant ; `$C5` : noyau seul, 3059 liens inchangés, `check` 0 |
+| C2 D16 | `8-decisions.tsv` : P3 à P5, N1, N2, N2b par la règle (`subcommandResults`) ; `pipx install` par la règle ; `graft-update` ×4 sur invite confirmée ; pytest par la règle ; N3 relevé ; N4, N5 invites refusées ; N6 `deny` ; N7 hook ; aucune cible créée ni supprimée à tort |
+| C3 Regreffes | `$U`, `$E13` (et `$R53`, pour C6) : code 0, seul le noyau avance (58e421e → ed2a41f), aucun clone, journal = Mac, liens inchangés (3889), `CONFORME` (attendu de R50-1), clones tiers 0 / 16, `clones = Mac`, `check` 0, espace = avant ; `$C5` : noyau seul, 3059 liens inchangés, `check` 0 |
 | C4 D13 | §10 : écarts=0 ; formes `file:///`, `file:/`, `FILE:` = `file://localhost/` ; états = départ |
 | C5 D14, pytest | §11.1 : aucun résidu, écarts=0 sur 48 ; préexistants gardés ; §11.2 : pytest 453 passed (hook 118, enveloppe 52) |
-| C6 Miroir | `mirror-sync --dry-run` : code 0, 8 miroirs, 0 à envoyer (ou expliqué par l'amont), 0 signalement ; rien envoyé ; reconstruction écartée (PA-101) |
+| C6 Constructions, miroir | host ctest 7/7 ; 16 presets construits ; QEMU fumée et banc 20/20, 16/16, 19/19, `peripheriques` ×4 ; mklepton = `env-53-debian` = `env-52-apres` ; `comparer_R53-1` 0 pour les 16 presets ; `mirror-sync --dry-run` : code 0, 8 miroirs, 0 à envoyer (ou expliqué par l'amont), 0 signalement ; rien envoyé |
 | C7 Cartes | écarté (PA-101) |
 | C8 Nettoyage | `$S`, `$D`, `~/env-53-journaux` supprimés par l'enveloppe ; `essais/env-11/qemu` supprimé par l'utilisateur (D15) ; absents |
 
@@ -531,8 +578,9 @@ Rapport `doc/devenv/rapports/env-57-debian.md` sur `devenv/env-57-debian`, avec 
 - l'hôte, les versions et la session (répertoire de travail, Claude Code, réglages relevés) ;
 - la table des critères ;
 - C2 : la table des commandes et décisions (extrait de `8-decisions.tsv`, plus `pipx install`,
-  `graft-update` ×3, pytest, push) ;
-- C3 : les trois bilans, les lignes `clones.txt` après, `ignorecase`, tailles ;
+  `graft-update` ×4, pytest, push) ;
+- la table des presets : construction, fumée, banc KAL, `comparer_R53-1`, `comparer_Mac` ;
+- C3 : les quatre bilans, les lignes `clones.txt` après, `ignorecase`, tailles ;
 - C4, C5 : bilans `écarts=…`, relevés différents (informatifs), codes ;
 - pytest, miroir, nettoyage ;
 - les écarts et constats ;
@@ -541,6 +589,7 @@ Rapport `doc/devenv/rapports/env-57-debian.md` sur `devenv/env-57-debian`, avec 
 
 Sous `doc/devenv/rapports/env-57-debian/` : `8-decisions.tsv`, `10-c4/`, `11-c5/`,
 `11-pytest.xml`, et pour chaque rootstock du §9 `<nom>-bilan.txt`, `<nom>-graft-update.log`,
-`<nom>-tiers-apres/clones.txt`. Commit sur `devenv/env-57-debian`, puis `QUESTION` à l'utilisateur
+`<nom>-tiers-apres/clones.txt` ; l'oracle `doc/devenv/rapports/oracles/env-57-debian/`. Commit sur
+`devenv/env-57-debian` (créée au §12.1), puis `QUESTION` à l'utilisateur
 pour le push (PA-P ; la commande `git push origin devenv/env-57-debian` fait paraître une invite),
 puis le §14, puis `FIN-*`.
