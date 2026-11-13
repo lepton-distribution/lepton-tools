@@ -1,0 +1,12 @@
+rootstock /home/lepton-user/lepton-tools-dev/essais/env-53-c5
+graft-update code=0 ; avancés : 1 ; git clone : 0 ; extraction partielle : 0 ; conflit/refus : 0
+  depots/lepton/original/master avancé : 58e421e -> ed2a41f
+clones : 1 ligne(s) changée(s)
+liens avant liens=3059 casses=0 reguliers=0 ; après liens=3059 casses=0 reguliers=0
+liens ajoutés 0 retirés 0
+controler-trunk CONFORME code=0 
+tiers : 2 clone(s) ; depots/tiers 30908 → 30908 Ko ; extraits et sparse-checkout ≠ attendu : 0 / 4
+  cmsis-device-f7/v1.2.10 sparseCheckout=true cone=true H=22 S=91 extraits=H:oui ko_hors_git=19136 ko_git=468
+  stm32f7xx-hal-driver/v1.3.3 sparseCheckout=true cone=true H=200 S=6 extraits=H:oui ko_hors_git=9656 ko_git=1636
+check code=0 ; generate avant code=0 après code=0 ; espace diff=0
+trunk : réguliers hors .DS_Store 0 ; .DS_Store 0 ; cassés 0
