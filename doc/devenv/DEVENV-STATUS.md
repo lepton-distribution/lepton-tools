@@ -66,7 +66,7 @@ Démarrer ENV-55 (skill `devenv-session`) : lepton, URL `file:///` reconnue (D13
 | ENV-52 | scion : extraction partielle des clones projetés (D11) | terminée (2026-11-12) ; rapport `rapports/env-52-scion.md` ; oracle `oracles/env-52-apres/` | seed.scions `devenv/env-52` (depuis `master` 7e8a0cc ; 87dc108, tag 0.6.3.0 ; fusionnée dans `master` 6416c33, poussée avec le tag) ; clone noyau `devenv/env-52` (41c9384, fusionnée dans `master` 58e421e, poussée) ; lepton-tools `devenv/env-52` (depuis `main` 2dba564 ; fusionnée dans `main`, poussée) | `handoff/env-52.md` |
 | ENV-53 | Validation Debian groupée (ENV-51, ENV-52) | terminée (2026-11-12) ; rapports `rapports/env-53-mac.md`, `rapports/env-53-debian.md` ; oracle `oracles/env-53-debian/` ; fin du plan | lepton-tools `devenv/env-53` (depuis `main` fb61b9a, fusionnée dans `main`, poussée) ; `devenv/env-53-debian` (VM, ordre R53-1, f8090af, poussée, fusionnée) | `handoff/env-53.md` |
 | ENV-54 | Claude Code : règles de permission ciblées (D16) | terminée (2026-11-13) ; rapport `rapports/env-54-permissions.md` ; règles `.claude/settings.json`, enveloppe `scripts/supprimer-essai.sh` | lepton-tools `devenv/env-54` (depuis `main` 4bed93c, fusionnée dans `main`, poussée) | `handoff/env-54.md` |
-| ENV-55 | lepton : URL `file:///` reconnue (D13) | à faire | — | — |
+| ENV-55 | lepton : URL `file:///` reconnue (D13) | en cours (2026-11-13) | lepton-tools `devenv/env-55` (depuis `main` 7d55bf1) | — |
 | ENV-56 | scion : répertoires laissés par un clonage en échec (D14) | à faire | — | — |
 | ENV-57 | Validation Debian groupée (ENV-54 à ENV-56) | à faire | — | — |
 
