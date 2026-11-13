@@ -1,0 +1,35 @@
+Canal de sortie « Lepton » de VSCodium (extension lepton-distribution.lepton 0.5.2), essai de
+l'utilisateur du 2026-11-13 sur <C>, espace régénéré par `lepton generate` (graine inchangée).
+Saisie : « ajouter un greffon à la graine », env55lib, bibliotheque, origine
+file://<P> (trois barres), version master, chemin vide ; puis « retirer un greffon de la graine »,
+env55lib. Notifications « terminé » pour les deux actions (rapportées par l'utilisateur).
+Texte collé par l'utilisateur ; chemins remplacés par <C>, <P>, <HOME>.
+
+$ <HOME>/.local/bin/lepton seed add env55lib file://<P> --type bibliotheque --version master    (<C>)
+scion: scion lepton/library-env55lib déclaré dans <C>/depots/lepton-seed/env11/scion/.scion (version master)
+scion: greffe partielle : 3 feuilles liées dans <C>/trunk
+env55lib ajouté (lepton@library-env55lib, master, file://localhost<P>)
+graine modifiée, non commitée : git -C <C>/depots/lepton-seed/env11 commit -am "…"
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+Observation de 6 greffon(s) et du trunk <C>/trunk
+
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed remove env55lib    (<C>)
+scion: scion lepton/library-env55lib retiré de <C>/depots/lepton-seed/env11/scion/.scion
+scion: scion lepton/library-env55lib retiré : 3 feuilles
+env55lib retiré (lepton@library-env55lib)
+graine modifiée, non commitée : git -C <C>/depots/lepton-seed/env11 commit -am "…"
+→ code 0
+
+État après (etat.sh) : liens 3059, cassés 0, réguliers 0, graine 8a6a9d74d306 (= départ), liste
+greffée = départ ; depots/ : clone depots/lepton/library-env55lib/master conservé par seed remove
+sans --purge (comme x02).

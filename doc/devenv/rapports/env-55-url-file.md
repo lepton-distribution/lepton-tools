@@ -177,14 +177,21 @@ Commandes rejouées en ligne de commande, telles que les lance l'extension (`apr
   retiré ensuite par `scripts/supprimer-essai.sh` ; état final = départ, `lepton check` code 0,
   graine propre.
 
-Essai dans VSCodium (canal « Lepton ») : <au PA-98>.
+Essai dans VSCodium (PA-98 : fait par l'utilisateur, 2026-11-13), `apres/vscodium-canal.txt` :
+espace de l'essai régénéré d'abord par `lepton generate` (l'`env11.code-workspace` copié visait
+`essais/env-11/qemu/build/.active`) ; `CMakeUserPresets.json` « inchangé », graine inchangée.
+Extension 0.5.2. « ajouter un greffon à la graine » avec `file://<P>` (trois barres), version
+`master` : notification « terminé », canal identique à x01 (`env55lib ajouté (…, master,
+file://localhost<P>)`, 2 lignes `scion:`, `→ code 0`) ; 3 appels `seed status --json` code 0 ;
+« retirer » : « terminé », identique à x02. État après : liens, graine, liste greffée = départ ; clone
+conservé (sans `--purge`), comme x02.
 
 ## 6. Constats hors périmètre
 
-- **O-1** : l'indice du message « version sans effet » (l. 93) calcule `Path(loc).resolve()` sans
-  `expanduser()`, alors que le contrôle d'existence (l. 94) le fait. Une origine `~/…@master`
-  transmise sans shell (saisie dans l'extension) donne l'indice `file://localhost<cwd>/~/…@master`.
-  Forme non `file:`, laissée inchangée (iso-fonctionnel) ; à reporter dans `HORS-PLAN.md` si
-  l'utilisateur le décide.
+- **O-1** : l'indice du message « version sans effet » (l. 110 après ENV-55) calcule
+  `Path(loc).resolve()` sans `expanduser()`, alors que le contrôle d'existence (l. 111) le fait.
+  Une origine `~/…@master` transmise sans shell (saisie dans l'extension) donne l'indice
+  `file://localhost<cwd>/~/…@master`. Forme non `file:`, laissée inchangée (iso-fonctionnel) ;
+  reportée dans `HORS-PLAN.md` en D17 (PA-98).
 - `file://<autre hôte>/abs` reste accepté et git lit le chemin local (PA-97) ; un dépôt de même
   chemin sur un autre hôte n'est donc jamais atteint.
