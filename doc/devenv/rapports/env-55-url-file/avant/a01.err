@@ -1,0 +1,2 @@
+lepton: erreur: origine locale « file://<A> » : <C>/file:<A>/scion absent
+  → désigner la racine du dépôt du greffon (qui contient scion/), ou préciser :PATH
