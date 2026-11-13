@@ -12,7 +12,7 @@ La session qui exécutera ENV-58 remplacera cette passation.
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/revision-2026-11-13` (depuis `main` 71cba24) | commit de la révision du plan ENV-58 à ENV-61 ; fusion dans `main` et push selon l'accord de l'utilisateur (voir `DEVENV-STATUS.md` §Journal) | oui |
+| lepton-tools | `main` | 1ae63da « devenv: consignation de la fusion et du push de la révision du plan (ENV-58 à ENV-61) », au-dessus de 4a04b6c (fusion `--no-ff` de `devenv/revision-2026-11-13`, 2cc8a0f, depuis 71cba24) ; `main` et la branche poussés (PA-P) ; puis le commit de cette passation, non poussé | oui |
 | seed.scions | `master` | d650414 (tag 0.6.3.1), non touché | oui |
 | clone noyau `depots/lepton/original/master` | `master` | ed2a41f, non touché | oui |
 | autres | `master` / `original-tree` | non touchés : graine 15740f9 | oui |
