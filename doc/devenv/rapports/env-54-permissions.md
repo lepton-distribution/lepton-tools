@@ -191,3 +191,37 @@ et le répertoire supprimé avait été créé par la session.
    du dépôt : une ligne sous « Règles permanentes » ; consignes VM : à partir d'ENV-57.
 8. **Rejeu (§3)** : les réglages sont relus à chaud (§3.7), mais garder le redémarrage prévu :
    une session neuve voit comme « préexistantes » les cibles créées ici, comme la VM.
+
+## 8. PA-95 (2026-11-13, décisions de l'utilisateur)
+
+- Mécanisme et fichier : règles de permission dans `.claude/settings.json` du dépôt, versionné,
+  commun au Mac et à la VM, motifs en `~/…` littéral ; hook inchangé ; pas d'`autoMode`.
+- `rm -rf` : enveloppe `scripts/supprimer-essai.sh` avec la liste de références du §7.4.
+- Compléments retenus : `ask` sur `git push` (et `git * push`) ; `allow` sur
+  `pipx install --force ~/lepton-tools-dev/lepton-tools`, `git clone` ciblé (`file://`,
+  `https://github.com/lepton-distribution/`) et pytest (`bin/pytest` des deux venvs).
+- Reste du §7 retenu tel quel : §2bis amendé, une ligne dans `CLAUDE.md` du dépôt, skill
+  `lepton-cibles` l. 23, consignes VM à partir d'ENV-57, rejeu après redémarrage de Claude Code.
+
+## 9. Mise en place (tâche 2)
+
+- `.claude/settings.json` : 7 `allow`, 4 `ask`, 5 `deny`, hook inchangé ; écrit par la session
+  (Write accepté) ; `python3 -m json.tool` : valide.
+- `deny` ajoutés par la session, dans le cadre du « `git clone` ciblé » (à confirmer au PA-96) :
+  options de `git clone` qui font exécuter une commande ou changent la configuration
+  (`--upload-pack`, `-u`, `--config`, `-c`, transport `ext::`). Un `deny` l'emporte sur l'`allow`.
+- `scripts/supprimer-essai.sh` (bash, compatible 3.2) : résolution des cibles par `cd -P` et
+  réduction lexicale des composants absents ; dernier composant non suivi ; `-n` à blanc ; codes
+  0/1/2 ; tout ou rien. Tests `tests/test_supprimer_essai.py` : 52 cas (9 acceptations, 29 refus
+  paramétrés dont `~/lepton`, son trunk, ses `depots/`, `build/` seul, `essais/` et ses formes `/`
+  et `.`, `..`, références, trunk et `depots/tiers` d'un essai, lien intermédiaire vers `~/lepton`,
+  cible absente ; tout ou rien, relatif, `~`, lien final, à blanc, sans argument, build sans
+  signature) : verts sous bash 5.3 (MacPorts) et 3.2 (`/bin/bash`) ; shellcheck sans remarque.
+  Défaut trouvé par les tests et corrigé : `cd -P //private` gardait « // » en tête.
+- ORCHESTRATION §2bis amendé (« Commandes soumises aux règles de `.claude/settings.json` »).
+- Constat : les réglages sont relus à chaud (§3.7) ; les règles valent donc déjà dans cette
+  session. Le rejeu probant se fait après redémarrage (§7.8).
+- Preuve observable : le journal de session (`*.jsonl`) note pour chaque appel un
+  `permissionDecision`. Pendant le témoin, `reasonType: "classifier"` pour les 6 commandes. Une
+  règle du projet devrait donner `reasonType: "rule"` ; une invite acceptée,
+  `source: "user_temporary"`.

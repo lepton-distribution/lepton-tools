@@ -92,15 +92,28 @@ Règles des consignes VM (décision PA-31 d'ENV-22, 2026-11-02 ; leçons de R15-
   fichier généré (espace de travail, presets, verrou) se relève juste après l'avoir régénéré par la
   commande qui le produit, jamais sur un fichier écrit lors d'une étape antérieure. Sinon la
   comparaison mesure les changements de l'outil ou de l'hôte survenus entre-temps.
-- **Commandes confiées d'emblée à l'utilisateur** (E-2 de `rapports/env-21-debian.md`,
-  `rapports/env-15-scion.md` §8) : le classifieur de permissions de la session VM peut refuser les
-  suppressions (`rm -rf`), les installations `pipx install`, les clonages et les lancements de
-  tests, même accordés au point d'arrêt. La consigne les attribue à l'utilisateur dès sa rédaction
-  (colonne « Autorisé » du §2 et étape concernée), avec la commande exacte à lancer. La session VM
-  annonce l'attente par un `AVANCEMENT`, vérifie ensuite l'effet (absence, version, code de
-  retour) et le consigne. Un refus n'est jamais contourné. R28-1 : `scion graft-update` a été
-  refusé à la session VM (« Untrusted Code Integration ») ; `rootstock-install`, `seed-add`,
-  `graft` et `rejouer-oracle.sh` acceptés.
+- **Commandes soumises aux règles de `.claude/settings.json`** (ENV-54, D16, PA-95 du 2026-11-13 ;
+  remplace « Commandes confiées d'emblée à l'utilisateur », E-2 de `rapports/env-21-debian.md`,
+  `rapports/env-15-scion.md` §8). Le classifieur du mode auto ne tient pas pour accord de
+  l'utilisateur un `ORDRE` reçu d'une autre session (`rapports/env-54-permissions.md` §3, §5). Les
+  règles du dépôt, communes au Mac et à la VM, écrites en `~/…` littéral, s'appliquent avant lui :
+  - `scion graft-update`, `scion seed-update`, `git push` : règle `ask`. La session les lance ;
+    Claude Code demande alors la confirmation de l'utilisateur, dans la session qui lance. PA-P
+    reste exigé : la confirmation ne remplace pas l'accord donné au point d'arrêt.
+  - Suppressions : `scripts/supprimer-essai.sh <cible>…` (règle `allow`) ; il n'accepte que les
+    descendants d'`essais/` hors références, `<rootstock>/build/<preset>`, `~/env-<N>-journaux`,
+    `~/tmp-pytest`, `~/tmp-tests`, tout ou rien. `rm -rf` direct reste jugé par le classifieur.
+  - `pipx install --force ~/lepton-tools-dev/lepton-tools`, `git clone file://…` et
+    `git clone https://github.com/lepton-distribution/…` (URL en premier argument), pytest par
+    `~/lepton-tools-dev/venv-lepton-tools/bin/pytest` ou `~/lepton-tools-dev/venv-test/bin/pytest` :
+    règle `allow`. Une commande n'est couverte que si elle est écrite dans cette forme exacte : pas
+    de variable ni d'affectation en tête (`TMPDIR=…`), commandes simples plutôt que composées.
+  La consigne écrit chaque commande dans la forme couverte. Toute commande encore refusée, ou
+  hors des règles, n'est jamais contournée : `AVANCEMENT` avec la commande exacte, l'utilisateur
+  la lance, la session vérifie l'effet et le consigne. Historique : R28-1 (`graft-update` refusé,
+  « Untrusted Code Integration »), R43-1 et R53-1 (« Modify Shared Resources »), R21-1 (`rm -rf`,
+  « Irreversible Local Destruction ») ; `rootstock-install`, `seed-add`, `graft` et
+  `rejouer-oracle.sh` toujours acceptés.
 - **Branche des clones d'un rootstock existant** (P-1 d'ENV-28, E-1 de `rapports/env-28-debian.md`,
   décision du 2026-11-02 ; allégée au PA-45 d'ENV-29, 2026-11-03) : avant tout `graft-update` ou
   toute lecture d'un rootstock existant, les vérifications préalables de la consigne relèvent la
