@@ -40,12 +40,10 @@ Rootstocks d'essai du Mac, tous regreffés par `graft-update` 0.6.3.1. Seul le n
 
 `qemu-gra2` : BSP an386 retiré par `graft-remove`, sans `--purge`.
 
-Restent aussi au Mac, la suppression n'ayant pas été décidée :
-- `essais/env-57-essai` : copie d'`essais/env-11/qemu`, base des attendus C4 et C5 ;
-- `essais/env-57-depot` : dépôt présent `env55lib` ;
-- `essais/env-57-mac/` : journaux, dont `pytest-tmp*`.
-
-Tous trois sont acceptés par `scripts/supprimer-essai.sh`.
+Copies d'essai du Mac `essais/env-57-essai` (base des attendus C4 et C5, versionnés) et
+`essais/env-57-depot` (dépôt `env55lib`) : supprimées après la clôture par
+`scripts/supprimer-essai.sh`, à la demande de l'utilisateur (2026-11-13). Restent les journaux
+`essais/env-57-mac/` (dont `pytest-tmp*`), acceptés par l'enveloppe.
 
 VM (état laissé par R57-1) :
 - `essais/env-28-debian`, `essais/env-13-debian`, `essais/env-53-c5`, `essais/env-53-debian` :
@@ -88,8 +86,8 @@ VM (état laissé par R57-1) :
 
 ## Reste à faire dans l'étape
 - [x] Tout ENV-57.
-- [ ] Hors étape : supprimer, si l'utilisateur le décide, `essais/env-57-essai`,
-  `essais/env-57-depot` et `essais/env-57-mac/` au Mac (par `scripts/supprimer-essai.sh`).
+- [x] Hors étape : `essais/env-57-essai` et `essais/env-57-depot` supprimés au Mac (demande de
+  l'utilisateur). Journaux `essais/env-57-mac/` conservés.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
@@ -101,7 +99,7 @@ VM (état laissé par R57-1) :
 | PA-102 : fusions et push | utilisateur | oui |
 | Fin du plan : D17 à D20 à traiter ; A1 à A4, D4, D12 hors plan | utilisateur | oui |
 | Formes des commandes de la consigne : `allow` sans redirection, pytest par `--junitxml` et `--basetemp`, `graft-update` lancé hors script | session, d'après les essais du Mac (rapport §1.5) | oui (rapport ; D20 au hors-plan) |
-| Copies d'essai du Mac `env-57-essai`, `env-57-depot` conservées | session (suppression non demandée) | journal |
+| Copies d'essai du Mac `env-57-essai`, `env-57-depot` supprimées après la clôture | utilisateur | oui (journal) |
 
 ## Pièges rencontrés
 - **Redirection et règle `allow`** : une commande couverte par une règle `allow` passe au
