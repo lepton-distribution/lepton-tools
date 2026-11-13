@@ -1,0 +1,1 @@
+depots ≠ départ : depots/lepton/library-env55lib/master conservé par seed remove (sans --purge, forme de seedRemove) ; supprimé ensuite par scripts/supprimer-essai.sh ; état final = départ (liens, cassés, réguliers, graine, grafted, depots)

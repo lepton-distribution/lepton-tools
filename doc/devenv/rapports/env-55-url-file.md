@@ -113,3 +113,78 @@ Conséquence de conception : la normalisation ne s'applique qu'à la saisie (`pa
 classement, lui, reste le test de scion (`netloc` non vide), appliqué par une seule fonction à la
 saisie normalisée comme aux emplacements relus dans la graine (`Origin.remote`). Une graine écrite
 à la main avec `file:///abs` reste donc lue comme un chemin par lepton, comme par scion.
+
+## 3. Correction (`devenv/env-55`)
+
+| Commit | Contenu |
+| --- | --- |
+| 71fba49 | `tests/test_milestone3.py` : 17 tests (`test_d13_*`), écrits avant la correction |
+| 6b6470b | `lepton/seed.py` : `_FILE_URL`, `normalize_location`, `is_url` ; `parse_location` normalise la saisie puis classe par `is_url` ; `Origin.remote` = `is_url` |
+| f5144d6 | `env-55-url-file/essai.sh` : `--purge` choisi d'après le clone fait par scion (les formes désormais lues comme URL font un clone) ; rejoué « avant » avant la réinstallation : relevés identiques au premier passage |
+
+Normalisation (`_FILE_URL`, `^file:(?://(?P<host>[^/]*))?(?P<path>/.*)$`, casse ignorée) :
+`file:///abs`, `file:/abs`, `FILE:///abs`, `File:/abs` → `file://localhost/abs` ; `FILE://h/abs` →
+`file://h/abs` (hôte conservé). Toute autre valeur est rendue telle quelle : `file://localhost/…`,
+`file://autre/…`, `https://…`, `ssh://…`, chemins, et `file:x` (sans « / » : chemin `file` suivi de
+`:PATH`, comme avant). Le découpage `@VERSION` et `:PATH` par `_ORIGIN` précède la normalisation
+et ne change pas.
+
+Message de la l. 91-93 (« version sans effet », indice `file://localhost<chemin>@<version>`) : non
+modifié. Les formes `file:` n'y arrivent plus ; pour un chemin, l'indice était déjà juste (§1.3), à
+l'exception du constat O-1 (§6). `README.md` : rien à modifier (§1.6). Extension : aucun changement
+(origine transmise telle quelle).
+
+Tests (`tests-avant-correction.txt`) : avant la correction, 11 échecs (les 9 formes normalisées
+de `test_d13_file_url_normalized`, les 2 `test_d13_seed_add_file_url`) et 6 réussites (garde des
+formes inchangées). Après : 17 réussites ; `pytest` complet **453 verts** (436 à ENV-54 + 17),
+`~/lepton-tools-dev/venv-lepton-tools/bin/pytest`, 504 s.
+
+lepton réinstallé depuis la branche : `pipx install --force ~/lepton-tools-dev/lepton-tools`
+(règle `allow`), lepton 0.1.0, `normalize_location` présent dans l'interpréteur pipx.
+
+## 4. Contrôles : table du §1 rejouée (`apres/`)
+
+Même script (`essai.sh`, f5144d6), même rootstock d'essai, même état de départ (3059 liens,
+graine 8a6a9d74d306). Comparaison fichier par fichier de `avant/` et `apres/` :
+
+| Cas | Avant | Après | Conforme au PA-97 |
+| --- | --- | --- | --- |
+| a01 `file:///A`, a03 `file:/A`, a05 `FILE:///A`, a09 `file:///A --version master` | 1 (« `<C>/file:<A>/scion` absent » ; a09 : « sans effet » à indice faux) | 2, relevés **identiques à a02** (`file://localhost<A>`) : échec de `git clone`, ajout annulé, D14 | oui |
+| a06 `FILE://localhost/A` | 2, `remote helper 'FILE' aborted session` | 2, identique à a02 (`git clone file://localhost<A>`) | oui |
+| p01 `file:///P`, p02 `+ --version master`, p06 `FILE:///P`, p07 `file:/P` | 1 | 0, relevés **identiques à p03** (`file://localhost<P>`) : `.out`, `.err`, `seed status --json`, `check`, `remove --purge`, état | oui |
+| p05 `FILE://localhost/P` | 2 (`remote-FILE`) | 0, identique à p03 | oui |
+| a02, a04, a07, a08, a10, p03, p04, p08, p09, p10 | — | octet pour octet identiques à l'avant | inchangé |
+| s01 à s05 (scion seul, `file:///` transmis tel quel) | — | identiques à l'avant (scion inchangé) | inchangé |
+| `classer.tsv` | 96 lignes | seules diffèrent les lignes `file:///`, `file:/`, `FILE:` (colonnes `lepton`, `remote`, `location`, `version`, `subpath`, `message`, `scion.is_remote(écrit)`) | oui |
+| `git-formes.tsv` | — | identique | — |
+
+Après chaque cas, et après chaque annulation : liens, cassés, réguliers, graine, liste greffée et
+`depots/` égaux au départ (les `.etat` ne diffèrent que par les `rmdir` de D14, présents dès qu'un
+`git clone` échoue, donc aussi pour les formes normalisées en échec).
+
+## 5. Extension
+
+Code : `seedAdd` lance `seed add <nom> <origine> --type <type> --version <v>` (`master` par défaut,
+`originOptions`), sans contrôle de l'origine en TypeScript ; `seedRemove` lance `seed remove <nom>`.
+La correction n'y change rien.
+
+Commandes rejouées en ligne de commande, telles que les lance l'extension (`apres/x01`, `x02`) :
+- x01 `lepton seed add env55lib file://<P> --type bibliotheque --version master` (sans
+  `--no-cmake`) : code 0, `env55lib ajouté (lepton@library-env55lib, master, file://localhost<P>)`,
+  2 lignes `scion:` ;
+- x02 `lepton seed remove env55lib` : code 0 ; clone `depots/lepton/library-env55lib/master`
+  conservé (comportement de `seed remove` sans `--purge`, identique pour `file://localhost/`),
+  retiré ensuite par `scripts/supprimer-essai.sh` ; état final = départ, `lepton check` code 0,
+  graine propre.
+
+Essai dans VSCodium (canal « Lepton ») : <au PA-98>.
+
+## 6. Constats hors périmètre
+
+- **O-1** : l'indice du message « version sans effet » (l. 93) calcule `Path(loc).resolve()` sans
+  `expanduser()`, alors que le contrôle d'existence (l. 94) le fait. Une origine `~/…@master`
+  transmise sans shell (saisie dans l'extension) donne l'indice `file://localhost<cwd>/~/…@master`.
+  Forme non `file:`, laissée inchangée (iso-fonctionnel) ; à reporter dans `HORS-PLAN.md` si
+  l'utilisateur le décide.
+- `file://<autre hôte>/abs` reste accepté et git lit le chemin local (PA-97) ; un dépôt de même
+  chemin sur un autre hôte n'est donc jamais atteint.
