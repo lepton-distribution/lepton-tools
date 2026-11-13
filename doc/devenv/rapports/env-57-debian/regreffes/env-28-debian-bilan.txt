@@ -1,0 +1,18 @@
+rootstock /home/lepton-user/lepton-tools-dev/essais/env-28-debian
+graft-update code=0 ; avancés : 1 ; git clone : 0 ; extraction partielle : 0 ; conflit/refus : 0
+  depots/lepton/original/master avancé : 58e421e -> ed2a41f
+clones : 1 ligne(s) changée(s)
+liens avant liens=3889 casses=0 reguliers=0 ; après liens=3889 casses=0 reguliers=0
+liens ajoutés 0 retirés 0
+controler-trunk CONFORME code=0 
+tiers : 8 clone(s) ; depots/tiers 108760 → 108760 Ko ; extraits et sparse-checkout ≠ attendu : 0 / 16
+  cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1 sparseCheckout=true cone=true H=31 S=121 extraits=H:oui ko_hors_git=23964 ko_git=596
+  cmsis-device-f7/v1.2.10 sparseCheckout=true cone=true H=22 S=91 extraits=H:oui ko_hors_git=19136 ko_git=500
+  cmsis-device-wl/v1.4.0 sparseCheckout=true cone=true H=70 S=9 extraits=H:oui ko_hors_git=4708 ko_git=388
+  stm32-mw-subghz-phy/v1.5.0 sparseCheckout=true cone=true H=28 S=119 extraits=H:oui ko_hors_git=448 ko_git=644
+  stm32cubewl/v1.6.0 sparseCheckout=true cone=true H=103 S=8859 extraits=H:oui ko_hors_git=1908 ko_git=24348
+  stm32f4xx-hal-driver/v1.8.5 sparseCheckout=true cone=true H=204 S=5 extraits=H:oui ko_hors_git=10424 ko_git=1708
+  stm32f7xx-hal-driver/v1.3.3 sparseCheckout=true cone=true H=200 S=6 extraits=H:oui ko_hors_git=9656 ko_git=1652
+  stm32wlxx-hal-driver/v1.6.0 sparseCheckout=true cone=true H=161 S=7 extraits=H:oui ko_hors_git=7348 ko_git=1296
+check code=0 ; generate avant code=0 après code=0 ; espace diff=0
+trunk : réguliers hors .DS_Store 0 ; .DS_Store 0 ; cassés 0
