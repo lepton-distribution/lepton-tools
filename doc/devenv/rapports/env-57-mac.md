@@ -169,12 +169,51 @@ et les décisions `subcommandResults` le prouvent.
 
 ## 3. Messages §2bis
 
+La session Mac a été renommée par Claude Code en cours de session : `lepton-tools-30` (nom de la
+consigne) → `validation-debian-env-57` (même session, réf. d67f9e) ; signalé dans l'ordre. La
+session VM relancée au §0 garde le nom `debian-linux-vm` (réf. d3fe18 ; l'ancienne, c187af, est
+hors ligne).
+
 | Message | Date | Sens | Résumé |
 | --- | --- | --- | --- |
+| ORDRE R57-1 | 2026-11-13 | Mac (`validation-debian-env-57`) → VM (`debian-linux-vm` d3fe18) | consigne `env-57-debian.md` @ 10b6dd3 envoyée en entier, branche `devenv/env-57` @ 10b6dd3 (poussée) ; préalable §0 fait par l'utilisateur ; actions de l'utilisateur : 4 invites `graft-update`, refus N4 et N5, push, suppression d'`essais/env-11/qemu` ; envoi réussi par Remote Control, lecture non confirmée |
+| ACCUSÉ R57-1 | 2026-11-13 | VM (`debian-linux-vm`, réf. 153462, adresse `bridge:session_01Fkeafxop88KcEs5Qbe8stB`) → Mac | reçu directement. §5 sans arrêt : `$T` = répertoire de travail, `devenv/env-57` = 10b6dd3, propre ; Claude Code 2.1.323 ; `CLAUDE_PROJECT_DIR` vide dans le Bash ; empreintes `settings.json`, hook, enveloppe = Mac ; pas de `settings.local.json` ; **3 règles `allow` utilisateur** dans `~/.claude/settings.json` (10 nov.) : `Bash(pipx install:*)`, `Bash(git clone * https://github.com/lepton-distribution/*)`, `Bash(python3 -m unittest discover *)` ; journal `342f0a58-….jsonl` ; Debian 13.7, git 2.47.3, scion 0.6.3.0, chaîne = R53-1, `rsync` absent (non requis), 18 Go libres ; `têtes publiées = Mac` ; `$U`, `$E13` = attendu (3889, 23 entrées, noyau 58e421e, 108 760 Ko) ; `$C5` : graine 6d3d2a5, 5 entrées, `salut` 71e1641 `modifs=2`, 3059 liens, 2 clones tiers F7 ; étapes §6 à §15 prévues |
+| AVANCEMENT R57-1 (§6 avant) | 2026-11-13 | VM → Mac | noyau `$K` 58e421e → ed2a41f (avance rapide, 5 fichiers) ; `SCION_REF` 0.6.3.1 (noyau, lepton-tools) ; `SCION_MIN_VERSION` (0, 6, 2, 0) ; `.vsix` 0.5.2 présent ; lancement des 3 installations |
+| AVANCEMENT R57-1 (§6, C1) | 2026-11-13 | VM → Mac | `install-debian.sh` code 0, scion 0.6.3.1 depuis `seed.scions.git@0.6.3.1` (Python 3.13.5) ; `pipx install --force ~/lepton-tools-dev/lepton-tools` accepté sans invite, lepton 0.1.0 ; `install-vscodium.sh` code 0, `changements 0` ; `scion 0.6.3.1 (requis ≥ 0.6.2.0)` ; extensions = attendu |
+| AVANCEMENT R57-1 (§7, §8 jusqu'à N4) | 2026-11-13 | VM → Mac | §7 : copie 3059 liens, `check` 0, dépôt `$D` créé (edb9d14) ; P3 (e98a482), P4, P5 code 0 ; N1, N2, N2b code 2 ; N3 exécuté sans invite (cible absente) ; N4 lancé, refus attendu de l'utilisateur |
+| AVANCEMENT R57-1 (§8, écart N4) | 2026-11-13 | VM → Mac | invite N4 parue mais **confirmée** au lieu d'être refusée (`accept user_temporary projectSettings`) ; scion code 1, « n'est pas un rootstock », sans effet, cible absente ; arrêt, question posée à l'utilisateur dans la session VM |
+| AVANCEMENT R57-1 (§8, N4 rejoué) | 2026-11-13 | VM → Mac | N4 rejoué à la demande de l'utilisateur : invite refusée, tour interrompu ; le premier N4 reste un écart ; reprise au N5 |
+| AVANCEMENT R57-1 (§8, C2) | 2026-11-13 | VM → Mac | `8-decisions.tsv` : `pipx install` `rule projectSettings` ; P3, P4, P5, N1, N2, N2b `subcommandResults` ; N3 `classifier` (accepté) ; N4 (1er) `user_temporary`, N4 rejoué et N5 `rejet-invite` ; N6 `reject subcommandResults projectSettings` (deny) ; N7 `reject hook hook` ; cibles absentes, liens de `$S` = départ ; `install-debian.sh` et `install-vscodium.sh` : `classifier` (acceptés) |
+| AVANCEMENT R57-1 (§9, 1/4 à 4/4, C3) | 2026-11-13 | VM → Mac | 4 `graft-update` sur invite confirmée par l'utilisateur. `env-28-debian`, `env-13-debian`, `env-53-debian` : code 0, noyau seul 58e421e → ed2a41f, 0 clone, 0 conflit, « 3889 feuilles liées », 0 `.DS_Store`, journal = Mac (82), liens inchangés, `CONFORME` (avant et R50-1), tiers 0 / 16, `clones = Mac`, `ignorecase` vide, `check` et `generate` 0, espace identique ; `env-53-c5` : noyau seul, 3059 liens inchangés, `CONFORME`, 2 clones F7 0 / 4, `salut` accepté (`modifs=2`), graine 6d3d2a5 inchangée. `depots/tiers` de `env-53-debian` 87 512 Ko (clones neufs, `.git` de STM32CubeWL 3 588 Ko), informatif |
 
 ## 4. Rootstocks d'essai du Mac (tâche 3)
 
-(À compléter.)
+Accord de l'utilisateur au PA-101 (PA-P), pendant R57-1. scion 0.6.3.1, lepton 0.1.0. Script
+`env-57-mac/regreffer-essai.sh avant|apres` ; entre les deux, la session lance
+`scion graft-update -v <rootstock> > <journal> 2>&1; echo "code=$?" >> <journal>`. Attendu des liens :
+la liste d'avant du rootstock (ed2a41f ne change rien de greffé). Journaux et bilans :
+`~/lepton-tools-dev/essais/env-57-mac/regreffes/<rootstock>-*`.
+
+Inventaire avant : clones de greffons sur `master`, amont réglé, propres, noyau 58e421e partout ;
+graines de projet locales sans amont. La graine de `bout-en-bout` porte ses 2 fichiers non suivis
+du 2026-11-02 (`modifs=2`, connus depuis ENV-50).
+
+| Rootstock | `graft-update` | Liens avant → après | Ajouts / retraits | `controler-trunk.py` | Clones tiers | `check` | Espace |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-13-vierge` (§1.3) | 0 ; noyau 58e421e → ed2a41f seul | 3889 → 3889 | 0 / 0 | `CONFORME` | 8, = attendu (0 / 16), 107 992 Ko inchangés | 0 | identique |
+| `env-9` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/qemu` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/qemu-gra2` | 0 ; noyau seul (BSP an386 réinscrit), puis `scion graft-remove lepton@bsp-qemu-mps2-an386 <rootstock>` code 0, 8 feuilles, clone conservé | 3051 → 3051 | 0 / 0 | `CONFORME` | — | 1 (attendu, CFG-5) | identique |
+| `env-11/bout-en-bout/rootstock` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/f429zi` | 0 ; noyau seul | 3294 → 3294 | 0 / 0 | `CONFORME` | 2, = attendu (0 / 4), 36 528 Ko inchangés | 0 | identique |
+| `env-11/wl55jc1` | 0 ; noyau seul | 3315 → 3315 | 0 / 0 | `CONFORME` | 4, = attendu (0 / 8), 40 684 Ko inchangés | 0 | identique |
+
+Partout : aucun `git clone`, aucune ligne `extraction partielle,` (clones tiers déjà partiels),
+0 conflit ni refus, 0 lien cassé, 0 fichier régulier, 0 `.DS_Store` dans les trunks.
+
+Décisions (journal de session, `decisions.py`) : les 7 `graft-update` sur invite `ask` confirmée par
+l'utilisateur (`user_temporary`, `projectSettings`), de 15:33 à 16:24 UTC ; le `graft-remove`, hors
+règle, accepté par le classifieur. Aucun refus.
 
 ## 5. Vérification du rapport VM (tâche 4)
 
