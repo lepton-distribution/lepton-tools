@@ -100,6 +100,16 @@ classent aujourd'hui toute origine enregistrée de la même façon.
 - `README.md` et `rapports/env-8-interface.md` ne décrivent pas les formes d'URL ; l'aide de la CLI
   dit « URL git[@VERSION][:PATH] ou répertoire local ». Rien n'y devient faux.
 
-## 2. PA-97
+## 2. PA-97 (2026-11-13, décisions de l'utilisateur)
 
-<À compléter après la réponse de l'utilisateur.>
+| Question | Décision |
+| --- | --- |
+| Forme `file:///abs` | normalisée par lepton en `file://localhost/abs` avant écriture dans la graine ; scion et l'extension inchangés |
+| `file:/abs`, schéma en majuscules | même traitement : schéma `file` reconnu sans tenir compte de la casse, réécrit `file` ; sans hôte → `localhost` |
+| `file://<autre hôte>/abs` | inchangé (accepté ; git ignore l'hôte, §1.2) |
+| Tests | `tests/test_milestone3.py`, à côté de `test_gra3_parse_location` |
+
+Conséquence de conception : la normalisation ne s'applique qu'à la saisie (`parse_location`). Le
+classement, lui, reste le test de scion (`netloc` non vide), appliqué par une seule fonction à la
+saisie normalisée comme aux emplacements relus dans la graine (`Origin.remote`). Une graine écrite
+à la main avec `file:///abs` reste donc lue comme un chemin par lepton, comme par scion.
