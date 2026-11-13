@@ -20,7 +20,7 @@ chaque session, avec `DEVENV-STATUS.md`, le fichier de l'étape courante et la d
 | --- | --- | --- |
 | Dépôt `lepton-tools` | `<LEPTON_TOOLS>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements ; distant `lepton-distribution/lepton-tools` | Outil `lepton`, schémas, modèles, scripts d'installation, ce dossier `doc/devenv/` |
 | Rootstock Lepton | `<ROOTSTOCK>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements | `depots/`, `trunk/` ; clone noyau `depots/lepton/original/master` |
-| Dépôt `seed.scions` | clone à part, `<SEED_SCIONS>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements | Évolutions génériques de scion (ENV-7, ENV-15, ENV-23, ENV-29, ENV-39, ENV-40, ENV-52, ENV-56 ; correctif éventuel décidé au PA-75 ou au PA-83, de préférence dans une étape scion insérée) |
+| Dépôt `seed.scions` | clone à part, `<SEED_SCIONS>` — résolu en ENV-0 (PA-0) : `DEVENV-STATUS.md` §Emplacements | Évolutions génériques de scion (ENV-7, ENV-15, ENV-23, ENV-29, ENV-39, ENV-40, ENV-52, ENV-56, ENV-60 ; correctif éventuel décidé au PA-75 ou au PA-83, de préférence dans une étape scion insérée) |
 | Répertoire de construction | `<ROOTSTOCK>/build/<preset>` | Toujours hors du trunk |
 
 Claude Code est lancé à la racine de `<LEPTON_TOOLS>`. Les chemins `<…>` sont résolus une fois en
@@ -32,7 +32,7 @@ Hôtes :
 | Hôte | Rôle | Étapes |
 | --- | --- | --- |
 | Mac mini Intel, macOS (hôte principal) | Développement, construction native, flash et débogage | Toutes |
-| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian), ENV-15 (partie Debian), ENV-21, ENV-28, ENV-33, ENV-36, ENV-43, ENV-50, ENV-53, ENV-57 |
+| VM Debian x86_64 (si accès donné) | Validation Debian uniquement, dans une session Claude Code distincte | ENV-10 (partie Debian), ENV-11 (partie Debian), ENV-14 (partie Debian), ENV-15 (partie Debian), ENV-21, ENV-28, ENV-33, ENV-36, ENV-43, ENV-50, ENV-53, ENV-57, ENV-61 |
 
 Règles de parallélisme Mac / VM :
 
@@ -274,6 +274,14 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | PA-100 | ENV-56 | Rapport : sort d'`essais/env-56-essai` et du venv ; publication du tag et de `master` de `seed.scions`, branches `devenv/env-56`, fusions | ouvert |
 | PA-101 | ENV-57 | Consigne `consignes/env-57-debian.md`, critères C3, C6, C7, C8 (regreffes, presets et miroirs, cartes, nettoyage dont `essais/env-11/qemu`), lecture des règles d'ENV-54 par la VM (pose du fichier, relance de la session) ; push de `devenv/env-57`, ordre R57-1 | ouvert |
 | PA-102 | ENV-57 | Après `FIN-SUCCÈS R57-1` : fusions dans `main`, push | ouvert |
+| PA-103 | ENV-58 | Formes des commandes (D20) et règles utilisateur de la VM (D19) : texte de l'amendement du §2bis (redirection, journal par une option de l'outil, commandes `ask` hors script et hors `bash -c`), garde technique éventuelle, sort de chaque règle de `~/.claude/settings.json` de la VM, qui l'écrit et quand, règles du dépôt ajoutées, effets sur `CLAUDE.md` et les skills, avant toute modification | ouvert |
+| PA-104 | ENV-58 | Rapport : essai témoin (décisions relevées), texte des réglages de la VM ; sort d'`essais/env-58-essai` ; push et fusion de `devenv/env-58` | ouvert |
+| PA-105 | ENV-59 | Indice « version sans effet » et `~` (D17) : portée (l'indice seul, ou aussi les autres chemins saisis sans `expanduser`), forme de l'indice, tests, avant toute modification | ouvert |
+| PA-106 | ENV-59 | Rapport : lepton réinstallé ; sort d'`essais/env-59-essai` et du dépôt d'essai ; push et fusion de `devenv/env-59` | ouvert |
+| PA-107 | ENV-60 | Clone gardé après un checkout en échec (D18) : correction (message forme P-V1, retrait du clone, contrôle de la version avant le checkout), cas couverts, niveau et texte du message, documentation, numéro de version, `SCION_MIN_VERSION` et `SCION_REF`, effets sur lepton, avant toute modification | ouvert |
+| PA-108 | ENV-60 | Rapport : sort d'`essais/env-60-essai`, de la fixture et du venv ; publication du tag et de `master` de `seed.scions`, branches `devenv/env-60`, fusions | ouvert |
+| PA-109 | ENV-61 | Consigne `consignes/env-61-debian.md`, critères C3, C5 (fixture), C6, C7, C8, préalable §0 (réglages utilisateur de la VM selon le PA-103, relance de la session) ; push de `devenv/env-61`, ordre R61-1 | ouvert |
+| PA-110 | ENV-61 | Après `FIN-SUCCÈS R61-1` : fusions dans `main`, push | ouvert |
 | PA-P | toutes | Tout `git push`, toute action `scion seed-update` / `graft-update` | permanent |
 
 ## 5. Règles de travail (rappel des acquis du portage)
@@ -294,9 +302,9 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | Élément | Rôle | Étapes |
 | --- | --- | --- |
 | skill `devenv-session` | Procédure de début et de fin de session, passation | toutes |
-| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57 |
-| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15, 17, 19, 20, 21, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 52, 53, 57 |
-| skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 52, 53, 54, 57 |
+| skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61 |
+| skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15, 17, 19, 20, 21, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 52, 53, 57, 61 |
+| skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 52, 53, 54, 57, 58, 61 |
 | hook `proteger-trunk.py` | Refuse Write/Edit sous `<ROOTSTOCK>/trunk/` et `<ROOTSTOCK>/depots/tiers/` (ENV-41), et les commandes shell qui y écrivent (analyse par commande simple depuis ENV-44 ; tests `tests/test_proteger_trunk.py`) | toutes |
 
 Une skill se corrige comme le code : sur la branche de l'étape, commit dédié, ligne de journal
@@ -376,6 +384,10 @@ Précédent : révision du 2026-11-09, ENV-44 à ENV-50. La même règle figure 
 | ENV-55 | lepton : URL `file:///` reconnue (D13) | ENV-53 (indépendante d'ENV-56 ; ENV-54 conseillée avant) |
 | ENV-56 | scion : répertoires laissés par un clonage en échec (D14) | ENV-53 (indépendante d'ENV-55 ; ENV-54 conseillée avant) |
 | ENV-57 | Validation Debian groupée | ENV-54, ENV-55, ENV-56 |
+| ENV-58 | Claude Code : formes des commandes et règles de la VM (D20, D19) | ENV-57 |
+| ENV-59 | lepton : `~` dans l'indice « version sans effet » (D17) | ENV-57 (indépendante d'ENV-60 ; ENV-58 conseillée avant) |
+| ENV-60 | scion : clone gardé après un checkout en échec (D18) | ENV-57 (indépendante d'ENV-59 ; ENV-58 conseillée avant) |
+| ENV-61 | Validation Debian groupée | ENV-58, ENV-59, ENV-60 |
 
 Ordre conseillé : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12. ENV-1 et ENV-2 sont permutables ;
 ENV-4 et ENV-5 aussi ; ENV-7 peut suivre directement ENV-2 si l'audit le justifie.
@@ -397,3 +409,7 @@ permutables, indépendantes ; validation Debian en dernier).
 Révision du 2026-11-12 (fin du plan, D13, D14 et D16 de `HORS-PLAN.md`) : 54, 55, 56, 57 (ENV-54
 d'abord, pour que les règles de permission servent aux essais des étapes suivantes ; 55 et 56
 permutables, indépendantes ; D14 corrigé dans scion ; validation Debian en dernier).
+Révision du 2026-11-13 (fin du plan, D17 à D20 de `HORS-PLAN.md`) : 58, 59, 60, 61 (ENV-58
+d'abord, pour que les formes des commandes amendées servent aux essais suivants ; D19 décidé en
+ENV-58, appliqué et prouvé sur la VM en ENV-61 ; 59 et 60 permutables, indépendantes ; D18 corrigé
+dans scion ; validation Debian en dernier).
