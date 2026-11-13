@@ -1,0 +1,19 @@
+id	heure_utc	decision	source	reasonType	ruleSource	commande
+O-0	11:20:43	accept	user_temporary		projectSettings	(lecture groupée contenant scion graft-update -h)
+R5	11:23:02	accept	config	subcommandResults		~/lepton-tools-dev/venv-lepton-tools/bin/pytest -q
+R1	11:24:46	accept	user_temporary		projectSettings	scion graft-update -v ~/lepton-tools-dev/essais/env-54-essai/qemu
+R2	11:25:03	accept	config	subcommandResults		git clone file:///Users/cle_d_anton/lepton-tools-dev/seed.scions ~/lepton-tools-dev/essais/env-54-essai/clone-seed-2
+R3	11:25:04	accept	config	subcommandResults		scripts/supprimer-essai.sh ~/lepton-tools-dev/essais/env-54-essai/clone-seed
+R4	11:25:10	accept	config	rule	projectSettings	pipx install --force ~/lepton-tools-dev/lepton-tools
+N1	11:25:19	accept	config	subcommandResults		scripts/supprimer-essai.sh ~/lepton-tools-dev/essais/env-54-essai/../../absent-env54
+N2	11:25:20	accept	config	subcommandResults		scripts/supprimer-essai.sh ~/lepton-absent-env54
+N3	11:25:25	accept	config	classifier		rm -rf ~/lepton-tools-dev/essais/env-54-absent
+N4	11:25:51	reject	user (invite refusée)			scion graft-update -v ~/lepton-tools-dev/essais/env-54-absent
+N5	11:32:23	accept	config	classifier		git -C ~/lepton-tools-dev/essais/env-54-absent push
+N6	11:32:50	reject	config	subcommandResults	projectSettings	git clone --upload-pack=true file:///absent ~/lepton-tools-dev/essais/env-54-essai/x
+N7	11:32:51	reject	hook	hook		touch ~/lepton-tools-dev/essais/env-54-essai/qemu/trunk/essai-hook
+Ea	11:34:13	accept	config	classifier		git -C ~/lepton-tools-dev/essais/env-54-absent push origin
+Eb	11:34:59	accept	user_temporary		projectSettings	cd ~/lepton-tools-dev/essais/env-54-absent && git push
+Ec	11:35:13	accept	user_temporary		projectSettings	scion graft-update
+N5-bis	11:36:04	reject	user (invite refusée)			git -C ~/lepton-tools-dev/essais/env-54-absent push
+Ea-bis	11:39:17	reject	user (invite refusée)			git -C ~/lepton-tools-dev/essais/env-54-absent push origin

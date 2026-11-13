@@ -3,7 +3,9 @@
 Session Mac, branche lepton-tools `devenv/env-54` (depuis `main` 4bed93c). Claude Code 2.1.323,
 mode auto. Journal de session : `~/.claude/projects/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/75453a27-c3e9-424e-b2a5-1c6bbad93490.jsonl`.
 Annexes : `env-54-permissions/temoin/` (journaux de l'essai témoin),
-`env-54-permissions/auto-mode-defaults-2.1.323.json` (sortie de `claude auto-mode defaults`).
+`env-54-permissions/auto-mode-defaults-2.1.323.json` (sortie de `claude auto-mode defaults`),
+`env-54-permissions/rejeu/` (décisions et journaux du rejeu après redémarrage, §10 ; session
+`40ad5fdf-53aa-4252-854a-ec885c6cebb9`).
 
 ## 1. Inventaire des refus et des acceptations
 
@@ -205,7 +207,7 @@ et le répertoire supprimé avait été créé par la session.
 
 ## 9. Mise en place (tâche 2)
 
-- `.claude/settings.json` : 7 `allow`, 4 `ask`, 5 `deny`, hook inchangé ; écrit par la session
+- `.claude/settings.json` : 7 `allow`, 4 `ask`, 5 `deny` (5 `ask` après la correction du §10.1), hook inchangé ; écrit par la session
   (Write accepté) ; `python3 -m json.tool` : valide.
 - `deny` ajoutés par la session, dans le cadre du « `git clone` ciblé » (à confirmer au PA-96) :
   options de `git clone` qui font exécuter une commande ou changent la configuration
@@ -225,3 +227,77 @@ et le répertoire supprimé avait été créé par la session.
   `permissionDecision`. Pendant le témoin, `reasonType: "classifier"` pour les 6 commandes. Une
   règle du projet devrait donner `reasonType: "rule"` ; une invite acceptée,
   `source: "user_temporary"`.
+
+## 10. Rejeu après redémarrage (tâche 3, Mac, 2026-11-13)
+
+Session neuve de Claude Code 2.1.323, mode auto. Journal :
+`~/.claude/projects/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/40ad5fdf-53aa-4252-854a-ec885c6cebb9.jsonl`.
+Décisions extraites par script en lecture seule : `env-54-permissions/rejeu/decisions.tsv` (heures
+UTC). Une commande simple par appel. Pour R1 et N4, la forme positionnelle
+`scion graft-update -v <rootstock>` (sans `cd` ni redirection) remplace la forme de la passation,
+au plan approuvé. Un refus à l'invite est noté `toolUseResult: "User rejected tool use"`, sans
+`permissionDecision`.
+
+| N° | Commande | Décision au journal | Effet constaté |
+| --- | --- | --- | --- |
+| R1 | `scion graft-update -v ~/…/env-54-essai/qemu` (PA-P accordé) | invite `ask`, confirmée (`user_temporary`, `projectSettings`) | code 0 ; 3059 liens, liste identique avant/après et à `liens-apres.txt` de T2 (tri `LC_ALL=C`), 0 cassé ; graine sans amont, 3 `git fetch`, aucun clone avancé |
+| R2 | `git clone file:///…/seed.scions ~/…/env-54-essai/clone-seed-2` | `allow` (`subcommandResults`) | code 0, tête 6416c33 |
+| R3 | `scripts/supprimer-essai.sh ~/…/env-54-essai/clone-seed` (préexistant) | `allow` (`subcommandResults`) | supprimé, absence vérifiée |
+| R4 | `pipx install --force ~/lepton-tools-dev/lepton-tools` | `allow` (`rule`, `projectSettings`) | `lepton 0.1.0`, `scion 0.6.3.0` |
+| R5 | `~/lepton-tools-dev/venv-lepton-tools/bin/pytest -q` | `allow` (`subcommandResults`) | 436 passed, 445 s (`rejeu/r5-pytest.log`) |
+| N1 | `scripts/supprimer-essai.sh ~/…/env-54-essai/../../absent-env54` | `allow` | enveloppe : code 2, « hors des bornes », rien supprimé |
+| N2 | `scripts/supprimer-essai.sh ~/lepton-absent-env54` | `allow` | enveloppe : code 2, rien supprimé |
+| N3 | `rm -rf ~/lepton-tools-dev/essais/env-54-absent` | classifieur, accepté | cible absente |
+| N4 | `scion graft-update -v ~/…/env-54-absent` | invite `ask`, refusée | — |
+| N5 | `git -C ~/…/env-54-absent push` | **classifieur, accepté** (aucune invite) | git : code 128 (cible absente) |
+| N6 | `git clone --upload-pack=true file:///absent ~/…/x` | `deny` (`projectSettings`) | — |
+| N7 | `touch ~/…/env-54-essai/qemu/trunk/essai-hook` | hook (`hook:PreToolUse`), refusé | — |
+
+`subcommandResults` : la commande est jugée sous-commande par sous-commande, ici par les règles,
+sans classifieur. `rule` : la règle couvre la commande entière (motif exact de `pipx`).
+
+### 10.1 Écart N5 : `Bash(git * push:*)` ne couvre pas `git -C <chemin> push`
+
+Le classifieur a accepté N5 (`git -C <absent> push`). Seule l'absence de la cible a empêché le
+push : PA-P n'était tenu que par la consigne pour cette forme. Essais complémentaires sur cibles
+absentes (décision de l'utilisateur : « tester puis corriger ») :
+
+| N° | Commande | Décision |
+| --- | --- | --- |
+| Ea | `git -C ~/…/env-54-absent push origin` | classifieur, accepté (code 128) : l'argument après `push` n'y change rien |
+| Eb | `cd ~/…/env-54-absent && git push` | invite (`Bash(git push:*)`), acceptée par l'utilisateur ; sans effet, le `cd` échoue avant le push |
+| Ec | `scion graft-update` (sans argument, aucun rootstock au-dessus du répertoire de travail) | invite (`Bash(scion graft-update:*)`), acceptée par l'utilisateur ; scion : code 1, « aucun rootstock trouvé » |
+
+Conclusion : les motifs au `:*` final simple couvrent la commande nue et la commande suivie
+d'arguments (Eb, Ec, R1). Le motif qui combine un `*` intérieur et le `:*` final ne correspond ni à
+N5 ni à Ea. Les motifs à jokers purs fonctionnent (`deny` `git clone*--upload-pack*`, N6).
+Correction (`.claude/settings.json`) : `Bash(git * push:*)` remplacé par `Bash(git * push)` et
+`Bash(git * push *)` ; JSON valide ; relu à chaud. Rejeu :
+
+| N° | Commande | Décision |
+| --- | --- | --- |
+| N5-bis | `git -C ~/…/env-54-absent push` | invite `ask`, refusée |
+| Ea-bis | `git -C ~/…/env-54-absent push origin` | invite `ask`, refusée |
+
+Règles après correction : 7 `allow`, 5 `ask`, 5 `deny`. Effet de bord accepté : `git -C <x> stash
+push` demande aussi confirmation.
+
+### 10.2 Autres observations
+
+- O-0 : une lecture groupée de la session (`… ; scion graft-update -h 2>&1 | head …`) a déclenché
+  l'invite `ask`, acceptée (`user_temporary`, `projectSettings`). Elle montre que les règles du
+  projet sont actives dès le démarrage et que l'`ask` vaut aussi pour `-h` dans une commande
+  composée. C'est une erreur de la session : l'invite était inutile.
+- Le refus d'une invite interrompt le tour de Claude Code ; l'utilisateur relance la session.
+  Prévoir cette interruption dans les consignes VM (contrôles négatifs de l'ENV-57).
+- Une acceptation au Mac ne prouve rien pour la VM : preuve en ENV-57 (PA-101).
+
+### 10.3 Critères
+
+- Commandes retenues (R2 à R5) acceptées par les règles, sans classifieur ; R1 soumis à invite
+  (PA-P technique).
+- Contrôles négatifs refusés ou soumis à invite : N1, N2 (enveloppe), N4, N5-bis, Ea-bis
+  (invite), N6 (`deny`), N7 (hook). N3 relève du classifieur, comme prévu au PA-95 (`rm -rf`
+  direct sans règle).
+- Hook actif (N7) ; pytest 436 verts, dont `tests/test_proteger_trunk.py` et
+  `tests/test_supprimer_essai.py`.
