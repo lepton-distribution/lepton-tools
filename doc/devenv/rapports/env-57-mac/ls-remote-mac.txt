@@ -1,0 +1,24 @@
+lepton-tools main 6b6b1d6
+seed.scions tag 0.6.3.1 c51ee1a master d650414
+lepton-seed.scions original-tree 15740f9
+lepton-original-tree.scions master ed2a41f
+lepton-famille-qemu-mps2 master 3954357
+lepton-bsp-qemu-mps2-an386 master 10a8889
+lepton-bsp-qemu-mps2-an500 master e98a482
+lepton-famille-stm32f4xx master acdd24c
+lepton-bsp-nucleo-f429zi master b9fe2bf
+lepton-bsp-nucleo-f439zi master 314f91b
+lepton-famille-stm32wlxx master 9349be2
+lepton-bsp-nucleo-wl55jc1 master 4d7cf80
+lepton-famille-stm32f7xx master 12280a5
+lepton-bsp-stm32f746g-disco master 6266908
+lepton-famille-samd21 master a262e81
+lepton-bsp-samd21-xplained-pro master f3cffa2
+mirror-cmsis_device_f4 HEAD 9192c7b ; 3c77349 épinglé
+mirror-stm32f4xx-hal-driver tag v1.8.5 b6f0ed3 ; HEAD 6ef30cf
+mirror-stm32f7xx-hal-driver tag v1.3.3 e1446fa ; HEAD e860c4f
+mirror-cmsis_device_f7 tag v1.2.10 2352e88 ; HEAD 2352e88
+mirror-stm32wlxx-hal-driver tag v1.6.0 5c87cf0 ; HEAD 5c87cf0
+mirror-cmsis-device-wl tag v1.4.0 71a0b78 ; HEAD 71a0b78
+mirror-stm32-mw-subghz-phy tag v1.5.0 7dc059f ; HEAD 7dc059f
+mirror-STM32CubeWL tag v1.6.0 f934cd2 ; HEAD f934cd2
