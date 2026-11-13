@@ -1,0 +1,18 @@
+PASSED tests/test_milestone3.py::test_d13_urls_with_host_unchanged[file://localhost/srv/d.git]
+PASSED tests/test_milestone3.py::test_d13_urls_with_host_unchanged[file://autre/srv/d.git]
+PASSED tests/test_milestone3.py::test_d13_urls_with_host_unchanged[https://example.org/a/b.git]
+PASSED tests/test_milestone3.py::test_d13_urls_with_host_unchanged[ssh://git@example.org/a/b.git]
+PASSED tests/test_milestone3.py::test_d13_local_paths_unchanged
+PASSED tests/test_milestone3.py::test_d13_remote_reads_stored_location_like_scion
+FAILED tests/test_milestone3.py::test_d13_file_url_normalized[file:///srv/d.git-None-None-expected0]
+FAILED tests/test_milestone3.py::test_d13_file_url_normalized[file:/srv/d.git-None-None-expected1]
+FAILED tests/test_milestone3.py::test_d13_file_url_normalized[FILE:///srv/d.git-None-None-expected2]
+FAILED tests/test_milestone3.py::test_d13_file_url_normalized[File:/srv/d.git-None-None-expected3]
+FAILED tests/test_milestone3.py::test_d13_file_url_normalized[FILE://localhost/srv/d.git-None-None-expected4]
+FAILED tests/test_milestone3.py::test_d13_file_url_normalized[FILE://autre/srv/d.git-None-None-expected5]
+FAILED tests/test_milestone3.py::test_d13_file_url_normalized[file:///srv/d.git@v1.2:sub/dir-None-None-expected6]
+FAILED tests/test_milestone3.py::test_d13_file_url_normalized[file:/srv/d.git@devenv/x-None-None-expected7]
+FAILED tests/test_milestone3.py::test_d13_file_url_normalized[file:///srv/d.git-v2-sub-expected8]
+FAILED tests/test_milestone3.py::test_d13_seed_add_file_url[file://{}-options0]
+FAILED tests/test_milestone3.py::test_d13_seed_add_file_url[file:{}-options1]
+11 failed, 6 passed, 17 deselected in 4.63s

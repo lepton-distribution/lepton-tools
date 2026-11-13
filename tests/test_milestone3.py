@@ -9,7 +9,7 @@ import pytest
 from conftest import MKCONF, PROJECT_XML, assert_trunk_clean, url
 from lepton.cli import main
 from lepton.rootstock import Rootstock, scion_key
-from lepton.seed import parse_location
+from lepton.seed import Origin, parse_location
 from lepton.errors import LeptonError
 from lepton.validation import validate_file
 
@@ -114,6 +114,74 @@ def test_gra3_parse_location(tmp_path, repos):
         parse_location(f"{repos['app']}@master")
     with pytest.raises(LeptonError, match="absent"):
         parse_location(str(tmp_path))
+
+
+@pytest.mark.parametrize("text, version, subpath, expected", [
+    ("file:///srv/d.git", None, None, ("file://localhost/srv/d.git", "master", "")),
+    ("file:/srv/d.git", None, None, ("file://localhost/srv/d.git", "master", "")),
+    ("FILE:///srv/d.git", None, None, ("file://localhost/srv/d.git", "master", "")),
+    ("File:/srv/d.git", None, None, ("file://localhost/srv/d.git", "master", "")),
+    ("FILE://localhost/srv/d.git", None, None, ("file://localhost/srv/d.git", "master", "")),
+    ("FILE://autre/srv/d.git", None, None, ("file://autre/srv/d.git", "master", "")),
+    ("file:///srv/d.git@v1.2:sub/dir", None, None, ("file://localhost/srv/d.git", "v1.2", "sub/dir")),
+    ("file:/srv/d.git@devenv/x", None, None, ("file://localhost/srv/d.git", "devenv/x", "")),
+    ("file:///srv/d.git", "v2", "sub", ("file://localhost/srv/d.git", "v2", "sub")),
+])
+def test_d13_file_url_normalized(text, version, subpath, expected):
+    """D13, PA-97 : URL `file:` sans hôte (`file:///`, `file:/`) ou à schéma en majuscules → forme
+    `file://localhost/…`, que scion et git lisent comme une URL (rapport env-55 §1.2)."""
+    o = parse_location(text, version, subpath)
+    assert (o.location, o.version, o.subpath, o.remote) == (*expected, True)
+
+
+@pytest.mark.parametrize("text", ["file://localhost/srv/d.git", "file://autre/srv/d.git",
+                                  "https://example.org/a/b.git", "ssh://git@example.org/a/b.git"])
+def test_d13_urls_with_host_unchanged(text):
+    """PA-97 : une URL à hôte (autre hôte compris : git l'ignore) est reprise telle quelle."""
+    o = parse_location(text)
+    assert (o.location, o.version, o.remote) == (text, "master", True)
+
+
+def test_d13_local_paths_unchanged(repos, monkeypatch):
+    """PA-97 : chemins absolu et relatif inchangés ; `file:x` (sans « / ») reste un chemin `file`
+    suivi de `:PATH`, et non une URL."""
+    o = parse_location(str(repos["app"]))
+    assert (o.location, o.version, o.remote) == (str(repos["app"]), "*", False)
+    monkeypatch.chdir(repos["app"].parent)
+    o = parse_location(repos["app"].name)
+    assert (o.location, o.version, o.remote) == (str(repos["app"]), "*", False)
+    with pytest.raises(LeptonError, match="file/x/scion absent"):
+        parse_location("file:x")
+
+
+def test_d13_remote_reads_stored_location_like_scion():
+    """Une seule classification, celle de scion (`is_remote` : hôte non vide), pour la saisie
+    normalisée et pour l'emplacement relu dans la graine : un `file:///` écrit à la main dans la
+    graine reste un chemin pour lepton, comme pour scion (rapport env-55 §2)."""
+    assert Origin("file://localhost/srv/d.git", "master").remote is True
+    assert Origin("file:///srv/d.git", "master").remote is False
+    assert Origin("depots/x", "*").remote is False
+
+
+@pytest.mark.parametrize("form, options", [("file://{}", []), ("file:{}", ["--version", "master"])])
+def test_d13_seed_add_file_url(project, repos, capsys, form, options):
+    """D13 : `seed add` d'une origine `file:///` (ou `file:/`, avec `--version master` comme
+    l'extension) : graine en `file://localhost/…`, clone fait par scion ; `seed remove --purge`
+    rend la graine et le trunk d'avant."""
+    sources = Rootstock(project).seed_dot() / ".scion.sources.list"
+    before = sources.read_text()
+    assert main(["seed", "add", "my-lib", form.format(repos["lib"]), "--type", "bibliotheque",
+                 "-C", str(project), "--no-cmake", *options]) == 0
+    assert f"master, file://localhost{repos['lib']})" in capsys.readouterr().out
+    assert f"\tmaster\tfile://localhost{repos['lib']}\n" in sources.read_text()
+    assert (project / "depots/lepton/library-my-lib/master/.git").is_dir()
+    assert (project / "trunk/sys/root/src/lib/my-lib/my-lib.c").is_symlink()
+    code, status = _status(project, capsys)
+    assert code == 0 and _by_name(status)["my-lib"]["location"] == f"file://localhost{repos['lib']}"
+    assert main(["seed", "remove", "my-lib", "--purge", "--no-cmake", "-C", str(project)]) == 0
+    assert sources.read_text() == before
+    assert not (project / "depots/lepton/library-my-lib/master").exists()
+    assert_trunk_clean(project)
 
 
 def test_gra3_version_with_slash(project, repos, capsys):
