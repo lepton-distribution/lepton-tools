@@ -185,6 +185,12 @@ hors ligne).
 | AVANCEMENT R57-1 (§8, N4 rejoué) | 2026-11-13 | VM → Mac | N4 rejoué à la demande de l'utilisateur : invite refusée, tour interrompu ; le premier N4 reste un écart ; reprise au N5 |
 | AVANCEMENT R57-1 (§8, C2) | 2026-11-13 | VM → Mac | `8-decisions.tsv` : `pipx install` `rule projectSettings` ; P3, P4, P5, N1, N2, N2b `subcommandResults` ; N3 `classifier` (accepté) ; N4 (1er) `user_temporary`, N4 rejoué et N5 `rejet-invite` ; N6 `reject subcommandResults projectSettings` (deny) ; N7 `reject hook hook` ; cibles absentes, liens de `$S` = départ ; `install-debian.sh` et `install-vscodium.sh` : `classifier` (acceptés) |
 | AVANCEMENT R57-1 (§9, 1/4 à 4/4, C3) | 2026-11-13 | VM → Mac | 4 `graft-update` sur invite confirmée par l'utilisateur. `env-28-debian`, `env-13-debian`, `env-53-debian` : code 0, noyau seul 58e421e → ed2a41f, 0 clone, 0 conflit, « 3889 feuilles liées », 0 `.DS_Store`, journal = Mac (82), liens inchangés, `CONFORME` (avant et R50-1), tiers 0 / 16, `clones = Mac`, `ignorecase` vide, `check` et `generate` 0, espace identique ; `env-53-c5` : noyau seul, 3059 liens inchangés, `CONFORME`, 2 clones F7 0 / 4, `salut` accepté (`modifs=2`), graine 6d3d2a5 inchangée. `depots/tiers` de `env-53-debian` 87 512 Ko (clones neufs, `.git` de STM32CubeWL 3 588 Ko), informatif |
+| AVANCEMENT R57-1 (§10, §11.1 ; C4, C5) | 2026-11-13 | VM → Mac | §10 (D13) : `essai.sh` code 0, 21 `état :` vides, aucun `rmdir` ni `≠ départ`, **c4 : écarts=0 / 231** ; 10 `*-status.out` différents, informatifs (graine `env11` `master` 6d3d2a5 au lieu de `main` 124db52 ; emplacements `ssh://git@github.com/…` au lieu de `https://…` pour les clones de `$C5`) ; liens de `$S` = départ. §11.1 (D14) : codes = attendu, aucun résidu, e04 et e05 préexistants gardés, `scion.txt` 0.6.3.1 (pipx, Python 3.13), **c5 : écarts=0 / 48** ; seul répertoire vide : `depots/origin/scion/sources`, préexistant ; pytest lancé |
+| AVANCEMENT R57-1 (§11.2, C5 ; §12.1 lancé) | 2026-11-13 | VM → Mac | pytest `venv-test` (Python 3.13) par `--junitxml` : **453 tests, 0 échec, 0 erreur, 0 ignoré**, 2 min 16 ; hook 118, enveloppe 52 ; lepton éditable depuis `$T` ; lepton-tools propre. `devenv/env-57-debian` créée depuis 10b6dd3 ; `rejouer-oracle.sh` lancé dans `$R53` (host et 16 presets, ≈ 1 h) |
+| AVANCEMENT R57-1 (§12, C6) | 2026-11-13 | VM → Mac | `rejouer-oracle.sh` code 0 ; host ctest 7/7 ; 16 oracles (nombres de symboles = R53-1) ; fumée ×6 ; bancs an386 20/20 ×2, soft 16/16 ×2, an500 19/19 ×2 ; `peripheriques` ×4 ; trunk de `$R53` 3889, 0 cassé, 0 régulier, 0 `__pycache__` ; mklepton = R53-1 = `env-52-apres` ; **`comparer_R53-1` 0 et `hors_debug=0` ×16** ; `comparer_Mac` 1 (informatif) ; `mirror-sync --dry-run` code 0, 8 miroirs à 0 référence et 0 signalement, `CONFORME`, rien envoyé ; rédaction du rapport |
+| QUESTION R57-1 (push) | 2026-11-13 | VM → Mac et utilisateur | rapport commité sur `devenv/env-57-debian` (6df0de1, sur 10b6dd3) : `rapports/env-57-debian.md`, `rapports/env-57-debian/` (`8-decisions.tsv`, `10-c4/`, `11-c5/`, `11-pytest.xml`, `regreffes/`), `oracles/env-57-debian/` ; C1 à C6 atteints, écart C2 (premier N4), C7 écarté ; accord du push demandé à l'utilisateur dans la session VM (PA-P) ; le §14 suit |
+| AVANCEMENT R57-1 (push ; §14, C8) | 2026-11-13 | VM → Mac | push de `devenv/env-57-debian` sur invite confirmée par l'utilisateur, 6df0de1 publié ; relevé avant nettoyage : `env-57-essai` 126 Mo, `env-57-depot` 276 Ko, `~/env-53-journaux` 16 Mo, `env-11/qemu` 160 Mo (seul contenu d'`essais/env-11` ; `salut` 71e1641 sans amont, `modifs=2`, noyau 1dde0af) ; `supprimer-essai.sh` : 3 supprimés ; `rm -rf essais/env-11/qemu` puis `rmdir essais/env-11` demandés à l'utilisateur (D15) |
+| FIN-SUCCÈS R57-1 | 2026-11-13 | VM → Mac | reçu. C1 à C6 et C8 atteints, C7 écarté ; rapport `rapports/env-57-debian.md`, relevés `rapports/env-57-debian/`, oracle `oracles/env-57-debian/`, commit 6df0de1 sur 10b6dd3, `devenv/env-57-debian` poussée. Écart C2 : premier N4 confirmé, sans effet, rejoué et refusé. Constats : réf. 153462, 3 règles `allow` utilisateur, `CLAUDE_PROJECT_DIR` vide, installateurs, `rejouer-oracle.sh` et `mirror-sync` par le classifieur, reconstruction ≈ 3 min 30, empreintes binaires différentes de R53-1 (`__DATE__`, `__TIME__`) avec `comparer` 0, tailles de `$R53`, git en français. C8 : `essais/env-11/qemu` et `essais/env-11` supprimés par l'utilisateur ; restent `env-13-debian`, `env-28-debian`, `env-53-c5`, `env-53-debian`. Messages : tous acceptés par le serveur, aucun renvoi. Non fait : C7, `~/tmp-pytest` |
 
 ## 4. Rootstocks d'essai du Mac (tâche 3)
 
@@ -217,4 +223,33 @@ règle, accepté par le classifieur. Aucun refus.
 
 ## 5. Vérification du rapport VM (tâche 4)
 
-(À compléter.)
+Branche `devenv/env-57-debian` récupérée à 6df0de1 (un commit sur `devenv/env-57` 10b6dd3). Elle
+n'ajoute que `rapports/env-57-debian.md`, `rapports/env-57-debian/` (306 fichiers : `10-c4/` 242,
+`11-c5/` 50, `regreffes/` 12, `8-decisions.tsv`, `11-pytest.xml`) et `rapports/oracles/env-57-debian/`
+(96 fichiers) : 403 ajouts, aucun autre chemin touché. Contrôles refaits au Mac sur le contenu
+poussé, extrait par `git archive` dans le répertoire de session :
+
+| Critère | Contrôle refait au Mac | Résultat |
+| --- | --- | --- |
+| C2 | `8-decisions.tsv` | `pipx install` `rule projectSettings` ; P3, P4, P5, N1, N2, N2b, pytest `subcommandResults` ; 4 `graft-update` `user_temporary projectSettings` ; N3, installateurs, `rejouer-oracle.sh`, `mirror-sync` `classifier` (acceptés) ; premier N4 `user_temporary` (écart), N4 rejoué et N5 `rejet-invite` ; N6 `reject projectSettings` ; N7 `reject hook` |
+| C3 | journaux `graft-update` de `env-28-debian`, `env-13-debian`, `env-53-debian` normalisés contre `attendu/c3/graft-update-resume.txt` ; `clones.txt` contre `env-53-mac/attendu/clones-rootstock-mac.txt` (hors `ignorecase` et tailles) ; bilans | journal = Mac ×3 ; clones = Mac ×3 ; noyau seul, 3889 → 3889, `CONFORME`, 0 / 16, `check` 0, espace identique ; `env-53-c5` : 3059 → 3059, `CONFORME`, 0 / 4, `check` 0 |
+| C4 | `10-c4/` contre `attendu/c4/` (langue de git normalisée) | **0 / 231** ; aucun `rmdir` ni `≠ départ` dans les `.etat` ; les 10 `*-status.out` diffèrent par la base de la copie (graine `env11` `master` 6d3d2a5 contre `main` 124db52, emplacements `ssh://` contre `https://`, dépôt `$D` edb9d14 contre 2d17a36, et un preset `release-qemu` de moins dans la graine de la VM), informatif |
+| C5 | `11-c5/` contre `attendu/c5/` ; `11-pytest.xml` | **0 / 48**, aucun résidu ; pytest 453 tests, 0 échec, 0 erreur, 0 ignoré ; hook 118 |
+| C6 | `comparer-oracle.py` `env-53-debian` → `env-57-debian`, 16 presets ; `mklepton-empreintes.sha256` ; `construction.log` ; `banc-kal.log` | **0 ×16** ; mklepton = `env-53-debian` = `env-52-apres` ; reconstruction complète (configuration faite, autant d'objets compilés qu'en R53-1 : 164, 140, 163 pour an386 embOS, WL55 FreeRTOS, F746 embOS) ; `peripheriques` Passed ×4 |
+
+Le rapport VM a les rubriques demandées au §15 de la consigne. Les messages postérieurs à son
+commit (QUESTION du push, §14, `FIN-SUCCÈS`) figurent au §3 ci-dessus.
+
+Écarts retenus pour la clôture :
+- **Premier N4 confirmé** au lieu d'être refusé (erreur de manipulation à l'invite, sans effet :
+  cible absente). L'invite a paru, ce qui prouve la règle `ask` ; le refus a été obtenu au rejeu.
+- **Règles `allow` utilisateur sur la VM** (`~/.claude/settings.json` du 10 nov.), hors du dépôt :
+  `Bash(pipx install:*)`, plus large que la règle du dépôt, `Bash(git clone * https://github.com/lepton-distribution/*)`,
+  `Bash(python3 -m unittest discover *)`. Aucune décision relevée ne leur revient ; ajouté au
+  hors-plan (D19).
+- **Une redirection vers un fichier fait sortir une commande de sa règle `allow`** (§1.5) : écrit
+  dans la consigne, pas encore dans ORCHESTRATION §2bis ; ajouté au hors-plan (D20).
+- Durée de la reconstruction mal annoncée dans la consigne (« ≈ 1 h ») : environ 3 min 30 sur la
+  VM ; sans effet.
+- Empreintes binaires différentes de R53-1 pour les 16 presets (`__DATE__`, `__TIME__`), `comparer`
+  à 0 : forme attendue, comme aux validations précédentes.
