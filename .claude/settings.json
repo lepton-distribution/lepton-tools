@@ -1,4 +1,29 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(scripts/supprimer-essai.sh:*)",
+      "Bash(~/lepton-tools-dev/lepton-tools/scripts/supprimer-essai.sh:*)",
+      "Bash(pipx install --force ~/lepton-tools-dev/lepton-tools)",
+      "Bash(git clone file://*)",
+      "Bash(git clone https://github.com/lepton-distribution/*)",
+      "Bash(~/lepton-tools-dev/venv-lepton-tools/bin/pytest:*)",
+      "Bash(~/lepton-tools-dev/venv-test/bin/pytest:*)"
+    ],
+    "ask": [
+      "Bash(scion graft-update:*)",
+      "Bash(scion seed-update:*)",
+      "Bash(git push:*)",
+      "Bash(git * push)",
+      "Bash(git * push *)"
+    ],
+    "deny": [
+      "Bash(git clone*--upload-pack*)",
+      "Bash(git clone*-u *)",
+      "Bash(git clone*--config*)",
+      "Bash(git clone*-c *)",
+      "Bash(git clone*ext::*)"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {

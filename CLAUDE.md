@@ -21,4 +21,7 @@ et `<ROOTSTOCK>/depots/tiers/`. Un refus signale une erreur de chemin : ne jamai
 - Aucune hypothèse silencieuse : un manque devient une question à l'utilisateur.
 - `scion` reste générique : aucune chaîne propre à Lepton dans `seed.scions`.
 - Pas de `git push`, pas de `scion seed-update` / `graft-update` sans accord explicite.
+- Règles de permission (`.claude/settings.json`, ORCHESTRATION §2bis) : suppressions par
+  `scripts/supprimer-essai.sh` ; l'invite de Claude Code sur `graft-update`, `seed-update` et
+  `git push` s'ajoute à l'accord de l'utilisateur, sans le remplacer.
 - Fin de session, même interrompue : skill `devenv-session` (état, passation, commit).

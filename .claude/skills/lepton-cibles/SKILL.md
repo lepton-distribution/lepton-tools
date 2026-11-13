@@ -20,7 +20,9 @@ Les presets fixent eux-mêmes le répertoire `${sourceDir}/../build/<preset>` = 
 (`CMakePresets.json:13`). Le preset `host` (mklepton hôte, `<ROOTSTOCK>/build/host/mklepton`) est
 prérequis de tout preset croisé (`CMakePresets.json:37`). embOS : `source <clone>/scripts/lepton-env.sh`
 (exporte `LEPTON_EMBOS_ROOT`). Avant tout `ctest` à la main : `export PYTHONDONTWRITEBYTECODE=1`.
-Répertoire de construction neuf pour un oracle (`rm -rf <ROOTSTOCK>/build/<preset>` avant).
+Répertoire de construction neuf pour un oracle : `scripts/supprimer-essai.sh ~/lepton/build/<preset>`
+avant (enveloppe autorisée par `.claude/settings.json`, ENV-54 ; `rm -rf` direct reste jugé par le
+classifieur ; `rejouer-oracle.sh` vide lui-même ses répertoires).
 Jamais de répertoire de construction dans le trunk.
 
 | Cible | Preset | Exécutable |

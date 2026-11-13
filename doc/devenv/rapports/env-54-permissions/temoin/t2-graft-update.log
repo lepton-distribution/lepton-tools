@@ -1,0 +1,44 @@
+git rev-parse --show-toplevel (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton-seed/env11/scion/.scion)
+git rev-parse --abbrev-ref --symbolic-full-name @{u} (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton-seed/env11)
+graine /Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton-seed/env11 : sans amont, laissée telle quelle
+git branch --show-current (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/original/master)
+git for-each-ref --count=1 --format=%(refname) refs/heads/master refs/remotes/*/master (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/original/master)
+git rev-parse --abbrev-ref --symbolic-full-name @{u} (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/original/master)
+git fetch --quiet (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/original/master)
+git rev-list --left-right --count HEAD...@{u} (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/original/master)
+git branch --show-current (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/family-qemu-mps2/master)
+git for-each-ref --count=1 --format=%(refname) refs/heads/master refs/remotes/*/master (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/family-qemu-mps2/master)
+git rev-parse --abbrev-ref --symbolic-full-name @{u} (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/family-qemu-mps2/master)
+git fetch --quiet (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/family-qemu-mps2/master)
+git rev-list --left-right --count HEAD...@{u} (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/family-qemu-mps2/master)
+git branch --show-current (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/bsp-qemu-mps2-an386/master)
+git for-each-ref --count=1 --format=%(refname) refs/heads/master refs/remotes/*/master (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/bsp-qemu-mps2-an386/master)
+git rev-parse --abbrev-ref --symbolic-full-name @{u} (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/bsp-qemu-mps2-an386/master)
+git fetch --quiet (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/bsp-qemu-mps2-an386/master)
+git rev-list --left-right --count HEAD...@{u} (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/bsp-qemu-mps2-an386/master)
+git rev-parse --show-toplevel (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/generation/building/scion)
+git init -q --bare /var/folders/g8/m09ync55449fmpq56d8d7x3w0000gq/T/scion-ignored-2ox0v8w5 (cwd=None)
+git -c core.bare=false --git-dir /var/folders/g8/m09ync55449fmpq56d8d7x3w0000gq/T/scion-ignored-2ox0v8w5 --work-tree /Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/generation/building ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/generation/building/scion)
+git rev-parse --show-toplevel (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/original/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/original/master/scion)
+exclu (ignoré par git) : lepton/original::tree .DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/root/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/root/src/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/root/src/kernel/.DS_Store
+exclu (ignoré par git) : lepton/original::tree sys/root/src/kernel/dev/.DS_Store
+git rev-parse --show-toplevel (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/family-qemu-mps2/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/family-qemu-mps2/master/scion)
+git rev-parse --show-toplevel (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/bsp-qemu-mps2-an386/master/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton/bsp-qemu-mps2-an386/master/scion)
+exclu (ignoré par git) : lepton/bsp-qemu-mps2-an386 .DS_Store
+exclu (ignoré par git) : lepton/bsp-qemu-mps2-an386 sys/.DS_Store
+exclu (ignoré par git) : lepton/bsp-qemu-mps2-an386 sys/root/.DS_Store
+exclu (ignoré par git) : lepton/bsp-qemu-mps2-an386 sys/root/src/.DS_Store
+exclu (ignoré par git) : lepton/bsp-qemu-mps2-an386 sys/root/src/kernel/.DS_Store
+exclu (ignoré par git) : lepton/bsp-qemu-mps2-an386 sys/root/src/kernel/dev/.DS_Store
+exclu (ignoré par git) : lepton/bsp-qemu-mps2-an386 sys/root/src/kernel/dev/bsp/.DS_Store
+git rev-parse --show-toplevel (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton-seed/env11/project/scion)
+git ls-files --others --ignored --exclude-standard --directory -z -- . (cwd=/Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/depots/lepton-seed/env11/project/scion)
+greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+greffe : 3059 feuilles liées dans /Users/cle_d_anton/lepton-tools-dev/essais/env-54-essai/qemu/trunk
