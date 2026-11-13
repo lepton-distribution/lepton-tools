@@ -56,9 +56,11 @@ etat() {  # <nom> : état comparé au départ ; répertoires vides nouveaux reti
 }
 
 ajout() {  # <nom> <origine> [options…] : seed add de env55lib, annulé par seed remove s'il réussit
-  local nom=$1 origine=$2 purge=$3; shift 3
+  # --purge si scion a fait un clone (origine lue comme URL), jamais pour un répertoire local en place
+  local nom=$1 origine=$2 purge=""; shift 2
   cas "$nom" lepton seed add env55lib "$origine" --type bibliotheque --no-cmake "$@"
   if [ "$(cat "$brut/$nom.code")" = 0 ]; then
+    [ -d "$C/depots/lepton/library-env55lib/master/.git" ] && purge=--purge
     cas "$nom-status" lepton seed status --json
     cas "$nom-check" lepton check
     cas "$nom-remove" lepton seed remove env55lib --no-cmake $purge
@@ -85,16 +87,16 @@ absent a09 "file://$A" --version master            # forme de l'extension (seedA
 absent a10 "file://localhost$A" --version master   # forme de l'extension (seedAdd)
 
 # --- origine présente (ajout annulé s'il réussit ; --purge pour un clone fait par scion)
-ajout p01 "file://$P" ""
-ajout p02 "file://$P" "" --version master
-ajout p03 "file://localhost$P" --purge
-ajout p04 "file://autre$P" --purge
-ajout p05 "FILE://localhost$P" --purge
-ajout p06 "FILE://$P" ""
-ajout p07 "file:$P" ""
-ajout p08 "$P" ""
-ajout p09 "$relP" ""
-ajout p10 "file://localhost$P" --purge --version master   # forme de l'extension (seedAdd)
+ajout p01 "file://$P"
+ajout p02 "file://$P" --version master
+ajout p03 "file://localhost$P"
+ajout p04 "file://autre$P"
+ajout p05 "FILE://localhost$P"
+ajout p06 "FILE://$P"
+ajout p07 "file:$P"
+ajout p08 "$P"
+ajout p09 "$relP"
+ajout p10 "file://localhost$P" --version master   # forme de l'extension (seedAdd)
 
 # --- scion seul, origine file:/// transmise telle quelle (ce que ferait lepton sans normalisation)
 cas s01 scion seed-scion-add --seed "$SEED" "$KEY" master "file://$P"
