@@ -8,5 +8,7 @@ __version__ = "0.1.0"
 # ENV-41 : projection d'un dépôt tiers (0.6.0.0) portée par un greffon, miroirs (0.6.1.0), PA-69 ;
 # ENV-44 : graft --scion <porteur> regreffe ses clés projetées (0.6.2.0, P-G6, PA-75) ;
 # ENV-52 : extraction partielle des clones projetés (0.6.3.0, P-V7), sans effet sur lepton : minimum
-# inchangé (PA-91)
+# inchangé (PA-91) ;
+# ENV-56 : un clonage en échec ne laisse aucun répertoire (0.6.3.1, D14), sans effet sur lepton :
+# minimum inchangé (PA-99)
 SCION_MIN_VERSION = (0, 6, 2, 0)
