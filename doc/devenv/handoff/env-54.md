@@ -1,102 +1,75 @@
-# Passation ENV-54 — Claude Code : règles de permission ciblées (D16) — session du 2026-11-13 (intermédiaire, avant redémarrage)
+# Passation ENV-54 — Claude Code : règles de permission ciblées (D16) — session du 2026-11-13
 
 ## Statut
-En cours — tâches 1 (audit, PA-95) et 2 (mise en place) faites ; tâche 3 (rejeu après
-redémarrage de Claude Code, PA-96) à faire. La session reprend ENV-54, pas une nouvelle étape.
+Terminée (2026-11-13). Rejeu après redémarrage fait, écart N5 corrigé et rejoué ; PA-95 et PA-96
+tranchés ; branche fusionnée dans `main` et poussée (PA-P).
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/env-54` (depuis `main` 4bed93c), non poussée | commit « état et passation intermédiaire » au-dessus de d089fb9 (skill lepton-cibles), 56b8955 (CLAUDE.md), 99ab64d (règles, enveloppe, §2bis), 35ccc10 (audit) | oui |
+| lepton-tools | `devenv/env-54` (depuis `main` 4bed93c), fusionnée `--no-ff` dans `main`, les deux poussées | commit « état et passation » au-dessus de 053fa2e (rapport §10) et c9d5637 (correction de l'`ask` de `git push`) | oui |
 | seed.scions | `master` | 6416c33 (0.6.3.0), non touché | oui |
 | clone noyau `depots/lepton/original/master` | `master` | 58e421e, non touché | oui |
 | autres | — | non touchés | — |
 
-Outils : scion 0.6.3.0 ; lepton 0.1.0 (réinstallé par `pipx install --force` depuis `main`, même
-code, essai T5) ; Claude Code 2.1.323.
+Outils : scion 0.6.3.0 ; lepton 0.1.0 (réinstallé en R4 depuis `devenv/env-54`, code de lepton
+identique à `main`) ; Claude Code 2.1.323, mode auto.
 
-Hors dépôt : `~/lepton-tools-dev/essais/env-54-essai/` = `qemu` (copie d'`env-11/qemu` sans
-`build/`, regreffée en T2 : rien n'a bougé), `clone-seed` (T4), `journaux/` (T2, T4 à T6,
-`liens-avant.txt`, `liens-apres.txt` identiques).
+Hors dépôt : `~/lepton-tools-dev/essais/env-54-essai/` supprimé (PA-96, par l'enveloppe).
 
 ## Fait pendant la session
-- Début : état conforme à la passation de préparation ; plan approuvé ; branche créée ; étape
-  « en cours ». Décisions au plan : forme réelle de `pipx install` ; PA-P pour `graft-update`
-  dans `essais/env-54-essai/qemu` (passes §1 et §3).
-- Audit : `rapports/env-54-permissions.md` §1 à §7.
-  - Inventaire : refus `graft-update` (VM ×4, Mac ×1 en commande groupée), `rm -rf` (VM ×2),
-    `pipx`, `git clone` et tests de scion (VM, R15-1 seul).
-  - Mécanisme établi : documentation vérifiée mot pour mot (§3), et `claude auto-mode defaults`
-    (annexe `env-54-permissions/auto-mode-defaults-2.1.323.json`). Diagnostic (§5) : sur la VM,
-    l'accord arrive dans un `ORDRE` d'une autre session, que le classifieur ne tient pas pour un
-    accord de l'utilisateur.
-  - Essai témoin, sans règle : 6 commandes acceptées, toutes `reasonType: "classifier"` au
-    journal de session (`~/.claude/projects/-Users-cle-d-anton-lepton-tools-dev-lepton-tools/75453a27-c3e9-424e-b2a5-1c6bbad93490.jsonl`).
-- PA-95 tranché (`DEVENV-STATUS.md` §Décisions, rapport §8).
-- Mise en place (rapport §9) :
-  - `.claude/settings.json` : 7 `allow`, 4 `ask`, 5 `deny`, hook gardé, JSON valide ;
-  - `scripts/supprimer-essai.sh` et `tests/test_supprimer_essai.py` : 52 tests verts (bash 5.3
-    et 3.2), shellcheck propre ;
-  - ORCHESTRATION §2bis amendé ; `CLAUDE.md` (commit 56b8955) ; skill `lepton-cibles`
-    (commit d089fb9) ; hook : 118 tests verts.
+- Session 1 (avant redémarrage) : audit, essai témoin, PA-95, mise en place (rapport §1 à §9).
+- Session 2 (cette session, journal `40ad5fdf-53aa-4252-854a-ec885c6cebb9.jsonl`) :
+  - début conforme à la passation intermédiaire (8b8c629, propre) ; plan de reprise approuvé ;
+  - rejeu R1 à R5, N1 à N7 (rapport §10, `rapports/env-54-permissions/rejeu/decisions.tsv`) :
+    - R1 `scion graft-update -v <copie>` → invite confirmée, 3059 liens identiques ;
+    - R2 à R5 → règles, sans classifieur ; pytest 436 verts ;
+    - N1, N2 code 2 de l'enveloppe ; N3 classifieur ; N4 invite refusée ; N6 `deny` ; N7 hook ;
+  - écart N5 : `Bash(git * push:*)` ne couvrait pas `git -C <chemin> push` (classifieur,
+    accepté, cible absente). Essais Ea à Ec, puis correction `Bash(git * push)` et
+    `Bash(git * push *)` (c9d5637) ; N5-bis et Ea-bis : invites refusées ;
+  - PA-96 : `deny` de `git clone` confirmés ; essai supprimé ; push et fusion ;
+  - `HORS-PLAN.md` : D16 traité.
 
 ## Reste à faire dans l'étape
-- [ ] Tâche 3, après redémarrage (§3 du fichier d'étape). PA-P déjà accordé pour le
-      `graft-update` de la copie. Une commande simple par appel ; relever ensuite
-      `permissionDecision` dans le `.jsonl` de la nouvelle session.
-  - Acceptations attendues :
-    - R1 `cd ~/lepton-tools-dev/essais/env-54-essai/qemu && scion graft-update -v > ../journaux/r1-graft-update.log 2>&1` → invite (`ask`) ; l'utilisateur confirme.
-    - R2 `git clone file:///Users/cle_d_anton/lepton-tools-dev/seed.scions ~/lepton-tools-dev/essais/env-54-essai/clone-seed-2` → règle.
-    - R3 `scripts/supprimer-essai.sh ~/lepton-tools-dev/essais/env-54-essai/clone-seed` (créé par la session précédente, donc préexistant) → règle.
-    - R4 `pipx install --force ~/lepton-tools-dev/lepton-tools` → règle ; vérifier `lepton --version`.
-    - R5 `~/lepton-tools-dev/venv-lepton-tools/bin/pytest -q` → règle ; 436 attendus (384 + 52).
-  - Contrôles négatifs, sur cibles absentes :
-    - N1 `scripts/supprimer-essai.sh ~/lepton-tools-dev/essais/env-54-essai/../../absent-env54` → code 2.
-    - N2 `scripts/supprimer-essai.sh ~/lepton-absent-env54` → code 2.
-    - N3 `rm -rf ~/lepton-tools-dev/essais/env-54-absent` → classifieur, constater.
-    - N4 `cd ~/lepton-tools-dev/essais/env-54-absent && scion graft-update -v` → invite ; l'utilisateur refuse.
-    - N5 `git -C ~/lepton-tools-dev/essais/env-54-absent push` → invite ; l'utilisateur refuse.
-    - N6 `git clone --upload-pack=true file:///absent ~/lepton-tools-dev/essais/env-54-essai/x` → refus (`deny`).
-  - Hook : N7 `touch ~/lepton-tools-dev/essais/env-54-essai/qemu/trunk/essai-hook` → refus du hook.
-  - Facultatif : l'utilisateur ouvre `/permissions` et vérifie qu'aucune règle n'est écartée.
-- [ ] PA-96 : rapport (§10 à écrire), confirmation des `deny` sur `git clone` (ajoutés par la
-      session), sort d'`essais/env-54-essai`, push et fusion de `devenv/env-54` (PA-P).
-- [ ] `HORS-PLAN.md` : D16 traité, renvoi au rapport ; fin de session (statut, journal, passation).
+- Rien. La preuve sur la VM est faite en ENV-57 (PA-101 : pose du fichier, relance de la session).
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
 | --- | --- | --- |
-| Forme témoin de `pipx install` = forme réelle, même version depuis `main` | utilisateur | oui |
-| PA-P : `graft-update` dans `essais/env-54-essai/qemu`, passes §1 et §3 | utilisateur | oui |
-| PA-95 : règles projet versionnées, enveloppe avec références, `ask` sur `git push`, `allow` pipx, `git clone` ciblé et pytest, reste du §7 (dont redémarrage) | utilisateur | oui |
-| `deny` sur les options dangereuses de `git clone` (`--upload-pack`, `-u`, `--config`, `-c`, `ext::`) | proposition non validée (session), à confirmer au PA-96 | rapport §9 |
-| Liste des formes de rejeu R1 à R5, N1 à N7 | proposition non validée | non |
+| Plan de reprise ; forme positionnelle de R1 et N4 | utilisateur (plan approuvé) | oui |
+| Écart N5 : tester sur cibles absentes, puis corriger | utilisateur | oui |
+| Forme de la correction (`git * push`, `git * push *`) | session, d'après les essais (rapport §10.1) | oui |
+| PA-96 : 5 `deny` de `git clone` confirmés ; essai supprimé ; push et fusion | utilisateur | oui |
 
 ## Pièges rencontrés
-- `echo ========` dans zsh : `=` en tête de mot déclenche l'expansion `=cmd` (« ======= not
-  found »). Parade : guillemets.
-- `cd -P //private` garde « // » en tête dans `pwd` (bash) : corrigé dans l'enveloppe, et couvert
-  par les tests.
-- pathlib retire `/` et `.` finaux : les tests passent les chemins en texte brut.
-- Le dossier iCloud de sauvegarde de `~/.claude` n'est pas lisible par la session (« Operation not
-  permitted », sandbox). Je n'ai pas pu vérifier l'archive créée par le hook de l'utilisateur
-  pour le fichier de plan.
-- Réglages relus à chaud (documenté) : les règles valent déjà dans cette session.
+- Un motif qui combine un `*` intérieur et le `:*` final (`Bash(git * push:*)`) ne correspond à
+  rien ; les jokers purs (`git * push *`) et le `:*` final simple fonctionnent. Vérifier chaque
+  motif par un essai sur cible absente, jamais par la seule lecture.
+- Une règle `ask` vaut aussi pour `-h` et dans une commande composée : ne pas glisser
+  `scion graft-update -h` (ou `git push --help`) dans une lecture groupée.
+- Le refus d'une invite interrompt le tour : l'utilisateur relance la session. À prévoir dans la
+  consigne VM d'ENV-57 (contrôles négatifs).
+- Le journal de session ne porte pas de `permissionDecision` pour une invite refusée :
+  `toolUseResult: "User rejected tool use"`.
+- Tri des listes de liens : comparer sous `LC_ALL=C sort` (l'ordre dépend de la locale).
+- Les heures du `.jsonl` sont en UTC.
 
 ## Critères de validation
-- [x] PA-95 tranché et consigné ; [ ] PA-96.
+- [x] PA-95 et PA-96 tranchés et consignés.
 - [x] Inventaire des refus, des acceptations et des formes de commandes au rapport.
 - [x] Mécanisme établi, avec sa source (page de documentation, essai).
-- [ ] Essai témoin rejoué après redémarrage : chaque commande retenue est acceptée, chaque
-      contrôle négatif est refusé ou soumis à confirmation. Le journal de session est cité.
-- [ ] Le hook refuse toujours une écriture sous un `trunk/` (rejeu) ; [x] `settings.json` est du JSON valide.
-- [ ] `pytest` complet vert (rejeu) ; [x] hook inchangé (118 verts).
+- [x] Essai témoin rejoué après redémarrage : chaque commande retenue est acceptée, chaque
+      contrôle négatif est refusé ou soumis à confirmation (après correction de N5). Le journal
+      de session est cité.
+- [x] Le hook refuse toujours une écriture sous un `trunk/` ; `settings.json` est du JSON valide.
+- [x] `pytest` complet vert (436) ; hook inchangé.
 - [x] ORCHESTRATION §2bis amendé.
-- [ ] `HORS-PLAN.md` : D16 marqué traité, avec renvoi au rapport.
+- [x] `HORS-PLAN.md` : D16 marqué traité, avec renvoi au rapport.
 
 ## Reprise
 Commande ou première action de la session suivante :
 ```
-reprendre ENV-54 (skill devenv-session) après redémarrage de Claude Code : lire cette passation
-et rapports/env-54-permissions.md §9 ; tâche 3 (rejeu R1 à R5, N1 à N7) puis PA-96
+démarrer ENV-55 (skill devenv-session) : lire DEVENV-STATUS.md (Prochaine action), cette passation
+et doc/devenv/etapes/ENV-55-*.md ; branche devenv/env-55 depuis main
 ```
