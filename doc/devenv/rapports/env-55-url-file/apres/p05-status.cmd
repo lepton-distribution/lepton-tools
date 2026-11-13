@@ -1,0 +1,1 @@
+lepton seed status --json

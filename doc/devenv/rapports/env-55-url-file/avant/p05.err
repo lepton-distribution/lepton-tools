@@ -1,0 +1,6 @@
+scion: scion lepton/library-env55lib déclaré dans <C>/depots/lepton-seed/env11/scion/.scion (version master)
+scion: scion lepton/library-env55lib retiré de <C>/depots/lepton-seed/env11/scion/.scion
+lepton: attention: ajout de lepton@library-env55lib annulé (graine et trunk restaurés)
+lepton: erreur: échec de « scion seed-clone --seed <C>/depots/lepton-seed/env11 » (code 2) :
+erreur : échec de « git clone FILE://localhost<P> <C>/depots/lepton/library-env55lib/master » (code 128) : fatal: remote helper 'FILE' aborted session
+  → corriger la cause signalée par scion, puis relancer

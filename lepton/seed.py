@@ -35,6 +35,9 @@ GRAINE_REL = SEED_DOT / SEED_MANIFEST
 _ORIGIN = re.compile(r"^(?P<loc>(?:[A-Za-z][A-Za-z0-9+.-]*://[^/]*)?.+?)(?:@(?P<ver>[^@:]+))?"
                      r"(?::(?P<path>[^:@/][^:@]*))?$")
 _IDENT = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
+# URL `file:` (D13, PA-97) : schéma reconnu sans égard à la casse ; hôte vide (`file:///abs`) ou
+# absent (`file:/abs`) → `localhost`, forme que scion et git lisent comme une URL.
+_FILE_URL = re.compile(r"^file:(?://(?P<host>[^/]*))?(?P<path>/.*)$", re.IGNORECASE)
 
 
 def _info(message: str) -> None:
@@ -56,6 +59,19 @@ def _warn(message: str) -> None:
 # --------------------------------------------------------------------------
 # origines (GRA-3)
 # --------------------------------------------------------------------------
+def normalize_location(location: str) -> str:
+    """Emplacement saisi → forme écrite dans la graine : une URL `file:` y prend le schéma `file` et
+    un hôte (`localhost` s'il manque) ; toute autre valeur est rendue telle quelle."""
+    m = _FILE_URL.match(location)
+    return f"file://{m.group('host') or 'localhost'}{m.group('path')}" if m else location
+
+
+def is_url(location: str) -> bool:
+    """URL (clonée par scion) ou chemin local : le test de scion (`is_remote` : hôte non vide), pour
+    la saisie normalisée comme pour l'emplacement relu dans la graine (rapport env-55 §2)."""
+    return bool(urlparse(location).netloc)
+
+
 @dataclass
 class Origin:
     location: str      # URL (avec netloc) ou chemin local (absolu, ou relatif au rootstock)
@@ -64,7 +80,7 @@ class Origin:
 
     @property
     def remote(self) -> bool:
-        return bool(urlparse(self.location).netloc)
+        return is_url(self.location)
 
     def scion_args(self) -> list[str]:
         return [self.version, self.location] + ([self.subpath] if self.subpath else [])
@@ -74,18 +90,19 @@ def parse_location(text: str, version: str | None = None, subpath: str | None = 
                    rootstock: Path | None = None) -> Origin:
     """`LOCATION[@VERSION][:PATH]` (ou options séparées) → origine contrôlée.
 
-    URL : version par défaut `master`. Chemin local (relatif au répertoire courant) : version `*`
+    URL : version par défaut `master` ; `file:///abs`, `file:/abs` et `FILE:` sont écrits
+    `file://localhost/abs` (D13). Chemin local (relatif au répertoire courant) : version `*`
     (scion l'utilise en place, sans clone), `@VERSION` refusé ; le chemin doit porter `scion/` ;
     il est rendu relatif au rootstock s'il s'y trouve, absolu sinon.
     """
     m = _ORIGIN.match(text)
     if m is None:
         raise LeptonError(f"origine « {text} » illisible", "forme attendue : LOCATION[@VERSION][:PATH]")
-    loc, ver, path = m.group("loc"), m.group("ver") or version, m.group("path") or subpath or ""
+    loc, ver, path = normalize_location(m.group("loc")), m.group("ver") or version, m.group("path") or subpath or ""
     if ver and any(part in ("", ".", "..") for part in ver.split("/")):
         # scion range le clone sous depots/<étagère>/<préfixe>/<version> : chemin imbriqué, jamais remontant
         raise LeptonError(f"version « {ver} » invalide", "branche ou tag git : segments non vides, ni « . » ni « .. »")
-    if urlparse(loc).netloc:
+    if is_url(loc):
         return Origin(loc, ver or DEFAULT_VERSION, path)
     if ver and ver != LOCAL_VERSION:
         raise LeptonError(f"origine locale « {loc} » : version « {ver} » sans effet (scion utilise un "

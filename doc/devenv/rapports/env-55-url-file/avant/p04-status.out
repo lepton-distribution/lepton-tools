@@ -1,0 +1,135 @@
+{
+  "rootstock": "<C>",
+  "trunk": "<C>/trunk",
+  "seed": {
+    "path": "<C>/depots/lepton-seed/env11",
+    "manifest": "<C>/depots/lepton-seed/env11/scion/.scion/lepton-graine.json",
+    "branch": "main",
+    "commit": "124db52",
+    "dirty": 3,
+    "dirty_files": [
+      "scion/.scion/.scion.ramifications",
+      "scion/.scion/.scion.sources.list",
+      "scion/.scion/lepton-graine.json"
+    ],
+    "ahead": null,
+    "behind": null
+  },
+  "scions": [
+    {
+      "name": "building",
+      "role": "sans manifeste",
+      "key": "lepton@building",
+      "version": "*",
+      "location": "depots/generation/building",
+      "path": "<C>/depots/generation/building",
+      "stem": "<C>/depots/generation/building/scion",
+      "in_seed": true,
+      "branch": null,
+      "commit": null,
+      "dirty": null,
+      "dirty_files": [],
+      "ahead": null,
+      "behind": null
+    },
+    {
+      "name": "lepton-noyau",
+      "role": "noyau",
+      "key": "lepton@original::tree",
+      "version": "master",
+      "location": "https://github.com/lepton-distribution/lepton-original-tree.scions.git",
+      "path": "<C>/depots/lepton/original/master",
+      "stem": "<C>/depots/lepton/original/master/scion",
+      "in_seed": true,
+      "branch": "master",
+      "commit": "58e421e",
+      "dirty": 0,
+      "dirty_files": [],
+      "ahead": 0,
+      "behind": 0
+    },
+    {
+      "name": "qemu-mps2",
+      "role": "famille",
+      "key": "lepton@family-qemu-mps2",
+      "version": "master",
+      "location": "https://github.com/lepton-distribution/lepton-famille-qemu-mps2.git",
+      "path": "<C>/depots/lepton/family-qemu-mps2/master",
+      "stem": "<C>/depots/lepton/family-qemu-mps2/master/scion",
+      "in_seed": true,
+      "branch": "master",
+      "commit": "3954357",
+      "dirty": 0,
+      "dirty_files": [],
+      "ahead": 0,
+      "behind": 0
+    },
+    {
+      "name": "qemu-mps2-an386",
+      "role": "bsp",
+      "key": "lepton@bsp-qemu-mps2-an386",
+      "version": "master",
+      "location": "https://github.com/lepton-distribution/lepton-bsp-qemu-mps2-an386.git",
+      "path": "<C>/depots/lepton/bsp-qemu-mps2-an386/master",
+      "stem": "<C>/depots/lepton/bsp-qemu-mps2-an386/master/scion",
+      "in_seed": true,
+      "branch": "master",
+      "commit": "10a8889",
+      "dirty": 0,
+      "dirty_files": [],
+      "ahead": 0,
+      "behind": 0
+    },
+    {
+      "name": "project-env11",
+      "role": "projet",
+      "key": "lepton@project-env11",
+      "version": "*",
+      "location": "depots/lepton-seed/env11",
+      "path": "<C>/depots/lepton-seed/env11/project",
+      "stem": "<C>/depots/lepton-seed/env11/project/scion",
+      "in_seed": true,
+      "branch": "main",
+      "commit": "124db52",
+      "dirty": 0,
+      "dirty_files": [],
+      "ahead": null,
+      "behind": null
+    },
+    {
+      "name": "env55lib",
+      "role": "bibliotheque",
+      "key": "lepton@library-env55lib",
+      "version": "master",
+      "location": "file://autre<P>",
+      "path": "<C>/depots/lepton/library-env55lib/master",
+      "stem": "<C>/depots/lepton/library-env55lib/master/scion",
+      "in_seed": true,
+      "branch": "master",
+      "commit": "2f3e70d",
+      "dirty": 0,
+      "dirty_files": [],
+      "ahead": 0,
+      "behind": 0
+    }
+  ],
+  "configurations": [
+    {
+      "name": "debug-qemu",
+      "build_type": "Debug",
+      "run": "qemu",
+      "preset": "env11-debug-qemu"
+    },
+    {
+      "name": "release-qemu",
+      "build_type": "Release",
+      "run": "qemu",
+      "preset": "env11-release-qemu"
+    }
+  ],
+  "missing": [],
+  "trunk_check": {
+    "regular_files": [],
+    "broken_links": []
+  }
+}

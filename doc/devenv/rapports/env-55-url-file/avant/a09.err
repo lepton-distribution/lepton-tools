@@ -1,0 +1,2 @@
+lepton: erreur: origine locale « file://<A> » : version « master » sans effet (scion utilise un répertoire local en place)
+  → retirer la version, ou désigner le dépôt git par une URL : file://localhost<C>/file:<A>@master

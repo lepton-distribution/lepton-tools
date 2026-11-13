@@ -1,0 +1,10 @@
+git git version 2.50.1 (Apple Git-155)
+file://<P>	0	2f3e70dbfc55630a191a5aaaa84915a7212b797b	refs/heads/master
+file://localhost<P>	0	2f3e70dbfc55630a191a5aaaa84915a7212b797b	refs/heads/master
+file:<P>	128	fatal: Could not read from remote repository.  Please make sure you have the correct access rights and the repository exists.
+file://autre<P>	0	2f3e70dbfc55630a191a5aaaa84915a7212b797b	refs/heads/master
+FILE://<P>	128	git: 'remote-FILE' is not a git command. See 'git --help'. fatal: remote helper 'FILE' aborted session
+FILE://localhost<P>	128	git: 'remote-FILE' is not a git command. See 'git --help'. fatal: remote helper 'FILE' aborted session
+file://127.0.0.1<P>	0	2f3e70dbfc55630a191a5aaaa84915a7212b797b	refs/heads/master
+file://LOCALHOST<P>	0	2f3e70dbfc55630a191a5aaaa84915a7212b797b	refs/heads/master
+<P>	0	2f3e70dbfc55630a191a5aaaa84915a7212b797b	refs/heads/master
