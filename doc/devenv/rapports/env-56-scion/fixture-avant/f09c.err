@@ -1,0 +1,1 @@
+erreur : échec de « git clone --quiet --filter=blob:none --no-checkout file://localhost<B>/repos/absent.git <B>/f09a/rootstock/depots/tiers/hal/v2.0 » (code 128) : and the repository exists.

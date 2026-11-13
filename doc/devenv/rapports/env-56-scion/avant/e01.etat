@@ -1,0 +1,8 @@
+résidu : depots/lepton/library-absent
+rmdir depots/lepton/library-absent
+liens = départ
+casses = départ
+reguliers = départ
+graine = départ
+grafted = départ
+depots = départ

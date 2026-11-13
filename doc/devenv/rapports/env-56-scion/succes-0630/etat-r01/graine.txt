@@ -1,0 +1,8 @@
+714f923e04b151e819af0345b2f7e5f40dd832887cf90d1654965156ce2f3686  scion/.scion/.scion.ramifications
+330243270fad135368613213738bb3f2a7b6a938469ce8133b02fe4f606fc283  scion/.scion/.scion.sources.list
+0aab4afc00f6b8da23f43c2f32c2b4f30ad392392ad097cd6efb46335a57aa6f  scion/.scion/lepton-graine.json
+-- git status
+ M scion/.scion/.scion.ramifications
+ M scion/.scion/.scion.sources.list
+-- HEAD
+124db520f96ec78cf241d39eb9b36f6d97f1a85e

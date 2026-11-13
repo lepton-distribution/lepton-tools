@@ -1,0 +1,2 @@
+miroir file://localhost<B>/repos/miroirs/absent.git : miroir inaccessible : échec de « git clone --quiet --mirror file://localhost<B>/repos/miroirs/absent.git <B>/f11/rootstock/depots/.mirrors/localhost<B>/repos/miroirs/absent.git » (code 128) : and the repository exists.
+miroir file://localhost<B>/repos/miroirs/absent.git : 0 référence(s) à envoyer, 1 signalement(s)

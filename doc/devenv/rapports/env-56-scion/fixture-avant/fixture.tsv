@@ -1,0 +1,16 @@
+cas	libellé	code	créés	plus haut créé	résidus vides	clones gardés	disparus	préexistants gardés
+f01	ordinaire, étagère nouvelle	2	2	depots/own	depots/own/plain	—	—	0
+f02	ordinaire, étagère existante	2	1	depots/own/plain	depots/own/plain	—	—	3
+f03	ordinaire, parent porteur d'une autre version	2	0	—	—	—	—	3
+f04	ordinaire, parent préexistant vide	2	0	—	—	—	—	2
+f05	ordinaire, --single-branch, version absente d'un dépôt présent	2	2	depots/own	depots/own/plain	—	—	0
+f06	voisin : ordinaire sans --single-branch, version absente (clone puis checkout)	2	4	depots/own	—	depots/own/plain/nope	—	0
+f07	projetée, étagère tiers nouvelle	2	2	depots/tiers	depots/tiers/hal	—	—	0
+f08	voisin : projetée, version absente (« clone laissé en place »)	1	3	depots/tiers	—	depots/tiers/hal/v9.9	—	0
+f09a	projetée, premier ajout réussi (préparation de f09b, f09c)	0	3	depots/tiers	—	depots/tiers/hal/v1.0	—	0
+f09b	projetée, étagère tiers existante (autre clé déjà clonée)	2	1	depots/tiers/hal2	depots/tiers/hal2	—	—	3
+f09c	projetée, parent porteur d'une autre version (v1.0 cloné, v2.0 absent)	2	0	—	—	—	—	4
+f10	graine distante absente	2	1	depots/absent2	depots/absent2	—	—	0
+f11	miroir absent, aucun dépôt de travail	1	10	depots/.mirrors	depots/.mirrors/localhost<B>/repos/miroirs	—	—	0
+f12a	voisin : miroir présent, amont absent (dépôt de travail cloné, fetch en échec)	1	11	depots/.mirrors	—	depots/.mirrors/localhost<B>/repos/miroirs/present.git	—	0
+f12b	miroir absent, ancêtres déjà créés par un autre miroir	1	0	—	—	—	—	11

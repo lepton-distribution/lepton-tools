@@ -1,0 +1,2 @@
+<HOME>/.local/bin/scion
+0.6.3.0 <HOME>/Library/Application Support/pipx/venvs/scion/lib/python3.11/site-packages/scion/__init__.py

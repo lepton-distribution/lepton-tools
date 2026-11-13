@@ -1,0 +1,10 @@
+nouveau répertoire non vide : depots/essai
+résidu : depots/essai/absent
+rmdir depots/essai/absent
+rmdir depots/essai
+liens = départ
+casses = départ
+reguliers = départ
+graine = départ
+grafted = départ
+depots = départ
