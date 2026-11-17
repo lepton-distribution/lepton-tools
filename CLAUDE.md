@@ -11,6 +11,11 @@ Langue : français. Ton neutre, objectif, concis.
 | `lepton-oracle` | Avant et après toute modification qui doit être sans régression |
 | `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage |
 
+Ces skills se modifient sur le compte claude.ai (Claude Desktop), jamais directement dans
+`.claude/skills/`. Après synchronisation (`~/.claude/skills/synced/`, au démarrage d'une session
+Claude Code), `scripts/importer-skills.sh` les copie dans le dépôt ; commit dédié (ORCHESTRATION
+§5bis). Dans ce dépôt, invoquer le skill sans préfixe, jamais sa copie `anthropic-skills:<nom>`.
+
 Le hook `.claude/hooks/proteger-trunk.py` refuse les écritures dans `<ROOTSTOCK>/trunk/`
 et `<ROOTSTOCK>/depots/tiers/`. Un refus signale une erreur de chemin : ne jamais le contourner.
 

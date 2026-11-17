@@ -326,9 +326,12 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 52, 53, 54, 57, 58, 61 |
 | hook `proteger-trunk.py` | Refuse Write/Edit sous `<ROOTSTOCK>/trunk/` et `<ROOTSTOCK>/depots/tiers/` (ENV-41), et les commandes shell qui y écrivent (analyse par commande simple depuis ENV-44 ; tests `tests/test_proteger_trunk.py`) ; demande l'invite pour une commande `ask` lancée indirectement : script shell, `bash -c`, `eval` (ENV-58, garde G2 ; tests `tests/test_garde_ask.py`) | toutes |
 
-Une skill se corrige comme le code : sur la branche de l'étape, commit dédié, ligne de journal
-dans `DEVENV-STATUS.md`. La skill `lepton-portage-instructions` (hors de ce dépôt) sert à réviser
-ce plan.
+Une skill se corrige sur le compte claude.ai (Claude Desktop), jamais directement dans
+`.claude/skills/` (décision de l'utilisateur du 2026-11-17). Après synchronisation, au démarrage
+d'une session Claude Code (`claude -p` lancé hors du dépôt suffit), `scripts/importer-skills.sh`
+la copie dans le dépôt, sur la branche de l'étape : commit dédié, ligne de journal dans
+`DEVENV-STATUS.md`. La copie du compte (`anthropic-skills:<nom>`) ne s'invoque pas dans ce dépôt.
+La skill `lepton-portage-instructions` (hors de ce dépôt) sert à réviser ce plan.
 
 Relecture d'une révision du plan (décision de l'utilisateur du 2026-11-09) : avant tout commit,
 toute révision du plan est relue par un agent indépendant.
