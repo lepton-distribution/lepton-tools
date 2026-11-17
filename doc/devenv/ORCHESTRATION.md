@@ -108,7 +108,26 @@ Règles des consignes VM (décision PA-31 d'ENV-22, 2026-11-02 ; leçons de R15-
     `~/lepton-tools-dev/venv-lepton-tools/bin/pytest` ou `~/lepton-tools-dev/venv-test/bin/pytest` :
     règle `allow`. Une commande n'est couverte que si elle est écrite dans cette forme exacte : pas
     de variable ni d'affectation en tête (`TMPDIR=…`), commandes simples plutôt que composées.
-  La consigne écrit chaque commande dans la forme couverte. Toute commande encore refusée, ou
+  - **Formes** (ENV-58, D20, PA-103 du 2026-11-17 ; essai `rapports/env-58-formes.md` §2,
+    Claude Code 2.1.326) :
+    - commande `allow` écrite seule : ni redirection vers un fichier hors du répertoire de
+      travail, ni `| tee`, ni `; echo "code=$?"`, chacune la faisant passer au classifieur.
+      `2>&1` est admis. Le journal passe par une option de l'outil (`--junitxml`), ou se lit dans
+      le résultat de l'outil, code de retour compris ;
+    - commande `ask` lancée directement par la session (redirection et `; echo` admis), jamais
+      dans un script, un `bash -c` ou un `eval`. Là, la règle ne la voit pas et le classifieur en
+      décide (essais A2, A3). Le hook `proteger-trunk.py` demande alors l'invite (garde G2). Ce
+      n'est pas une frontière de sécurité : un script Python, un chemin de script à variable ou
+      un programme qui lance la commande lui échappent ;
+    - un script qui a besoin d'une commande `ask` se coupe en deux phases ; la session la lance
+      entre les deux (forme de `rapports/env-57-mac/regreffer-essai.sh`).
+  - Réglages utilisateur de la VM (D19, PA-103) : ses 3 règles `allow` de
+    `~/.claude/settings.json` sont gardées : `Bash(pipx install:*)`,
+    `Bash(git clone * https://github.com/lepton-distribution/*)`,
+    `Bash(python3 -m unittest discover *)`. Elles s'ajoutent à celles du dépôt (les listes se
+    cumulent) ; une décision `userSettings` sur la VM leur revient.
+  La consigne écrit chaque commande dans la forme couverte ; son §2 renvoie à ce paragraphe au lieu
+  d'en recopier les formes. Toute commande encore refusée, ou
   hors des règles, n'est jamais contournée : `AVANCEMENT` avec la commande exacte, l'utilisateur
   la lance, la session vérifie l'effet et le consigne. Historique : R28-1 (`graft-update` refusé,
   « Untrusted Code Integration »), R43-1 et R53-1 (« Modify Shared Resources »), R21-1 (`rm -rf`,
@@ -305,7 +324,7 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | skill `lepton-rootstock` | Écriture dans les clones, regreffe, contrôles du trunk | 1, 5, 6, 8, 9, 11, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61 |
 | skill `lepton-oracle` | Capture et comparaison de l'état de référence ; scripts `scripts/oracle/` | 0, 4, 5, 6, 11, 13, 14, 15, 17, 19, 20, 21, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 39, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 52, 53, 57, 61 |
 | skill `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage ; valeurs complétées en ENV-2 | 0, 5, 6, 9, 11, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 52, 53, 54, 57, 58, 61 |
-| hook `proteger-trunk.py` | Refuse Write/Edit sous `<ROOTSTOCK>/trunk/` et `<ROOTSTOCK>/depots/tiers/` (ENV-41), et les commandes shell qui y écrivent (analyse par commande simple depuis ENV-44 ; tests `tests/test_proteger_trunk.py`) | toutes |
+| hook `proteger-trunk.py` | Refuse Write/Edit sous `<ROOTSTOCK>/trunk/` et `<ROOTSTOCK>/depots/tiers/` (ENV-41), et les commandes shell qui y écrivent (analyse par commande simple depuis ENV-44 ; tests `tests/test_proteger_trunk.py`) ; demande l'invite pour une commande `ask` lancée indirectement : script shell, `bash -c`, `eval` (ENV-58, garde G2 ; tests `tests/test_garde_ask.py`) | toutes |
 
 Une skill se corrige comme le code : sur la branche de l'étape, commit dédié, ligne de journal
 dans `DEVENV-STATUS.md`. La skill `lepton-portage-instructions` (hors de ce dépôt) sert à réviser
