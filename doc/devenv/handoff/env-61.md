@@ -41,10 +41,11 @@ Rootstocks d'essai du Mac, tous regreffés par `graft-update` 0.6.3.2. Seul le n
 
 `qemu-gra2` : le BSP an386 a été retiré par `graft-remove`, sans `--purge`.
 
-Copies d'essai du Mac, gardées (base des attendus versionnés) : `essais/env-61-essai`,
+Copies d'essai du Mac, base des attendus versionnés : `essais/env-61-essai`,
 `essais/env-61-depot59`, `essais/env-61-depot60`, `essais/env-61-seed-scions`,
-`essais/env-61-fixture`, `essais/env-61-releves`. Elles se suppriment par
-`scripts/supprimer-essai.sh` si l'utilisateur le demande. Journaux : `essais/env-61-mac/`.
+`essais/env-61-fixture`, `essais/env-61-releves`. Elles ont été supprimées après la clôture par
+`scripts/supprimer-essai.sh`, à la demande de l'utilisateur (2026-11-17). Restent les journaux
+`essais/env-61-mac/` (dont `pytest-tmp`), que l'enveloppe accepte.
 
 VM (état laissé par R61-1) :
 - `essais/env-28-debian`, `essais/env-13-debian`, `essais/env-53-c5`, `essais/env-53-debian` :
@@ -81,8 +82,9 @@ VM (état laissé par R61-1) :
 
 ## Reste à faire dans l'étape
 - [x] Tout ENV-61.
-- [ ] Hors étape, sur demande : suppression des copies d'essai du Mac `essais/env-61-*`
-  (`scripts/supprimer-essai.sh`).
+- [x] Hors étape : copies d'essai du Mac `essais/env-61-*` supprimées par
+  `scripts/supprimer-essai.sh` (demande de l'utilisateur). Journaux `essais/env-61-mac/`
+  conservés.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
