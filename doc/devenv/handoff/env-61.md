@@ -15,6 +15,7 @@ prochaine révision du plan.
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
 | lepton-tools | `devenv/env-61` (depuis `main` 7018302), fusionnée `--no-ff` dans `main`, les deux poussées (PA-110) | « devenv(env-61): état et passation », au-dessus de f383704 (fusion de `devenv/env-61-debian`), 352e575 (tâche 4), 342d660 (tâche 3), ac3b913 (PA-109, consigne), 088c291 (préparation), 11a11dc (étape en cours) | oui |
+| lepton-tools, hors étape (2026-11-17) | `devenv/skills-compte` (depuis `main` 09b2693), fusionnée `--no-ff` dans `main` (fa8a200), les deux poussées (PA-P) | `main` : le commit « état et passation » de la session hors étape, au-dessus de ba117b9 (journal du push) et fa8a200 (fusion) ; branche : f16634a (état et journal), 8ae6fa9 (règle), e8bc60b (script et tests) | oui |
 | lepton-tools (VM) | `devenv/env-61-debian` | 2771213 « devenv(env-61-debian): rapport R61-1… », poussée, fusionnée dans `devenv/env-61` | oui |
 | clone noyau `depots/lepton/original/master` | `master` | dfc960b, non touché | oui |
 | seed.scions, graine, familles, BSP, miroirs | `master` / `original-tree` | non touchés : seed.scions 975caf6 (tag 0.6.3.2), graine 15740f9 | oui |
@@ -88,7 +89,8 @@ VM (état laissé par R61-1) :
 - [x] Hors étape (décision de l'utilisateur du 2026-11-17) : les skills du dépôt se modifient sur
   le compte claude.ai (Claude Desktop) ; `scripts/importer-skills.sh` copie la version
   synchronisée dans `.claude/skills/`, commit dédié (CLAUDE.md, ORCHESTRATION §5bis). Branche
-  `devenv/skills-compte`, fusionnée dans `main` en local.
+  `devenv/skills-compte`, fusionnée dans `main` ; les deux poussées sur accord (PA-P). Le commit
+  « état et passation » qui suit le push n'est pas poussé. Pytest 527 (508 + 19 tests du script).
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
@@ -102,6 +104,7 @@ VM (état laissé par R61-1) :
 | PA-110 : fusions et push | utilisateur | oui |
 | Fin du plan : D26 à D28 ajoutés ; D21 à D28 à traiter ; A1 à A4, D4, D12 hors plan | utilisateur | oui |
 | `fr()`, base `env-61-fixture/f56`, comptes des attendus, contrôles de la consigne | session, d'après les essais du Mac (rapport §1) | oui (rapport ; défauts en D27) |
+| Hors étape : skills édités sur le compte claude.ai, importés par `scripts/importer-skills.sh` ; branche dédiée ; sans argument, skills déjà présents ; push | utilisateur (questions posées, plan approuvé) | oui |
 
 ## Pièges rencontrés
 - **Skills synchronisés depuis le compte** : la copie `~/.claude/skills/synced/` se met à jour au
