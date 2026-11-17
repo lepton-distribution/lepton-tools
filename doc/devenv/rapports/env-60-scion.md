@@ -342,3 +342,21 @@ Pas d'oracle :
 4. Forme : le tout premier `graft-update` de l'audit portait un préfixe `cd … && LC_ALL=C`
    (§1.1). La base a été refaite ; tous les relevés versionnés viennent de lancements dans la
    forme exacte.
+
+## 8. Décisions du PA-108 (2026-11-17, utilisateur) et publication
+
+- Rapport accepté ; les écarts du §7 (1 à 3) sont acceptés (questions posées).
+- Essais supprimés par `scripts/supprimer-essai.sh` : `essais/env-60-essai`, `env-60-depot`,
+  `env-60-fixture` (bases `avant`, `avant56`, `apres`, `apres56`), `env-60-releves`,
+  `env-60-succes-0631`, `env-60-succes-0632`, `env-60-venv`. Les relevés normalisés restent
+  versionnés dans `env-60-scion/`.
+- Publication (PA-P), dans l'ordre :
+  - seed.scions : fusion `--no-ff` de `devenv/env-60` dans `master` (975caf6), puis push de
+    `master`, du tag `0.6.3.2` (objet 2d10a51 sur 08a1460) et de `devenv/env-60`. `git ls-remote`
+    les montre identiques ;
+  - clone noyau : fusion `--no-ff` dans `master` (dfc960b), push de `master` et de
+    `devenv/env-60` ; clone remis sur `master` ; `<ROOTSTOCK>` : 0 lien cassé, 7 `.DS_Store`
+    tolérés ;
+  - lepton-tools : état et passation, puis fusion `--no-ff` de `devenv/env-60` dans `main`, et
+    push de `main` et de `devenv/env-60`.
+- `HORS-PLAN.md` : D18 traité (renvoi à ce rapport), D25 ajouté au PA-107.
