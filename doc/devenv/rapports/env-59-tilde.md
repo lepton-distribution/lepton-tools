@@ -255,7 +255,7 @@ observe le `scion/` de chaque greffon greffé) a vu la suppression du clone et l
 `lepton graft --path <C>/depots/lepton/library-env59lib/master/scion` : code 1, « ni dans le
 trunk …, ni dans un greffon greffé ». `report` en fait un avertissement « lepton : regreffe
 automatique — … » (code 1 = `EXIT_USER`). Sans effet sur l'état ; non relevé auparavant (ENV-55
-retirait sans `--purge`).
+retirait sans `--purge`). L'utilisateur a vu l'avertissement dans VSCodium (PA-106).
 
 ## 6. Questions du PA-106
 
@@ -266,3 +266,14 @@ retirait sans `--purge`).
    `essais/env-59-absent` n'a jamais existé.
 3. O-3 : au hors-plan (D24), ou écarté.
 4. PA-P : fusion `--no-ff` de `devenv/env-59` dans `main`, push de `main` et de `devenv/env-59`.
+
+## 7. PA-106 (2026-11-17, décisions de l'utilisateur)
+
+| Question | Décision |
+| --- | --- |
+| Rapport | accepté |
+| Essais | `essais/env-59-essai`, `env-59-depot`, `env-59-cwd`, `env-59-cwd-apres`, `env-59-releves` supprimés par `scripts/supprimer-essai.sh` (essai à blanc puis suppression, code 0) ; `essais/env-11/qemu` (source de la copie) intact : 3059 liens, 0 cassé, graine propre |
+| O-3 | au hors-plan, D24 ; avertissement « regreffe automatique » vu par l'utilisateur |
+| PA-P | fusion `--no-ff` de `devenv/env-59` dans `main`, push de `main` et de `devenv/env-59` |
+
+Validation Debian : ENV-61.
