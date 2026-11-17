@@ -174,3 +174,95 @@ p20, p21, a20, a21 du message à la trace : question 2 du §2.
 | Forme de l'indice | chemin absolu après `expanduser().resolve()` ; relatif et absolu inchangés |
 | Tests | `tests/test_milestone3.py`, près de `test_d13_*` (§2 point 4) |
 | O-1, O-2 | au hors-plan : D22 (scion), D23 (extension) |
+
+## 4. Correction (`devenv/env-59`)
+
+| Commit | Contenu |
+| --- | --- |
+| b6f571b | `tests/test_milestone3.py` : 9 tests `test_d17_*`, écrits avant la correction ; relevé `env-59-tilde/tests-avant-correction.txt` : 8 échecs, 1 réussite (`test_d17_hint_unchanged_for_paths`, garde des formes inchangées) |
+| 74c9c97 | `lepton/seed.py`, `parse_location` : le chemin local `expanduser().resolve()` est calculé une fois, avant le refus « sans effet », et sert à l'indice comme au contrôle d'existence ; l'échec d'`expanduser()` (`RuntimeError`, `~utilisateur` sans compte) devient `LeptonError` « origine locale « … » : répertoire personnel de « ~… » introuvable », action « vérifier le nom qui suit « ~ », ou donner un chemin absolu » ; docstring |
+
+L'expression du chemin est celle de l'ancienne l. 111, déplacée ; aucune nouvelle logique de
+chemin. Seul `expanduser()` est entouré : une boucle de liens symboliques (`RuntimeError` de
+`resolve()` en Python 3.11) garde son comportement d'avant. Les appelants (`seed new`, `seed add`,
+`seed replace`, `scion new`) passent tous par `parse_location` ; rien d'autre ne change.
+`README.md` et extension : rien à modifier (§1.6).
+
+Tests (`test_d17_*`, PA-105 point 4) : indice de `~/x@v1` et de `~/x` + `--version v1` (`HOME` de
+test) ; de `~<utilisateur>/x@v1` (répertoire personnel du compte) ; `seed add` de `~/my-lib@master`
+et de `~/my-lib` + `--version master` refusé, indice suivi tel quel accepté, `seed remove --purge`
+rendant graine et trunk ; formes absolue et relatives inchangées ; `~<sans compte>/x`, nu, `@master`
+et `--version master`.
+
+lepton réinstallé : `pipx install --force ~/lepton-tools-dev/lepton-tools` (règle `allow`), depuis
+`devenv/env-59` (74c9c97) ; modules installés identiques à la branche (`seed`, `rootstock`, `files`,
+`scions`, `cli`, `errors`, `generate`).
+
+## 5. Contrôles après correction
+
+### 5.1 Tests
+
+`~/lepton-tools-dev/venv-lepton-tools/bin/pytest --junitxml …` (forme couverte, sans redirection) :
+**508 passed** (499 d'ENV-58 + 9 `test_d17_*`), 447 s ; avant la correction, le même pytest
+complet sur `main` : 499 passed, 473 s.
+
+### 5.2 Table du §1 rejouée (`apres/`)
+
+- `classer.py` (`apres/classer.tsv`) : 14 lignes sur 42 changent, exactement celles du PA-105 :
+  - `~/…` et `~<U>/…`, `@master` et `--version master`, présent et absent (8 lignes) : indice
+    `file://localhost<P>@master` (ou `<A>`), « même dépôt » ;
+  - `~inconnu59/…`, 3 variantes × 2 cibles (6 lignes) : « répertoire personnel de « ~inconnu59 »
+    introuvable », au lieu de la trace (nue) ou de l'indice faux (versions).
+  Les 28 autres lignes sont identiques ; les 24 indices affichés désignent tous le dépôt visé.
+- `essai.sh` (`apres/`, 67 cas) : relevés différents seulement pour p02, p03, p05, p06,
+  p19-p21, a02, a03, a05, a06, a19-a21 et leurs cas `-i` ; tous les autres fichiers identiques à
+  `avant/`. Codes : p02, p03, p05, p06 restent 1 (refus), indice juste ; leurs indices suivis
+  (p02-i, p03-i, p05-i, p06-i) passent de 2 à 0 et leurs relevés (`.cmd`, `.out`, `.err`,
+  `.code`, `-status`, `-check`, `-remove`) sont identiques octet pour octet à ceux de p11-i (indice
+  de la forme absolue) : même URL, même dépôt ; a02-i, a03-i, a05-i, a06-i identiques à a11-i (échec de
+  `git clone` d'un dépôt absent, attendu). p19-p21, a19-a21 : code 1, message de lepton ; plus
+  d'indice, donc plus de cas `-i`.
+- États : après chaque cas et chaque `seed remove` d'un ajout réussi, liens, liens cassés,
+  fichiers réguliers, graine, liste greffée et `depots/` égaux au départ (67 `.etat`) ; aucun
+  résidu de clonage.
+- `autres.sh` (`autres-apres/`, `<W>` neuf `essais/env-59-cwd-apres`) : identique à `autres/`
+  sauf o7, dont l'indice devient `file://localhost<C>/depots/lepton/family-qemu-mps2/master@master`
+  (D17 au terminal corrigé), et o6, dont seul le nom du répertoire de travail diffère dans le mot
+  `~/…` non normalisé. o1-o3, o4-o5, o6, o8 inchangés (D21).
+
+### 5.3 Extension
+
+Commandes de l'extension rejouées en ligne de commande, sans `--no-cmake` (`apres/x01` à `x03`) :
+- x01 `seed add env59lib ~/…/env-59-depot --type bibliotheque --version master` : code 1, indice
+  `file://localhost<P>@master` ;
+- x02 l'indice suivi, `--version master` : code 0, `env59lib ajouté (lepton@library-env59lib,
+  master, file://localhost<P>)`, clone fait par scion ;
+- x03 `seed remove env59lib --purge` : code 0, clone supprimé ; état = départ.
+
+`lepton generate` dans `<C>` d'abord (l'`env11.code-workspace` copié visait
+`essais/env-11/qemu/build/.active`) : code 0, `CMakeUserPresets.json` « inchangé », espace
+« écrit » ; état = départ.
+
+Essai dans VSCodium fait par l'utilisateur (2026-11-17), extension 0.5.2, canal « Lepton »
+`apres/vscodium-canal.txt` : « ajouter un greffon à la graine » avec `~/…/env-59-depot` et la
+version `master` : refus, indice `file://localhost<P>@master`, identique à x01 ; indice collé
+comme origine, version `master` : ajouté, identique à x02 ; « retirer un greffon de la graine »
+avec « supprimer aussi le clone (--purge) » : identique à x03. État après : égal au départ, graine
+propre, aucun clone `library-env59lib`.
+
+**O-3** (extension, hors D17) : après le retrait `--purge`, l'observateur F2 (`watch.ts`, qui
+observe le `scion/` de chaque greffon greffé) a vu la suppression du clone et lancé
+`lepton graft --path <C>/depots/lepton/library-env59lib/master/scion` : code 1, « ni dans le
+trunk …, ni dans un greffon greffé ». `report` en fait un avertissement « lepton : regreffe
+automatique — … » (code 1 = `EXIT_USER`). Sans effet sur l'état ; non relevé auparavant (ENV-55
+retirait sans `--purge`).
+
+## 6. Questions du PA-106
+
+1. Rapport accepté ?
+2. Sort des essais, par `scripts/supprimer-essai.sh` : `essais/env-59-essai`, `essais/env-59-depot`,
+   `essais/env-59-cwd`, `essais/env-59-cwd-apres` (rootstocks et dépôts créés sous `<W>/~/…`
+   par o2, o3), `essais/env-59-releves` (relevés bruts ; les normalisés sont versionnés).
+   `essais/env-59-absent` n'a jamais existé.
+3. O-3 : au hors-plan (D24), ou écarté.
+4. PA-P : fusion `--no-ff` de `devenv/env-59` dans `main`, push de `main` et de `devenv/env-59`.

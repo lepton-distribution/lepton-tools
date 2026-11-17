@@ -1,0 +1,1 @@
+zsh -c lepton seed new env59o7 -C <W>/o7 --bsp qemu-mps2-an386 --mkconf x.xml --origin lepton-noyau=<C>/depots/lepton/original/master --origin qemu-mps2=~/lepton-tools-dev/essais/env-59-essai/depots/lepton/family-qemu-mps2/master@master --origin qemu-mps2-an386=<C>/depots/lepton/bsp-qemu-mps2-an386/master

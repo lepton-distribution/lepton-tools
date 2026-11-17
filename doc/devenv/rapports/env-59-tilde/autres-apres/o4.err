@@ -1,0 +1,2 @@
+lepton: erreur: ~/lepton-tools-dev/essais/env-59-essai/trunk/CMakeLists.txt : ni dans le trunk <C>/trunk, ni dans un greffon greffé
+  → donner un chemin du trunk, ou d'un clone sous scion/
