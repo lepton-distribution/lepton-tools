@@ -1,6 +1,9 @@
 """Jalon 3 d'ENV-8 : graine — seed new, status, add, remove, replace (GRA-1 à GRA-4, GRA-6)."""
 
 import json
+import os
+import pwd
+import re
 import subprocess
 from pathlib import Path
 
@@ -182,6 +185,76 @@ def test_d13_seed_add_file_url(project, repos, capsys, form, options):
     assert sources.read_text() == before
     assert not (project / "depots/lepton/library-my-lib/master").exists()
     assert_trunk_clean(project)
+
+
+@pytest.mark.parametrize("text, version", [("~/x@v1", None), ("~/x", "v1")])
+def test_d17_hint_expands_tilde(tmp_path, monkeypatch, text, version):
+    """D17, PA-105 : l'indice de « version sans effet » désigne le chemin développé, comme le
+    contrôle d'existence (`expanduser().resolve()`), et non `<cwd>/~/…`. Le refus précède le
+    contrôle d'existence : le chemin n'a pas à exister."""
+    home, cwd = tmp_path / "home", tmp_path / "cwd"
+    home.mkdir()
+    cwd.mkdir()
+    monkeypatch.setenv("HOME", str(home))
+    monkeypatch.chdir(cwd)
+    with pytest.raises(LeptonError, match="sans effet") as e:
+        parse_location(text, version)
+    assert e.value.action.endswith(f" file://localhost{home}/x@v1")
+
+
+def test_d17_hint_expands_tilde_user(tmp_path, monkeypatch):
+    """D17 : `~<utilisateur>/…` développé par le répertoire personnel du compte."""
+    entry = pwd.getpwuid(os.getuid())
+    monkeypatch.chdir(tmp_path)
+    with pytest.raises(LeptonError, match="sans effet") as e:
+        parse_location(f"~{entry.pw_name}/x@v1")
+    assert e.value.action.endswith(f" file://localhost{Path(entry.pw_dir).resolve()}/x@v1")
+
+
+@pytest.mark.parametrize("origin, options", [("~/my-lib@master", []), ("~/my-lib", ["--version", "master"])])
+def test_d17_hint_followed_by_seed_add(project, repos, capsys, monkeypatch, origin, options):
+    """D17 : `seed add` d'une origine `~/…` avec version (`--version master` comme l'extension),
+    `HOME` = répertoire des dépôts de test : refusé ; l'indice suivi tel quel est accepté (clone fait
+    par scion, graine `file://localhost/…`) ; `seed remove --purge` rend la graine et le trunk."""
+    sources = Rootstock(project).seed_dot() / ".scion.sources.list"
+    before = sources.read_text()
+    capsys.readouterr()
+    with monkeypatch.context() as m:
+        m.setenv("HOME", str(repos["lib"].parent))
+        assert main(["seed", "add", "my-lib", origin, "--type", "bibliotheque", "-C", str(project),
+                     "--no-cmake", *options]) == 1
+    hint = re.search(r"file://localhost\S+", capsys.readouterr().err).group(0)
+    assert hint == f"{url(repos['lib'])}@master"
+    assert sources.read_text() == before
+    assert main(["seed", "add", "my-lib", hint, "--type", "bibliotheque", "-C", str(project), "--no-cmake"]) == 0
+    assert f"\tmaster\t{url(repos['lib'])}\n" in sources.read_text()
+    assert (project / "depots/lepton/library-my-lib/master/.git").is_dir()
+    assert main(["seed", "remove", "my-lib", "--purge", "--no-cmake", "-C", str(project)]) == 0
+    assert sources.read_text() == before
+    assert_trunk_clean(project)
+
+
+def test_d17_hint_unchanged_for_paths(repos, monkeypatch):
+    """PA-105 : chemins absolu et relatifs, indice inchangé (`resolve()` seul le rendait déjà absolu)."""
+    monkeypatch.chdir(repos["lib"].parent)
+    for text in (f"{repos['lib']}@master", "my-lib@master", "./my-lib@master", "../repos/my-lib@master"):
+        with pytest.raises(LeptonError, match="sans effet") as e:
+            parse_location(text)
+        assert e.value.action.endswith(f" file://localhost{repos['lib']}@master")
+
+
+@pytest.mark.parametrize("suffix, version", [("", None), ("@master", None), ("", "master")])
+def test_d17_unknown_user_home(suffix, version):
+    """PA-105 (b) : `~<utilisateur sans compte>/…` : l'échec d'`expanduser()` est un message de
+    lepton (et non une trace Python), avec ou sans version."""
+    name = "lepton-inconnu-d17"
+    try:
+        pwd.getpwnam(name)
+        pytest.skip(f"le compte {name} existe")
+    except KeyError:
+        pass
+    with pytest.raises(LeptonError, match=f"répertoire personnel de « ~{name} » introuvable"):
+        parse_location(f"~{name}/x{suffix}", version)
 
 
 def test_gra3_version_with_slash(project, repos, capsys):

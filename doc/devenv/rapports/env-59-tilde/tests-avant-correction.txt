@@ -1,0 +1,10 @@
+# ENV-59 : tests D17 sur le code d'avant la correction (`main` 2db6760 + tests) ; 9 tests, 8 échecs, 0 erreurs
+ÉCHEC 	test_d17_hint_expands_tilde[~/x@v1-None]	AssertionError: assert False
+ÉCHEC 	test_d17_hint_expands_tilde[~/x-v1]	AssertionError: assert False
+ÉCHEC 	test_d17_hint_expands_tilde_user	AssertionError: assert False
+ÉCHEC 	test_d17_hint_followed_by_seed_add[~/my-lib@master-options0]	AssertionError: assert 'file://local...my-lib@master' == 'file://local...my-lib@master'
+ÉCHEC 	test_d17_hint_followed_by_seed_add[~/my-lib-options1]	AssertionError: assert 'file://local...my-lib@master' == 'file://local...my-lib@master'
+RÉUSSI	test_d17_hint_unchanged_for_paths	
+ÉCHEC 	test_d17_unknown_user_home[-None]	RuntimeError: Could not determine home directory.
+ÉCHEC 	test_d17_unknown_user_home[@master-None]	AssertionError: Regex pattern did not match.
+ÉCHEC 	test_d17_unknown_user_home[-master]	AssertionError: Regex pattern did not match.
