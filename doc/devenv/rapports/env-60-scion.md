@@ -206,3 +206,21 @@ exception : le nom de la base dans le chemin d'un dépôt de travail de miroir (
 9. **lepton** : pas de changement de code. Docstring de `_undo_add` précisée : le clone conservé
    est celui d'un clonage réussi. l02 et l03 donneront tous deux le code 2, avec le message de
    git.
+
+## 2. Décisions du PA-107 (2026-11-17, utilisateur)
+
+Propositions du §1.9 retenues telles quelles (questions posées) :
+1. Correction : `git clone -b <version> <url> <dest>` dans `gitops.clone`, sans `single_branch`.
+2. Cas couverts : clé ordinaire (`_fetch`) et graine distante (`_clone_seed`). `--single-branch`
+   et clé projetée (P-V1) inchangés.
+3. Version commit complet d'une clé ordinaire : refusée dès le premier passage, et écrit au
+   `CHANGELOG.md`.
+4. Message : celui de git, sans texte ajouté.
+5. Clones déjà laissés sur disque, réutilisés sans contrôle par `seed-clone` et `_clone_seed` :
+   hors-plan, D25.
+6. Documentation : docstring de `clone()`, `CHANGELOG.md`, `README.md` l. 361-365. P-V1 reste
+   inchangé ; `test_clone_whose_checkout_fails_is_kept` est inversé.
+7. Version 0.6.3.2.
+8. `SCION_MIN_VERSION` inchangé (0, 6, 2, 0). `SCION_REF` passe à 0.6.3.2 dans lepton-tools et le
+   clone noyau.
+9. lepton : aucun code changé ; docstring de `_undo_add` précisée.
