@@ -1,0 +1,3 @@
+True
+seed.py installé = dépôt
+ancien contrôle : False

@@ -1,0 +1,69 @@
+heure_utc	decision	source	reasonType	ruleSource	commande
+15:46:15	accept	config	classifier		git -C <HOME>/lepton-tools-dev/lepton-tools branch --show-current
+15:49:59	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && sha256sum doc/devenv/consignes/env-61-debian.md && git log --oneline -1 && git status --short | head -5 && ls .claude/skills/devenv-session/
+15:49:59	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && grep -n -i -E 'vm|debian|session secondaire|consigne' .claude/skills/devenv-session/SKILL.md | head -30
+15:50:03	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && sed -n 1,80p .claude/skills/devenv-session/SKILL.md
+15:50:08	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && awk '/^## 2bis/,/^## 3/' doc/devenv/ORCHESTRATION.md | head -200
+15:50:11	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && grep -n '^#' doc/devenv/ORCHESTRATION.md | head -40
+15:50:24	accept	config	classifier		mkdir -p ~/env-61-journaux /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad && cat > /tmp/claude-1000/-home-lepton-user-lepton-tools-dev
+15:50:35	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" pwd; printenv CLAUDE_PROJECT_DIR; claude --version 2>&1 | head -1 git
+15:51:04	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" && bash $X/ls-remote.sh > "$J/5-ls-remote.txt" 2>&1; diff <(grep -v '
+15:51:16	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" for Z in "$U" "$E13" "$C5"; do echo "== $Z" git -C "$Z"/depots/lepton
+15:51:50	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh git -C "$K" status --short | head -5 git -C "$K" fetch origin && git -C "$K" 
+15:52:31	accept	config	classifier		bash ~/lepton-tools-dev/lepton-noyau/scripts/install-debian.sh --with-debug-tools > ~/env-61-journaux/6-install-debian.log 2>&1; echo "code=$?" >> ~/env-61-journaux/6-install-debian.log
+15:52:39	accept	config	rule	projectSettings	pipx install --force ~/lepton-tools-dev/lepton-tools
+15:53:07	accept	config	classifier		bash ~/lepton-tools-dev/lepton-tools/scripts/install-vscodium.sh --lepton-clone ~/lepton-tools-dev/lepton-noyau > ~/env-61-journaux/6-install-vscodium.log 2>&1; echo "code=$?" >> ~/env-61-journaux/6-i
+15:53:14	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" tail -3 "$J/6-install-debian.log"; echo ---; grep -n -i 'scion' "$J/6
+15:53:21	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && grep -n 'def parse_location' -A40 lepton/seed.py | grep -n -E 'expanduser|resolve|def ' | head; grep -rn 'expanduser().resolve()' lepton/ | head; P=/home/lepton-u
+15:53:29	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && grep -rn -F 'expanduser().resolve()' doc/devenv/rapports/env-61-mac* doc/devenv/rapports/env-59* doc/devenv/consignes/env-61-debian.md 2>/dev/null | head; sed -n 
+15:55:28	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh PYL=$(dirname "$(realpath "$(command -v lepton)")")/python "$PYL" -I -c 'impo
+15:55:42	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" mkdir "$S" && tar -C "$C5" --exclude=./build -cf - . | tar -C "$S" -x
+15:55:48	accept	config	classifier		python3 -m json.tool ~/.claude/settings.json
+15:55:53	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && ls doc/devenv/rapports/env-57-debian/ | head -30; f=$(ls doc/devenv/rapports/env-57-debian/settings-utilisateur.json 2>/dev/null) && diff <(python3 -m json.tool "
+15:55:57	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && grep -n -E 'modelSettings|autoMode|soft_deny|tui|theme|agentPushNotif|settings.json' doc/devenv/rapports/env-57-debian.md | head -20
+15:56:03	accept	config	subcommandResults		pipx install ~/lepton-tools-dev/essais/env-61-absent
+15:56:09	accept	config	subcommandResults		git clone --depth 1 https://github.com/lepton-distribution/env-61-absent.git ~/lepton-tools-dev/essais/env-61-absent
+15:56:14	accept	config	classifier		python3 -m unittest discover -s ~/lepton-tools-dev/essais/env-61-absent
+15:56:18	accept	config	classifier		pwd
+15:56:22	accept	config	subcommandResults		~/lepton-tools-dev/venv-test/bin/pytest -q -p no:cacheprovider --basetemp ~/tmp-pytest/env-61-f tests/test_proteger_trunk.py::test_entree_illisible
+15:56:29	accept	config	classifier		~/lepton-tools-dev/venv-test/bin/pytest -q -p no:cacheprovider --basetemp ~/tmp-pytest/env-61-f tests/test_proteger_trunk.py::test_entree_illisible > ~/env-61-journaux/8-f2.log
+15:56:29	accept	config	subcommandResults		~/lepton-tools-dev/venv-test/bin/pytest -q -p no:cacheprovider --basetemp ~/tmp-pytest/env-61-f tests/test_proteger_trunk.py::test_entree_illisible 2>&1
+15:56:30	accept	config	subcommandResults		~/lepton-tools-dev/venv-test/bin/pytest -q -p no:cacheprovider --basetemp ~/tmp-pytest/env-61-f --junitxml ~/env-61-journaux/8-f6.xml tests/test_proteger_trunk.py::test_entree_illisible
+15:56:30	accept	config	classifier		~/lepton-tools-dev/venv-test/bin/pytest -q -p no:cacheprovider --basetemp ~/tmp-pytest/env-61-f tests/test_proteger_trunk.py::test_entree_illisible; echo "code=$?"
+15:58:28	accept	user_temporary		projectSettings	scion graft-update -v ~/lepton-tools-dev/essais/env-61-absent
+15:58:35	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T"; F=$(ls -t ~/.claude/projects/*lepton-tools-dev-lepton-tools/*.jsonl 
+15:59:48	rejet-invite				scion graft-update -v ~/lepton-tools-dev/essais/env-61-absent
+16:00:46	rejet-invite				bash doc/devenv/rapports/env-58-formes/ask-script.sh ~/lepton-tools-dev/essais/env-61-absent
+16:01:20	rejet-invite				bash -c 'scion graft-update -v ~/lepton-tools-dev/essais/env-61-absent'
+16:01:37	reject	hook	hook		touch ~/lepton-tools-dev/essais/env-61-essai/trunk/essai-hook
+16:01:46	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" ls -d ~/lepton-tools-dev/essais/env-61-absent "$S/trunk/essai-hook" 2
+16:01:54	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" bash "$T/$RG" avant ~/lepton-tools-dev/essais/env-28-debian "$J/regre
+16:02:35	accept	user_temporary		projectSettings	scion graft-update -v ~/lepton-tools-dev/essais/env-28-debian > ~/env-61-journaux/regreffes/env-28-debian-graft-update.log 2>&1; echo "code=$?" >> ~/env-61-journaux/regreffes/env-28-debian-graft-updat
+16:02:56	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" N=env-28-debian bash "$T/$RG" apres ~/lepton-tools-dev/essais/$N "$J/
+16:03:07	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" bash "$T/$RG" avant ~/lepton-tools-dev/essais/env-13-debian "$J/regre
+16:05:08	accept	user_temporary		projectSettings	scion graft-update -v ~/lepton-tools-dev/essais/env-13-debian > ~/env-61-journaux/regreffes/env-13-debian-graft-update.log 2>&1; echo "code=$?" >> ~/env-61-journaux/regreffes/env-13-debian-graft-updat
+16:05:25	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" N=env-13-debian bash "$T/$RG" apres ~/lepton-tools-dev/essais/$N "$J/
+16:05:33	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" grep 'avancé :' "$J/regreffes/env-13-debian-bilan.txt" bash "$T/$RG" 
+16:06:55	accept	user_temporary		projectSettings	scion graft-update -v ~/lepton-tools-dev/essais/env-53-c5 > ~/env-61-journaux/regreffes/env-53-c5-graft-update.log 2>&1; echo "code=$?" >> ~/env-61-journaux/regreffes/env-53-c5-graft-update.log
+16:07:04	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" N=env-53-c5 bash "$T/$RG" apres ~/lepton-tools-dev/essais/$N "$J/regr
+16:07:13	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" bash "$T/$RG" avant ~/lepton-tools-dev/essais/env-53-debian "$J/regre
+16:09:28	accept	user_temporary		projectSettings	scion graft-update -v ~/lepton-tools-dev/essais/env-53-debian > ~/env-61-journaux/regreffes/env-53-debian-graft-update.log 2>&1; echo "code=$?" >> ~/env-61-journaux/regreffes/env-53-debian-graft-updat
+16:09:45	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" N=env-53-debian bash "$T/$RG" apres ~/lepton-tools-dev/essais/$N "$J/
+16:17:46	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" PYL=$(dirname "$(realpath "$(command -v lepton)")")/python "$PYL" -I 
+16:18:20	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" bash doc/devenv/rapports/env-60-scion/essai.sh "$S" "$D60" "$J/11-c5-
+16:18:26	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh grep -l -E 'fatal : |et que le dépôt existe' "$J"/10-c4/* "$J"/11-c5/* 2>/dev
+16:18:32	accept	config	subcommandResults		git clone https://github.com/lepton-distribution/seed.scions.git ~/lepton-tools-dev/essais/env-61-seed-scions
+16:18:36	accept	config	classifier		git -C ~/lepton-tools-dev/essais/env-61-seed-scions switch --detach 0.6.3.2
+16:18:49	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh git -C ~/lepton-tools-dev/essais/env-61-seed-scions log --oneline -1; git -C 
+16:18:55	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" for b in f05.err f06.err f12a.depots f12b.depots; do echo "=== $b"; d
+16:19:12	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" fr2() { fr "$1" | sed -e "s/fatal\xc2\xa0: La branche distante \(.*\)
+16:25:00	accept	config	subcommandResults		~/lepton-tools-dev/venv-test/bin/pytest -q -rs -p no:cacheprovider --basetemp ~/tmp-pytest/env-61 --junitxml ~/env-61-journaux/11-pytest.xml
+16:25:07	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" python3 -I -c 'import sys,xml.etree.ElementTree as E; s=E.parse(sys.a
+16:25:15	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && git switch -c devenv/env-61-debian devenv/env-61
+16:29:23	accept	config	classifier		scripts/oracle/rejouer-oracle.sh ~/lepton-tools-dev/essais/env-53-debian doc/devenv/rapports/oracles/env-61-debian --qemu qemu-mps2-an386-embos --qemu qemu-mps2-an386-embos-soft --qemu qemu-mps2-an386
+16:29:29	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T"; O=doc/devenv/rapports/oracles tail -25 "$J/12-rejouer.log" grep -h "
+16:29:38	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T"; O=doc/devenv/rapports/oracles norm() { grep -E '^(section|symbole)' 
+16:29:52	accept	config	classifier		scion mirror-sync --dry-run -v ~/lepton-tools-dev/essais/env-53-debian > ~/env-61-journaux/12-mirror-sync.log 2>&1; echo "code=$?" >> ~/env-61-journaux/12-mirror-sync.log
+16:29:59	accept	config	classifier		. /tmp/claude-1000/-home-lepton-user-lepton-tools-dev-lepton-tools/3498db03-cbec-4248-9c02-7e12b5aab1d2/scratchpad/vars.sh cd "$T" grep -E 'référence\(s\) à envoyer|signalement' "$J/12-mirror-sync.log
+16:30:09	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && wc -l doc/devenv/rapports/env-57-debian.md && sed -n 1,80p doc/devenv/rapports/env-57-debian.md
+16:30:12	accept	config	classifier		cd ~/lepton-tools-dev/lepton-tools && sed -n 80,260p doc/devenv/rapports/env-57-debian.md

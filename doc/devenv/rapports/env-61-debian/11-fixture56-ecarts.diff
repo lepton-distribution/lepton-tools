@@ -1,0 +1,20 @@
+=== f05.err (attendu Mac < ; VM après fr() >)
+1c1
+< erreur : échec de « git clone -b nope --single-branch file://localhost<B>/repos/plain <B>/f05/rootstock/depots/own/plain/nope » (code 128) : fatal: Remote branch nope not found in upstream origin
+---
+> erreur : échec de « git clone -b nope --single-branch file://localhost<B>/repos/plain <B>/f05/rootstock/depots/own/plain/nope » (code 128) : fatal : La branche distante nope n'a pas été trouvée dans le dépôt amont origin
+=== f06.err (attendu Mac < ; VM après fr() >)
+1c1
+< erreur : échec de « git clone -b nope file://localhost<B>/repos/plain <B>/f06/rootstock/depots/own/plain/nope » (code 128) : fatal: Remote branch nope not found in upstream origin
+---
+> erreur : échec de « git clone -b nope file://localhost<B>/repos/plain <B>/f06/rootstock/depots/own/plain/nope » (code 128) : fatal : La branche distante nope n'a pas été trouvée dans le dépôt amont origin
+=== f12a.depots (attendu Mac < ; VM après fr() >)
+3c3
+< depots/.mirrors/localhost/Users
+---
+> depots/.mirrors/localhost/home
+=== f12b.depots (attendu Mac < ; VM après fr() >)
+3c3
+< depots/.mirrors/localhost/Users
+---
+> depots/.mirrors/localhost/home

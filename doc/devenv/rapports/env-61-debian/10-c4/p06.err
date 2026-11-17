@@ -1,0 +1,2 @@
+lepton: erreur: origine locale « ~<U>/lepton-tools-dev/essais/env-61-depot59 » : version « master » sans effet (scion utilise un répertoire local en place)
+  → retirer la version, ou désigner le dépôt git par une URL : file://localhost<P>@master

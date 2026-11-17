@@ -1,0 +1,1 @@
+erreur : échec de « git clone -b master file://localhost<B>/repos/absent.git <B>/f04/rootstock/depots/own/plain/master » (code 128) : et que le dépôt existe.
