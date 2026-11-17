@@ -1,0 +1,2 @@
+erreur : 1 clone(s) à remettre à leur version déclarée avant la mise à jour (trunk et clones inchangés) :
+  <B>/k15/rootstock/depots/own/vide/master : version déclarée « master » introuvable dans le clone

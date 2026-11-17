@@ -1,0 +1,2 @@
+erreur : 1 clone(s) à remettre à leur version déclarée avant la mise à jour (trunk et clones inchangés) :
+  <B>/k19/rootstock/depots/own/plain/<SHA> : version déclarée « <SHA> » introuvable dans le clone
