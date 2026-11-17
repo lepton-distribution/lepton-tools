@@ -142,7 +142,7 @@ autres clés du fichier ne sont pas connues.
 | `Bash(git clone * https://github.com/lepton-distribution/*)` | `git clone` avec options avant l'URL (`--depth`, `--filter`, `--branch`). Les options dangereuses restent refusées par les `deny` du dépôt, évalués d'abord. Le premier `*` admet aussi un dépôt quelconque suivi d'un chemin qui commence par l'URL | Aucune : `git clone https://github.com/lepton-distribution/seed.scions.git` (C5) a l'URL en premier, couvert par le dépôt. ENV-61 C2 prévoit le contrôle négatif `git clone --depth 1 …` | Non documenté |
 | `Bash(python3 -m unittest discover *)` | L'exécution de tout test `unittest`, donc du code des répertoires visés. Origine probable : les tests de scion sur la VM (ENV-15 ; `rapports/env-54-permissions.md` §1, 2026-10-30) | Aucune : ENV-61 ne lance pas les tests de scion. C5 lance `python3 fixture.py`, hors règle | Non documenté (`python3` littéral, le joker est dans les arguments) |
 
-## 5. Propositions pour le PA-103 (non validées)
+## 5. Propositions pour le PA-103 (état d'avant la décision ; décisions au §6)
 
 1. **Amendement d'ORCHESTRATION §2bis**, paragraphe « Commandes soumises aux règles… ». Ajout
    d'une sous-liste « Formes » :
@@ -181,3 +181,116 @@ autres clés du fichier ne sont pas connues.
      jamais par un script ou un `bash -c`). Le classifieur lit ce fichier ;
    - `lepton-rootstock` (« Interdits ») : la même précision ;
    - `env-53-mac/regreffer-essai.sh` : laissé tel quel, outil historique cité au §1.2.
+
+## 6. PA-103 (2026-11-17, décisions de l'utilisateur) et mise en place (tâche 2)
+
+Décisions, sur questions posées :
+1. Amendement du §2bis : texte proposé (§5 point 1).
+2. Garde technique : G2, à condition qu'un `ask` de hook fasse paraître l'invite en mode auto,
+   prouvé sur une cible absente ; sinon G1.
+3. D19 : les 3 règles `allow` de la VM sont **toutes gardées**. Le fichier de la VM n'est pas
+   modifié ; D19 est clos comme accepté.
+4. Ni `CLAUDE.md` ni les skills ne changent ; seule l'ORCHESTRATION porte la règle.
+   `env-53-mac/regreffer-essai.sh` reste tel quel.
+
+Mise en place, sur `devenv/env-58`. `.claude/settings.json` est inchangé (JSON valide, identique
+à `main`).
+- **Garde G2** (f3da447) : `.claude/hooks/proteger-trunk.py`, +181 lignes, section « Commandes
+  soumises à invite lancées indirectement ». `RechercheAsk` reprend le découpage du hook
+  (`jetons`, `commandes_simples`, `retirer_heredocs`, `sans_prefixes`, `Repertoire.cd`). Il
+  cherche `scion graft-update|seed-update` et `git [options globales] push` dans :
+  - `bash|sh|zsh|dash|ksh -c` (options groupées `-lc` comprises), `eval`, `find -exec`, `xargs`,
+    et un heredoc donné à un shell ;
+  - un script shell lancé, lu récursivement, sans ses lignes de commentaire, sur un `cd`
+    suivi : `bash f.sh`, `source f.sh`, `. f.sh`, `./f.sh` ou `chemin/f.sh`. Le script doit avoir
+    un shebang shell, un suffixe `.sh`, `.bash` ou `.zsh`, ou aucun shebang.
+
+  Sortie : JSON `hookSpecificOutput.permissionDecision: "ask"` avec un motif qui renvoie au
+  §2bis, code 0. Le refus du trunk (code 2) passe avant ; une erreur interne ne bloque rien.
+  Limites écrites dans le docstring :
+  - scripts d'un autre langage ;
+  - chemins à variable (`"$D/x.sh"`) ;
+  - commandes lancées par un autre programme ;
+  - scripts de plus de 1 Mo ;
+  - profondeur 8.
+
+  La forme directe reste à la règle `ask` : le hook n'écrit rien.
+  Tests `tests/test_garde_ask.py` (46) :
+  - 24 formes demandent l'invite ;
+  - 18 ne demandent rien : forme directe, `graft` sans `-update`, `echo` ou `grep` qui citent la
+    commande, commentaires, script absent, script Python ;
+  - le refus du trunk reste prioritaire ;
+  - scripts du dépôt : `env-58-formes/ask-script.sh` et `env-53-mac/regreffer-essai.sh`
+    demandent l'invite, `env-57-mac/regreffer-essai.sh` (deux phases) et
+    `scripts/supprimer-essai.sh` non ;
+  - script trop gros ; boucle d'appels.
+- **Preuve de G2 en mode auto** (Claude Code 2.1.326), sur la cible absente
+  `essais/env-58-absent` :
+
+  | Forme | Avant G2 (§2) | Avec G2 |
+  | --- | --- | --- |
+  | A2 `bash doc/devenv/rapports/env-58-formes/ask-script.sh` | classifieur, exécutée sans invite | **invite** ; refusée (`rejet-invite`, `toolDenialKind: user-rejected`, 11:15:15 UTC) |
+  | A3 `bash -c 'scion graft-update -v ~/lepton-tools-dev/essais/env-58-absent'` | classifieur, exécutée sans invite | **invite** ; refusée (`rejet-invite`, 11:17:22 UTC) |
+
+  L'invite affiche le motif du hook. Texte relevé par l'utilisateur : « Hook PreToolUse:Bash
+  requires confirmation for this command: Commande soumise à invite lancée indirectement
+  (bash -c) : scion graft-update -v ~/lepton-tools-dev/essais/env-58-absent. Règle
+  d'ORCHESTRATION §2bis : la lancer directement. Ne confirmer que si l'utilisateur l'a accordée
+  (PA-P). » Le journal de session ne garde pas ce motif. Il ne garde que le refus.
+  La condition du PA-103 est remplie : **G2 retenue**, G1 non mise en place.
+- **ORCHESTRATION** (40fd14e) :
+  - §2bis, sous-liste « Formes » (les trois règles du PA-103) et ligne des réglages utilisateur de
+    la VM (D19) ;
+  - le §2 de chaque consigne VM renvoie à ce paragraphe ;
+  - §5bis, ligne du hook.
+  `consignes/env-57-debian.md` §2 reste tel quel (consigne close). La règle n'y est plus seule :
+  elle est dans le §2bis.
+
+## 7. D19 : réglages utilisateur de la VM (rapport §D19)
+
+Bloc `permissions.allow` attendu dans `~/.claude/settings.json` de la VM, inchangé (PA-103) :
+
+```json
+"allow": [
+  "Bash(pipx install:*)",
+  "Bash(git clone * https://github.com/lepton-distribution/*)",
+  "Bash(python3 -m unittest discover *)"
+]
+```
+
+Conduite : personne ne modifie le fichier. En ENV-61, la session VM le relit en entier
+(`python3 -m json.tool ~/.claude/settings.json`) et constate que ce bloc est le seul qui porte
+des règles, comme en R57-1. Une décision `userSettings` est attendue pour une commande que seule
+une de ces règles couvre. Ce n'est pas un écart.
+
+Effets sur ENV-61 :
+- aucun contrôle négatif « règle retirée » (C2 les prévoyait au cas où) ;
+- le §0 ne modifie pas les réglages de la VM ;
+- la garde G2 est à prouver sur la VM : A2 et A3 sur une cible absente, invites refusées ;
+- `ask-script.sh` prend la cible en argument (`env-61-absent`).
+
+## 8. Contrôles (tâche 3)
+
+| Contrôle | Résultat |
+| --- | --- |
+| `.claude/settings.json` | inchangé ; JSON valide ; pas de rejeu exigé. Rejeu avec G2 fait quand même : F1, F6 → règle (`subcommandResults`, 11:19:59, 11:20:00) ; A2, A3 → invite (§6) |
+| Hook, trunk | copie `essais/env-58-essai/qemu` (`rsync -a` d'`essais/env-11/qemu`, sans `build/` ; 3059 liens) ; `touch …/qemu/trunk/essai-hook` → `reject hook` (11:19:49) ; fichier absent ; seul fichier régulier du trunk : `.scion.grafted.list`, comme la source |
+| pytest complet | `~/lepton-tools-dev/venv-lepton-tools/bin/pytest -q -rs -p no:cacheprovider --basetemp …/tmp-pytest-complet --junitxml …/pytest-complet.xml`, sans redirection → règle (`subcommandResults`, 11:19:35) ; **499 passed** en 7 min 50, 0 échec, 0 erreur, 0 ignoré (453 d'ENV-57 + 46 de `test_garde_ask`) ; hook 118, enveloppe 52 |
+
+## 9. Critères
+
+| Critère | État |
+| --- | --- |
+| PA-103 et PA-104 tranchés et consignés | PA-103 : oui (§6, `DEVENV-STATUS.md`) ; PA-104 : à trancher |
+| Inventaire des formes fautives (fichier, ligne) | oui (§1) |
+| Essai témoin, décisions du journal | oui (§2, §6 ; `env-58-formes/decisions.tsv`) : redirection règle ou classifieur par forme, `ask` directe (invite), script et `bash -c` (classifieur, puis invite par G2) |
+| ORCHESTRATION §2bis amendé ; la consigne d'ENV-57 n'est plus la seule source | oui (40fd14e) |
+| Bloc `permissions.allow` attendu sur la VM et conduite (D19) | oui (§7) : inchangé, aucune modification |
+| `pytest` complet vert ; `settings.json` valide s'il change | oui : 499 ; `settings.json` inchangé, valide |
+| `HORS-PLAN.md` : D20 traité, D19 décidé | oui : D20 traité ; D19 décidé (règles gardées), clos comme accepté. Le fichier d'étape attendait « appliqué en ENV-61 », sans objet après le PA-103 |
+
+Écarts :
+- A1 : invite confirmée au lieu d'être refusée, sans effet (§2) ;
+- Claude Code 2.1.326 au lieu de 2.1.323 ; constats rétablis par l'essai ;
+- F7 à F9 ajoutés aux formes du fichier d'étape ;
+- rejeu partiel (F1, F6, A2, A3), alors que `settings.json` n'a pas changé.
