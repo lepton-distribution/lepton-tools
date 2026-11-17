@@ -2,7 +2,11 @@
 
 Fichier autonome : avec `ORCHESTRATION.md` §2bis, il suffit à conduire la session VM. Rédigé le
 2026-11-17 par la session Mac `validate-env-58-60-debian` (tâche 1 d'ENV-61), repris de
-`consignes/env-57-debian.md`. Validation par l'utilisateur au PA-109 : <PA-109>.
+`consignes/env-57-debian.md`. Validé par l'utilisateur au PA-109 (2026-11-17) : regreffe de
+`$U`, `$E13`, `$C5` et `$R53` (C3) ; reconstruction des 16 presets maintenue (C6, après regreffe
+de `$R53`) ; fixture d'ENV-56 sur la VM (C5) ; cartes écartées (C7) ; nettoyage tel qu'écrit
+(C8) ; préalable du §0 (switch et relance de la session VM par l'utilisateur, réglages de la VM
+non modifiés).
 Son texte est envoyé tel quel dans l'ordre `R61-1`.
 
 ## 0. Préalable, avant l'ordre (utilisateur) — PA-109
@@ -38,7 +42,7 @@ Valider sur Debian x86_64 l'état publié après ENV-58, ENV-59 et ENV-60 :
   Aucun lien ne change ;
 - constructions host et 16 presets dans `$R53` regreffé : **aucun binaire changé** depuis R57-1.
 
-<C7 au PA-109>
+**Pas de cartes** dans cette session (PA-109). Aucune écriture flash.
 
 Références publiées (toutes poussées) :
 
@@ -550,7 +554,7 @@ rapport). Un test ignoré ou en échec : relever son nom et son message, le rela
 
 ## 12. Reconstructions et commande de miroir (C6)
 
-<C6 au PA-109>
+PA-109 : reconstruction maintenue, bien qu'aucune source compilée ne change.
 
 ### 12.1 Reconstructions
 
@@ -615,7 +619,7 @@ postérieure au 2026-11-13 l'explique : la relever, puis relever la référence 
 
 ## 13. Cartes (C7)
 
-<C7 au PA-109, détail>
+Écarté au PA-109 : ni binaire, ni flash, ni sonde ne changent. Aucune commande OpenOCD.
 
 ## 14. Nettoyage de la VM (C8)
 
@@ -628,7 +632,7 @@ Puis, par la session, règle `allow` :
 scripts/supprimer-essai.sh ~/lepton-tools-dev/essais/env-61-essai ~/lepton-tools-dev/essais/env-61-depot59 ~/lepton-tools-dev/essais/env-61-depot60 ~/lepton-tools-dev/essais/env-61-seed-scions ~/lepton-tools-dev/essais/env-61-fixture ~/env-57-journaux
 ```
 Puis la session vérifie l'absence (`ls -d …`) et le consigne. Conservés : `$U`, `$E13`, `$C5`
-(regreffés au §9), `$R53`, `$J`, `~/tmp-pytest`. <C8 au PA-109>
+(regreffés au §9), `$R53`, `$J`, `~/tmp-pytest`. Périmètre validé au PA-109.
 
 ## 15. Critères et rapport
 
@@ -640,7 +644,7 @@ Puis la session vérifie l'absence (`ls -d …`) et le consigne. Conservés : `$
 | C4 D17 | §10 : `classer = Mac` ; écarts=0 / 528 ; états = départ |
 | C5 D18, pytest | §11.1 : l01 à l03 code 2, aucun clone laissé, écarts=0 / 15 ; §11.2 : fixture écarts=0 / 76, f06 sans clone ; §11.3 : pytest 508 passed |
 | C6 Constructions, miroir | host ctest 7/7 ; 16 presets construits ; QEMU fumée et banc 20/20, 16/16, 19/19, `peripheriques` ×4 ; mklepton = `env-57-debian` = `env-52-apres` ; `comparer_R57-1` 0 pour les 16 presets ; `mirror-sync --dry-run` : code 0, 8 miroirs, 0 à envoyer (ou expliqué par l'amont), 0 signalement ; rien envoyé |
-| C7 Cartes | <C7 au PA-109> |
+| C7 Cartes | écarté (PA-109) |
 | C8 Nettoyage | `$S`, `$D59`, `$D60`, `$SS`, `essais/env-61-fixture`, `~/env-57-journaux` supprimés par l'enveloppe ; absents |
 
 Avant le commit, relevé final des décisions (toute la session) :
