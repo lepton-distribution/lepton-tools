@@ -1,0 +1,2 @@
+erreur : 1 clone(s) à remettre à leur version déclarée avant la mise à jour (trunk et clones inchangés) :
+  <B>/k11/rootstock/depots/own/ambi/doc : branche « master », version déclarée « doc » ; git -C <B>/k11/rootstock/depots/own/ambi/doc switch doc

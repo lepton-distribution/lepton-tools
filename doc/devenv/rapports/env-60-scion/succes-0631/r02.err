@@ -1,0 +1,3 @@
+scion: scion lepton/family-stm32f7xx retiré de <C>/depots/lepton-seed/env11/scion/.scion
+scion: scion lepton/family-stm32f7xx retiré : 212 feuilles
+scion: clés projetées retirées avec leur porteur lepton/family-stm32f7xx : tiers/stm32f7xx-hal-driver, tiers/cmsis-device-f7

@@ -1,0 +1,1 @@
+erreur : échec de « git clone -b master file://localhost<B>/repos/vide.git <B>/k15/rootstock/depots/own/vide/master » (code 128) : fatal: Remote branch master not found in upstream origin

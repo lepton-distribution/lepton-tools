@@ -1,0 +1,7 @@
+depots/own/ambi/doc
+  branche : master
+  HEAD = refs/heads/master refs/remotes/origin/HEAD refs/remotes/origin/master refs/tags/tests
+  branches locales : master
+  fichiers suivis : 3
+  fichiers extraits : doc/d.txt scion/f.txt tests/t.txt
+  git status : (propre)

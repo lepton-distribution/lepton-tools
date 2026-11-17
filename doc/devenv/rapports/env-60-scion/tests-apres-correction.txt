@@ -1,0 +1,48 @@
+test_empty_origin_leaves_no_clone (test_clone_checkout.TestOrdinaryVersionMissing.test_empty_origin_leaves_no_clone) ... ok
+The version check knows branches and tags only; the clone now agrees. ... ok
+test_missing_version_leaves_no_clone (test_clone_checkout.TestOrdinaryVersionMissing.test_missing_version_leaves_no_clone) ... ok
+test_next_pass_fails_the_same_way (test_clone_checkout.TestOrdinaryVersionMissing.test_next_pass_fails_the_same_way) ... ok
+The path lepton takes (seed-scion-add, seed-clone, graft --scion). ... ok
+test_version_that_is_only_a_path_is_refused (test_clone_checkout.TestOrdinaryVersionMissing.test_version_that_is_only_a_path_is_refused) ... ok
+test_branch_named_like_a_directory_is_cloned (test_clone_checkout.TestOrdinaryVersionPresent.test_branch_named_like_a_directory_is_cloned) ... ok
+Unchanged: the declared branch, tracking its upstream, the others still fetched. ... ok
+Unchanged: master is checked out even when it is the origin's HEAD. ... ok
+test_present_version_next_pass_accepts_the_clone (test_clone_checkout.TestOrdinaryVersionPresent.test_present_version_next_pass_accepts_the_clone) ... ok
+Unchanged: a tag is checked out on a detached HEAD, and the next pass accepts it. ... ok
+test_missing_seed_version_leaves_no_clone (test_clone_checkout.TestRemoteSeedVersion.test_missing_seed_version_leaves_no_clone) ... ok
+test_next_pass_does_not_read_the_origin_branch (test_clone_checkout.TestRemoteSeedVersion.test_next_pass_does_not_read_the_origin_branch) ... ok
+Unchanged: the seed is read at its declared branch. ... ok
+test_seed_version_that_is_only_a_path_is_refused (test_clone_checkout.TestRemoteSeedVersion.test_seed_version_that_is_only_a_path_is_refused) ... ok
+Ran 15 tests in 16.577s
+OK
+test_nothing_logged_when_nothing_was_created (test_failed_clone.TestMessage.test_nothing_logged_when_nothing_was_created) ... ok
+test_removal_is_logged_under_verbose_only (test_failed_clone.TestMessage.test_removal_is_logged_under_verbose_only) ... ok
+test_absent_mirror_leaves_nothing (test_failed_clone.TestMirrorWork.test_absent_mirror_leaves_nothing) ... ok
+test_ancestors_made_for_another_mirror_are_kept (test_failed_clone.TestMirrorWork.test_ancestors_made_for_another_mirror_are_kept) ... ok
+Unchanged (M-C6): the work repository was cloned; it serves the next pass. ... ok
+test_empty_parent_already_there_is_kept (test_failed_clone.TestOrdinaryScion.test_empty_parent_already_there_is_kept) ... ok
+test_existing_shelf_keeps_only_what_was_there (test_failed_clone.TestOrdinaryScion.test_existing_shelf_keeps_only_what_was_there) ... ok
+test_new_shelf_leaves_nothing (test_failed_clone.TestOrdinaryScion.test_new_shelf_leaves_nothing) ... ok
+test_parent_holding_another_version_is_kept (test_failed_clone.TestOrdinaryScion.test_parent_holding_another_version_is_kept) ... ok
+test_single_branch_version_missing_upstream_leaves_nothing (test_failed_clone.TestOrdinaryScion.test_single_branch_version_missing_upstream_leaves_nothing) ... ok
+Without --single-branch too: git refuses the version, no clone is kept (D18). ... ok
+Unchanged (P-V1): the clone succeeded and is left in place, as the message says. ... ok
+test_existing_shelf_keeps_the_other_clone (test_failed_clone.TestProjectedKey.test_existing_shelf_keeps_the_other_clone) ... ok
+test_new_shelf_leaves_nothing (test_failed_clone.TestProjectedKey.test_new_shelf_leaves_nothing) ... ok
+test_parent_holding_another_version_is_kept (test_failed_clone.TestProjectedKey.test_parent_holding_another_version_is_kept) ... ok
+test_absent_remote_seed_leaves_nothing (test_failed_clone.TestRemoteSeed.test_absent_remote_seed_leaves_nothing) ... ok
+Ran 16 tests in 11.403s
+OK
+test_declared_master_is_checked_out_whatever_the_origin_head (test_seed.TestCloneVersion.test_declared_master_is_checked_out_whatever_the_origin_head) ... ok
+test_declared_version_missing_from_the_origin_is_an_error (test_seed.TestCloneVersion.test_declared_version_missing_from_the_origin_is_an_error) ... ok
+test_message_names_the_replacement (test_seed.TestEnvironmentVariableRejected.test_message_names_the_replacement) ... ok
+test_no_environment_expansion_happens (test_seed.TestEnvironmentVariableRejected.test_no_environment_expansion_happens) ... ok
+test_every_ramification_resolves (test_seed.TestOriginalTreeSeed.test_every_ramification_resolves) ... ok
+test_local_path_is_relative_to_the_rootstock (test_seed.TestOriginalTreeSeed.test_local_path_is_relative_to_the_rootstock) ... ok
+test_remote_scion_has_no_subpath (test_seed.TestOriginalTreeSeed.test_remote_scion_has_no_subpath) ... ok
+test_one_clone_for_two_scions_of_the_same_repository (test_seed.TestSeedOnRootstock.test_one_clone_for_two_scions_of_the_same_repository) ... ok
+test_question_mark_version_picks_the_highest (test_seed.TestSeedOnRootstock.test_question_mark_version_picks_the_highest) ... ok
+test_seed_add_writes_relative_paths (test_seed.TestSeedOnRootstock.test_seed_add_writes_relative_paths) ... ok
+test_seed_with_an_environment_variable_is_refused (test_seed.TestSeedOnRootstock.test_seed_with_an_environment_variable_is_refused) ... ok
+Ran 11 tests in 3.507s
+OK

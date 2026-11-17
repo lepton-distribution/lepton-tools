@@ -1,0 +1,1 @@
+erreur : échec de « git checkout master » (code 1) : error: pathspec 'master' did not match any file(s) known to git

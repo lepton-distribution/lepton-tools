@@ -1,0 +1,1 @@
+erreur : échec de « git clone -b <SHA> file://localhost<B>/repos/plain <B>/k19/rootstock/depots/own/plain/<SHA> » (code 128) : fatal: Remote branch <SHA> not found in upstream origin

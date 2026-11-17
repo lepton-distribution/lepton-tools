@@ -1,0 +1,18 @@
+liens ≠ départ (3 lignes de diff)
+    > trunk/sys/root/src/lib/env60lib/env60lib.c -> ../../../../../../depots/lepton/library-env60lib/nope/scion/sys/root/src/lib/env60lib/env60lib.c
+    > trunk/sys/root/src/lib/env60lib/env60lib.h -> ../../../../../../depots/lepton/library-env60lib/nope/scion/sys/root/src/lib/env60lib/env60lib.h
+    > trunk/sys/root/src/lib/env60lib/lepton-greffon.json -> ../../../../../../depots/lepton/library-env60lib/nope/scion/sys/root/src/lib/env60lib/lepton-greffon.json
+casses = départ
+reguliers = départ
+graine ≠ départ (9 lignes de diff)
+    < b0ed40ea17abe2991e6336b79c5c9506d35ea13af138c4a32129600ddfc3d94a  scion/.scion/.scion.ramifications
+    < 702b6b599fb6812a921f1d669a97e42fad4d6b37f1cd4f2f1283b3a2fdb90ec3  scion/.scion/.scion.sources.list
+    < 0aab4afc00f6b8da23f43c2f32c2b4f30ad392392ad097cd6efb46335a57aa6f  scion/.scion/lepton-graine.json
+    > 12694a6ad09bc390bd2bcb510edaec53144ba642042e4f4c6133c8ee66eedf71  scion/.scion/.scion.ramifications
+    > 769dc2edf6988d12efaf169c511a6665214213fb9d6c57e99a97e2d40df06d83  scion/.scion/.scion.sources.list
+grafted ≠ départ (1 lignes de diff)
+    > lepton library-env60lib nope depots/lepton/library-env60lib/nope depots/lepton-seed/env11/scion/.scion
+depots ≠ départ (2 lignes de diff)
+    > depots/lepton/library-env60lib
+    > depots/lepton/library-env60lib/nope
+clone <C>/depots/lepton/library-env60lib/nope : branche master ; HEAD = refs/heads/master refs/remotes/origin/HEAD refs/remotes/origin/master 
