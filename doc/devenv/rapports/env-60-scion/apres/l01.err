@@ -1,0 +1,6 @@
+scion: scion lepton/library-env60lib déclaré dans <C>/depots/lepton-seed/env11/scion/.scion (version scion)
+scion: scion lepton/library-env60lib retiré de <C>/depots/lepton-seed/env11/scion/.scion
+lepton: attention: ajout de lepton@library-env60lib annulé (graine et trunk restaurés)
+lepton: erreur: échec de « scion seed-clone --seed <C>/depots/lepton-seed/env11 » (code 2) :
+erreur : échec de « git clone -b scion file://localhost<P> <C>/depots/lepton/library-env60lib/scion » (code 128) : fatal: Remote branch scion not found in upstream origin
+  → corriger la cause signalée par scion, puis relancer

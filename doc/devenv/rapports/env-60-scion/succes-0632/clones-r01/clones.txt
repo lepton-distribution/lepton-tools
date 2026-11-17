@@ -1,0 +1,2 @@
+cmsis-device-f7/v1.2.10 head=2352e88 origin=https://github.com/lepton-distribution/mirror-cmsis_device_f7.git sparseCheckout=true cone=true ignorecase=true H=22 S=91 extraits=22 extraits=H:oui ko_hors_git=19128 ko_git=400
+stm32f7xx-hal-driver/v1.3.3 head=e1446fa origin=https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git sparseCheckout=true cone=true ignorecase=true H=200 S=6 extraits=200 extraits=H:oui ko_hors_git=9636 ko_git=1568

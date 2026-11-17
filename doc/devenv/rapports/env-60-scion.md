@@ -224,3 +224,121 @@ Propositions du §1.9 retenues telles quelles (questions posées) :
 8. `SCION_MIN_VERSION` inchangé (0, 6, 2, 0). `SCION_REF` passe à 0.6.3.2 dans lepton-tools et le
    clone noyau.
 9. lepton : aucun code changé ; docstring de `_undo_add` précisée.
+
+## 3. Implémentation (seed.scions, `devenv/env-60`)
+
+| Commit | Contenu |
+| --- | --- |
+| cd1ed8a | Tests d'abord. `tests/test_clone_checkout.py` : 15 tests. `test_failed_clone.py` : `test_clone_whose_checkout_fails_is_kept` inversé en `test_version_missing_upstream_leaves_nothing`. Sur 0.6.3.1, 11 échouent : version absente, passage suivant, `seed-clone` après un échec, version-chemin, commit complet, origine vide, branche homonyme d'un répertoire, 3 cas de graine distante, test inversé. Les 5 cas de versions présentes réussissent : branche autre que celle de l'origine, `master`, tag, passage suivant, graine à sa branche (`env-60-scion/tests-avant-correction.txt`) |
+| 0fc156c | `gitops.clone` : `git clone -b <version>`, plus `--single-branch` si demandé, à la place de `git clone` puis `git checkout`. Docstring réécrite. `tests/test_seed.py:124` (0.5.1.1) : l'assertion `checkout master` devient `git clone -b master`, et le test vérifie qu'aucun clone ne reste. Le comportement visé (code 2) est inchangé ; seul le texte de la commande change (point 4 du PA-107) |
+| fb4d55d | 0.6.3.2 : `scion/__init__.py`, `tests/test_cli.py`, `CHANGELOG.md` (« Corrections » : clone à sa version ou pas du tout, commit complet refusé dès le clonage, cas inchangés), `README.md` l. 361-366 |
+| 08a1460 | Docstring d'un test sans nom de client : la première version nommait lepton, et le contrôle NF-2 donnait 1 |
+
+Contrôles :
+- tests de scion : 313 (298 + 15), tous verts, plus 1 sauté (`test_network`) ;
+  `env-60-scion/tests-apres-correction.txt` : 42 tests des trois fichiers touchés, verts ;
+- NF-2 : `git diff 0.6.3.1 -- scion tests | grep -ci '^+.*lepton'` donne 0 ;
+- `git diff --stat 0.6.3.1 0.6.3.2` : 8 fichiers, +247 −21 ;
+- P-V1 et `doc/projection-miroir.md` : inchangés.
+
+## 4. Essais avec la branche (venv `essais/env-60-venv`, scion 0.6.3.2)
+
+Venv installé par `pip install "git+file://<SEED_SCIONS>@devenv/env-60"`. Les cas u01 sont lancés
+après le tag, avec le scion 0.6.3.2 de pipx (§5), pour que `scion graft-update` garde la forme
+exacte de la règle `ask`. Un exécutable du venv appelé par son chemin ne serait pas couvert par la
+règle.
+
+- **Fixture d'ENV-60** (`fixture-apres/`) :
+
+  | Cas | Avant | Après |
+  | --- | --- | --- |
+  | k01, k02 (D18) | 2, clone gardé sur `master` ; 1 « introuvable » | 2, 2 : `git clone -b nope` refusé (`fatal: Remote branch nope not found in upstream origin`), aucun répertoire |
+  | k18, k18b, k18c (`seed-clone`) | 2 ; **0** ; **0**, greffe de `master` | 2 ; 2 ; 1 (liste greffée vide) |
+  | k04, k05, k06 (graine distante) | 2 ; **0** ; **0**, graine de `master` greffée | 2 ; 2 ; 1 |
+  | k08, k09, k10 (version-chemin) | **0** ; **0** ; 1 | 2 ; 1 ; 2 |
+  | k17, k17b (graine, version-chemin) | **0** ; **0** | 2 ; 1 |
+  | k11, k12 (branche homonyme d'un répertoire) | 2 ; 1 | 0, branche `doc` suivie d'`origin/doc` ; 0 |
+  | k15, k16 (origine vide) | 2, clone vide gardé ; 1 | 2 ; 2, aucun répertoire |
+  | k19, k19b (commit complet) | 0 ; 1 | 2 ; 2 |
+  | u01c, u01d (`graft-update`) | 2, clone `plain2/nope` gardé ; 1 | 2 ; 2 ; trunk et clones = départ, aucun clone `plain2/nope` |
+
+  Cas non visés, identiques à l'avant pour tous les fichiers : k07 (`--single-branch`), k13,
+  u01a, u01b, u01-départ. k14 (tag) a les mêmes `.cmd`, `.out`, `.err`, `.code`, `.depots` et
+  `.trunk`, et le même `HEAD` (tag, `origin/master`). Il n'a plus de branche locale `master` :
+  `git clone -b <tag>` n'en crée aucune, alors que `git clone` créait celle de l'origine avant le
+  `checkout`. De même, le clone d'une branche autre que celle de l'origine ne porte plus que sa
+  propre branche locale ; les autres restent en `origin/*`. Le contrôle de 0.5.4.0 lit les
+  branches locales et distantes (`is_branch`) : aucun effet sur lui.
+- **Fixture d'ENV-56** (`fixture56-apres/`, contre `fixture56-avant/`) :
+  - f06 : `.err` = message de `git clone -b nope`, `.depots` vide (avant : 4 répertoires, dont
+    le clone `nope`) ;
+  - f01 à f04, f10 (dépôt absent) : **`.err` changé**. Le message nomme
+    `git clone -b master <url> <dest>` au lieu de `git clone <url> <dest>`, avec la même fin
+    (`(code 128) : and the repository exists.`). `.cmd`, `.out`, `.code` et `.depots` sont
+    identiques. C'est la commande retenue au PA-107 ; elle s'écarte du critère « identiques à
+    l'avant » pour ces 5 `.err` ;
+  - autres cas (f05, f07 à f12b) : identiques.
+- **Rootstock d'essai, l01 à l03** (`apres/`) :
+  - l01 (`@scion`), l02 et l03 (`@nope`) : code 2. lepton relaie
+    `erreur : échec de « git clone -b … » (code 128) : fatal: Remote branch … not found in
+    upstream origin`, puis annule (« graine et trunk restaurés ») ;
+  - l02 = l03 ; après chaque cas, liens, graine, liste greffée et `depots/` sont égaux au
+    départ, et aucun clone ne reste ;
+  - avant : l01 code 0 (greffe de `master` sous `scion`), l03 code 0 (greffe sous `nope`).
+- **`seed add` réussi, puis `seed remove`** (`env-56-scion/succes.sh`, famille F7 de GitHub) :
+  - deux copies neuves d'`essais/env-11/qemu`, `essais/env-60-succes-0631` (0.6.3.1, pipx) et
+    `essais/env-60-succes-0632` (branche) ;
+  - dans les deux cas : 3059 liens au départ et après `seed remove`, 0 cassé, graine et liste
+    greffée égales au départ ; `depots/` garde le clone de la famille et les clones tiers
+    (P-P6), comme en ENV-56 ;
+  - `diff -r succes-0631 succes-0632` ne diffère que par `scion.txt`. Sont donc identiques :
+    les messages, les codes, les liens, les clones tiers et la tête de la famille (`master`).
+
+## 5. Version, lepton, noyau
+
+- seed.scions :
+  - tag annoté local `0.6.3.2` sur 08a1460 (tête de `devenv/env-60`) ;
+  - `pipx install --force "git+file://<SEED_SCIONS>@0.6.3.2"` : scion 0.6.3.2 ;
+  - les 10 modules installés sont identiques au tag (`cmp`) ;
+  - `lepton --version` donne `scion 0.6.3.2 (requis ≥ 0.6.2.0)`.
+- lepton-tools, e7a589f :
+  - `SCION_REF="0.6.3.2"` (`scripts/install-vscodium.sh`), `README.md`, note dans
+    `lepton/__init__.py` ;
+  - `SCION_MIN_VERSION` inchangé, (0, 6, 2, 0) ;
+  - docstring de `_undo_add` : le clone conservé est celui d'un clonage réussi suivi d'une greffe
+    en échec ; un clonage dont la version manque à l'origine n'en laisse plus aucun.
+- `pytest` de lepton-tools (venv `~/lepton-tools-dev/venv-lepton-tools`, scion 0.6.3.2 du PATH) :
+  508 verts, `test_echec_de_scion_sans_double_affichage` compris.
+- Clone noyau, branche `devenv/env-60` (depuis `master` ed2a41f), 8563f90 :
+  - `SCION_REF` 0.6.3.2 dans `scripts/install-{macos,debian}.sh`, `README.md`,
+    `README-PAQUET.md`, `doc/BUILDING.md` ; `bash -n` des deux scripts sans erreur ;
+  - ces fichiers sont hors de `scion/` : rien n'est greffé, et le trunk ne change pas ;
+  - contrôles de `<ROOTSTOCK>` : 0 lien cassé ; 7 fichiers réguliers, les `.DS_Store` du Finder
+    datés du 12 novembre, tolérés (`.scion.trunk.tolerated`) et déjà relevés en ENV-56.
+- lepton n'est pas réinstallé par pipx : son code ne change pas, seule une docstring change.
+
+## 6. Binaires
+
+Pas d'oracle :
+- la correction ne touche que le clonage d'un scion ordinaire ou d'un seed distant ;
+- un clone dont la version existe est fait au même commit qu'avant, et l'essai de greffe réussie
+  (§4) donne avec 0.6.3.1 et avec 0.6.3.2 des liens et des clones identiques ;
+- `<ROOTSTOCK>` n'est pas regreffé, et ses clones existants ne sont pas touchés : aucune commande
+  de clonage ne les vise ;
+- l'arbre composé ne change donc pas, et aucune reconstruction n'est nécessaire (forme
+  d'`env-56-scion.md` §6).
+
+## 7. Écarts aux critères, à trancher au PA-108
+
+1. Fixture d'ENV-56, f01 à f04 et f10 (dépôt absent) : le `.err` nomme `git clone -b master …`
+   au lieu de `git clone …`. Le critère demandait des cas non visés « identiques à l'avant ».
+   Codes, `.out` et `.depots` le sont.
+2. `tests/test_seed.py:124` (0.5.1.1) : l'assertion sur le texte `checkout master` est adaptée
+   à `git clone -b master`. Le fichier d'étape demandait que les 298 tests existants restent
+   verts ; ils le sont, celui-ci après adaptation de son texte, et
+   `test_clone_whose_checkout_fails_is_kept`, inversé au PA-107.
+3. Clone d'un tag, ou d'une branche autre que celle de l'origine : plus de branche locale pour
+   la branche de l'origine (k14). `HEAD`, arbre extrait et contrôle de version inchangés.
+4. Forme : le tout premier `graft-update` de l'audit portait un préfixe `cd … && LC_ALL=C`
+   (§1.1). La base a été refaite ; tous les relevés versionnés viennent de lancements dans la
+   forme exacte.
