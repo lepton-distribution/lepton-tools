@@ -85,6 +85,10 @@ VM (état laissé par R61-1) :
 - [x] Hors étape : copies d'essai du Mac `essais/env-61-*` supprimées par
   `scripts/supprimer-essai.sh` (demande de l'utilisateur). Journaux `essais/env-61-mac/`
   conservés.
+- [x] Hors étape (décision de l'utilisateur du 2026-11-17) : les skills du dépôt se modifient sur
+  le compte claude.ai (Claude Desktop) ; `scripts/importer-skills.sh` copie la version
+  synchronisée dans `.claude/skills/`, commit dédié (CLAUDE.md, ORCHESTRATION §5bis). Branche
+  `devenv/skills-compte`, fusionnée dans `main` en local.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
@@ -100,6 +104,10 @@ VM (état laissé par R61-1) :
 | `fr()`, base `env-61-fixture/f56`, comptes des attendus, contrôles de la consigne | session, d'après les essais du Mac (rapport §1) | oui (rapport ; défauts en D27) |
 
 ## Pièges rencontrés
+- **Skills synchronisés depuis le compte** : la copie `~/.claude/skills/synced/` se met à jour au
+  démarrage d'une session Claude Code (`claude -p` lancé hors du dépôt suffit) ; une session déjà
+  ouverte ne la met pas à jour (constaté le 2026-11-17 : aucun passage entre 20:26 et 20:32:59,
+  téléversement fait entre les deux). Lancer `scripts/importer-skills.sh -n` avant la copie.
 - **Contrôle d'une correction par un texte du code** : le §6 de la consigne cherchait
   `expanduser().resolve()`, texte de l'ancien code, alors que 74c9c97 l'écrit en deux lignes.
   Parade : vérifier le contrôle contre le code installé au Mac avant d'écrire la consigne.
