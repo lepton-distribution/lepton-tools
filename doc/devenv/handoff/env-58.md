@@ -1,104 +1,112 @@
-# Passation ENV-58 — Claude Code : formes des commandes et règles de la VM (D20, D19) — session du 2026-11-13 (préparation)
+# Passation ENV-58 — Claude Code : formes des commandes et règles de la VM (D20, D19) — session du 2026-11-17
 
 ## Statut
-À démarrer. Cette session était hors étape : révision du plan après ENV-57, avec la skill
-`lepton-portage-instructions`.
-- Les étapes ENV-58 à ENV-61 sont rédigées ; aucune tâche d'ENV-58 n'est exécutée.
-- Aucun fichier de l'arbre Lepton, de scion, de lepton ou de `.claude/` n'est touché.
-- Aucune branche `devenv/env-58` n'existe.
-
-La session qui exécutera ENV-58 remplacera cette passation.
+Terminée. ORCHESTRATION §2bis porte les formes des commandes. Le hook demande l'invite pour une
+commande `ask` lancée indirectement (garde G2, prouvée au Mac). Les règles utilisateur de la VM
+sont gardées.
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `main` | 1ae63da « devenv: consignation de la fusion et du push de la révision du plan (ENV-58 à ENV-61) », au-dessus de 4a04b6c (fusion `--no-ff` de `devenv/revision-2026-11-13`, 2cc8a0f, depuis 71cba24) ; `main` et la branche poussés (PA-P) ; puis le commit de cette passation, non poussé | oui |
-| seed.scions | `master` | d650414 (tag 0.6.3.1), non touché | oui |
+| lepton-tools | `main` (fusion `--no-ff` de `devenv/env-58`) ; `devenv/env-58` | branche : c5f1c87 audit, f3da447 garde G2, 40fd14e ORCHESTRATION, 17b7ca7 contrôles, puis le commit d'état et de passation ; `main` et `devenv/env-58` poussés (PA-104) | oui |
 | clone noyau `depots/lepton/original/master` | `master` | ed2a41f, non touché | oui |
-| autres | `master` / `original-tree` | non touchés : graine 15740f9 | oui |
+| seed.scions | `master` | d650414 (tag 0.6.3.1), non touché | oui |
+| autres | — | graine `original-tree` 15740f9, non touchée ; `<ROOTSTOCK>` non touché | oui |
 
-Outils : scion 0.6.3.1 et lepton 0.1.0, au Mac et sur la VM ; extension 0.5.2 ; Claude Code
-2.1.323.
-
-VM : état laissé par R57-1 (`handoff/env-57.md`). `~/.claude/settings.json` y porte ses 3 règles
-`allow` utilisateur (D19). La décision d'ENV-58 (PA-103) est appliquée en ENV-61.
+Outils : scion 0.6.3.1 et lepton 0.1.0 (non réinstallés) ; Claude Code **2.1.326** au Mac.
+`.claude/settings.json` est inchangé.
 
 ## Fait pendant la session
-- Début de session : état conforme à `handoff/env-57.md` (`main` 71cba24 = `origin/main`, propre).
-- Sources de D17 à D20 lues :
-  - `rapports/env-55-url-file.md` §2, §3, §6 ;
-  - `rapports/env-56-scion.md` §1.3 à §1.8, §2 à §6 ;
-  - `rapports/env-57-mac.md` §1.3, §1.5, §4, §5 ; `rapports/env-57-debian.md` §1, §3, §9 ;
-  - `consignes/env-57-debian.md` §0, §2, §11, §13, §14 ; `rapports/env-54-permissions.md` §3, §8,
-    §10.2 ;
-  - `handoff/env-57.md`.
-- Relevés en lecture seule, repris dans les fichiers d'étapes :
-  - D17 : `lepton/seed.py` (`parse_location`, l. 110-111 ; appelants) ; autres
-    `Path(<saisie>).resolve()` sans `expanduser` ; `extension/src/commands.ts:87` ;
-  - D18 : `scion/gitops.py` `clone()` (l. 94-110) ; `scion/graft.py` `_fetch` (l. 275-301),
-    contrôle de version (l. 377, 410) ; `scion/cli.py` `_clone_seed` (l. 96-110) ; P-V1 ;
-    `rapports/env-56-scion/fixture-avant/f06.*` ;
-  - D19, D20 : `.claude/settings.json` (règles d'ENV-54) ; `rapports/env-57-mac/decisions.py`.
-- Décisions de l'utilisateur, sur questions posées :
-  - découpage en quatre étapes ;
-  - portée de D20 étendue au lancement des commandes `ask` hors script.
-- Fichiers d'étapes :
-  - `etapes/ENV-58-claude-code-formes-commandes.md` ;
-  - `ENV-59-lepton-indice-tilde.md` ;
-  - `ENV-60-scion-checkout-echec.md` ;
-  - `ENV-61-validation-debian.md`.
-- Autres documents mis à jour :
-  - ORCHESTRATION §2, §4 (PA-103 à PA-110), §5bis et §6 ;
-  - `DEVENV-STATUS.md` : étapes, décision, prochaine action, journal ;
-  - `HORS-PLAN.md` : D17 à D20 planifiés.
-- Relecture par un agent indépendant (ORCHESTRATION §5bis, effort `xhigh`, lecture seule) :
-  0 bloquant, 11 à corriger, 13 suggestions. La session a vérifié les principaux constats : n°1 à
-  12 et 16 sont confirmés, n°19 et 20 le sont en partie. Tous ont été appliqués sur décision de
-  l'utilisateur, n°19 et 20 ramenés à ce qui est confirmé. Détail au journal de
-  `DEVENV-STATUS.md` (2026-11-13).
+- Début : état conforme à la passation de préparation, sauf deux écarts consignés au journal :
+  - 75c1167 avait été poussé le 2026-11-13 (reflog), alors que la passation le disait non
+    poussé ;
+  - Claude Code est en 2.1.326, pour 2.1.323 épinglé.
+- Inventaire (`rapports/env-58-formes.md` §1) :
+  - aucune commande `allow` avec redirection dans les skills, `CLAUDE.md`, la consigne d'ENV-57
+    ni les étapes 59 à 61 ;
+  - une seule commande `ask` dans un script : `rapports/env-53-mac/regreffer-essai.sh:31`, outil
+    historique laissé tel quel.
+- Essai témoin (§2 ; décisions dans `rapports/env-58-formes/decisions.tsv`, lues par
+  `env-57-mac/decisions.py`), sur un pytest d'un seul test dans la forme couverte :
+  - règle : forme nue, `2>&1`, `--junitxml` ;
+  - classifieur : `> f` (cible `~/…` ou absolue hors du répertoire de travail), `> f 2>&1`,
+    `| tee f`, `; echo "code=$?"` ;
+  - `mode` : `>` vers un fichier du répertoire de travail ;
+  - `scion graft-update -v ~/lepton-tools-dev/essais/env-58-absent` : invite en direct (A1). Par
+    script (A2) et par `bash -c` (A3) : classifieur, exécutée sans invite.
+- Documentation (§3), relevée par un agent `claude-code-guide` : une règle `ask` ou `deny`
+  « isn't a security boundary » ; la cible d'une redirection est contrôlée comme une écriture de
+  fichier.
+- PA-103 tranché (§6). Mise en place :
+  - garde G2 dans `.claude/hooks/proteger-trunk.py` (f3da447), tests `tests/test_garde_ask.py`
+    (46). Preuve : A2 et A3 sur invite, refusées par l'utilisateur, motif du hook affiché ;
+  - ORCHESTRATION §2bis et §5bis (40fd14e).
+- Contrôles (§8) :
+  - rejeu de F1 et F6 : règle ;
+  - `touch` sous le trunk d'une copie `qemu` : refusé par le hook ;
+  - pytest complet : **499 passed** (`venv-lepton-tools`, `--junitxml`, forme couverte).
+- PA-104 tranché :
+  - `essais/env-58-essai` supprimé par `scripts/supprimer-essai.sh` ;
+  - `HORS-PLAN.md` : D20 traité, D19 décidé (gardé) ;
+  - fusion et push.
 
 ## Reste à faire dans l'étape
-- [ ] Tâche 1 : audit et essai témoin, jusqu'au PA-103.
-- [ ] Tâche 2 : amendement du §2bis et mise en place selon le PA-103.
-- [ ] Tâche 3 : contrôles, PA-104.
+- Rien. La preuve sur la VM se fait en ENV-61 (rapport §7).
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
 | --- | --- | --- |
-| Découpage ENV-58 (D20, D19), ENV-59 (D17), ENV-60 (D18), ENV-61 (Debian) ; ordre 58, 59 et 60 permutables, 61 | utilisateur | oui |
-| Portée de D20 : redirections et commandes `ask` lancées hors script | utilisateur | oui |
-| ENV-58 : contenu de l'amendement du §2bis (redirection, journal par une option de l'outil, deux phases pour un script) ; cas `bash -c` ajouté à la portée de D20 | proposition non validée (PA-103) | non |
-| ENV-58 : essai témoin (formes de redirection, `ask` direct, par script et par `bash -c` sur `essais/env-58-absent`, invites refusées) ; scripts versionnés sous `rapports/env-58-formes/` | proposition non validée (plan de session d'ENV-58) | non |
-| ENV-58 : bloc `permissions.allow` seul pour la VM, modifié par l'utilisateur au §0 de la consigne d'ENV-61 | proposition non validée (PA-103) | non |
-| ENV-59 : portée limitée à l'indice ; autres chemins saisis traités à part ou reportés ; copie `essais/env-59-essai` | proposition non validée (PA-105) | non |
-| ENV-60 : options de correction de D18 (message forme P-V1, retrait du clone, contrôle de la version) ; version 0.6.3.2 ou 0.6.4.0 ; ni oracle ni regreffe de `<ROOTSTOCK>` ; copie `essais/env-60-essai` | proposition non validée (PA-107) | non |
-| ENV-61 : contenu de C2 (contrôles négatifs par règle retirée) et de C5 (fixture conditionnelle à un clone de seed.scions sur la VM) ; relance de la session au §0 | proposition non validée (PA-109) | non |
+| Plan de session ; écarts du début (75c1167 poussé, Claude Code 2.1.326, recherche par `grep` sans outil Grep) | utilisateur | oui |
+| PA-103 (1) : amendement du §2bis, texte du rapport §5 point 1 ; le §2 des consignes VM renvoie au §2bis | utilisateur | oui |
+| PA-103 (2) : garde G2, sinon G1 ; condition remplie, G2 retenue | utilisateur (condition constatée par la session) | oui |
+| PA-103 (3) : les 3 règles `allow` de la VM gardées, fichier non modifié, D19 clos comme accepté | utilisateur | oui |
+| PA-103 (4) : ni `CLAUDE.md` ni skills ; `env-53-mac/regreffer-essai.sh` laissé tel quel | utilisateur | oui |
+| PA-104 : rapport accepté, essai supprimé, fusion et push ; fichier d'étape d'ENV-61 non corrigé, les effets passant par cette passation | utilisateur | oui |
+| Formes F7 à F9 ajoutées à l'essai ; motif exact et périmètre de G2 (shells, `eval`, `find -exec`, `xargs`, heredoc, scripts shell lus récursivement, limites) | proposition de la session, mise en œuvre avec G2 | rapport §2, §6 |
+
+## Effets à reprendre par ENV-61 (rapport §7)
+- Réglages de la VM : aucune modification au §0. C2 relit `~/.claude/settings.json` ; une
+  décision `userSettings` pour une commande que seule une règle utilisateur couvre est attendue.
+- C2 : aucun contrôle négatif « règle retirée ». Formes de l'essai d'ENV-58 attendues sur la VM :
+  - pytest nu, `2>&1`, `--junitxml` → règle ; `> f` hors du répertoire de travail → classifieur ;
+  - `graft-update` direct → invite (règle `ask`) ;
+  - par script et par `bash -c` → **invite, demandée par le hook (G2)**, à refuser ;
+  - `bash doc/devenv/rapports/env-58-formes/ask-script.sh ~/lepton-tools-dev/essais/env-61-absent`
+    (cible en argument).
+- Le hook de la VM est celui du dépôt : G2 y est actif dès le `git switch` sur la branche
+  d'ENV-61.
 
 ## Pièges rencontrés
-- Le constat « un `graft-update` lancé depuis un script échappe à la règle `ask` » est déduit
-  (`rapports/env-57-mac.md` §1.3), jamais essayé. L'essai d'ENV-58 vise une cible absente
-  seulement, et l'invite éventuelle est refusée.
-- Une lecture groupée qui cite `scion graft-update` déclenche l'invite `ask` (ENV-54 §10.2, O-0) :
-  ne pas citer les commandes `ask` dans des lectures. Pendant la relecture de la révision, une
-  recherche Bash d'un motif `git … push` a été refusée par le classifieur (« Undermining
-  Oversight ») : chercher par l'outil Grep.
+- Invite A1 confirmée au lieu d'être refusée : sans effet, la cible étant absente. C'est la même
+  manipulation qu'au N4 d'ENV-57 ; seules les cibles absentes rendent l'erreur bénigne.
+- Pas d'outil Grep dans la session. Recherche par `grep` en Bash, avec les motifs `graft.update`,
+  `seed.update` et `\bpu[s]h\b` : aucun refus.
+- zsh ne découpe pas `$F` en mots pour `grep … $F`. Utiliser `find … -exec grep … {} +`.
+- `decisions.py --motif` retient aussi ses propres appels qui citent le motif. Les filtrer avant
+  de verser le relevé.
+- Depuis G2, toute commande qui lance un script shell contenant `scion graft-update`,
+  `seed-update` ou `git push` (hors commentaires) fait paraître une invite, même en lecture
+  (`bash f.sh -h`). `cat`, `grep` et les lectures n'en déclenchent pas.
+- Le journal de session ne garde pas le motif du hook, seulement le refus
+  (`toolDenialKind: user-rejected`).
 
 ## Critères de validation
-- [ ] PA-103 et PA-104 tranchés et consignés.
-- [ ] Inventaire des formes fautives au rapport (fichier, ligne).
-- [ ] Essai témoin consigné, avec les décisions du journal de session :
+- [x] PA-103 et PA-104 tranchés et consignés.
+- [x] Inventaire des formes fautives au rapport (fichier, ligne).
+- [x] Essai témoin consigné, avec les décisions du journal de session :
       - redirection : règle ou classifieur, pour chaque forme ;
       - `ask` direct, depuis un script et par `bash -c` : invite ou classifieur.
-- [ ] ORCHESTRATION §2bis amendé ; `consignes/env-57-debian.md` §2 n'est plus la seule source de
+- [x] ORCHESTRATION §2bis amendé ; `consignes/env-57-debian.md` §2 n'est plus la seule source de
       la règle.
-- [ ] Bloc `permissions.allow` attendu sur la VM, et conduite de modification, au rapport (D19).
-- [ ] `pytest` complet vert ; `settings.json` en JSON valide s'il change.
-- [ ] `HORS-PLAN.md` : D20 marqué traité ; D19 « décidé, appliqué en ENV-61 », avec renvoi au
-      rapport.
+- [x] Bloc `permissions.allow` attendu sur la VM, et conduite de modification, au rapport (D19) :
+      inchangé, aucune modification.
+- [x] `pytest` complet vert (499) ; `settings.json` inchangé, JSON valide.
+- [x] `HORS-PLAN.md` : D20 marqué traité ; D19 décidé (gardé) plutôt qu'« appliqué en ENV-61 »,
+      avec renvoi au rapport.
 
 ## Reprise
 Commande ou première action de la session suivante :
 ```
-démarre la session ENV-58 (skill devenv-session) : lire etapes/ENV-58-claude-code-formes-commandes.md
-et cette passation ; branche devenv/env-58 de lepton-tools depuis main ; tâche 1 jusqu'au PA-103
+démarre la session ENV-59 (skill devenv-session) : lire etapes/ENV-59-lepton-indice-tilde.md et
+handoff/env-58.md ; branche devenv/env-59 de lepton-tools depuis main ; tâche 1 jusqu'au PA-105
 ```
