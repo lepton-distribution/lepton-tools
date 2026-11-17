@@ -242,3 +242,56 @@ l'utilisateur a confirmé avoir choisi « ne plus demander » ; pour les deux au
 le laisse supposer, sans confirmation. L'invite a paru à chaque fois, même après un « ne plus demander » (§1.3). Le
 `graft-remove`, hors règle, a été accepté par le classifieur. Aucun refus.
 | AVANCEMENT R61-1 (§8 fin, §9 début) | 2026-11-17 | VM → Mac | A1 rejoué à la demande de l'utilisateur : `rejet-invite` (15:59:48) ; A2 `rejet-invite` (16:00:46) ; A3 `rejet-invite` (16:01:20) ; H1 `reject hook` ; cible absente, `essai-hook` absent, 0 paquet `env-61`, liens de `$S` = départ ; écart restant U3 (classifieur) ; motifs d'A2 et A3 demandés à l'utilisateur ; §9 : relevé avant d'`env-28-debian` (3889), `graft-update` lancé sur invite |
+| AVANCEMENT R61-1 (§9, 1/4) | 2026-11-17 | VM → Mac | `env-28-debian` : invite confirmée (`user_temporary projectSettings`, 16:02:35) ; code 0, noyau seul ed2a41f → dfc960b, 0 clone, 0 conflit, 3889 feuilles, journal = Mac, liens 3889 → 3889, `CONFORME` (avant et R50-1), tiers 0 / 16, `clones = Mac`, `check` 0, espace identique ; `env-13-debian` : relevé avant, `graft-update` lancé sur invite |
+| AVANCEMENT R61-1 (§9, 2/4) | 2026-11-17 | VM → Mac | `env-13-debian` : code 0, noyau seul ed2a41f → dfc960b, 0 clone, 3889 feuilles, journal = Mac, liens 3889 → 3889, `CONFORME`, tiers 0 / 16, `clones = Mac`, `check` 0, espace identique ; `env-53-c5` : relevé avant (3059), `graft-update` lancé sur invite |
+| AVANCEMENT R61-1 (§9, 3/4) | 2026-11-17 | VM → Mac | `env-53-c5` : code 0, noyau seul ed2a41f → dfc960b, 0 clone, 3059 feuilles, 3059 → 3059, `CONFORME`, 2 clones F7 0 / 4, 30 908 Ko inchangés, `salut` sans amont `modifs=2` inchangé, `check` 0, espace identique ; `env-53-debian` : relevé avant (3889), `graft-update` lancé sur invite |
+| AVANCEMENT R61-1 (§9, 4/4, C3) | 2026-11-17 | VM → Mac | `env-53-debian` : code 0, noyau seul ed2a41f → dfc960b, 0 clone, 3889 feuilles, journal = Mac, liens 3889 → 3889, `CONFORME` (avant et R50-1), tiers 0 / 16, 87 512 Ko inchangés, `clones = Mac`, `check` 0, espace identique ; les 4 `graft-update` `accept user_temporary projectSettings` (16:02:35, 16:05:08, 16:06:55, 16:09:28), aucun `user_permanent` ; §10 lancé |
+| QUESTION R61-1 (§11.2, fixture) | 2026-11-17 | VM → Mac | §10 conforme (`classer = Mac`, 66 états = départ, écarts=0 / 528, `*-status.out` informatifs) ; §11.1 conforme (l01 à l03 code 2, écarts=0 / 15, `fr()` sans effet : `essai.sh` exporte `LC_ALL=C`) ; fixture : **écarts=4 / 76** : `f05.err`, `f06.err` (git français, **espace insécable** U+00A0 avant « : » dans « fatal : », que `fr()` ne prend pas ; `fixture.py` sans `LC_ALL`) et `f12a.depots`, `f12b.depots` (ligne `depots/.mirrors/localhost/home` contre `/Users`, segment d'hôte non normalisé) ; une fois ces deux points neutralisés, 76 / 76 identiques ; f06 code 2, `.depots` vide ; options proposées |
+| (décision) | 2026-11-17 | utilisateur | causes vérifiées au Mac (`po/fr.po` : `fatal : ` ; attendu `f12a.depots` l. 3 `localhost/Users`) ; option 1 retenue par l'utilisateur, répondue directement dans la session VM ; aucune réponse de la session Mac envoyée |
+| AVANCEMENT R61-1 (§11.2, option 1) | 2026-11-17 | VM → Mac | 4 écarts retenus comme écarts de comparaison, documentés au rapport ; §11.3 lancé |
+| AVANCEMENT R61-1 (§11.3, C5) | 2026-11-17 | VM → Mac | pytest 508 passed, 0 échec, 0 erreur, 0 ignoré, 174 s ; 118 / 46 / 52 / 43 ; lepton éditable depuis `$T` ; lepton-tools propre ; §12.1 lancé |
+| AVANCEMENT R61-1 (§12, C6) | 2026-11-17 | VM → Mac | `rejouer-oracle` code 0 ; host 7/7 ; 16 presets ; bancs 20/20 ×2, 16/16 ×2, 19/19 ×2, `peripheriques` ×4 ; trunk de `$R53` 3889, 0 cassé, 0 régulier, 0 `__pycache__` ; mklepton = R57-1 = `env-52-apres` ; `comparer_R57-1` 0 et `hors_debug=0` ×16 ; `comparer_Mac` 1 ; `mirror-sync --dry-run` code 0, 8 miroirs, 0 à envoyer, 0 signalement, `CONFORME` |
+| QUESTION R61-1 (push) | 2026-11-17 | VM → Mac et utilisateur | rapport commité (2771213 sur `devenv/env-61-debian`) ; accord du push demandé à l'utilisateur dans la session VM (PA-P) |
+| FIN-SUCCÈS R61-1 | 2026-11-17 | VM → Mac | reçu. C1 à C6 atteints (écarts consignés), C7 écarté, C8 fait (6 chemins supprimés par l'enveloppe, `subcommandResults`) ; `devenv/env-61-debian` 2771213 **poussée** (invite confirmée, `user_temporary projectSettings`) ; clone noyau à dfc960b ; écarts du rapport §9 : (1) session non relancée, (2) contrôle D17 faux, corrigé, (3) 1re invite A1 confirmée, sans effet, (4) U3 par le classifieur, (5) fixture : 4 écarts de comparaison, correction proposée (`fr()` à espace insécable ou `LC_ALL=C` dans `fixture.py`, normalisation du segment d'hôte), (6) clés hors `permissions` dans `~/.claude/settings.json` (`/model`) ; non fait : C7, motif des invites A2 et A3, messages postérieurs au commit absents du §10 du rapport VM, `~/tmp-pytest` non vidé |
+
+## 5. Vérification du rapport VM (tâche 4)
+
+`devenv/env-61-debian` 2771213 (sur ac3b913), poussée : 756 fichiers ajoutés, tous sous
+`rapports/env-61-debian.md`, `rapports/env-61-debian/` et `rapports/oracles/env-61-debian/` ;
+aucun autre fichier touché. Comparaisons refaites au Mac sur les relevés poussés (extraits par
+`git archive`) :
+
+| Critère | Refait au Mac | Résultat |
+| --- | --- | --- |
+| C1 | rapport §1, `6-controle-d17.txt` | scion 0.6.3.2 par `install-debian.sh`, lepton réinstallé, contrôle D17 corrigé `True` (ancien `False`), `seed.py` = dépôt ; extension 0.5.2 ; conforme |
+| C2 | `15-decisions.tsv` (69 lignes, chemin personnel normalisé), `settings-utilisateur.json` | `permissions` = PA-103 (3 règles `allow`), autres clés `agentPushNotifEnabled`, `autoMode`, `modelSettings`, `theme`, `tui` ; `pipx install --force` `rule projectSettings` ; U1, U2 `subcommandResults` ; U3 `classifier` ; F1, F3, F6 `subcommandResults`, F2, F7 `classifier` ; A1 1er `user_temporary`, A1 rejoué, A2, A3 `rejet-invite` ; H1 `reject hook` ; 4 `graft-update` `user_temporary` ; `git clone` de seed.scions et pytest `subcommandResults` ; conforme, avec les écarts 3 et 4 du rapport VM |
+| C3 | journaux `graft-update` normalisés contre `attendu/c3/graft-update-resume.txt` ; bilans ; `clones.txt` contre `env-53-mac/attendu/clones-rootstock-mac.txt` | journal = Mac ×3 ; noyau seul ed2a41f → dfc960b ×4 ; 3889 → 3889 ×3, 3059 → 3059 ; `CONFORME` ×4 ; tiers 0 / 16 ×3, 0 / 4 ; `clones = Mac` ×3 ; `check` 0 ×4 ; espace identique ×4 |
+| C4 | `10-classer.tsv`, `10-c4/` contre `attendu/c4/`, `fr()` de la consigne | `classer = Mac` ; écarts=0 / 528 |
+| C5 | `11-c5/` contre `attendu/c5/` ; `11-fixture56/` contre `attendu/fixture56/` | 0 / 15 ; fixture : 4 / 76 avec le `fr()` de la consigne (`f05.err`, `f06.err`, `f12a.depots`, `f12b.depots`), **0 / 76** une fois admise l'espace insécable (`fatal[  ]:`) et `localhost/home` ramené à `localhost/Users` ; f06 code 2, `.depots` vide ; pytest 508 |
+| C6 | `comparer-oracle.py` `env-57-debian` contre `env-61-debian` ; empreintes mklepton | `comparer` 0 pour les 16 presets ; mklepton = `env-57-debian` = `env-52-apres` ; `12-bilan.txt` : 16 × `comparer_R57-1=0`, `hors_debug=0` |
+| C7, C8 | `FIN-SUCCÈS` | C7 écarté (PA-109) ; C8 : 6 chemins supprimés par l'enveloppe (`subcommandResults`), absents |
+
+Constats de la vérification :
+- **D19, U1 et U2** : `subcommandResults` sans `ruleSource`. Aucune règle du dépôt ne couvre
+  `pipx install <chemin>` sans `--force`, ni `git clone --depth 1 <URL>` (la règle du dépôt veut
+  l'URL en premier argument) : seules les règles utilisateur `Bash(pipx install:*)` et
+  `Bash(git clone * https://github.com/lepton-distribution/*)` ont pu les accepter. D19 vaut donc
+  pour U1 et U2. **U3** : la règle `Bash(python3 -m unittest discover *)` n'a pas décidé de
+  `python3 -m unittest discover -s ~/…`, c'est le classifieur qui l'a fait. La cause n'est pas
+  établie.
+- **Comparaison de la fixture** : deux défauts de la consigne (session Mac). `fr()` ne prend pas
+  l'espace insécable (U+00A0) que git 2.47.3 écrit dans « fatal : » (`po/fr.po`). Ma simulation
+  au Mac l'avait remplacée par une espace ordinaire, d'où un faux 0 / 76 au §1.5. Le segment
+  d'hôte `localhost/Users` (Mac) ou `localhost/home` (Debian) n'est pas normalisé.
+  `fixture.py` d'ENV-56 ne fixe pas `LC_ALL`, contrairement aux deux `essai.sh`.
+- **Contrôle D17 du §6** : faux dans la consigne, corrigé par la RÉPONSE R61-1 ; le §10 a mesuré
+  la correction (0 / 528).
+- **Invites à refuser** : la première invite d'A1 a été confirmée sur la VM, comme A2 au Mac
+  (§1.6), N4 en ENV-57 et A1 en ENV-58. Les cibles absentes ont rendu chaque erreur sans effet.
+- **Session VM non relancée** (§0.3) : aucune conséquence constatée. Règles du dépôt
+  (`projectSettings`), invites `ask` et hook G2 appliqués.
+- Les messages postérieurs au commit 2771213 (QUESTION du push, `FIN-SUCCÈS`) figurent au §3
+  ci-dessus, pas au §10 du rapport VM.
+
+Résultat : `FIN-SUCCÈS R61-1` vérifié. C1 à C6 conformes, avec les écarts consignés ; C7 écarté
+au PA-109 ; C8 fait.
