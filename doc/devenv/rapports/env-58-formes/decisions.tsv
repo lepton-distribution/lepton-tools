@@ -11,3 +11,5 @@ heure_utc	decision	source	reasonType	ruleSource	commande
 11:00:04	accept	user_temporary		projectSettings	scion graft-update -v ~/lepton-tools-dev/essais/env-58-absent
 11:00:26	accept	config	classifier		bash doc/devenv/rapports/env-58-formes/ask-script.sh
 11:00:42	accept	config	classifier		bash -c 'scion graft-update -v ~/lepton-tools-dev/essais/env-58-absent'
+11:15:15	rejet-invite				bash doc/devenv/rapports/env-58-formes/ask-script.sh
+11:17:22	rejet-invite				bash -c 'scion graft-update -v ~/lepton-tools-dev/essais/env-58-absent'

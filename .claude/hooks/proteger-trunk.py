@@ -20,7 +20,17 @@ l'autre. Pour chaque commande simple, seuls les chemins que son verbe écrit son
 est sous un trunk ou un clone tiers réel (cwd suivi), ou si son texte a `trunk` ou `depots/tiers`
 pour composant. Verbe inconnu : l'ancienne règle (verbe d'écriture puis chemin protégé) s'applique à
 la seule commande simple ; texte que shlex ne découpe pas : elle s'applique au texte entier.
-Limite : le contenu d'un script exécuté (`bash f.sh`, `python3 -c …`) n'est pas lu.
+Limite : le contenu d'un script exécuté (`bash f.sh`, `python3 -c …`) n'est pas lu pour ce refus.
+
+Commandes soumises à invite lancées indirectement (ENV-58, D20, PA-103) : une règle `ask` de
+`.claude/settings.json` (`scion graft-update`, `scion seed-update`, `git push`) ne voit que la
+commande écrite. Lancée depuis un script, un `bash -c` ou un `eval`, elle passe au classifieur
+(`doc/devenv/rapports/env-58-formes.md` §2). Le hook cherche alors ces commandes dans `bash -c`,
+`eval`, `find -exec`, `xargs`, les heredocs donnés à un shell, et le contenu des scripts shell
+lancés (`bash f.sh`, `./f.sh`, `source f.sh`, récursivement). S'il en trouve une, il demande
+l'invite : sortie JSON `permissionDecision: "ask"`, code 0. Un refus d'écriture (code 2) passe
+avant. Limites : scripts d'un autre langage (Python…), chemins de script à variable (`$0`…),
+commandes lancées par un autre programme.
 """
 import json
 import os
@@ -499,6 +509,166 @@ def juger_commande(commande: str, cwd: str | None) -> str | None:
     return Analyse(commande, cwd).texte_complet(commande)
 
 
+# --------------------------------------------------------------------------------------------
+# Commandes soumises à invite lancées indirectement (ENV-58, D20, PA-103)
+# --------------------------------------------------------------------------------------------
+SCION_ASK = {"graft-update", "seed-update"}
+GIT_OPTIONS_A_VALEUR = {"-C", "-c", "--git-dir", "--work-tree", "--namespace", "--exec-path"}
+TAILLE_SCRIPT_MAX = 1_000_000
+SHEBANG_SHELL = re.compile(rb"^#!\s*\S*/(?:env\s+)?(?:ba|z|da|k)?sh\b")
+SUFFIXES_SHELL = (".sh", ".bash", ".zsh")
+MOTIF_ASK = re.compile(r"\bscion\b[^\n;&|]*\b(?:graft|seed)-update\b|\bgit\b[^\n;&|]*\spush\b")
+MESSAGE_ASK = (
+    "Commande soumise à invite lancée indirectement ({}) : {}. Règle d'ORCHESTRATION §2bis : la "
+    "lancer directement. Ne confirmer que si l'utilisateur l'a accordée (PA-P)."
+)
+
+
+def est_commande_ask(mots: list[str]) -> bool:
+    """Vrai pour `scion graft-update|seed-update …` et `git [options globales] push …`."""
+    v, args = os.path.basename(mots[0]), mots[1:]
+    if v == "scion":
+        na = [a for a in args if not a.startswith("-")]
+        return bool(na) and na[0] in SCION_ASK
+    if v == "git":
+        k = 0
+        while k < len(args) and args[k].startswith("-"):
+            k += 2 if args[k] in GIT_OPTIONS_A_VALEUR else 1
+        return k < len(args) and args[k] == "push"
+    return False
+
+
+def option_c(args: list[str]) -> int | None:
+    """Rang de l'option `-c` d'un shell (`-c`, `-lc`, `-ec`…), None sans elle."""
+    for k, a in enumerate(args):
+        if re.fullmatch(r"-[A-Za-z]*c[A-Za-z]*", a):
+            return k
+        if not a.startswith("-"):
+            return None
+    return None
+
+
+class RechercheAsk:
+    """Cherche une commande `ask` lancée hors de la forme directe ; rend (origine, commande)."""
+
+    def __init__(self, cwd: str | None):
+        self.rep = Repertoire(cwd)
+        self.lus: set[str] = set()
+        self.profondeur = 0
+
+    def texte(self, texte: str, indirect: bool, origine: str) -> tuple[str, str] | None:
+        self.profondeur += 1
+        try:
+            if self.profondeur > 8:
+                return None
+            sans_corps, shells = retirer_heredocs(texte)
+            liste = jetons(sans_corps)
+            if liste is None:
+                m = MOTIF_ASK.search(texte) if indirect else None
+                return (origine, m.group(0)) if m else None
+            for cmd in commandes_simples(liste):
+                trouve = self.commande(cmd, indirect, origine)
+                if trouve:
+                    return trouve
+            for corps in shells:
+                trouve = self.texte(corps, True, "heredoc donné à un shell")
+                if trouve:
+                    return trouve
+            return None
+        finally:
+            self.profondeur -= 1
+
+    def commande(self, cmd: list[str], indirect: bool, origine: str) -> tuple[str, str] | None:
+        mots, i = [], 0
+        while i < len(cmd):
+            j = cmd[i]
+            if j in REDIR_SORTIE or j in REDIR_ENTREE:
+                i += 2
+                continue
+            if j.isdigit() and i + 1 < len(cmd) and cmd[i + 1] in REDIR_SORTIE | REDIR_ENTREE:
+                i += 1
+                continue
+            mots.append(j)
+            i += 1
+        mots = sans_prefixes(mots)
+        if not mots:
+            return None
+        if indirect and est_commande_ask(mots):
+            return origine, " ".join(mots)[:200]
+        v, args = os.path.basename(mots[0]), mots[1:]
+        if v in ("cd", "pushd"):
+            na = non_options(args)
+            self.rep = self.rep.cd(na[0] if na else os.path.expanduser("~"))
+            return None
+        if v in COQUILLES:
+            k = option_c(args)
+            if k is not None:
+                return self.texte(args[k + 1], True, f"{v} -c") if k + 1 < len(args) else None
+            na = [a for a in args if not a.startswith("-")]
+            return self.script(na[0], f"{v} {na[0]}", shell_sur=True) if na else None
+        if v in ("source", "."):
+            return self.script(args[0], f"{v} {args[0]}", shell_sur=True) if args else None
+        if v == "eval":
+            return self.texte(" ".join(args), True, "eval")
+        if v == "xargs":
+            k = 0
+            while k < len(args) and args[k].startswith("-"):
+                k += 2 if args[k] in ("-I", "-J", "-n", "-P", "-L", "-d", "-s", "-E", "-a") else 1
+            sous = args[k:]
+            return self.texte(" ".join(shlex.quote(b) for b in sous), True, "xargs") if sous else None
+        if v == "find":
+            for k, a in enumerate(args):
+                if a in ("-exec", "-execdir", "-ok", "-okdir"):
+                    sous = []
+                    for b in args[k + 1:]:
+                        if b in (";", "+"):
+                            break
+                        sous.append(b)
+                    trouve = self.texte(" ".join(shlex.quote(b) for b in sous), True, "find -exec")
+                    if trouve:
+                        return trouve
+            return None
+        if "/" in mots[0]:
+            return self.script(mots[0], f"exécution de {mots[0]}", shell_sur=False)
+        return None
+
+    def script(self, chemin: str, origine: str, shell_sur: bool) -> tuple[str, str] | None:
+        """Lit un script shell lancé et y cherche une commande `ask` (en contexte indirect)."""
+        if not chemin or "$" in chemin or "`" in chemin:
+            return None
+        chemin_x = os.path.expanduser(chemin)
+        if not os.path.isabs(chemin_x):
+            if self.rep.chemin is None:
+                return None
+            chemin_x = os.path.join(self.rep.chemin, chemin_x)
+        reel = os.path.realpath(chemin_x)
+        if reel in self.lus or not os.path.isfile(reel):
+            return None
+        self.lus.add(reel)
+        try:
+            with open(reel, "rb") as f:
+                donnees = f.read(TAILLE_SCRIPT_MAX + 1)
+        except OSError:
+            return None
+        if len(donnees) > TAILLE_SCRIPT_MAX or b"\0" in donnees[:4096]:
+            return None
+        if not shell_sur and not (SHEBANG_SHELL.match(donnees) or reel.endswith(SUFFIXES_SHELL)
+                                  or not donnees.startswith(b"#!")):
+            return None                                         # autre langage (Python…)
+        texte = donnees.decode("utf-8", errors="replace")
+        texte = "\n".join(l for l in texte.split("\n") if not l.lstrip().startswith("#"))
+        rep = self.rep
+        try:
+            return self.texte(texte, True, origine)
+        finally:
+            self.rep = rep
+
+
+def chercher_ask_indirecte(commande: str, cwd: str | None) -> tuple[str, str] | None:
+    """(origine, commande) d'une commande `ask` lancée hors de la forme directe, ou None."""
+    return RechercheAsk(cwd).texte(commande, False, "commande")
+
+
 def main() -> int:
     try:
         donnees = json.load(sys.stdin)
@@ -521,6 +691,16 @@ def main() -> int:
             message = MESSAGE_TIERS if zone == "tiers" else MESSAGE
             print(message.format(commande.strip()[:200]), file=sys.stderr)
             return 2
+        try:
+            trouve = chercher_ask_indirecte(commande, cwd)
+        except Exception:                                       # le hook ne bloque pas sur lui-même
+            trouve = None
+        if trouve:
+            print(json.dumps({"hookSpecificOutput": {
+                "hookEventName": "PreToolUse",
+                "permissionDecision": "ask",
+                "permissionDecisionReason": MESSAGE_ASK.format(*trouve),
+            }}, ensure_ascii=False))
     return 0
 
 
