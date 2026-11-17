@@ -91,8 +91,9 @@ def parse_location(text: str, version: str | None = None, subpath: str | None = 
     """`LOCATION[@VERSION][:PATH]` (ou options séparées) → origine contrôlée.
 
     URL : version par défaut `master` ; `file:///abs`, `file:/abs` et `FILE:` sont écrits
-    `file://localhost/abs` (D13). Chemin local (relatif au répertoire courant) : version `*`
-    (scion l'utilise en place, sans clone), `@VERSION` refusé ; le chemin doit porter `scion/` ;
+    `file://localhost/abs` (D13). Chemin local (relatif au répertoire courant, `~` développé, indice
+    du refus compris, D17) : version `*` (scion l'utilise en place, sans clone), `@VERSION` refusé
+    avec pour indice l'URL `file://localhost` du même chemin ; le chemin doit porter `scion/` ;
     il est rendu relatif au rootstock s'il s'y trouve, absolu sinon.
     """
     m = _ORIGIN.match(text)
@@ -104,11 +105,16 @@ def parse_location(text: str, version: str | None = None, subpath: str | None = 
         raise LeptonError(f"version « {ver} » invalide", "branche ou tag git : segments non vides, ni « . » ni « .. »")
     if is_url(loc):
         return Origin(loc, ver or DEFAULT_VERSION, path)
+    try:
+        expanded = Path(loc).expanduser()
+    except RuntimeError:             # `~utilisateur` sans compte (PA-105 d'ENV-59)
+        raise LeptonError(f"origine locale « {loc} » : répertoire personnel de « {loc.split('/')[0]} » "
+                          "introuvable", "vérifier le nom qui suit « ~ », ou donner un chemin absolu") from None
+    local = expanded.resolve()       # indice et contrôle d'existence : même chemin (D17)
     if ver and ver != LOCAL_VERSION:
         raise LeptonError(f"origine locale « {loc} » : version « {ver} » sans effet (scion utilise un "
                           "répertoire local en place)",
-                          f"retirer la version, ou désigner le dépôt git par une URL : file://localhost{Path(loc).resolve()}@{ver}")
-    local = Path(loc).expanduser().resolve()
+                          f"retirer la version, ou désigner le dépôt git par une URL : file://localhost{local}@{ver}")
     stem = local / path / "scion" if path else local / "scion"
     if not stem.is_dir():
         raise LeptonError(f"origine locale « {loc} » : {stem} absent",

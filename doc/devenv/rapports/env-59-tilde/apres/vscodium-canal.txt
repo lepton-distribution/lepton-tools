@@ -1,0 +1,59 @@
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+clangd relancé quand <C>/build/.active/compile_commands.json change
+
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+Observation de 5 greffon(s) et du trunk <C>/trunk
+
+$ <HOME>/.local/bin/lepton seed add env59lib ~/lepton-tools-dev/essais/env-59-depot --type bibliotheque --version master    (<C>)
+lepton: erreur: origine locale « ~/lepton-tools-dev/essais/env-59-depot » : version « master » sans effet (scion utilise un répertoire local en place)
+  → retirer la version, ou désigner le dépôt git par une URL : file://localhost<P>@master
+→ code 1
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed add env59lib file://localhost<P>@master --type bibliotheque --version master    (<C>)
+scion: scion lepton/library-env59lib déclaré dans <C>/depots/lepton-seed/env11/scion/.scion (version master)
+scion: greffe partielle : 3 feuilles liées dans <C>/trunk
+env59lib ajouté (lepton@library-env59lib, master, file://localhost<P>)
+graine modifiée, non commitée : git -C <C>/depots/lepton-seed/env11 commit -am "…"
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+Observation de 6 greffon(s) et du trunk <C>/trunk
+
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed remove env59lib --purge    (<C>)
+scion: scion lepton/library-env59lib retiré de <C>/depots/lepton-seed/env11/scion/.scion
+scion: scion lepton/library-env59lib retiré : 3 feuilles
+scion: clone <C>/depots/lepton/library-env59lib/master supprimé
+env59lib retiré (lepton@library-env59lib)
+graine modifiée, non commitée : git -C <C>/depots/lepton-seed/env11 commit -am "…"
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+Observation de 5 greffon(s) et du trunk <C>/trunk
+
+→ code 0
+
+$ <HOME>/.local/bin/lepton graft --path <C>/depots/lepton/library-env59lib/master/scion    (<C>)
+lepton: erreur: <C>/depots/lepton/library-env59lib/master/scion : ni dans le trunk <C>/trunk, ni dans un greffon greffé
+  → donner un chemin du trunk, ou d'un clone sous scion/
+→ code 1

@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "<HOME>/.local/bin/lepton", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "<HOME>/Library/Application Support/pipx/venvs/lepton/lib/python3.11/site-packages/lepton/cli.py", line 301, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "<HOME>/Library/Application Support/pipx/venvs/lepton/lib/python3.11/site-packages/lepton/seed.py", line 618, in seed_add
+    origin = parse_location(args.location, args.version, args.path, rootstock=rs.path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<HOME>/Library/Application Support/pipx/venvs/lepton/lib/python3.11/site-packages/lepton/seed.py", line 111, in parse_location
+    local = Path(loc).expanduser().resolve()
+            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py", line 1385, in expanduser
+    raise RuntimeError("Could not determine home directory.")
+RuntimeError: Could not determine home directory.

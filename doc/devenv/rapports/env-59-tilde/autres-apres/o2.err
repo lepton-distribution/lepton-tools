@@ -1,0 +1,8 @@
+scion: rootstock installé dans <W>/~/lepton-tools-dev/essais/env-59-new (trunk : trunk)
+scion: scion lepton/original::tree déclaré dans <W>/~/lepton-tools-dev/essais/env-59-graine/scion/.scion (version *)
+scion: scion lepton/family-qemu-mps2 déclaré dans <W>/~/lepton-tools-dev/essais/env-59-graine/scion/.scion (version *)
+scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <W>/~/lepton-tools-dev/essais/env-59-graine/scion/.scion (version *)
+scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+scion: greffe : 3055 feuilles liées dans <W>/~/lepton-tools-dev/essais/env-59-new/trunk
+scion: scion lepton/project-env59new déclaré dans <W>/~/lepton-tools-dev/essais/env-59-graine/scion/.scion (version *)
+scion: greffe partielle : 3 feuilles liées dans <W>/~/lepton-tools-dev/essais/env-59-new/trunk
