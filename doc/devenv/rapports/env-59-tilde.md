@@ -164,3 +164,13 @@ p20, p21, a20, a21 du message à la trace : question 2 du §2.
    - `test_d17_hint_unchanged_for_paths` : relatif et absolu, indice inchangé (passe déjà) ;
    - selon la question 2 : `~inconnu…` nu et avec version.
 5. **Observations O-1 et O-2** (§1.6) : à ajouter au hors-plan, ou écartées.
+
+## 3. PA-105 (2026-11-17, décisions de l'utilisateur)
+
+| Question | Décision |
+| --- | --- |
+| Portée | l'indice seul (D17) ; autres chemins du §1.4 au hors-plan (D21) |
+| `~<utilisateur inconnu>/…` | (b) : une seule expression `expanduser().resolve()` calculée avant le refus ; l'échec d'`expanduser()` rendu en `LeptonError`, toutes variantes (p19, a19 : trace → message) |
+| Forme de l'indice | chemin absolu après `expanduser().resolve()` ; relatif et absolu inchangés |
+| Tests | `tests/test_milestone3.py`, près de `test_d13_*` (§2 point 4) |
+| O-1, O-2 | au hors-plan : D22 (scion), D23 (extension) |
