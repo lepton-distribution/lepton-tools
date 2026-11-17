@@ -62,8 +62,11 @@ demander », et non par « Oui » (`user_temporary` en ENV-57). Journal de sessi
 `.claude/settings.json` garde son empreinte `b01ad557…d235`, relevée après la regreffe ;
 `.claude/settings.local.json` date de 15:03, pendant ENV-60 ; `~/.claude/settings.json`, du
 10 novembre ; `allowedTools` du projet dans `~/.claude.json` est vide. La règle `ask` reste donc la
-seule à décider. La tâche 3 dira si l'invite reparaît dans cette session. La consigne (§9) demande
-de confirmer par « Oui ».
+seule à décider. La consigne (§9) demande de confirmer par « Oui ». Tâche 3 : l'utilisateur a
+choisi de nouveau « ne plus demander » pour `env-9` (sa réponse), et l'invite avait pourtant paru
+après le même choix pour `env-13-vierge`. Pour une commande soumise à une règle `ask`, ce choix
+n'écrit rien et ne supprime pas l'invite suivante (Claude Code 2.1.326) ; le journal le note
+`user_permanent`.
 
 ### 1.4 Copie d'essai, dépôts et attendus de C4 (D17)
 
@@ -181,3 +184,61 @@ de fond) : **508 passed** en 8 min 59, 0 échec, 0 ignoré. Par module : `test_p
 | C7, C8 | cartes ; nettoyage par l'enveloppe |
 
 Questions du PA-109 : §2.
+
+## 2. PA-109 (2026-11-17, décisions de l'utilisateur)
+
+Questions posées ; options retenues :
+1. C3 et C6 : regreffe d'`env-28-debian`, `env-13-debian`, `env-53-c5` et `env-53-debian` (PA-P,
+   invites confirmées par « Oui »), reconstruction de host et des 16 presets dans
+   `env-53-debian`, comparés à `env-57-debian` ; `mirror-sync --dry-run`.
+2. C5 : fixture d'ENV-56 sur la VM (clone de seed.scions au tag 0.6.3.2).
+3. C7 écarté (ni binaire, ni flash, ni sonde ne changent) ; C8 tel qu'écrit.
+4. §0 tel qu'écrit, push de `devenv/env-61`, ordre `R61-1`, regreffes des 6 rootstocks d'essai
+   du Mac pendant R61-1.
+
+Consigne complétée (ac3b913) et poussée (`git push -u origin devenv/env-61`, invite confirmée).
+§0 fait par l'utilisateur sur la VM ; session VM désignée par l'utilisateur : `debian-linux-vm`
+(réf. 7348f6, seule en ligne ; déjà en ligne avant le push, confirmée par l'utilisateur comme
+la session relancée).
+
+## 3. Messages §2bis
+
+| Message | Date | Sens | Résumé |
+| --- | --- | --- | --- |
+| ORDRE R61-1 | 2026-11-17 | Mac (`validate-env-58-60-debian`, 14bbb2) → VM (`debian-linux-vm`, 7348f6) | consigne `env-61-debian.md` @ ac3b913 envoyée en entier, avec son sha256 (`5f0cdf6f…2798`, le fichier fait foi) ; branche `devenv/env-61` @ ac3b913 (poussée) ; actions de l'utilisateur : refus A1 à A3, 4 invites `graft-update` (« Oui »), push ; envoi accepté par Remote Control, lecture non confirmée |
+| ACCUSÉ R61-1 | 2026-11-17 | VM (`debian-linux-vm`, adresse `bridge:session_01FkeafxfusANbF1yYsZwt53`) → Mac | reçu directement. §5 sans arrêt : `$T` = répertoire de travail, `devenv/env-61` = ac3b913, propre ; sha256 de la consigne = ordre ; Claude Code **2.1.326** (2.1.323 en R57-1) ; `CLAUDE_PROJECT_DIR` vide dans le Bash ; empreintes `settings.json`, hook, enveloppe = Mac ; pas de `settings.local.json` ; `~/.claude/settings.json` **3903 o, modifié le 17 nov. à 16:44** (10 nov. en R57-1 ; lu au §8.1) ; journal `3498db03-….jsonl` ; Debian 13.7, git 2.47.3, scion 0.6.3.1, chaîne = R57-1, 17 Go libres ; `têtes publiées = Mac` ; `$U`, `$E13` = attendu (3889, 23 entrées, noyau ed2a41f, 108 760 Ko) ; `$C5` : graine 6d3d2a5, `salut` 71e1641 `modifs=2`, 3059 liens, 2 clones F7 30 908 Ko. **Écart §0.3** : session non relancée après le `switch` (démarrée sur `devenv/env-57-debian`) ; répertoire `$T`, `settings.json` identique sur les deux branches, hook relu à chaque appel : effet attendu nul, C2 le vérifiera. Étapes §6 à §15 prévues ; §6 commencé |
+| AVANCEMENT R61-1 (§6 avant) | 2026-11-17 | VM → Mac | noyau `$K` ed2a41f → dfc960b (avance rapide) ; `SCION_REF` 0.6.3.2 (noyau, lepton-tools) ; `SCION_MIN_VERSION` (0, 6, 2, 0) ; `.vsix` 0.5.2 présent ; lancement des 3 installations |
+| QUESTION R61-1 (§6, contrôle D17) | 2026-11-17 | VM → Mac | §6 conforme (`install-debian.sh` code 0, scion 0.6.3.2 depuis `seed.scions.git@0.6.3.2` ; `pipx install --force` lepton 0.1.0, Python 3.13.5 ; `install-vscodium.sh` code 0, `changements 0` ; `scion 0.6.3.2 (requis ≥ 0.6.2.0)` ; extensions = attendu), mais le contrôle D17 de la consigne donne `False` : il cherche `expanduser().resolve()`, texte de l'ancien code, alors que 74c9c97 écrit `expanded = Path(loc).expanduser()` puis `local = expanded.resolve()` ; `seed.py` installé identique à `$T` ; arrêt du §6 appliqué ; options proposées |
+| RÉPONSE R61-1 (§6) | 2026-11-17 | Mac → VM | erreur de la consigne confirmée (Mac : ancien contrôle `False`, contrôle proposé `True`) ; décision de l'utilisateur, option 1 : contrôle remplacé par l'identité de `seed.py` et `"local = expanded.resolve()" in src and "file://localhost{local}" in src`, écart consigné, suite de la consigne entière, le §10 faisant foi pour C4 ; envoi accepté par le serveur, remise non confirmée |
+| AVANCEMENT R61-1 (§7, §8.1, §8.2) | 2026-11-17 | VM → Mac | contrôle D17 corrigé `True`, ancien `False`, `seed.py` installé = dépôt (`6-controle-d17.txt`) ; §7 : copie 3059 liens, `check` 0, `env59lib` 7e2812f, `env60lib` c61b3dc, graine sans modification ; §8.1 : `permissions.allow` = PA-103 (3 règles), ni `ask`, ni `deny`, ni `defaultMode` ; autres clés `modelSettings`, `tui`, `theme`, `agentPushNotifEnabled`, `autoMode` (`soft_deny`) ; fichier du 17 nov. 16:44, vraisemblablement écrit par `/model` (bloc `permissions` inchangé) ; U1 code 1, U2 code 128 (« could not read Username »), U3 code 1, cibles absentes ; F1, F3, F6, F7 : 1 passed, F2 vers `8-f2.log` ; A1 lancé, refus attendu de l'utilisateur |
+| AVANCEMENT R61-1 (§8, A1) | 2026-11-17 | VM → Mac | **écart** : invite A1 parue (règle `ask`) mais **confirmée** au lieu d'être refusée (`accept user_temporary projectSettings`, 15:58:28 UTC) ; code 1, « n'est pas un rootstock », rien créé ; décisions jusque-là : `pipx install --force` `rule projectSettings` ; U1, U2 `subcommandResults` ; **U3 `classifier`** au lieu de la règle utilisateur attendue (écart relevé, sans arrêt) ; F1, F3, F6 `subcommandResults` ; F2, F7 `classifier` ; arrêt, l'utilisateur décide de la suite (A2) dans la session VM |
+
+## 4. Rootstocks d'essai du Mac (tâche 3)
+
+Accord de l'utilisateur au PA-109 (PA-P), pendant R61-1. scion 0.6.3.2, lepton 0.1.0. Script
+`env-57-mac/regreffer-essai.sh avant|apres` ; entre les deux, la session lance
+`scion graft-update -v <rootstock> > <journal> 2>&1; echo "code=$?" >> <journal>`. Attendu des liens :
+la liste d'avant du rootstock (dfc960b ne change rien de greffé). Journaux et bilans :
+`~/lepton-tools-dev/essais/env-61-mac/regreffes/<rootstock>-*`. Inventaire avant : clones de
+greffons sur `master`, amont réglé, noyau ed2a41f partout.
+
+| Rootstock | `graft-update` | Liens avant → après | Ajouts / retraits | `controler-trunk.py` | Clones tiers | `check` | Espace |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-13-vierge` (§1.3) | 0 ; noyau ed2a41f → dfc960b seul | 3889 → 3889 | 0 / 0 | `CONFORME` | 8, = attendu (0 / 16), 107 992 Ko inchangés | 0 | identique |
+| `env-9` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/qemu` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/qemu-gra2` | 0 ; noyau seul (BSP an386 réinscrit, 3059 feuilles), puis `scion graft-remove lepton@bsp-qemu-mps2-an386 <rootstock>` code 0, 8 feuilles, clone conservé | 3051 → 3051 | 0 / 0 | `CONFORME` | — | 1 (attendu, CFG-5) | identique |
+| `env-11/bout-en-bout/rootstock` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/f429zi` | 0 ; noyau seul | 3294 → 3294 | 0 / 0 | `CONFORME` | 2, = attendu (0 / 4), 36 528 Ko inchangés | 0 | identique |
+| `env-11/wl55jc1` | 0 ; noyau seul | 3315 → 3315 | 0 / 0 | `CONFORME` | 4, = attendu (0 / 8), 40 684 Ko inchangés | 0 | identique |
+
+Partout : aucun `git clone`, aucune ligne `extraction partielle,`, 0 conflit ni refus, 0 lien
+cassé, 0 fichier régulier, 0 `.DS_Store` dans les trunks.
+
+Décisions (journal de session, `decisions.py`, heures UTC) : les 7 `graft-update` sur invite
+`ask` confirmée par l'utilisateur, de 15:11 à 16:01 : `user_temporary` ×4 (« Oui ») et
+`user_permanent` ×3 (`env-13-vierge`, `env-9`, `f429zi`), tous `projectSettings`. Pour `env-9`,
+l'utilisateur a confirmé avoir choisi « ne plus demander » ; pour les deux autres, le même code
+le laisse supposer, sans confirmation. L'invite a paru à chaque fois, même après un « ne plus demander » (§1.3). Le
+`graft-remove`, hors règle, a été accepté par le classifieur. Aucun refus.
+| AVANCEMENT R61-1 (§8 fin, §9 début) | 2026-11-17 | VM → Mac | A1 rejoué à la demande de l'utilisateur : `rejet-invite` (15:59:48) ; A2 `rejet-invite` (16:00:46) ; A3 `rejet-invite` (16:01:20) ; H1 `reject hook` ; cible absente, `essai-hook` absent, 0 paquet `env-61`, liens de `$S` = départ ; écart restant U3 (classifieur) ; motifs d'A2 et A3 demandés à l'utilisateur ; §9 : relevé avant d'`env-28-debian` (3889), `graft-update` lancé sur invite |
