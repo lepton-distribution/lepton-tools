@@ -13,7 +13,7 @@ La session qui exécutera ENV-62 remplacera cette passation.
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/revision-2026-11-18` (depuis `main` 24ca20a) | commit de la révision du plan ENV-62 à ENV-66 ; fusion dans `main` et push selon l'accord de l'utilisateur (voir `DEVENV-STATUS.md` §Journal) | oui |
+| lepton-tools | `main`, à jour avec `origin/main` ; `devenv/revision-2026-11-18` (depuis `main` 24ca20a), fusionnée `--no-ff` dans `main` (c422a41), les deux poussées (PA-P, accord de l'utilisateur) | `main` : le commit « état et passation » de fin de session (non poussé), au-dessus de 949997f (consignation du push) et c422a41 (fusion) ; branche : 16da928 (révision du plan) | oui |
 | seed.scions | `master` | 975caf6 (tag 0.6.3.2), non touché | oui |
 | clone noyau `depots/lepton/original/master` | `master` | dfc960b, non touché | oui |
 | autres | `master` / `original-tree` | non touchés : graine 15740f9 | oui |
