@@ -6,7 +6,7 @@ Langue : français. Ton neutre, objectif, concis.
 ## Skills du dépôt (`.claude/skills/`)
 | Skill | Quand |
 | --- | --- |
-| `devenv-session` | Début et fin de toute session — obligatoire |
+| `devenv-session` | Début et fin de toute session — obligatoire (sauf session de ticket, ci-dessous) |
 | `lepton-rootstock` | Toute écriture, tout git, toute regreffe dans l'arbre Lepton |
 | `lepton-oracle` | Avant et après toute modification qui doit être sans régression |
 | `lepton-cibles` | Construction, QEMU, banc KAL, flash, débogage |
@@ -21,6 +21,11 @@ et `<ROOTSTOCK>/depots/tiers/`. Un refus signale une erreur de chemin : ne jamai
 
 ## Règles permanentes
 - Début de session : skill `devenv-session`, puis mode plan et accord de l'utilisateur.
+- Exception (décision de l'utilisateur du 2026-11-18) : une session de ticket (skill
+  `lepton-ticket-traiter` du plugin `lepton-tickets`) n'est pas une session d'étape.
+  `devenv-session` ne s'y applique pas ; elle ne touche ni `DEVENV-STATUS.md` ni `HORS-PLAN.md`
+  et ne crée aucune branche `devenv/`. Le hook, les règles de permission et l'interdiction de
+  push sans accord s'y appliquent.
 - Une session = une étape. Une branche `devenv/env-<N>` par dépôt touché.
 - S'arrêter à chaque point d'arrêt d'`doc/devenv/ORCHESTRATION.md` §4 qui concerne l'étape.
 - Aucune hypothèse silencieuse : un manque devient une question à l'utilisateur.
