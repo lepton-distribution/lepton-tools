@@ -1,6 +1,6 @@
 ---
-name: devenv-session
-description: Procédure obligatoire de début et de fin de session du chantier « environnement de développement Lepton » (dépôt lepton-tools). Utiliser au démarrage de toute session (« démarre la session », « reprends l'étape », « on continue ENV-N ») et avant de la clore ou de l'interrompre (« fin de session », « on s'arrête », « fais la passation »).
+name: "devenv-session"
+description: "Procédure obligatoire de début et de fin de session du chantier « environnement de développement Lepton » (dépôt lepton-tools). Utiliser au démarrage de toute session (« démarre la session », « reprends l'étape », « on continue ENV-N ») et avant de la clore ou de l'interrompre (« fin de session », « on s'arrête », « fais la passation »)."
 ---
 
 # Session du chantier ENV
@@ -38,6 +38,17 @@ Exécuter dans cet ordre, sans en sauter :
 
 - Point d'arrêt atteint : s'arrêter, exposer la question, attendre ; consigner la réponse dans
   `DEVENV-STATUS.md` §Décisions avec la date et l'identifiant PA-x.
+- Point écarté du plan (constat hors du périmètre de l'étape) : au point d'arrêt où il est
+  présenté, proposer le choix hors plan ou ticket (règle en tête de `doc/devenv/HORS-PLAN.md`).
+  Ticket seulement pour un défaut ou une fonctionnalité du code d'un greffon du rootstock (ni
+  `lepton-tools` ni `seed.scions`) : skill `lepton-ticket-creer` (plugin `lepton-tickets`), §8
+  « depuis un chantier », publication sur accord du texte. La ligne est ajoutée à `HORS-PLAN.md`
+  dans les deux cas ; « Suite » renvoie au ticket. Code non publié : « Suite »
+  `ticket à créer après publication d'ENV-N`.
+- Après publication (fusion dans la branche par défaut du greffon et push accordé, PA-P) :
+  créer les tickets `ticket à créer après publication d'ENV-N`, puis mettre leur « Suite » à
+  jour (`converti en ticket …`) dans le commit suivant (consignation du push, ou état et
+  passation).
 - Toute écriture dans l'arbre Lepton : appliquer la skill `lepton-rootstock`.
 - Tout état de référence ou toute comparaison : skill `lepton-oracle`.
 - Toute construction, exécution QEMU, flash ou débogage : skill `lepton-cibles`.
@@ -55,6 +66,8 @@ Exécuter dans cet ordre, sans en sauter :
    - versions nouvellement relevées ; décisions prises.
 2. Écrire `doc/devenv/handoff/env-N.md` d'après `doc/devenv/handoff/TEMPLATE.md`, en remplaçant le
    précédent s'il existe. Distinguer les décisions de l'utilisateur des propositions non validées.
+   Lister les tickets créés pendant la session et les lignes de `HORS-PLAN.md` restées
+   `ticket à créer après publication d'ENV-N`.
 3. Commiter dans `lepton-tools` :
    ```bash
    git add doc/devenv && git commit -m "devenv(env-N): état et passation"
