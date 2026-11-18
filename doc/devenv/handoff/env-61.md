@@ -16,6 +16,7 @@ prochaine révision du plan.
 | --- | --- | --- | --- |
 | lepton-tools | `devenv/env-61` (depuis `main` 7018302), fusionnée `--no-ff` dans `main`, les deux poussées (PA-110) | « devenv(env-61): état et passation », au-dessus de f383704 (fusion de `devenv/env-61-debian`), 352e575 (tâche 4), 342d660 (tâche 3), ac3b913 (PA-109, consigne), 088c291 (préparation), 11a11dc (étape en cours) | oui |
 | lepton-tools, hors étape (2026-11-17) | `devenv/skills-compte` (depuis `main` 09b2693), fusionnée `--no-ff` dans `main` (fa8a200), les deux poussées (PA-P) | `main` : le commit « état et passation » de la session hors étape, au-dessus de ba117b9 (journal du push) et fa8a200 (fusion) ; branche : f16634a (état et journal), 8ae6fa9 (règle), e8bc60b (script et tests) | oui |
+| lepton-tools, hors étape (2026-11-18) | `main` (pas de branche, décision de l'utilisateur), en avance sur `origin/main`, **non poussé** sauf accord au PA-P | c331b6b et 32dbb2f (règle « ticket ou hors plan »), d96367f (import de `devenv-session`), puis le commit « état et passation (lepton-tickets, import de devenv-session) » | oui |
 | lepton-tools (VM) | `devenv/env-61-debian` | 2771213 « devenv(env-61-debian): rapport R61-1… », poussée, fusionnée dans `devenv/env-61` | oui |
 | clone noyau `depots/lepton/original/master` | `master` | dfc960b, non touché | oui |
 | seed.scions, graine, familles, BSP, miroirs | `master` / `original-tree` | non touchés : seed.scions 975caf6 (tag 0.6.3.2), graine 15740f9 | oui |
@@ -91,6 +92,26 @@ VM (état laissé par R61-1) :
   synchronisée dans `.claude/skills/`, commit dédié (CLAUDE.md, ORCHESTRATION §5bis). Branche
   `devenv/skills-compte`, fusionnée dans `main` ; les deux poussées sur accord (PA-P). Le commit
   « état et passation » qui suit le push n'est pas poussé. Pytest 527 (508 + 19 tests du script).
+- [x] Hors étape (2026-11-18), règle « ticket ou hors plan » : en-tête de `HORS-PLAN.md`,
+  exception de `CLAUDE.md` pour les sessions de ticket, plugin `lepton-tickets` 0.1.2
+  (c331b6b, 32dbb2f).
+- [x] Hors étape (2026-11-18), consigne
+  `~/lepton-tools-dev/plugins/CONSIGNE-installation-lepton-tickets.md` :
+  - `devenv-session` importé depuis le compte (d96367f) : diff conforme, plus l'absence de saut de
+    ligne final de la copie du compte (PA-I2) ;
+  - plugin décompressé dans `~/lepton-tools-dev/plugins/lepton-tickets/`, `claude plugin validate`
+    réussi, hook contrôlé (refus code 2, accord code 0) ;
+  - `~/.config/lepton-tickets/config.json` écrit (PA-I3), `verrou etat` : libre, code 0 ;
+  - `.claude/settings.local.json` complété (`additionalDirectories` ×2, `ask` ×4), non versionné ;
+  - plugin **non installé** (PA-I4) : session suivante lancée par
+    `claude --plugin-dir ~/lepton-tools-dev/plugins/lepton-tickets` ;
+  - requête GraphQL de `ticket_dossier.py verifier` **non vérifiée** : aucun ticket sur les 13
+    greffons `lepton-distribution` du rootstock.
+- [ ] Premier essai du plugin (nouvelle session) : ticket sur un greffon peu sensible, `validé` posé
+  par l'utilisateur sur GitHub, puis `/lepton-ticket-traiter` ; vérifier la requête GraphQL et le
+  nom des agents (`lepton-tickets:ticket-…`, d'après `claude plugin validate`).
+- Tickets créés pendant les sessions du 2026-11-18 : aucun. Lignes de `HORS-PLAN.md` en
+  `ticket à créer après publication d'ENV-N` : aucune.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
@@ -105,6 +126,9 @@ VM (état laissé par R61-1) :
 | Fin du plan : D26 à D28 ajoutés ; D21 à D28 à traiter ; A1 à A4, D4, D12 hors plan | utilisateur | oui |
 | `fr()`, base `env-61-fixture/f56`, comptes des attendus, contrôles de la consigne | session, d'après les essais du Mac (rapport §1) | oui (rapport ; défauts en D27) |
 | Hors étape : skills édités sur le compte claude.ai, importés par `scripts/importer-skills.sh` ; branche dédiée ; sans argument, skills déjà présents ; push | utilisateur (questions posées, plan approuvé) | oui |
+| Hors étape (2026-11-18) : règle « ticket ou hors plan », exception de `CLAUDE.md`, tickets réservés aux greffons du rootstock, commits sur `main` sans push | utilisateur | oui (§Décisions, 2 lignes du 2026-11-18) |
+| Hors étape (2026-11-18) : PA-I1 à PA-I4 (archive, import tel quel, valeurs de configuration, réglages locaux, `--plugin-dir`) ; plugin `chantier` inexistant (erreur de la consigne, du README et de la décision précédente) | utilisateur | oui (§Décisions, 3e ligne du 2026-11-18) |
+| Corriger la mention du plugin `chantier` dans le README de `lepton-tickets` (§Installation) à la prochaine version, préparée dans Claude Desktop | proposition non validée | non |
 
 ## Pièges rencontrés
 - **Skills synchronisés depuis le compte** : la copie `~/.claude/skills/synced/` se met à jour au
@@ -126,6 +150,10 @@ VM (état laissé par R61-1) :
   effet grâce aux cibles absentes (D28).
 - **Session VM « relancée »** : `ListAgents` montrait la même réf. (7348f6) avant et après le §0 ;
   l'ACCUSÉ a montré qu'elle ne l'était pas. Le répertoire de travail suffit aux règles du dépôt.
+- **Saut de ligne final** : la copie synchronisée d'un skill du compte peut en être privée ; le
+  diff d'import montre alors la dernière ligne, texte inchangé (2026-11-18).
+- **`claude plugin validate`** ajoute des contrôles du catalogue (LICENSE, icône, `.DS_Store`)
+  sans effet sur le verdict ; sans objet pour un plugin local.
 - **`git merge-tree --write-tree`** permet de vérifier l'absence de conflit avant une fusion, sans
   rien écrire dans l'arbre de travail.
 
@@ -149,3 +177,5 @@ révision du plan avec la skill lepton-portage-instructions : planifier D21 à D
 (D21 et D23 expanduser ; D22 et D25 scion ; D24 extension --purge ; D26 à D28 Claude Code et
 consignes VM) ; lire DEVENV-STATUS.md (Prochaine action) et handoff/env-61.md
 ```
+Session utilisant le plugin `lepton-tickets` (premier essai, ou ticket depuis un chantier) :
+`claude --plugin-dir ~/lepton-tools-dev/plugins/lepton-tickets`, lancé depuis ce dépôt.
