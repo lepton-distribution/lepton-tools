@@ -1,0 +1,21 @@
+{
+  "path": "<C>/trunk/CMakeLists.txt",
+  "relative": "CMakeLists.txt",
+  "trunk_path": "<C>/trunk/CMakeLists.txt",
+  "kind": "link",
+  "status": "owned",
+  "source": "link",
+  "owner": {
+    "name": "lepton-noyau",
+    "key": "lepton@original::tree",
+    "in_seed": true,
+    "clone_path": "<C>/depots/lepton/original/master/scion/CMakeLists.txt"
+  },
+  "candidates": [
+    {
+      "name": "lepton-noyau",
+      "key": "lepton@original::tree",
+      "in_seed": true
+    }
+  ]
+}

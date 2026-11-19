@@ -15,6 +15,10 @@
 #           p6 generate --clangd    hors des 6 : c1 check FILE, m1 seed mkconf import PATH
 # Après chaque cas : état de <C> comparé au départ (env-55-url-file/etat.sh), clones de <C>,
 # arborescence du répertoire courant, présence d'un `<cwd>/~*`, existence de la cible.
+# Écritures dans <C> d'une entrée acceptée (après correction de D21 : p5add-t, p5dir-t, p6-t, p6-u) :
+# annulées par le script (cas p5add-u, p5dir-u : file remove, dir remove ; espace de travail de <C>
+# rétabli ; <C>/build créé par generate supprimé par scripts/supprimer-essai.sh), pour que <C>
+# revienne au départ.
 set -u
 export LC_ALL=C
 E=$1 phase=$2 vers=$3
@@ -114,13 +118,26 @@ cas p5add-t "_locate (file add)" t "$C" "$C/trunk/sys/root/src/lib/env63-nouveau
   lepton file add "~/$hC/trunk/sys/root/src/lib/env63-nouveau.c"
 cas p5dir-t "_locate (dir add)" t "$C" "$C/trunk/sys/root/src/lib/env63-rep" \
   lepton dir add "~/$hC/trunk/sys/root/src/lib/env63-rep"
+# annulation des écritures acceptées (aucune avant correction : cible absente)
+[ -e "$C/trunk/sys/root/src/lib/env63-nouveau.c" ] && cas p5add-u "annulation (file remove)" - "$C" \
+  "$C/trunk/sys/root/src/lib/env63-nouveau.c" lepton file remove trunk/sys/root/src/lib/env63-nouveau.c
+[ -e "$C/trunk/sys/root/src/lib/env63-rep" ] && cas p5dir-u "annulation (dir remove)" - "$C" \
+  "$C/trunk/sys/root/src/lib/env63-rep" lepton dir remove trunk/sys/root/src/lib/env63-rep
 cas p5graft-t "_locate (graft --path)" t "$C" - lepton graft --path "~/$hC/trunk/CMakeLists.txt" --no-cmake
 
-# p6 : generate --clangd PATH ; refus attendus dans <C> (t, u, x), réussites dans <G> (a, d, r, nom)
+# p6 : generate --clangd PATH ; formes t, u, x dans <C> (refus avant correction ; t, u acceptés
+# après : espace de travail rétabli, build/ créé supprimé) ; réussites dans <G> (a, d, r, nom)
+ws=$(ls "$C"/*.code-workspace); cp "$ws" "$brut/espace-C-depart"; build0=$([ -e "$C/build" ] && echo oui || echo non)
 for f in "${F[@]}"; do v=$(forme $f "$W/outils/clangd")
   case $f in t|u|x) dir=$C ;; *) dir=$G ;; esac
   cas p6-$f "generate --clangd" $f "$dir" - lepton generate --clangd "$v"
   [ "$dir" = "$G" ] && grep -h '"clangd.path"' "$G"/*.code-workspace >"$brut/p6-$f.clangd"; done
+cmp -s "$ws" "$brut/espace-C-depart" && echo "espace de <C> inchangé" >"$brut/p6-C.note" \
+  || { cp "$brut/espace-C-depart" "$ws"; echo "espace de <C> modifié par generate, rétabli" >"$brut/p6-C.note"; }
+if [ "$build0" = non ] && [ -e "$C/build" ]; then
+  "$here/../../../../scripts/supprimer-essai.sh" "$C/build" >>"$brut/journal.txt" 2>&1
+  echo "<C>/build créé par generate, supprimé (code $?)" >>"$brut/p6-C.note"
+fi
 cas p6-r "generate --clangd" r "$G" - lepton generate --clangd "$(relpath "$W/outils/clangd" "$G")"
 grep -h '"clangd.path"' "$G"/*.code-workspace >"$brut/p6-r.clangd"
 cas p6-n "generate --clangd" nom "$G" - lepton generate --clangd clangd-mp-21
@@ -134,7 +151,7 @@ cas m1-t "seed mkconf import" t "$C" - lepton seed mkconf import \
   "~/$hC/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml"
 
 for f in "$brut"/*.cmd "$brut"/*.out "$brut"/*.err "$brut"/*.code "$brut"/*.etat "$brut"/*.W \
-         "$brut"/*.clangd "$brut"/resume.tsv; do
+         "$brut"/*.clangd "$brut"/*.note "$brut"/resume.tsv; do
   [ -e "$f" ] || continue
   sed -e "s#$W#<W>#g" -e "s#$T#<T>#g" -e "s#$G#<G>#g" -e "s#$C#<C>#g" -e "s#$hW#<hW>#g" -e "s#$hT#<hT>#g" \
       -e "s#$hC#<hC>#g" -e "s#$HOME#<HOME>#g" -e "s#~$U/#~<U>/#g" -e "s#/~$U#/~<U>#g" "$f" >"$vers/$(basename "$f")"

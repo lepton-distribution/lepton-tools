@@ -141,3 +141,78 @@ développe `~`, la commande réussirait et l'extension ouvrirait `~/…` pris te
 | Tests | un test paramétré par chemin, dans le fichier de la commande (§2 point 6) |
 | `README.md` | inchangé |
 | O-1, O-2 | O-1 au hors-plan (D30) ; O-2 au hors-plan (D31), présenté au PA-115 d'ENV-64 |
+
+## 4. Correction (`devenv/env-63`)
+
+- Tests d'abord (c06abd0) : fixture `tilde` (`tests/conftest.py` : `HOME` = répertoire de test,
+  compte simulé `~lepton-d21` par `pwd.getpwnam`, compte absent `~lepton-inconnu-d21`, répertoire
+  courant vide, `no_tilde()`), formes `~`, `~utilisateur`, `relatif`, `absolu` :
+  - `test_milestone6.py` : `test_d21_rootstock_option_tilde`, `…_unknown_user` (`-C`, `check`) ;
+  - `test_milestone3.py` : `test_d21_seed_new_tilde` (`-C`, `--seed-repo`), `…_unknown_user` ;
+  - `test_milestone4.py` : `test_d21_scion_new_repo_tilde`, `…_unknown_user` ;
+  - `test_milestone5.py` : `test_d21_locate_tilde` (`file owner`, `file add`, `dir add`,
+    `graft --path`), `…_unknown_user` ;
+  - `test_generate.py` : `test_d21_find_clangd_tilde`, `…_name_and_unknown_user`.
+  Sur `main` 332babc : **18 échecs** (formes `~`, `~utilisateur`, comptes absents), 12 réussites
+  (relatif, absolu, nom d'exécutable) : `env-63-tilde/tests-avant-correction.txt`.
+- Correction (a60ea7c) : `expand_user(text, what)` (`lepton/rootstock.py`) rend
+  `Path(text).expanduser()`, ou lève `LeptonError` « `<what>` « … » : répertoire personnel de « ~… »
+  introuvable ». Sites : `Rootstock.discover` (`-C`), `seed_new` (`-C`, `--seed-repo`),
+  `scion_new` (`--repo`), `_locate` (`chemin`), `find_clangd` (`--clangd`, seulement pour une
+  valeur qui commence par `~` : un nom sans `/` reste cherché dans le PATH, et `./x` n'est pas
+  réécrit en `x`) ; `parse_location` la reprend (`origine locale`), message inchangé.
+- lepton réinstallé : `pipx install --force ~/lepton-tools-dev/lepton-tools` (lepton 0.1.0) ; 18
+  modules du venv pipx identiques à la branche.
+
+## 5. Contrôles après correction
+
+### 5.1 Tests
+
+`pytest` complet : **567 passed** (537 + 30), 541 s.
+
+### 5.2 Table du §1 rejouée (`apres/`)
+
+Script amendé avant le rejeu : les entrées désormais acceptées écrivent dans `<C>` (`file add`,
+`dir add`, `generate --clangd ~/…`) ; le script les annule (cas `p5add-u`, `p5dir-u` :
+`file remove`, `dir remove` ; espace de travail de `<C>` rétabli ; `<C>/build` créé par
+`generate` supprimé par `scripts/supprimer-essai.sh` ; `apres/p6-C.note`). Un premier passage
+fait avec le script non amendé a laissé ces écritures dans `<C>` ; `<C>` a été remis au départ
+(même annulation, à la main ; état égal au départ), et ce passage supprimé.
+
+| Cas | Avant → après | Relevés |
+| --- | --- | --- |
+| p1-t, p1-u, p1-z (`-C`) | 1 → **0** | `check` conforme, comme p1-a |
+| p2-t, p2-u (`seed new -C`), p3-t, p3-u (`--seed-repo`), p4-t, p4-u, p4-z (`--repo`) | 0 → 0 | cible créée à sa place, **aucun `<cwd>/~`** ; sorties de p2, p3 égales à celles de la forme `a`, au nom de la cible près |
+| p2-x, p3-x, p4-x | 0 → **1** | « `-C` / `--seed-repo` / `--repo` « ~inconnu63/… » : répertoire personnel de « ~inconnu63 » introuvable », rien de créé |
+| p1-x, p5-x, p6-x | 1 → 1 | même message, à la place de « n'est pas un rootstock », « ni dans le trunk… », « introuvable » |
+| p5-t, p5-u (`file owner`), p5add-t, p5dir-t, p5graft-t | 1 → **0** | `owned` ; fichier et répertoire créés dans le clone `original`, puis retirés (p5add-u, p5dir-u, code 0) |
+| p6-t, p6-u (`--clangd`) | 1 → **0** | espace de travail écrit, puis rétabli |
+| formes `r`, `a`, `d`, p6-n, c1-t, c1-a, m1-t | inchangé | `.code`, `.out`, `.err` identiques à l'avant ; `.clangd` identiques, sauf p6-r où seul le nom de phase (`w-avant` / `w-apres`) du chemin relatif diffère (D30) |
+
+États : `<C>` égal au départ après chaque cas (liens, cassés, réguliers, graine, liste greffée,
+`depots/`, clones), sauf entre une écriture acceptée et son annulation (p5add-t, p5dir-t), et
+égal au départ en fin de passage.
+
+### 5.3 D17 inchangé
+
+`env-59-tilde/essai.sh` rejoué sur `<C>` (dépôt présent `<P>` = `<E>/d17-depot`, greffon
+`env59lib` créé par `scion new --no-seed`, comme en ENV-59 ; absent `<A>` = `<E>/d17-absent`),
+relevés `env-63-tilde/d17/` (547 fichiers, 67 cas). Comparé à `env-59-tilde/apres/` :
+**0 écart sur 547**, après normalisation de quatre différences étrangères à lepton :
+- noms des essais (`env-59-depot`, `env-59-absent`, `env-59-essai` ; chemins `~/…` et `../…`
+  non normalisés par `essai.sh`) ;
+- commit du clone noyau de l'essai (`ed2a41f` → `dfc960b`, regreffé en ENV-61) et commit de `<P>` ;
+- `git clone -b master` de scion 0.6.3.2 (D18, ENV-60) au lieu de `git clone` (scion 0.6.3.1
+  en ENV-59), dans 12 relevés.
+Tous les `.etat` égaux au départ.
+
+### 5.4 Extension
+
+`lepton generate` dans `<C>` d'abord (l'espace copié visait `essais/env-11/qemu`) : code 0,
+`CMakeUserPresets.json` « inchangé », espace « écrit », plus aucune mention d'`env-11`.
+Appels de l'extension rejoués en ligne de commande, chemin saisi `~/…/rs/trunk/sys/root/src/lib/env63-ext.c`
+(`ext/`) :
+- x01 `file owner … --json` (`ownerOption`) : code 0, `owned`, `trunk_path` développé ;
+- x02 `file add …` (`pathAdd`) : code 0, créé dans `lepton-noyau`, regreffé ;
+- x03 `file remove …` (`pathRemove`) : code 0, retiré ; état de `<C>` égal au départ, clone
+  propre.

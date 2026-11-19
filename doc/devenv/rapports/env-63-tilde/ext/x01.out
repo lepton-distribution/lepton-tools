@@ -1,0 +1,21 @@
+{
+  "path": "~/lepton-tools-dev/essais/env-63-essai/rs/trunk/sys/root/src/lib/env63-ext.c",
+  "relative": "sys/root/src/lib/env63-ext.c",
+  "trunk_path": "<C>/trunk/sys/root/src/lib/env63-ext.c",
+  "kind": "absent",
+  "status": "owned",
+  "source": "directory",
+  "owner": {
+    "name": "lepton-noyau",
+    "key": "lepton@original::tree",
+    "in_seed": true,
+    "clone_path": "<C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-ext.c"
+  },
+  "candidates": [
+    {
+      "name": "lepton-noyau",
+      "key": "lepton@original::tree",
+      "in_seed": true
+    }
+  ]
+}
