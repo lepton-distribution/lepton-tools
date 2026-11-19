@@ -15,7 +15,7 @@ Rapports :
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `main` : fusion `--no-ff` de `devenv/env-66` (depuis `main` 6bc05ad), qui contient la fusion de `devenv/env-66-debian` (9f34370, VM) ; `main` et `devenv/env-66` poussées (PA-120) | branche : « devenv(env-66): état et passation » ; `main` : commit de fusion | oui |
+| lepton-tools | `main` : fusion `--no-ff` de `devenv/env-66` (depuis `main` 6bc05ad), qui contient la fusion de `devenv/env-66-debian` (9f34370, VM) ; `main` 7f9e9c0 et `devenv/env-66` 4bbd23f poussées (PA-120). Puis, sur `main`, un commit local **non poussé** « devenv(hors-etape): fin du plan, A3 reconfirmé hors plan ; passation » (push à faire sur accord, PA-P) | `main` : ce commit | oui |
 | clone noyau `depots/lepton/original/master` | `master` 2b4a647 (inchangé dans l'étape) | « Fusion de devenv/env-65 (…) » | oui |
 | autres | seed.scions `master` 49ca4ae, tag 0.6.3.3 ; graine `original-tree` 15740f9 ; non touchés | — | oui |
 
@@ -50,7 +50,10 @@ Laissé en place :
 - **`HORS-PLAN.md`** : D21 à D28 prouvés sur la VM ; D34 à D40 ajoutés.
 
 ## Reste à faire dans l'étape
-- Rien. Fin du plan : présenter `HORS-PLAN.md` à l'utilisateur pour décision.
+- Rien dans l'étape. Fin du plan : présentation de `HORS-PLAN.md` commencée. A3 a été
+  reconfirmé hors plan. Restent A1, A2, A4, D4, D12, D29, D30, D32, D33 et D35 à D40, que
+  l'utilisateur reporte à la session suivante. D34 est hors plan depuis le PA-120 ; D31 a été
+  traité en ENV-64.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
@@ -59,6 +62,7 @@ Laissé en place :
 | PA-119 : consigne validée, §0 (règle `unittest` retirée de la VM par l'utilisateur), C3, C5 (3 fixtures), C6 (D23 par le runtime de VSCodium, D24 sur la VM), C7 maintenu, C8 écarté, C9 ; push et ordre | utilisateur | oui |
 | Pendant R66-1 : regreffe des 6 rootstocks du Mac ; A1 rejouée ; ligne de git « point de montage » admise ; §12.1 rejoué avec `LEPTON_EMBOS_ROOT` ; T3 rejoué (option c) ; push de `devenv/env-66-debian` | utilisateur | oui |
 | PA-120 : fusions et push ; D34 hors plan | utilisateur | oui |
+| Fin du plan : A3 reconfirmé hors plan ; autres points reportés à la session suivante | utilisateur | oui |
 | Ordre envoyé par référence (chemin, commit, sha256) et non recopié (52 Ko) | session (forme du tableau §2bis ; non contestée) | oui (rapport Mac §4) |
 | D35 à D40 : constats inscrits pour la présentation de fin du plan ; pistes (première ligne `fatal:`, relevé de `LEPTON_EMBOS_ROOT`, invites non simultanées) | proposition non validée | oui (`HORS-PLAN.md`) |
 
@@ -81,7 +85,8 @@ Laissé en place :
 - [x] D28 : la confirmation par erreur d'A1 est consignée (première invite), puis A1 a été refusée au rejeu.
 - [x] D27 : les comparaisons sont faites par `comparer-releves.py`. Aucune n'est faussée par la langue ou par le segment d'hôte. La variante « point de montage » est admise à la main (D34).
 - [x] Rootstocks d'essai regreffés : 0 lien cassé, 0 fichier régulier ; `check` 0 (`qemu-gra2` : 1).
-- [ ] Fin du plan : `HORS-PLAN.md` présenté à l'utilisateur pour décision. C'est la prochaine action, en fin de cette session ou à la suivante.
+- [ ] Fin du plan : `HORS-PLAN.md` présenté à l'utilisateur pour décision. La présentation est
+      commencée (A3 tranché) ; les autres points sont à la session suivante.
 
 Tickets créés pendant la session : aucun. Lignes de `HORS-PLAN.md` restées « ticket à créer après
 publication d'ENV-66 » : aucune.
@@ -89,5 +94,5 @@ publication d'ENV-66 » : aucune.
 ## Reprise
 Commande ou première action de la session suivante :
 ```
-présente HORS-PLAN.md pour décision (fin du plan), puis révise le plan si des points sont retenus
+poursuis la présentation de HORS-PLAN.md pour décision (fin du plan ; A3 déjà tranché), puis révise le plan si des points sont retenus
 ```
