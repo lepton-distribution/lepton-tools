@@ -30,13 +30,13 @@ Outils :
   - Mac : `essais/env-13-vierge`, `env-9`, `env-11/{qemu,qemu-gra2,bout-en-bout/rootstock,f429zi,wl55jc1}`.
 - `<ROOTSTOCK>` n'est pas regreffé : 3889 liens, `CONFORME`.
 
-Laissé en place :
-- Mac :
-  - `~/lepton-tools-dev/essais/env-66-essai` (copies c4, c4t, c5, d23cwd, `depot65`, clone de seed.scions, `vsix`) ;
-  - `~/lepton-tools-dev/essais/env-66-fixture` ;
-  - `~/lepton-tools-dev/essais/env-66-mac` (journaux, `git-po/fr.po`, regreffes).
-  Ils sont à supprimer par `scripts/supprimer-essai.sh` si l'utilisateur le décide.
-- VM : `~/env-66-journaux`, `~/tmp-pytest/env-66` et `~/tmp-pytest/env-61` (D38).
+Essais :
+- Mac : `~/lepton-tools-dev/essais/env-66-essai`, `env-66-fixture` et `env-66-mac` (copies,
+  fixtures, journaux, `git-po/fr.po`, journaux des regreffes) **supprimés** par
+  `scripts/supprimer-essai.sh` à la demande de l'utilisateur (2026-11-19, après la session). Les
+  attendus et relevés utiles sont versionnés sous `rapports/env-66-mac/`.
+- VM, laissés en place : `~/env-66-journaux`, `~/tmp-pytest/env-66` et `~/tmp-pytest/env-61`
+  (D38).
 
 ## Fait pendant la session
 - **Préparation** (`rapports/env-66-mac.md` §1) :
