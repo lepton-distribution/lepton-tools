@@ -1,6 +1,6 @@
 # ENV-62 — Claude Code : règle U3, invites à refuser, outils des consignes VM (D26, D28, D27) — rapport
 
-Brouillon (tâche 1, audit en cours, avant le PA-111). Mac, Claude Code **2.1.328** (2.1.327 à la
+Tâche 1 (audit), présenté au PA-111. Mac, Claude Code **2.1.328** (2.1.327 à la
 passation ; rejeu sous 2.1.328, décision du plan de session), mode auto. Journal de session :
 `46a64b00-d1cd-456d-a1e0-63283036b6cc.jsonl`. Décisions relevées par
 `env-62-claude-code/raisons.py` (forme d'`env-57-mac/decisions.py`, avec `reasonCode`,
@@ -114,22 +114,102 @@ cours jusqu'à son arrêt (cibles absentes, sans effet).
 
 ## 2. D28 — invites à refuser
 
-À compléter : inventaire, rejeu de « ne plus demander ».
+### 2.1 Inventaire
 
-Documenté (`permissions`) : « ne plus demander » écrit la règle dans `.claude/settings.local.json` ;
-« Rules are evaluated in order: deny, then ask, then allow » ; « a matching ask rule prompts even
-when a more specific allow rule also matches the same call ». CHANGELOG 2.1.323 : un `allow` qui
-serait écrit dans un `settings.local.json` suivi par git ne vaut que pour la session.
-`.claude/settings.local.json` n'est pas suivi ici (ignoré par `~/.gitignore_global:5`).
+| Étape | Invite à refuser | Annonce faite à l'utilisateur | Décision relevée |
+| --- | --- | --- | --- |
+| ENV-54 (Mac) | N4 `scion graft-update -v ~/…/env-54-absent` (règle `ask`) | au plan de session | refusée (`rapports/env-54-permissions.md` §9) |
+| ENV-57 (VM) | N4, idem `env-57-absent` | `AVANCEMENT` « N4 lancé, refus attendu de l'utilisateur » (après le lancement) | 1re **confirmée** `user_temporary projectSettings`, sans effet ; rejouée, refusée |
+| ENV-58 (Mac) | A1 directe `env-58-absent` | plan de session | **confirmée** `user_temporary projectSettings`, sans effet (`rapports/env-58-formes.md` §2) |
+| ENV-61 (Mac) | A2 `bash …/ask-script.sh ~/…/env-61-absent` (hook G2) | préparation, §1.6 | **confirmée** `user_temporary`, sans effet (`rapports/env-61-mac.md` §1.6) |
+| ENV-61 (VM) | A1, A2, A3 (`consignes/env-61-debian.md` §8.3) | `AVANCEMENT` avant A1 (consigne l. 381-384) | A1 1re **confirmée** `user_temporary projectSettings` (15:58:28 UTC), sans effet ; A1 rejouée, A2, A3 `rejet-invite` |
+| ENV-62 (Mac) | n° 2 `scion graft-update -v ~/…/env-62-absent` | « À REFUSER », dans le message qui précède le lancement | `rejet-invite` (07:44:31 UTC) |
+| ENV-66 (VM, prévu) | invites à refuser « dans la forme décidée au PA-111 » (`etapes/ENV-66-validation-debian.md:78`) | — | — |
+
+Les quatre confirmations par erreur ont toutes porté sur une cible absente : aucun effet. Aucune
+n'était précédée d'une annonce placée juste avant le lancement, dans le même message ; l'annonce
+était au plan, dans la consigne, ou dans un `AVANCEMENT` envoyé après le lancement.
+
+### 2.2 Rejeu de « ne plus demander » (Mac, 2.1.328, 2026-11-19)
+
+| N° | Annonce | Décision | Effet |
+| --- | --- | --- | --- |
+| 1 | « À CONFIRMER par « Oui, et ne plus demander » » | `accept user_temporary projectSettings`, `reasonCode` `rule:projectSettings`, `grantScope` `once` | code 1, « n'est pas un rootstock » ; cible absente |
+| 2 | « À REFUSER » | `rejet-invite` | aucun |
+
+- Réponse de l'utilisateur : l'invite n° 1 **ne proposait pas** « ne plus demander » ; il a choisi
+  « Oui ». Sous 2.1.326 (ENV-61, `rapports/env-61-mac.md` §1.3), l'option paraissait et était
+  relevée `user_permanent` sans rien écrire.
+- L'invite n° 2 a paru : une confirmation n'en dispense pas la suivante.
+- Empreintes avant et après identiques (`essais/env-62-essai/empreintes-d28-avant.txt`) :
+  `.claude/settings.json` `b01ad557…d235`, `.claude/settings.local.json` `83833a45…21e2`,
+  `~/.claude/settings.json` `561789c8…25ce2`, `~/.claude.json` `58b6009e…4edf` ; `allowedTools`
+  du projet vide.
+- Documenté (`permissions`) : « ne plus demander » écrit la règle dans
+  `.claude/settings.local.json` ; « Rules are evaluated in order: deny, then ask, then allow » ;
+  « a matching ask rule prompts even when a more specific allow rule also matches the same
+  call ». Une règle `allow` écrite n'aurait donc pas supprimé l'invite. CHANGELOG 2.1.323 : un
+  `allow` qui serait écrit dans un `settings.local.json` suivi par git ne vaut que pour la
+  session ; ici, `.claude/settings.local.json` n'est pas suivi (`~/.gitignore_global:5`).
+- Conclusion : le défaut de Claude Code relevé en ENV-61 ne se reproduit plus en 2.1.328, faute
+  d'option. Le reste de D28 est une erreur de manipulation, que la conduite des invites doit
+  parer.
 
 ## 3. D27 — outils de comparaison des consignes VM
 
-À compléter. Relevés faits :
-- `po/fr.po` de git `v2.47.3` (sha256 `62fbd300…cb8b8`) : `msgstr "fatal : "` (U+00A0) ;
-  « La branche distante %s n'a pas été trouvée dans le dépôt amont %s » ; « et que le dépôt
-  existe. ». Le motif de `fr()` (`consignes/env-61-debian.md:172`) porte une espace ordinaire.
-- `env-61-debian/11-fixture56/f05.err`, `f06.err` : `fatal\xa0: La b…`.
-- `f12a.depots`, `f12b.depots` l. 3 : `depots/.mirrors/localhost/home` (VM) contre `…/Users`
-  (Mac) : le parent de `<HOME>`, que `norm()` (`env-56-scion/fixture.py:81-83`) ne remplace pas.
-- `LC_ALL=C` : fixé par `env-56-scion/essai.sh:15`, `env-59-tilde/essai.sh:15`,
-  `env-60-scion/essai.sh:16`, `env-60-scion/fixture.py:32` ; absent d'`env-56-scion/fixture.py`.
+### 3.1 Défauts
+
+| Défaut | Fichier, ligne | Effet en R61-1 | Parade appliquée |
+| --- | --- | --- | --- |
+| `fr()` n'admet pas U+00A0 | `consignes/env-61-debian.md:172` | `f05.err`, `f06.err` non ramenés (`fatal\xa0: La branche distante…`) | QUESTION R61-1, option 1 : variante à espace insécable, écart de comparaison accepté |
+| `LC_ALL` non fixé | `env-56-scion/fixture.py` (aucune ligne ; `subprocess` sans `env`) | git en français dans `f05.err`, `f06.err` | même parade |
+| segment d'hôte non normalisé | `env-56-scion/fixture.py:81-83` (`norm()` : `<B>`, `<HOME>`) | `f12a.depots`, `f12b.depots` l. 3 : `depots/.mirrors/localhost/home` (VM) contre `…/Users` (Mac), le parent de `<HOME>` | `/home` → `/Users`, écart accepté |
+| contrôle D17 sur l'ancien texte | `consignes/env-61-debian.md:296` (`"expanduser().resolve()" in inspect.getsource(…)`) | `False` sur le code corrigé (74c9c97) | QUESTION R61-1, option 1 : identité de `seed.py` + `local = expanded.resolve()` et `file://localhost{local}` (`env-61-debian/6-controle-d17.txt`) |
+
+Source des traductions : `po/fr.po` de git `v2.47.3` (sha256 `62fbd300…cb8b8`) :
+`msgstr "fatal : "` (U+00A0), « La branche distante %s n'a pas été trouvée dans le dépôt
+amont %s », « et que le dépôt existe. ». `fr()` en reprend les textes, mais avec une espace
+ordinaire : la consigne cite `po/fr.po` (l. 180-182) sans l'avoir lu octet pour octet.
+
+### 3.2 Outils de comparaison des consignes
+
+| Outil | `LC_ALL` | `<HOME>` | segment d'hôte | traductions de git |
+| --- | --- | --- | --- | --- |
+| `fr()` (`consignes/env-61-debian.md:172`) | sans objet (filtre) | non | non | écrites à la main (espace ordinaire) |
+| `env-56-scion/fixture.py` | **non** | oui (l. 83) | **non** | aucune |
+| `env-60-scion/fixture.py` | `C` (l. 32) | oui (l. 91) | sans objet (aucun miroir) | aucune |
+| `env-56-scion/essai.sh` | `C` (l. 15) | oui (l. 127) | sans objet | aucune |
+| `env-59-tilde/essai.sh` | `C` (l. 15) | oui (l. 103) | sans objet | aucune |
+| `env-60-scion/essai.sh` | `C` (l. 16) | oui (l. 74) | sans objet | aucune |
+| `env-59-tilde/classer.py` | non (seul `printf` par `bash -c`, l. 44, sans texte traduit) | oui (l. 60) | sans objet | aucune |
+| `env-57-mac/decisions.py` | sans objet (lit le journal) | non (commandes brutes) | sans objet | aucune |
+
+Seule la fixture d'ENV-56 lance scion sans `LC_ALL=C` et crée des miroirs ; c'est l'outil que
+reprend le C5 d'ENV-66.
+
+## 4. PA-111 — propositions (à trancher par l'utilisateur)
+
+1. **D26** :
+   - cause : §1.4 (règle à joker sur un interpréteur écartée en mode auto, source et `~` sans effet) ;
+   - réglages utilisateur lus au démarrage seulement ; la version en cours se lit au champ
+     `version` du journal, pas par `claude --version` ;
+   - règle `Bash(python3 -m unittest discover *)` de la VM : **retirée** (sans effet en mode auto,
+     aucune commande d'ENV-63 à ENV-66 n'en dépend), ou gardée avec une note ;
+   - qui et quand : l'utilisateur, au §0 de la consigne d'ENV-66, avant d'ouvrir la session ;
+     U3 attendu alors au classifieur, et contrôle positif d'une règle utilisateur (forme de T6) ;
+   - règles du dépôt : aucune changée (les règles pytest `~/…/bin/pytest:*` sont restées
+     appliquées, F1 en R61-1 ; à recontrôler au pytest de la tâche 3).
+2. **D28** : annonce « À REFUSER » dans le message qui précède immédiatement chaque invite à
+   refuser (`AVANCEMENT` côté VM, avant le lancement) **et** cible absente obligatoire (déjà la
+   règle) ; contrôle interactif gardé. Défaut de Claude Code : documenté au §2bis seulement
+   (plus reproductible en 2.1.328).
+3. **D27**, amendement des « Règles des consignes VM » :
+   - `LC_ALL=C` dans chaque outil qui lance un programme dont la sortie est comparée ;
+   - toute traduction de git tirée de `po/fr.po` de la version de la VM, octet pour octet ;
+   - normalisation de `<HOME>` et de ses ancêtres sous `depots/.mirrors/<hôte>/` ;
+   - un contrôle de correction est vérifié contre le code installé au Mac avant d'écrire la
+     consigne.
+4. **D27, forme** : correction d'`env-56-scion/fixture.py` (`LC_ALL=C`, segment d'hôte), et outil
+   commun de comparaison sous `scripts/` (normalisation des traductions et du segment, tests sous
+   `tests/`), appliqué aux sorties réelles de la VM en tâche 3 ; ou règles seules.
+5. `CLAUDE.md` et skills : inchangés.
