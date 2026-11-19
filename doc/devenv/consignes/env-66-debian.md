@@ -2,8 +2,12 @@
 
 Fichier autonome : avec `ORCHESTRATION.md` §2bis, il suffit à conduire la session VM. Rédigé le
 2026-11-19 par la session Mac `validation-debian-env-66` (tâche 1 d'ENV-66), repris de
-`consignes/env-61-debian.md`. **À valider par l'utilisateur au PA-119** (C3, C5 fixtures, C6, C7,
-C8, C9, préalable du §0). Son texte est envoyé tel quel dans l'ordre `R66-1`.
+`consignes/env-61-debian.md`. Validé par l'utilisateur au PA-119 (2026-11-19) : préalable du §0
+(retrait de la règle `unittest` par l'utilisateur, relance de la session) ; regreffe de `$U`,
+`$E13`, `$C5` et `$R53` (C3) ; trois fixtures (C5) ; D23 par le runtime de VSCodium et D24 dans
+VSCodium sur la VM, par l'utilisateur (C6, option (a)) ; reconstruction des 16 presets et miroir
+à blanc maintenus (C7) ; cartes écartées (C8) ; nettoyage tel qu'écrit (C9).
+Son texte est envoyé tel quel dans l'ordre `R66-1`.
 
 ## 0. Préalable, avant l'ordre (utilisateur) — PA-119
 
@@ -98,7 +102,7 @@ La session VM ne développe pas : elle exécute, constate et rapporte.
 | Créer `$W` (§7), `$SS` et `$FX` (§11.2) et y tout faire, `seed add` / `seed remove` compris | `git config` (même en lecture) et `git sparse-checkout` dans un clone de `depots/tiers/` : relever par `releve-clones.sh` |
 | `scion mirror-sync --dry-run` dans `$R53` (§12) | `mirror-sync` sans `--dry-run` ; tout envoi vers un miroir |
 | Les contrôles du §8, sur cibles absentes ou protégées | Toute écriture flash, toute commande OpenOCD ; modifier la configuration réseau de la VM |
-| Suppressions par `scripts/supprimer-essai.sh` (§14) | `rm -rf` direct |
+| Suppressions par `scripts/supprimer-essai.sh` (§11.4 T3, §14) | `rm -rf` direct |
 | Créer `devenv/env-66-debian` (depuis `devenv/env-66`) ; y écrire `doc/devenv/rapports/env-66-debian.md`, `doc/devenv/rapports/env-66-debian/` et `doc/devenv/rapports/oracles/env-66-debian/` | Commiter sur une autre branche |
 | `git push origin devenv/env-66-debian` **après accord explicite de l'utilisateur** (PA-P ; invite `ask`) | Pousser toute autre branche |
 
@@ -597,15 +601,60 @@ Attendu : versions de Node et d'Electron relevées ; `code=0` ; `d23.tsv identiq
 `ELECTRON_RUN_AS_NODE` (fusible désactivé) : relever le message, D23 reste prouvé au Mac seulement
 (écart, sans arrêt).
 
-D24 : **option fixée au PA-119** (voir le rapport Mac, §2). Si retenu, par l'utilisateur dans
-VSCodium sur la VM, sur `$W/c4/gen` ouvert par `lepton generate` : le protocole est celui de
-`rapports/env-64-extension.md` §5.3 (cas U4 `seed remove --purge` par l'extension, T3 clone supprimé
-à la main au terminal) ; l'utilisateur relève les notifications, la session relève l'état
-(`python3 -I "$T/$LI" …`).
+D24 (PA-119, option (a)) : dans VSCodium sur la VM, par l'utilisateur, sur `$W/c4/gen`, avec le
+greffon `env65lib` de `$D65`. Forme réduite de `rapports/env-64-extension.md` §5.3 : U4
+(`seed remove --purge` par l'extension) et T3 (clone supprimé à la main). Défaut corrigé par 0.5.3 :
+la disparition d'un clone entier faisait regreffer la racine `<clone>/scion`, que lepton refuse,
+d'où un avertissement d'échec de regreffe. Sous Linux, l'observateur de fichiers est inotify (au
+Mac, FSEvents) : c'est la seule preuve sur cette plateforme.
+
+1. Préparation, par la session :
+   ```bash
+   cd "$T"
+   lepton seed add env65lib "file://localhost$D65@dev" --type bibliotheque --no-cmake -C "$W/c4/gen" > "$J/11-d24-add1.log" 2>&1; echo "code=$?" >> "$J/11-d24-add1.log"; tail -3 "$J/11-d24-add1.log"
+   python3 -I "$T/$LI" "$W/c4/gen/trunk"; ls "$W/c4/gen"/*.code-workspace
+   ```
+   Attendu : code 0 ; `liens=3063 casses=0 reguliers=0` (3059 + 4 de `env65lib@dev`) ; un espace
+   de travail `env11.code-workspace`.
+2. `AVANCEMENT` à l'utilisateur, **U4** :
+   - ouvrir `codium ~/lepton-tools-dev/essais/env-66-essai/c4/gen/env11.code-workspace` et attendre
+     la vue Lepton ;
+   - palette : « Lepton : retirer un greffon de la graine », choisir `env65lib`, puis « supprimer
+     aussi le clone (--purge) », puis confirmer ;
+   - relever **toutes** les notifications affichées, mot pour mot, puis répondre « reprendre R66-1
+     au §11.4, T3 ».
+   La session relève ensuite :
+   ```bash
+   cd "$T"; python3 -I "$T/$LI" "$W/c4/gen/trunk"; ls -d "$W/c4/gen"/depots/lepton/library-env65lib 2>&1
+   ```
+   Attendu : une seule notification, « lepton : retirer env65lib — terminé » (aucun avertissement
+   de regreffe) ; `liens=3059 casses=0 reguliers=0` ; clone absent.
+3. **T3**, VSCodium restant ouvert sur le même espace : la session regreffe le greffon puis
+   supprime son clone à la main :
+   ```bash
+   cd "$T"
+   lepton seed add env65lib "file://localhost$D65@dev" --type bibliotheque --no-cmake -C "$W/c4/gen" > "$J/11-d24-add2.log" 2>&1; echo "code=$?" >> "$J/11-d24-add2.log"; tail -1 "$J/11-d24-add2.log"
+   ```
+   puis, règle `allow`, forme exacte :
+   ```bash
+   scripts/supprimer-essai.sh ~/lepton-tools-dev/essais/env-66-essai/c4/gen/depots/lepton/library-env65lib/dev
+   ```
+   puis `AVANCEMENT` à l'utilisateur : relever les notifications parues (attendre 5 s), puis
+   répondre « reprendre R66-1 au §11.4, fin ». La session relève :
+   ```bash
+   cd "$T"; python3 -I "$T/$LI" "$W/c4/gen/trunk"
+   ```
+   Attendu : une seule notification, « Clone de library-env65lib supprimé hors de lepton : ses
+   liens du trunk sont cassés (lepton seed status) » ; aucun avertissement d'échec de regreffe ;
+   `liens=3063 casses=4`. `$W/c4/gen` n'est pas rétabli : il est supprimé au §14.
+4. L'utilisateur ferme VSCodium.
+
+Une notification d'échec de regreffe (`graft --path …/scion`), ou l'absence de la notification
+de T3 : écart à exposer, avec le texte relevé.
 
 ## 12. Reconstructions et commande de miroir (C7)
 
-**Périmètre fixé au PA-119.** Aucune source compilée ne change depuis R61-1.
+PA-119 : reconstruction et miroir à blanc maintenus, bien qu'aucune source compilée ne change depuis R61-1.
 
 ### 12.1 Reconstructions
 
@@ -670,7 +719,7 @@ postérieure au 2026-11-17 l'explique : la relever, puis relever la référence 
 
 ## 13. Cartes (C8)
 
-**Fixé au PA-119.** Proposition : écarté (ni binaire, ni flash, ni sonde ne changent). Aucune
+Écarté au PA-119 : ni binaire, ni flash, ni sonde ne changent. Aucune
 commande OpenOCD.
 
 ## 14. Nettoyage de la VM (C9)
@@ -685,7 +734,7 @@ scripts/supprimer-essai.sh ~/lepton-tools-dev/essais/env-66-essai ~/lepton-tools
 ```
 Puis la session vérifie l'absence (`ls -d …`) et le consigne. Conservés : `$U`, `$E13`, `$C5`
 (regreffés au §9), `$R53`, `$J`, `~/tmp-pytest/env-66`, `$J/0-settings-avant.json` (copie des
-réglages d'avant le §0). **Périmètre fixé au PA-119.**
+réglages d'avant le §0). Périmètre validé au PA-119.
 
 ## 15. Critères et rapport
 
@@ -696,9 +745,9 @@ réglages d'avant le §0). **Périmètre fixé au PA-119.**
 | C3 Regreffes | `$U`, `$E13` (et `$R53`, pour C7) : code 0, seul le noyau avance (dfc960b → 2b4a647), aucun clone, résumé = Mac (`cmp_mac`), liens inchangés (3889), `CONFORME` (attendu de R50-1), clones tiers 0 / 16, `clones = Mac`, `check` 0, espace = avant ; `$C5` : noyau seul, 3059 liens inchangés, `check` 0 |
 | C4 D21 | §10 : écarts limités à `p6-n.cmd`, `p6-n.clangd`, `resume.tsv` (colonne 8) et aux `*.W` de la racine (hors `.DS_Store`, relevés) ; colonnes 1-7 = Mac ; états = départ |
 | C5 D25, D22, pytest | §11.1 : l01, l02 code 2, aucune greffe fausse, l03 0 ; écarts limités à `depart.etat` et `l03.etat` (empreintes de la graine) ; §11.2 : trois fixtures écarts=0 ; lignes de git en français relevées ; §11.3 : pytest 570 passed |
-| C6 D23, D24 | extension 0.5.3 installée ; D23 `d23.tsv` = Mac par le runtime de VSCodium (ou écart relevé) ; D24 selon le PA-119 |
-| C7 Constructions, miroir | selon le PA-119 : host ctest 7/7 ; 16 presets construits ; QEMU fumée et banc 20/20, 16/16, 19/19, `peripheriques` ×4 ; mklepton = `env-61-debian` = `env-52-apres` ; `comparer_R61-1` 0 pour les 16 presets ; `mirror-sync --dry-run` : code 0, 8 miroirs, 0 à envoyer (ou expliqué par l'amont), 0 signalement ; rien envoyé |
-| C8 Cartes | selon le PA-119 |
+| C6 D23, D24 | extension 0.5.3 installée ; D23 `d23.tsv` = Mac par le runtime de VSCodium (ou écart relevé) ; D24 (PA-119, option (a)) : U4 « lepton : retirer env65lib — terminé » seul, T3 « Clone de library-env65lib supprimé hors de lepton… » seul, aucune notification d'échec de regreffe ; états relevés |
+| C7 Constructions, miroir | host ctest 7/7 ; 16 presets construits ; QEMU fumée et banc 20/20, 16/16, 19/19, `peripheriques` ×4 ; mklepton = `env-61-debian` = `env-52-apres` ; `comparer_R61-1` 0 pour les 16 presets ; `mirror-sync --dry-run` : code 0, 8 miroirs, 0 à envoyer (ou expliqué par l'amont), 0 signalement ; rien envoyé |
+| C8 Cartes | écarté (PA-119) |
 | C9 Nettoyage | `$W`, `$FX`, `~/env-61-journaux`, `~/tmp-pytest/env-61` supprimés par l'enveloppe ; absents |
 
 Avant le commit, relevé final des décisions (toute la session) :
