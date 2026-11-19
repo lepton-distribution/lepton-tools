@@ -659,7 +659,9 @@ def _undo_add(rs: Rootstock, seed_root: Path, key: str) -> None:
     """Annulation d'un ajout : retrait de la graine et du trunk.
 
     Le clone d'un clonage réussi suivi d'une greffe en échec est conservé ; depuis scion 0.6.3.2, un
-    clonage dont la version manque à l'origine n'en laisse aucun (D18).
+    clonage dont la version manque à l'origine n'en laisse aucun (D18). Un clone qui existait avant
+    l'appel, hors de sa version, est refusé par `seed-clone` depuis scion 0.6.3.3 (D25) et reste
+    tel qu'il était.
     """
     try:
         if key in {e.key for e in rs.grafted()}:

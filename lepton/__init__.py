@@ -12,5 +12,7 @@ __version__ = "0.1.0"
 # ENV-56 : un clonage en échec ne laisse aucun répertoire (0.6.3.1, D14), sans effet sur lepton :
 # minimum inchangé (PA-99) ;
 # ENV-60 : un clone est fait à sa version déclarée ou pas du tout (0.6.3.2, D18), sans effet sur
-# lepton : minimum inchangé (PA-107)
+# lepton : minimum inchangé (PA-107) ;
+# ENV-65 : clone existant repris seulement à sa version, première ligne de git dans les messages
+# (0.6.3.3, D25, D22), sans effet sur lepton : minimum inchangé (PA-117)
 SCION_MIN_VERSION = (0, 6, 2, 0)
