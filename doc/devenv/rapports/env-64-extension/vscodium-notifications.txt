@@ -1,0 +1,11 @@
+ENV-64, audit D24 — notifications relevées par l'utilisateur dans VSCodium (extension 0.5.2), 2026-11-19.
+<E> = ~/lepton-tools-dev/essais (chemins normalisés).
+
+étape 2 (seed replace env64lib → env-64-depot2) : notification
+lepton: regreffe automatique — lepton: erreur: <E>/env-64-essai/depots/lepton/library-env64lib/master/scion : ni dans le trunk <E>/env-64-essai/trunk, ni dans un greffon greffé → donner un chemin du trunk, ou d'un clone sous scion/
+
+étape 3 (seed replace env64lib → env-64-depot) : notification
+(texte identique)
+
+étape 4 (seed remove env64lib --purge) : notification
+(texte identique)

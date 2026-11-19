@@ -75,7 +75,7 @@ Démarrer ENV-64 (skill `devenv-session`) ; ENV-64 et ENV-65 sont permutables, E
 | ENV-61 | Validation Debian groupée (ENV-58 à ENV-60) | terminée (2026-11-17) ; rapports `rapports/env-61-mac.md`, `rapports/env-61-debian.md` ; oracle `oracles/env-61-debian/` ; fin du plan | lepton-tools `devenv/env-61` (depuis `main` 7018302, fusionnée dans `main`, poussée) ; `devenv/env-61-debian` (VM, ordre R61-1, 2771213, poussée, fusionnée) | `handoff/env-61.md` |
 | ENV-62 | Claude Code : règle U3, invites à refuser, outils des consignes VM (D26, D28, D27) | terminée (2026-11-19) ; rapport `rapports/env-62-claude-code.md` ; outil `scripts/comparer-releves.py` ; ORCHESTRATION §2bis amendé | lepton-tools `devenv/env-62` (depuis `main` c514033 ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/env-62.md` |
 | ENV-63 | lepton : `~` dans les chemins saisis (D21) | terminée (2026-11-19) ; rapport `rapports/env-63-tilde.md` ; outil `rapports/env-63-tilde/chemins.sh` | lepton-tools `devenv/env-63` (depuis `main` 332babc ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/env-63.md` |
-| ENV-64 | Extension : `lepton.path` et regreffe après `--purge` (D23, D24) | à faire | — | — |
+| ENV-64 | Extension : `lepton.path` et regreffe après `--purge` (D23, D24) | en cours (2026-11-19) | lepton-tools `devenv/env-64` (depuis `main` c5c9183) | — |
 | ENV-65 | scion : clone existant hors version, message de `git clone` (D25, D22) | à faire | — | — |
 | ENV-66 | Validation Debian groupée (ENV-62 à ENV-65) | à faire | — | — |
 
