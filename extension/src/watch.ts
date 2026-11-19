@@ -1,15 +1,16 @@
 // Observateurs de fichiers (ENV-12 lot 3) :
 // - F2 (FIC-1) : créations et suppressions dans scion/ des clones greffés → `lepton graft --path …`,
-//   événements regroupés ;
+//   événements regroupés ; la racine scion/ d'un clone créé ou supprimé en entier n'est pas regreffée
+//   (D24, ENV-64) ;
 // - F3 (FIC-3) : fichier régulier créé dans le trunk → `lepton file owner --json`, puis
 //   `lepton file add --adopt` (déplacé dans le clone propriétaire, lien à sa place) ;
 // - L3-4 (lot 5) : lien greffé supprimé du trunk par l'utilisateur (`file owner` : `unlinked`) →
 //   « Supprimer du greffon » (`file remove`) ou « Restaurer le lien » (`graft --path`).
 // Les répertoires observés et le propriétaire viennent de lepton ; aucune règle de greffon ici.
-import { promises as fs } from "node:fs";
+import { existsSync, promises as fs } from "node:fs";
 import * as path from "node:path";
 import * as vscode from "vscode";
-import { Batcher } from "./batch";
+import { Batcher, deletedClones, isUnder, splitRoots } from "./batch";
 import { Commands } from "./commands";
 import { EXIT_OK, OwnerResult, StatusResult, lastMessage, parseJson } from "./lepton";
 import { LeptonRunner } from "./runner";
@@ -24,6 +25,9 @@ export class Watchers implements vscode.Disposable {
   private watchers: vscode.Disposable[] = [];
   private signature = "";
   private readonly grafts: Batcher<string>;
+  /** Racines `scion/` de tous les greffons observés depuis l'activation (D24) : un lot peut en
+   *  contenir une dont le greffon n'est plus observé. */
+  private readonly roots = new Set<string>();
   private readonly adoptions: Batcher<string>;
   private readonly unlinks: Batcher<string>;
   private readonly subscriptions: vscode.Disposable[] = [];
@@ -86,6 +90,8 @@ export class Watchers implements vscode.Disposable {
     }
     // clés projetées exclues (ENV-41) : un clone tiers ne se modifie pas et ne se regreffe pas par chemin
     const stems = autoGraft ? status.scions.filter((s) => !s.projected_by).map((s) => s.stem).filter((s) => s).sort() : [];
+    stems.forEach((s) => this.roots.add(s));
+    this.grafts.retain((p) => isUnder(p, stems));       // greffon qui n'est plus observé : pas de regreffe (D24)
     const trunk = redirect || askUnlink ? status.trunk : "";
     const signature = JSON.stringify([trunk, stems, redirect, askUnlink]);
     if (!force && signature === this.signature) {
@@ -118,15 +124,38 @@ export class Watchers implements vscode.Disposable {
   // ------------------------------------------------------------------ F2
 
   private async graft(paths: string[]): Promise<void> {
-    const result = await this.runner.exec(["graft", ...paths.flatMap((p) => ["--path", p])]);
+    const { roots, others } = splitRoots(paths, this.roots);
+    if (roots.length) {
+      await this.clonesChanged(roots);
+    }
+    if (!others.length) {
+      return;
+    }
+    const result = await this.runner.exec(["graft", ...others.flatMap((p) => ["--path", p])]);
     if (!result) {
       return;
     }
     if (result.code === EXIT_OK) {
       this.grafted.fire();
-      vscode.window.setStatusBarMessage(t("lepton: regrafted ({0} change(s))", paths.length), 5000);
+      vscode.window.setStatusBarMessage(t("lepton: regrafted ({0} change(s))", others.length), 5000);
     } else {
       void this.runner.report(t("automatic regraft"), result, true);
+    }
+  }
+
+  /** Racine `scion/` créée ou supprimée : clone entier remplacé, recréé ou supprimé (seed remove
+   *  --purge, seed replace, scion au terminal, à la main). Jamais regreffée par chemin : lepton refuse
+   *  la racine (D24). `seed status` passe dans la file, donc après la commande en cours ; seul un clone
+   *  supprimé hors de lepton, son greffon encore greffé, est signalé. */
+  private async clonesChanged(roots: string[]): Promise<void> {
+    const result = await this.runner.exec(["seed", "status", "--json"]);
+    const status = result && parseJson<StatusResult>(result);
+    if (!status || !Array.isArray(status.scions)) {
+      return;
+    }
+    for (const name of deletedClones(roots, existsSync, status.scions)) {
+      vscode.window.showInformationMessage(
+        t("Clone of {0} deleted outside lepton: its links in the trunk are broken (lepton seed status)", name));
     }
   }
 
