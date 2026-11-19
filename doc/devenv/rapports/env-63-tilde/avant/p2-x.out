@@ -1,0 +1,7 @@
+XML du projet : sys/user/env63/etc/mkconf_env63.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+rootstock : <W>/p2-x/~inconnu63/<hT>/n2-x
+graine    : <W>/p2-x/~inconnu63/<hT>/n2-x/depots/lepton-seed/env63
+  noyau    lepton@original::tree            *        <C>/depots/lepton/original/master
+  famille  lepton@family-qemu-mps2          *        <C>/depots/lepton/family-qemu-mps2/master
+  bsp      lepton@bsp-qemu-mps2-an386       *        <C>/depots/lepton/bsp-qemu-mps2-an386/master
+presets et espace de travail VSCodium : lepton generate -C <W>/p2-x/~inconnu63/<hT>/n2-x
