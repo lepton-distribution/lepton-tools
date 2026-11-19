@@ -15,7 +15,7 @@ Rapports :
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `main` : fusion `--no-ff` de `devenv/env-66` (depuis `main` 6bc05ad), qui contient la fusion de `devenv/env-66-debian` (9f34370, VM) ; `main` 7f9e9c0 et `devenv/env-66` 4bbd23f poussées (PA-120). Puis, sur `main`, un commit local **non poussé** « devenv(hors-etape): fin du plan, A3 reconfirmé hors plan ; passation » (push à faire sur accord, PA-P) | `main` : ce commit | oui |
+| lepton-tools | `main` : fusion `--no-ff` de `devenv/env-66` (depuis `main` 6bc05ad), qui contient la fusion de `devenv/env-66-debian` (9f34370, VM) ; `main` 7f9e9c0 et `devenv/env-66` 4bbd23f poussées (PA-120). Puis, sur `main`, le commit 30c44b3 « devenv(hors-etape): fin du plan, A3 reconfirmé hors plan ; passation », poussé sur accord de l’utilisateur (PA-P, 2026-11-19), et la consignation de ce push | `main` : ce commit | oui |
 | clone noyau `depots/lepton/original/master` | `master` 2b4a647 (inchangé dans l'étape) | « Fusion de devenv/env-65 (…) » | oui |
 | autres | seed.scions `master` 49ca4ae, tag 0.6.3.3 ; graine `original-tree` 15740f9 ; non touchés | — | oui |
 
