@@ -1,0 +1,22 @@
+== cmsis_device_f4
+8c79dcf2f1d866d139a5d66240083ae6194b6dd1	HEAD
+8c79dcf2f1d866d139a5d66240083ae6194b6dd1	refs/heads/master
+b7607118933619712b2b4f4f2662ac5b08b3d302	refs/tags/v2.6.12
+8c79dcf2f1d866d139a5d66240083ae6194b6dd1	refs/tags/v2.6.12^{}
+== stm32wlxx-hal-driver
+e70dfa40ef76ca05362c0506fef5520fe9122afc	HEAD
+e70dfa40ef76ca05362c0506fef5520fe9122afc	refs/heads/main
+== stm32f7xx-hal-driver
+e87904585ac637409e7697a1992d3ff7a7c13586	HEAD
+e87904585ac637409e7697a1992d3ff7a7c13586	refs/heads/master
+a91a9721562bba1042efd3940ded2e87f9cff6ad	refs/tags/v1.3.4
+e87904585ac637409e7697a1992d3ff7a7c13586	refs/tags/v1.3.4^{}
+== cmsis_device_f7
+52e4aad017cd5daa760cb5803f96dfa77a0d6d85	HEAD
+52e4aad017cd5daa760cb5803f96dfa77a0d6d85	refs/heads/master
+15393cd21d522c92faf9600a41a8fe70abbe6e84	refs/tags/v1.2.11
+52e4aad017cd5daa760cb5803f96dfa77a0d6d85	refs/tags/v1.2.11^{}
+mirror-cmsis_device_f4 8c79dcf 2026-11-18T13:28:13+01:00 Release v2.6.12
+mirror-stm32wlxx-hal-driver e70dfa4 2026-11-19T09:36:18+01:00 [HAL][RTC] Resolve unsigned arithmetic warning in RTC BCD conversion
+mirror-stm32f7xx-hal-driver e879045 2026-11-19T14:33:57+01:00 Release v1.3.4
+mirror-cmsis_device_f7 52e4aad 2026-11-19T13:49:03+01:00 Release v1.2.11

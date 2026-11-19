@@ -1,0 +1,16 @@
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-66-essai/c5/rs)
+clangd relancé quand /home/lepton-user/lepton-tools-dev/essais/env-53-c5/build/.active/compile_commands.json change
+
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-66-essai/c5/rs)
+→ code 0
+
+Observation de 6 greffon(s) et du trunk /home/lepton-user/lepton-tools-dev/essais/env-66-essai/c5/rs/trunk
+
+$ /home/lepton-user/.local/bin/lepton seed tree --json    (/home/lepton-user/lepton-tools-dev/essais/env-66-essai/c5/rs)
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-66-essai/c5/rs)
+→ code 1
+

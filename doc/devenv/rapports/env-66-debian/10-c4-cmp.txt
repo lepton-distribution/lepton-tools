@@ -1,0 +1,715 @@
+c1-a.W	identique
+c1-a.cmd	identique
+c1-a.code	identique
+c1-a.err	identique
+c1-a.etat	identique
+c1-a.out	identique
+c1-t.W	identique
+c1-t.cmd	identique
+c1-t.code	identique
+c1-t.err	identique
+c1-t.etat	identique
+c1-t.out	identique
+depart.etat	écart
+--- attendu/depart.etat
++++ obtenu/depart.etat
+@@ -1 +1 @@
+-liens 3059, cassés 0, réguliers 0, graine 8a6a9d74d306
++liens 3059, cassés 0, réguliers 0, graine 718cccdd25ab
+m1-t.W	écart
+--- attendu/m1-t.W
++++ obtenu/m1-t.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+m1-t.cmd	identique
+m1-t.code	identique
+m1-t.err	identique
+m1-t.etat	identique
+m1-t.out	identique
+p1-a.W	identique
+p1-a.cmd	identique
+p1-a.code	identique
+p1-a.err	identique
+p1-a.etat	identique
+p1-a.out	identique
+p1-d.W	identique
+p1-d.cmd	identique
+p1-d.code	identique
+p1-d.err	identique
+p1-d.etat	identique
+p1-d.out	identique
+p1-r.W	identique
+p1-r.cmd	identique
+p1-r.code	identique
+p1-r.err	identique
+p1-r.etat	identique
+p1-r.out	identique
+p1-t.W	identique
+p1-t.cmd	identique
+p1-t.code	identique
+p1-t.err	identique
+p1-t.etat	identique
+p1-t.out	identique
+p1-u.W	identique
+p1-u.cmd	identique
+p1-u.code	identique
+p1-u.err	identique
+p1-u.etat	identique
+p1-u.out	identique
+p1-x.W	identique
+p1-x.cmd	identique
+p1-x.code	identique
+p1-x.err	identique
+p1-x.etat	identique
+p1-x.out	identique
+p1-z.W	identique
+p1-z.cmd	identique
+p1-z.code	écart
+--- attendu/p1-z.code
++++ obtenu/p1-z.code
+@@ -1 +1 @@
+-0
++127
+p1-z.err	écart
+--- attendu/p1-z.err
++++ obtenu/p1-z.err
+@@ -0,0 +1 @@
++<HOME>/lepton-tools-dev/lepton-tools/doc/devenv/rapports/env-63-tilde/../env-51-messages/releve.sh: line 10: zsh: command not found
+p1-z.etat	identique
+p1-z.out	écart
+--- attendu/p1-z.out
++++ obtenu/p1-z.out
+@@ -1 +0,0 @@
+-5 fichier(s) conforme(s).
+p2-a.W	identique
+p2-a.cmd	identique
+p2-a.code	identique
+p2-a.err	écart
+--- attendu/p2-a.err
++++ obtenu/p2-a.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <T>/n2-a/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <T>/n2-a/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <T>/n2-a/depots/lepton-seed/env63/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <T>/n2-a/trunk
+ scion: scion lepton/project-env63 déclaré dans <T>/n2-a/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <T>/n2-a/trunk
+p2-a.etat	identique
+p2-a.out	identique
+p2-d.W	identique
+p2-d.cmd	identique
+p2-d.code	identique
+p2-d.err	écart
+--- attendu/p2-d.err
++++ obtenu/p2-d.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <T>/n2-d/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <T>/n2-d/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <T>/n2-d/depots/lepton-seed/env63/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <T>/n2-d/trunk
+ scion: scion lepton/project-env63 déclaré dans <T>/n2-d/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <T>/n2-d/trunk
+p2-d.etat	identique
+p2-d.out	identique
+p2-r.W	identique
+p2-r.cmd	identique
+p2-r.code	identique
+p2-r.err	écart
+--- attendu/p2-r.err
++++ obtenu/p2-r.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <T>/n2-r/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <T>/n2-r/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <T>/n2-r/depots/lepton-seed/env63/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <T>/n2-r/trunk
+ scion: scion lepton/project-env63 déclaré dans <T>/n2-r/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <T>/n2-r/trunk
+p2-r.etat	identique
+p2-r.out	identique
+p2-t.W	identique
+p2-t.cmd	identique
+p2-t.code	identique
+p2-t.err	écart
+--- attendu/p2-t.err
++++ obtenu/p2-t.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <T>/n2-t/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <T>/n2-t/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <T>/n2-t/depots/lepton-seed/env63/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <T>/n2-t/trunk
+ scion: scion lepton/project-env63 déclaré dans <T>/n2-t/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <T>/n2-t/trunk
+p2-t.etat	identique
+p2-t.out	identique
+p2-u.W	identique
+p2-u.cmd	identique
+p2-u.code	identique
+p2-u.err	écart
+--- attendu/p2-u.err
++++ obtenu/p2-u.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <T>/n2-u/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <T>/n2-u/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <T>/n2-u/depots/lepton-seed/env63/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <T>/n2-u/trunk
+ scion: scion lepton/project-env63 déclaré dans <T>/n2-u/depots/lepton-seed/env63/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <T>/n2-u/trunk
+p2-u.etat	identique
+p2-u.out	identique
+p2-x.W	identique
+p2-x.cmd	identique
+p2-x.code	identique
+p2-x.err	identique
+p2-x.etat	identique
+p2-x.out	identique
+p3-a.W	identique
+p3-a.cmd	identique
+p3-a.code	identique
+p3-a.err	écart
+--- attendu/p3-a.err
++++ obtenu/p3-a.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <T>/g3-a/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <T>/g3-a/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <T>/g3-a/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <T>/n3-a/trunk
+ scion: scion lepton/project-env63 déclaré dans <T>/g3-a/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <T>/n3-a/trunk
+p3-a.etat	identique
+p3-a.out	identique
+p3-d.W	identique
+p3-d.cmd	identique
+p3-d.code	identique
+p3-d.err	écart
+--- attendu/p3-d.err
++++ obtenu/p3-d.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <T>/g3-d/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <T>/g3-d/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <T>/g3-d/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <T>/n3-d/trunk
+ scion: scion lepton/project-env63 déclaré dans <T>/g3-d/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <T>/n3-d/trunk
+p3-d.etat	identique
+p3-d.out	identique
+p3-r.W	identique
+p3-r.cmd	identique
+p3-r.code	identique
+p3-r.err	écart
+--- attendu/p3-r.err
++++ obtenu/p3-r.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <T>/g3-r/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <T>/g3-r/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <T>/g3-r/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <T>/n3-r/trunk
+ scion: scion lepton/project-env63 déclaré dans <T>/g3-r/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <T>/n3-r/trunk
+p3-r.etat	identique
+p3-r.out	identique
+p3-t.W	identique
+p3-t.cmd	identique
+p3-t.code	identique
+p3-t.err	écart
+--- attendu/p3-t.err
++++ obtenu/p3-t.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <T>/g3-t/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <T>/g3-t/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <T>/g3-t/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <T>/n3-t/trunk
+ scion: scion lepton/project-env63 déclaré dans <T>/g3-t/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <T>/n3-t/trunk
+p3-t.etat	identique
+p3-t.out	identique
+p3-u.W	identique
+p3-u.cmd	identique
+p3-u.code	identique
+p3-u.err	écart
+--- attendu/p3-u.err
++++ obtenu/p3-u.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <T>/g3-u/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <T>/g3-u/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <T>/g3-u/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <T>/n3-u/trunk
+ scion: scion lepton/project-env63 déclaré dans <T>/g3-u/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <T>/n3-u/trunk
+p3-u.etat	identique
+p3-u.out	identique
+p3-x.W	identique
+p3-x.cmd	identique
+p3-x.code	identique
+p3-x.err	identique
+p3-x.etat	identique
+p3-x.out	identique
+p4-a.W	identique
+p4-a.cmd	identique
+p4-a.code	identique
+p4-a.err	identique
+p4-a.etat	identique
+p4-a.out	identique
+p4-d.W	identique
+p4-d.cmd	identique
+p4-d.code	identique
+p4-d.err	identique
+p4-d.etat	identique
+p4-d.out	identique
+p4-r.W	identique
+p4-r.cmd	identique
+p4-r.code	identique
+p4-r.err	identique
+p4-r.etat	identique
+p4-r.out	identique
+p4-t.W	identique
+p4-t.cmd	identique
+p4-t.code	identique
+p4-t.err	identique
+p4-t.etat	identique
+p4-t.out	identique
+p4-u.W	identique
+p4-u.cmd	identique
+p4-u.code	identique
+p4-u.err	identique
+p4-u.etat	identique
+p4-u.out	identique
+p4-x.W	identique
+p4-x.cmd	identique
+p4-x.code	identique
+p4-x.err	identique
+p4-x.etat	identique
+p4-x.out	identique
+p4-z.W	identique
+p4-z.cmd	identique
+p4-z.code	écart
+--- attendu/p4-z.code
++++ obtenu/p4-z.code
+@@ -1 +1 @@
+-0
++127
+p4-z.err	écart
+--- attendu/p4-z.err
++++ obtenu/p4-z.err
+@@ -0,0 +1 @@
++<HOME>/lepton-tools-dev/lepton-tools/doc/devenv/rapports/env-63-tilde/../env-51-messages/releve.sh: line 10: zsh: command not found
+p4-z.etat	identique
+p4-z.out	écart
+--- attendu/p4-z.out
++++ obtenu/p4-z.out
+@@ -1,2 +0,0 @@
+-dépôt créé : <T>/r4-z (lib/env63z)
+-ajout à la graine : lepton seed add env63z <T>/r4-z --type bibliotheque
+p5-a.W	écart
+--- attendu/p5-a.W
++++ obtenu/p5-a.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+p5-a.cmd	identique
+p5-a.code	identique
+p5-a.err	identique
+p5-a.etat	identique
+p5-a.out	identique
+p5-d.W	écart
+--- attendu/p5-d.W
++++ obtenu/p5-d.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+p5-d.cmd	identique
+p5-d.code	identique
+p5-d.err	identique
+p5-d.etat	identique
+p5-d.out	identique
+p5-r.W	écart
+--- attendu/p5-r.W
++++ obtenu/p5-r.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+p5-r.cmd	identique
+p5-r.code	identique
+p5-r.err	identique
+p5-r.etat	identique
+p5-r.out	identique
+p5-t.W	écart
+--- attendu/p5-t.W
++++ obtenu/p5-t.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+p5-t.cmd	identique
+p5-t.code	identique
+p5-t.err	identique
+p5-t.etat	identique
+p5-t.out	identique
+p5-u.W	écart
+--- attendu/p5-u.W
++++ obtenu/p5-u.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+p5-u.cmd	identique
+p5-u.code	identique
+p5-u.err	identique
+p5-u.etat	identique
+p5-u.out	identique
+p5-x.W	écart
+--- attendu/p5-x.W
++++ obtenu/p5-x.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+p5-x.cmd	identique
+p5-x.code	identique
+p5-x.err	identique
+p5-x.etat	identique
+p5-x.out	identique
+p5add-t.W	écart
+--- attendu/p5add-t.W
++++ obtenu/p5add-t.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+p5add-t.cmd	identique
+p5add-t.code	identique
+p5add-t.err	écart
+--- attendu/p5add-t.err
++++ obtenu/p5add-t.err
+@@ -1,2 +1 @@
+-scion: greffe : 6 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe partielle : 3043 feuilles liées dans <C>/trunk
+p5add-t.etat	identique
+p5add-t.out	identique
+p5add-u.W	écart
+--- attendu/p5add-u.W
++++ obtenu/p5add-u.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+p5add-u.cmd	identique
+p5add-u.code	identique
+p5add-u.err	écart
+--- attendu/p5add-u.err
++++ obtenu/p5add-u.err
+@@ -1,2 +1 @@
+-scion: greffe : 6 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe partielle : 3043 feuilles liées dans <C>/trunk
+p5add-u.etat	identique
+p5add-u.out	identique
+p5dir-t.W	écart
+--- attendu/p5dir-t.W
++++ obtenu/p5dir-t.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+p5dir-t.cmd	identique
+p5dir-t.code	identique
+p5dir-t.err	écart
+--- attendu/p5dir-t.err
++++ obtenu/p5dir-t.err
+@@ -1,2 +1 @@
+-scion: greffe : 6 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe partielle : 3044 feuilles liées dans <C>/trunk
+p5dir-t.etat	identique
+p5dir-t.out	identique
+p5dir-u.W	écart
+--- attendu/p5dir-u.W
++++ obtenu/p5dir-u.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+p5dir-u.cmd	identique
+p5dir-u.code	identique
+p5dir-u.err	écart
+--- attendu/p5dir-u.err
++++ obtenu/p5dir-u.err
+@@ -1,2 +1 @@
+-scion: greffe : 6 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe partielle : 3042 feuilles liées dans <C>/trunk
+p5dir-u.etat	identique
+p5dir-u.out	identique
+p5graft-t.W	écart
+--- attendu/p5graft-t.W
++++ obtenu/p5graft-t.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./depots
+ ./env11.code-workspace
+ ./trunk
+p5graft-t.cmd	identique
+p5graft-t.code	identique
+p5graft-t.err	écart
+--- attendu/p5graft-t.err
++++ obtenu/p5graft-t.err
+@@ -1,2 +1 @@
+-scion: greffe : 6 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe partielle : 3042 feuilles liées dans <C>/trunk
+p5graft-t.etat	identique
+p5graft-t.out	identique
+p6-C.note	identique
+p6-a.W	écart
+--- attendu/p6-a.W
++++ obtenu/p6-a.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./build
+ ./depots
+ ./env11.code-workspace
+p6-a.clangd	identique
+p6-a.cmd	identique
+p6-a.code	identique
+p6-a.err	identique
+p6-a.etat	identique
+p6-a.out	écart
+--- attendu/p6-a.out
++++ obtenu/p6-a.out
+@@ -1,3 +1,3 @@
+ inchangé  <G>/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <G>/trunk/CMakeUserPresets.json)
+ écrit     <G>/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <G>/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <G>/trunk)
+p6-d.W	écart
+--- attendu/p6-d.W
++++ obtenu/p6-d.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./build
+ ./depots
+ ./env11.code-workspace
+p6-d.clangd	identique
+p6-d.cmd	identique
+p6-d.code	identique
+p6-d.err	identique
+p6-d.etat	identique
+p6-d.out	écart
+--- attendu/p6-d.out
++++ obtenu/p6-d.out
+@@ -1,3 +1,3 @@
+ inchangé  <G>/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <G>/trunk/CMakeUserPresets.json)
+ inchangé  <G>/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <G>/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <G>/trunk)
+p6-n.W	écart
+--- attendu/p6-n.W
++++ obtenu/p6-n.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./build
+ ./depots
+ ./env11.code-workspace
+p6-n.clangd	écart
+--- attendu/p6-n.clangd
++++ obtenu/p6-n.clangd
+@@ -1 +1 @@
+-    "clangd.path": "/opt/local/bin/clangd-mp-21",
++    "clangd.path": "/usr/bin/clangd",
+p6-n.cmd	écart
+--- attendu/p6-n.cmd
++++ obtenu/p6-n.cmd
+@@ -1 +1 @@
+-lepton generate --clangd clangd-mp-21
++lepton generate --clangd clangd
+p6-n.code	identique
+p6-n.err	identique
+p6-n.etat	identique
+p6-n.out	écart
+--- attendu/p6-n.out
++++ obtenu/p6-n.out
+@@ -1,3 +1,3 @@
+ inchangé  <G>/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <G>/trunk/CMakeUserPresets.json)
+ écrit     <G>/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <G>/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <G>/trunk)
+p6-r.W	écart
+--- attendu/p6-r.W
++++ obtenu/p6-r.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./build
+ ./depots
+ ./env11.code-workspace
+p6-r.clangd	identique
+p6-r.cmd	identique
+p6-r.code	identique
+p6-r.err	identique
+p6-r.etat	identique
+p6-r.out	écart
+--- attendu/p6-r.out
++++ obtenu/p6-r.out
+@@ -1,3 +1,3 @@
+ inchangé  <G>/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <G>/trunk/CMakeUserPresets.json)
+ écrit     <G>/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <G>/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <G>/trunk)
+p6-t.W	écart
+--- attendu/p6-t.W
++++ obtenu/p6-t.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./build
+ ./depots
+ ./env11.code-workspace
+p6-t.cmd	identique
+p6-t.code	identique
+p6-t.err	identique
+p6-t.etat	identique
+p6-t.out	écart
+--- attendu/p6-t.out
++++ obtenu/p6-t.out
+@@ -1,3 +1,3 @@
+ inchangé  <C>/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <C>/trunk/CMakeUserPresets.json)
+ écrit     <C>/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <C>/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <C>/trunk)
+p6-u.W	écart
+--- attendu/p6-u.W
++++ obtenu/p6-u.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./build
+ ./depots
+ ./env11.code-workspace
+p6-u.cmd	identique
+p6-u.code	identique
+p6-u.err	identique
+p6-u.etat	identique
+p6-u.out	écart
+--- attendu/p6-u.out
++++ obtenu/p6-u.out
+@@ -1,3 +1,3 @@
+ inchangé  <C>/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <C>/trunk/CMakeUserPresets.json)
+ inchangé  <C>/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <C>/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <C>/trunk)
+p6-x.W	écart
+--- attendu/p6-x.W
++++ obtenu/p6-x.W
+@@ -1,6 +1,4 @@
+-./.DS_Store
+ ./.scion.rootstock.signature
+-./.scion.trunk.tolerated
+ ./build
+ ./depots
+ ./env11.code-workspace
+p6-x.cmd	identique
+p6-x.code	identique
+p6-x.err	identique
+p6-x.etat	identique
+p6-x.out	identique
+resume.tsv	écart
+--- attendu/resume.tsv
++++ obtenu/resume.tsv
+@@ -5,7 +5,7 @@
+ p1-a	-C	a	0	non	-	=	5 fichier(s) conforme(s).
+ p1-d	-C	d	0	non	-	=	5 fichier(s) conforme(s).
+ p1-r	-C	r	0	non	-	=	5 fichier(s) conforme(s).
+-p1-z	-C	z	0	non	-	=	5 fichier(s) conforme(s).
++p1-z	-C	z	127	non	-	=	
+ p2-t	seed new -C	t	0	non	créée	=	scion: rootstock installé dans <T>/n2-t (trunk : trunk)
+ p2-u	seed new -C	u	0	non	créée	=	scion: rootstock installé dans <T>/n2-u (trunk : trunk)
+ p2-x	seed new -C	x	1	non	absente	=	lepton: erreur: -C « ~inconnu63/<hT>/n2-x » : répertoire personnel de « ~inconnu63 » introuvable
+@@ -24,7 +24,7 @@
+ p4-a	scion new --repo	a	0	non	créée	=	dépôt créé : <T>/r4-a (lib/env63a)
+ p4-d	scion new --repo	d	0	non	créée	=	dépôt créé : <T>/r4-d (lib/env63d)
+ p4-r	scion new --repo	r	0	non	créée	=	dépôt créé : <T>/r4-r (lib/env63r)
+-p4-z	scion new --repo	z	0	non	créée	=	dépôt créé : <T>/r4-z (lib/env63z)
++p4-z	scion new --repo	z	127	non	absente	=	
+ p5-t	_locate (file owner)	t	0	non	-	=	{
+ p5-u	_locate (file owner)	u	0	non	-	=	{
+ p5-x	_locate (file owner)	x	1	non	-	=	lepton: erreur: chemin « ~inconnu63/<hC>/trunk/CMakeLists.txt » : répertoire personnel de « ~inconnu63 » introuvable
+@@ -32,17 +32,17 @@
+ p5-d	_locate (file owner)	d	0	non	-	=	{
+ p5-r	_locate (file owner)	r	0	non	-	=	{
+ p5add-t	_locate (file add)	t	0	non	créée	liens ≠ départ clones ≠ départ 	créé dans lepton-noyau : <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-nouveau.c
+-p5dir-t	_locate (dir add)	t	0	non	créée	liens ≠ départ clones ≠ départ 	créé dans lepton-noyau : <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-rep/ (.gitke
++p5dir-t	_locate (dir add)	t	0	non	créée	liens ≠ départ clones ≠ départ 	créé dans lepton-noyau : <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-rep/ (.gitkee
+ p5add-u	annulation (file remove)	-	0	non	absente	liens ≠ départ clones ≠ départ 	retiré de lepton-noyau : <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-nouveau.c
+ p5dir-u	annulation (dir remove)	-	0	non	absente	=	retiré de lepton-noyau : <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-rep/
+ p5graft-t	_locate (graft --path)	t	0	non	-	=	regreffe de lepton-noyau faite
+-p6-t	generate --clangd	t	0	non	-	=	lepton: attention: <C>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sa
+-p6-u	generate --clangd	u	0	non	-	=	lepton: attention: <C>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sa
++p6-t	generate --clangd	t	0	non	-	=	lepton: attention: <C>/build/.active/compile_commands.json absent, aucun preset configuré : clangd san
++p6-u	generate --clangd	u	0	non	-	=	lepton: attention: <C>/build/.active/compile_commands.json absent, aucun preset configuré : clangd san
+ p6-x	generate --clangd	x	1	non	-	=	lepton: erreur: --clangd « ~inconnu63/<hW>/outils/clangd » : répertoire personnel de « ~inconnu63 » introuvable
+-p6-a	generate --clangd	a	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd s
+-p6-d	generate --clangd	d	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd s
+-p6-r	generate --clangd	r	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd s
+-p6-n	generate --clangd	nom	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd s
++p6-a	generate --clangd	a	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sa
++p6-d	generate --clangd	d	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sa
++p6-r	generate --clangd	r	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sa
++p6-n	generate --clangd	nom	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sa
+ c1-t	check FILE	t	1	non	-	=	~/<hC>/depots/lepton-seed/env11/scion/.scion/lepton-graine.json: fichier introuvable
+ c1-a	check FILE	a	0	non	-	=	1 fichier(s) conforme(s).
+ m1-t	seed mkconf import	t	1	non	-	=	lepton: erreur: XML de la graine déjà fourni par le greffon du projet (sys/user/env11/etc/mkconf_env11.xml)
+écarts=50 / 289
