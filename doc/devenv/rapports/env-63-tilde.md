@@ -228,3 +228,13 @@ Essai dans VSCodium fait par l'utilisateur (2026-11-19), extension 0.5.2, espace
   F2 code 0.
 État de `<C>` après : égal au départ (liens, cassés, réguliers, graine, liste greffée,
 `depots/`), clone `original` propre.
+
+## 6. PA-114 (2026-11-19, décisions de l'utilisateur)
+
+| Question | Décision |
+| --- | --- |
+| Rapport | accepté |
+| `essais/env-63-essai` | supprimé par `scripts/supprimer-essai.sh` |
+| Publication (PA-P) | fusion `--no-ff` de `devenv/env-63` dans `main`, push de `main` et de `devenv/env-63` |
+
+Validation Debian : ENV-66 (rejeu de `env-63-tilde/chemins.sh` sur un essai neuf).
