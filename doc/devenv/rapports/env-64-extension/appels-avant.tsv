@@ -1,0 +1,61 @@
+0,000	début 41594 - seed status --json
+2,291	fin 41594 0 seed status --json
+2,345	début 41746 - seed status --json
+3,933	fin 41746 0 seed status --json
+33,957	début 41786 - seed status --json
+34,966	fin 41786 0 seed status --json
+99,982	début 41822 - seed replace env64lib file://localhost<E>/env-64-depot2@master --version master
+101,532	fin 41822 0 seed replace env64lib file://localhost<E>/env-64-depot2@master --version master
+101,560	début 41842 - seed status --json
+102,559	fin 41842 0 seed status --json
+102,583	début 41883 - seed status --json
+103,558	fin 41883 0 seed status --json
+103,582	début 41919 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+103,762	fin 41919 1 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+106,855	début 41923 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+107,034	fin 41923 1 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+179,606	début 41933 - seed status --json
+180,598	fin 41933 0 seed status --json
+197,283	début 41969 - seed replace env64lib file://localhost<E>/env-64-depot@master --version master
+198,789	fin 41969 0 seed replace env64lib file://localhost<E>/env-64-depot@master --version master
+198,816	début 41989 - seed status --json
+199,829	fin 41989 0 seed status --json
+199,853	début 42029 - seed status --json
+200,840	fin 42029 0 seed status --json
+200,864	début 42064 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+201,071	fin 42064 1 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+204,152	début 42068 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+204,337	fin 42068 1 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+264,153	début 42079 - seed status --json
+265,149	fin 42079 0 seed status --json
+275,724	début 42115 - seed remove env64lib --purge
+277,777	fin 42115 0 seed remove env64lib --purge
+277,805	début 42126 - seed status --json
+278,689	fin 42126 0 seed status --json
+278,716	début 42156 - seed status --json
+279,575	fin 42156 0 seed status --json
+279,599	début 42186 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+279,778	fin 42186 1 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+464,554	TERMINAL seed add
+465,856	début 42250 - seed status --json
+466,925	fin 42250 0 seed status --json
+484,954	TERMINAL T2 création témoin
+486,099	début 42309 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_temoin.h
+486,860	fin 42309 0 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_temoin.h
+489,988	TERMINAL T2 suppression témoin
+496,212	début 42349 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_temoin.h
+496,967	fin 42349 0 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_temoin.h
+513,755	TERMINAL T4 scion graft-remove --purge
+514,731	début 42380 - file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib --json
+514,946	fin 42380 0 file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib --json
+515,283	début 42384 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+515,472	fin 42384 1 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+529,662	TERMINAL T4b scion seed-clone + graft --scion
+535,314	début 42412 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+535,515	fin 42412 1 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+542,413	TERMINAL T3 suppression à la main du clone
+543,557	début 42442 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+543,759	fin 42442 1 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+565,258	TERMINAL rétablissement seed-clone + graft --scion
+568,596	début 42475 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion
+568,796	fin 42475 1 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion

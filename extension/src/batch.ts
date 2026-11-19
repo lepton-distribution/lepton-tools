@@ -32,12 +32,48 @@ export class Batcher<T> {
     }
   }
 
+  /** Ne garde en attente que les éléments retenus par `keep` (D24 : greffons qui ne sont plus observés). */
+  retain(keep: (item: T) => boolean): void {
+    for (const item of [...this.pending]) {
+      if (!keep(item)) {
+        this.pending.delete(item);
+      }
+    }
+    if (!this.pending.size && this.timer) {
+      clearTimeout(this.timer);
+      this.timer = undefined;
+    }
+  }
+
   dispose(): void {
     if (this.timer) {
       clearTimeout(this.timer);
     }
     this.pending.clear();
   }
+}
+
+/** Vrai si `p` est l'une des racines ou un chemin sous l'une d'elles. */
+export function isUnder(p: string, roots: Iterable<string>): boolean {
+  for (const r of roots) {
+    if (p === r || p.startsWith(r + "/")) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/** Chemins d'un lot F2 : racines `scion/` de greffons (clone entier créé ou supprimé : jamais
+ *  regreffées, lepton les refuse, D24) et autres chemins (regreffés). */
+export function splitRoots(paths: string[], roots: ReadonlySet<string>): { roots: string[]; others: string[] } {
+  return { roots: paths.filter((p) => roots.has(p)), others: paths.filter((p) => !roots.has(p)) };
+}
+
+/** Greffons dont le clone a été supprimé hors de lepton : racine absente, greffon encore greffé
+ *  (`seed status --json`). Racine présente (clone remplacé ou recréé) ou greffon retiré : rien. */
+export function deletedClones(roots: string[], exists: (p: string) => boolean,
+  grafted: { stem: string; name: string }[]): string[] {
+  return roots.filter((r) => !exists(r)).flatMap((r) => grafted.filter((s) => s.stem === r).map((s) => s.name));
 }
 
 /** Exécute les tâches une à une, dans l'ordre d'arrivée : jamais deux lepton à la fois sur un rootstock. */

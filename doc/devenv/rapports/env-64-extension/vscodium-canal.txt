@@ -1,0 +1,93 @@
+ENV-64, audit D24 — canal « Lepton » collé par l'utilisateur (VSCodium 1.135.06055, extension 0.5.2), 2026-11-19.
+<E> = /Users/cle_d_anton/lepton-tools-dev/essais ; <W> = <E>/env-64-releves/lepton-horodate.sh (lepton.path de l'espace d'essai).
+Seules les substitutions <E> et <W> ont été faites, le texte est inchangé.
+
+$ <W> seed status --json    (<E>/env-64-essai)
+clangd relancé quand <E>/env-64-essai/build/.active/compile_commands.json change
+
+→ code 0
+
+$ <W> seed status --json    (<E>/env-64-essai)
+→ code 0
+
+Observation de 6 greffon(s) et du trunk <E>/env-64-essai/trunk
+
+$ <W> seed status --json    (<E>/env-64-essai)
+→ code 0
+
+$ <W> seed replace env64lib file://localhost<E>/env-64-depot2@master --version master    (<E>/env-64-essai)
+scion: scion lepton/library-env64lib retiré : 3 feuilles
+scion: clone <E>/env-64-essai/depots/lepton/library-env64lib/master supprimé
+scion: scion lepton/library-env64lib déclaré dans <E>/env-64-essai/depots/lepton-seed/env11/scion/.scion (version master)
+scion: greffe partielle : 4 feuilles liées dans <E>/env-64-essai/trunk
+env64lib remplacé (lepton@library-env64lib : master file://localhost<E>/env-64-depot → master file://localhost<E>/env-64-depot2)
+graine modifiée, non commitée : git -C <E>/env-64-essai/depots/lepton-seed/env11 commit -am "…"
+→ code 0
+
+$ <W> seed status --json    (<E>/env-64-essai)
+→ code 0
+
+$ <W> seed status --json    (<E>/env-64-essai)
+→ code 0
+
+$ <W> graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion    (<E>/env-64-essai)
+lepton: erreur: <E>/env-64-essai/depots/lepton/library-env64lib/master/scion : ni dans le trunk <E>/env-64-essai/trunk, ni dans un greffon greffé
+  → donner un chemin du trunk, ou d'un clone sous scion/
+→ code 1
+
+$ <W> graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion    (<E>/env-64-essai)
+lepton: erreur: <E>/env-64-essai/depots/lepton/library-env64lib/master/scion : ni dans le trunk <E>/env-64-essai/trunk, ni dans un greffon greffé
+  → donner un chemin du trunk, ou d'un clone sous scion/
+→ code 1
+
+$ <W> seed status --json    (<E>/env-64-essai)
+→ code 0
+
+$ <W> seed replace env64lib file://localhost<E>/env-64-depot@master --version master    (<E>/env-64-essai)
+scion: scion lepton/library-env64lib retiré : 4 feuilles
+scion: clone <E>/env-64-essai/depots/lepton/library-env64lib/master supprimé
+scion: scion lepton/library-env64lib déclaré dans <E>/env-64-essai/depots/lepton-seed/env11/scion/.scion (version master)
+scion: greffe partielle : 3 feuilles liées dans <E>/env-64-essai/trunk
+env64lib remplacé (lepton@library-env64lib : master file://localhost<E>/env-64-depot2 → master file://localhost<E>/env-64-depot)
+graine modifiée, non commitée : git -C <E>/env-64-essai/depots/lepton-seed/env11 commit -am "…"
+→ code 0
+
+$ <W> seed status --json    (<E>/env-64-essai)
+→ code 0
+
+$ <W> seed status --json    (<E>/env-64-essai)
+→ code 0
+
+$ <W> graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion    (<E>/env-64-essai)
+lepton: erreur: <E>/env-64-essai/depots/lepton/library-env64lib/master/scion : ni dans le trunk <E>/env-64-essai/trunk, ni dans un greffon greffé
+  → donner un chemin du trunk, ou d'un clone sous scion/
+→ code 1
+
+$ <W> graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion    (<E>/env-64-essai)
+lepton: erreur: <E>/env-64-essai/depots/lepton/library-env64lib/master/scion : ni dans le trunk <E>/env-64-essai/trunk, ni dans un greffon greffé
+  → donner un chemin du trunk, ou d'un clone sous scion/
+→ code 1
+
+$ <W> seed status --json    (<E>/env-64-essai)
+→ code 0
+
+$ <W> seed remove env64lib --purge    (<E>/env-64-essai)
+scion: scion lepton/library-env64lib retiré de <E>/env-64-essai/depots/lepton-seed/env11/scion/.scion
+scion: scion lepton/library-env64lib retiré : 3 feuilles
+scion: clone <E>/env-64-essai/depots/lepton/library-env64lib/master supprimé
+env64lib retiré (lepton@library-env64lib)
+graine modifiée, non commitée : git -C <E>/env-64-essai/depots/lepton-seed/env11 commit -am "…"
+→ code 0
+
+$ <W> seed status --json    (<E>/env-64-essai)
+→ code 0
+
+$ <W> seed status --json    (<E>/env-64-essai)
+Observation de 5 greffon(s) et du trunk <E>/env-64-essai/trunk
+
+→ code 0
+
+$ <W> graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion    (<E>/env-64-essai)
+lepton: erreur: <E>/env-64-essai/depots/lepton/library-env64lib/master/scion : ni dans le trunk <E>/env-64-essai/trunk, ni dans un greffon greffé
+  → donner un chemin du trunk, ou d'un clone sous scion/
+→ code 1

@@ -1,0 +1,17 @@
+test/batch.test.ts(5,66): error TS2305: Module '"../src/batch"' has no exported member 'deletedClones'.
+test/batch.test.ts(5,81): error TS2305: Module '"../src/batch"' has no exported member 'isUnder'.
+test/batch.test.ts(5,90): error TS2305: Module '"../src/batch"' has no exported member 'splitRoots'.
+test/batch.test.ts(77,5): error TS2339: Property 'retain' does not exist on type 'Batcher<string>'.
+test/batch.test.ts(77,13): error TS7006: Parameter 'p' implicitly has an 'any' type.
+test/batch.test.ts(81,5): error TS2339: Property 'retain' does not exist on type 'Batcher<string>'.
+--- node --test out/test/batch.test.js (émis malgré TS2305/TS2339)
+ok 1 - événements regroupés et dédoublonnés, délai relancé à chaque ajout
+ok 2 - file : une tâche à la fois, dans l'ordre, malgré un échec
+ok 3 - --compile-commands-dir lu dans clangd.arguments
+ok 4 - répertoires de construction d'une base compile_commands.json
+not ok 5 - D24 : lot en attente filtré (refresh : greffons qui ne sont plus observés)
+not ok 6 - D24 : chemin sous une racine (la racine elle-même comprise, pas un préfixe de nom)
+not ok 7 - D24 : racines séparées des autres chemins (racines de tous les greffons observés jusqu'ici)
+not ok 8 - D24 : clone supprimé hors de lepton = racine absente d'un greffon encore greffé
+# pass 4
+# fail 4

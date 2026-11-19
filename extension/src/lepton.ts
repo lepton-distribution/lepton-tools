@@ -3,8 +3,8 @@
 // Module sans dépendance à l'API de l'éditeur : testé par node:test.
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
-import { homedir } from "node:os";
-import { join } from "node:path";
+import { homedir, userInfo } from "node:os";
+import { join, resolve } from "node:path";
 
 // Codes de retour de lepton (lepton/cli.py)
 export const EXIT_OK = 0;
@@ -18,13 +18,42 @@ export interface LeptonResult {
   stderr: string;
 }
 
-/** Exécutable : réglage `lepton.path`, sinon installation pipx (INS-6), sinon `lepton` du PATH. */
+/** `~` ou `~<utilisateur courant>` en tête (seul ou suivi de `/`) remplacé par `home`, et
+ *  `${userHome}` de même si `userHome` ; `undefined` pour `~<autre compte>` : Node ne connaît que le
+ *  dossier de l'utilisateur courant (lepton développe tout `~<compte>`, D21). Sinon tel quel. */
+function expandHome(text: string, home: string, userHome: boolean): string | undefined {
+  const head = (prefix: string) => text === prefix || text.startsWith(prefix + "/");
+  if (userHome && head("${userHome}")) {
+    return home + text.slice("${userHome}".length);
+  }
+  if (!text.startsWith("~")) {
+    return text;
+  }
+  const name = text.slice(1).split("/", 1)[0];
+  return name === "" || name === userInfo().username ? home + text.slice(1 + name.length) : undefined;
+}
+
+/** Vrai pour `~<autre compte>…` : chemin que l'extension ne sait pas développer (D23, D31). */
+export function foreignHome(text: string): boolean {
+  return expandHome(text, "", false) === undefined;
+}
+
+/** Exécutable : réglage `lepton.path` (`~`, `~<utilisateur courant>` et `${userHome}` développés,
+ *  D23), sinon installation pipx (INS-6), sinon `lepton` du PATH. */
 export function resolveLepton(configured: string, home: string = homedir()): string {
   if (configured) {
-    return configured;
+    return expandHome(configured, home, true) ?? configured;     // autre compte : message de l'appelant
   }
   const pipx = join(home, ".local", "bin", "lepton");
   return existsSync(pipx) ? pipx : "lepton";
+}
+
+/** Chemin saisi tel que lepton le lit, pour l'ouvrir dans l'éditeur (D31) : `~` et
+ *  `~<utilisateur courant>` développés (D21), relatif résolu depuis `cwd`, répertoire de travail de
+ *  lepton ; `undefined` pour `~<autre compte>`. `${userHome}` n'est pas développé : lepton ne le fait pas. */
+export function inputPath(text: string, cwd: string, home: string = homedir()): string | undefined {
+  const expanded = expandHome(text, home, false);
+  return expanded === undefined ? undefined : resolve(cwd, expanded);
 }
 
 /** Lance `lepton ARGS` dans `cwd` ; `onOutput` reçoit stdout et stderr au fil de l'eau (flux nommé) ;

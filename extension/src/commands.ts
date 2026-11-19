@@ -3,7 +3,7 @@
 import * as path from "node:path";
 import * as vscode from "vscode";
 import { Diagnostics } from "./diagnostics";
-import { EXIT_OK, OwnerResult, ScionRef, StatusResult, parseJson } from "./lepton";
+import { EXIT_OK, OwnerResult, ScionRef, StatusResult, inputPath, parseJson } from "./lepton";
 import { LeptonRunner } from "./runner";
 
 const t = (message: string, ...args: (string | number)[]) => vscode.l10n.t(message, ...args);
@@ -255,7 +255,7 @@ export class Commands {
     if (!scion) return;
     const result = await this.runner.run(t("create {0}", path.basename(full)), [kind, "add", full, ...scion]);
     if (result?.code === EXIT_OK && kind === "file") {
-      await vscode.window.showTextDocument(vscode.Uri.file(full));
+      await this.open(full);
     }
   }
 
@@ -277,7 +277,19 @@ export class Commands {
     if (!destination || destination === source) return;
     const result = await this.runner.run(t("move {0}", path.basename(source)), ["file", "mv", source, destination]);
     if (result?.code === EXIT_OK) {
-      await vscode.window.showTextDocument(vscode.Uri.file(destination));
+      await this.open(destination);
     }
+  }
+
+  /** Ouvre un chemin saisi tel que lepton l'a lu (D31) : `~` développé, relatif au rootstock ;
+   *  `~<autre compte>` : pas d'ouverture, information. */
+  private async open(typed: string): Promise<void> {
+    const full = inputPath(typed, this.runner.cwd() ?? process.cwd());
+    if (full === undefined) {
+      vscode.window.showInformationMessage(
+        t("{0} not opened: folder of another account, unknown to the editor", typed));
+      return;
+    }
+    await vscode.window.showTextDocument(vscode.Uri.file(full));
   }
 }

@@ -41,11 +41,16 @@ Version 0.5.0 (lot 6) :
   trunk, et non sous le chemin du clone que rend gdb (`stem` et `trunk` de
   `lepton seed status --json`).
 
-Version 0.5.2 (ENV-41) : fichiers d'un dépôt tiers projeté par scion ramenés au trunk à l'arrêt
+Version 0.5.3 (ENV-64) : `~`, `~<utilisateur>` (courant) et `${userHome}` développés dans
+`lepton.path` (D23) ; fichier ouvert après « créer » ou « déplacer » au chemin que lepton a lu (`~`,
+relatif au rootstock, D31) ; regreffe automatique sans la racine `scion/` d'un clone créé ou
+supprimé en entier (retrait `--purge`, remplacement d'origine), clone supprimé hors de lepton
+signalé (D24). Version 0.5.2 (ENV-41) : fichiers d'un dépôt tiers projeté par scion ramenés au trunk à l'arrêt
 (table `projection` de `lepton seed status --json`), clés projetées hors des choix de greffon et des
 observateurs. Version 0.5.1 (lot 6 S2) : traceur F8 sans attente (L6-6).
 
-Réglages : `lepton.path` (vide : `~/.local/bin/lepton`, sinon `lepton` du `PATH`) ;
+Réglages : `lepton.path` (`~/…` et `${userHome}/…` admis ; vide : `~/.local/bin/lepton`, sinon
+`lepton` du `PATH`) ;
 `lepton.autoGraft.enabled`, `lepton.autoGraft.delay` (ms, défaut 1000) ;
 `lepton.redirectTrunkCreations` ; `lepton.confirmTrunkDeletions` ; `lepton.restartClangd` ;
 `lepton.diagnostics.enabled`, `lepton.diagnostics.delay` (ms, défaut 400) ;
