@@ -51,6 +51,33 @@ compte (T7). Les règles de projet le sont (ENV-54, `rapports/env-54-permissions
 chaud ne conclut donc pas sur D26. Décision de l'utilisateur : relancer Claude Code, règles
 d'essai laissées en place, rejouer T1 à T7 au démarrage, puis retirer les règles.
 
+### 1.3 Journal de la VM (R61-1)
+
+Copie fournie par l'utilisateur : `<HOME>/Documents/3498db03-cbec-4248-9c02-7e12b5aab1d2.jsonl`
+(856 lignes, sha256 `39f35cae…14ad`, non versionnée), lue par `raisons.py` :
+
+| Heure UTC | Commande | `permissionDecision` |
+| --- | --- | --- |
+| 15:52:39 | `pipx install --force ~/lepton-tools-dev/lepton-tools` | `accept config rule projectSettings` |
+| 15:56:03 | U1 `pipx install ~/…/env-61-absent` | `{"decision": "accept", "source": "config", "reasonType": "subcommandResults"}` |
+| 15:56:09 | U2 `git clone --depth 1 https://github.com/lepton-distribution/env-61-absent.git ~/…` | `subcommandResults` |
+| 15:56:14 | U3 `python3 -m unittest discover -s ~/…/env-61-absent` | `{"decision": "accept", "source": "config", "reasonType": "classifier"}` : ni `reasonCode` ni `ruleSource` |
+| 15:58:28 | A1 (1er) | `accept user_temporary projectSettings`, `reasonCode` `rule:projectSettings`, `grantScope` `once` |
+
+- L'entrée U3 ne porte que le champ `serverClassifierContext` en plus : état git, `live_cwd`,
+  `platform`, sans motif. Le journal ne donne donc pas la cause.
+- **Version** : les 451 entrées qui portent un champ `version` disent **2.1.325**, depuis le début
+  de la session (11:29:14 UTC). Le rapport VM relève 2.1.326 par `claude --version` (version
+  installée sur disque, pas celle du processus en cours). D26 est donc constaté sous 2.1.325,
+  avant le changement de 2.1.326 (« ignore some wildcard shell allow rules »).
+- Les règles utilisateur de la VM datent de R57-1 (10 nov.) : elles étaient en place au démarrage
+  de la session. La réécriture du fichier par `/model` (17 nov. 16:44 locale) n'a pas changé le
+  bloc `permissions`. Ce n'est donc pas le défaut de relecture à chaud du §1.2.
+- U1 et U2 portent `subcommandResults`, la même forme que les règles du dépôt (F1, F3, F6) ; U3
+  seul va au classifieur. Piste : la règle d'interpréteur `python3 -m …` est écartée en mode auto
+  (« broad allow rules that grant arbitrary code execution ») déjà sous 2.1.325. À établir par
+  l'essai après relance (§1.4).
+
 ## 2. D28 — invites à refuser
 
 À compléter : inventaire, rejeu de « ne plus demander ».
