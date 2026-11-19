@@ -1,0 +1,119 @@
+0,000	===== CONTRÔLES 0.5.3
+93,345	début 46655 - seed status --json
+94,574	fin 46655 0 seed status --json
+94,749	début 47177 - seed status --json
+96,652	fin 47177 0 seed status --json
+148,532	début 47408 - file owner ~/<E'>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64_d31.h --json
+148,732	fin 47408 0 file owner ~/<E'>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64_d31.h --json
+148,763	début 47412 - file add ~/<E'>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64_d31.h
+149,585	fin 47412 0 file add ~/<E'>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64_d31.h
+149,617	début 47420 - seed status --json
+151,010	fin 47420 0 seed status --json
+151,038	début 47490 - seed status --json
+152,140	fin 47490 0 seed status --json
+152,169	début 47525 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_d31.h
+152,975	fin 47525 0 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_d31.h
+192,820	début 47541 - seed status --json
+193,948	fin 47541 0 seed status --json
+253,398	début 47581 - seed replace env64lib file://localhost<E>/env-64-depot2@master --version master
+253,880	fin 47581 2 seed replace env64lib file://localhost<E>/env-64-depot2@master --version master
+253,911	début 47588 - seed status --json
+255,000	fin 47588 0 seed status --json
+255,028	début 47623 - seed status --json
+256,062	fin 47623 0 seed status --json
+324,563	début 47667 - seed status --json
+325,604	fin 47667 0 seed status --json
+367,888	début 47706 - seed replace env64lib file://localhost<E>/env-64-depot@master --version master
+368,380	fin 47706 2 seed replace env64lib file://localhost<E>/env-64-depot@master --version master
+368,411	début 47713 - seed status --json
+369,494	fin 47713 0 seed status --json
+369,523	début 47748 - seed status --json
+370,546	fin 47748 0 seed status --json
+505,676	début 47797 - seed status --json
+506,754	fin 47797 0 seed status --json
+515,552	début 47834 - seed remove env64lib --purge
+517,289	fin 47834 2 seed remove env64lib --purge
+517,318	début 47842 - seed status --json
+518,420	fin 47842 0 seed status --json
+518,449	début 47881 - seed status --json
+519,516	fin 47881 0 seed status --json
+625,671	TERMINAL file remove env64_d31.h
+662,471	TERMINAL suppression env64_d31.h (cause)
+663,642	début 51135 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_d31.h
+664,455	fin 51135 0 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_d31.h
+672,615	TERMINAL seed remove --purge relancé
+675,120	début 51161 - file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64lib.c --json
+675,337	fin 51161 0 file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64lib.c --json
+675,365	début 51165 - file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64lib.h --json
+675,574	fin 51165 0 file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64lib.h --json
+675,605	début 51169 - file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/lepton-greffon.json --json
+675,811	fin 51169 0 file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/lepton-greffon.json --json
+675,839	début 51173 - seed status --json
+676,758	fin 51173 0 seed status --json
+676,785	début 51203 - file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib --json
+676,991	fin 51203 0 file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib --json
+699,221	TERMINAL seed add (reprise)
+702,204	début 54371 - seed status --json
+703,419	fin 54371 0 seed status --json
+976,863	début 57618 - seed status --json
+978,032	fin 57618 0 seed status --json
+978,113	début 58136 - seed status --json
+980,128	fin 58136 0 seed status --json
+996,502	début 58362 - seed status --json
+997,768	fin 58362 0 seed status --json
+1022,772	début 58397 - seed replace env64lib file://localhost<E>/env-64-depot2@master --version master
+1024,342	fin 58397 0 seed replace env64lib file://localhost<E>/env-64-depot2@master --version master
+1024,372	début 58417 - seed status --json
+1025,451	fin 58417 0 seed status --json
+1025,478	début 58458 - seed status --json
+1026,492	fin 58458 0 seed status --json
+1026,521	début 58493 - seed status --json
+1027,545	fin 58493 0 seed status --json
+1029,682	début 58528 - seed status --json
+1030,691	fin 58528 0 seed status --json
+1063,266	début 58568 - seed status --json
+1064,323	fin 58568 0 seed status --json
+1083,043	début 58614 - seed replace env64lib file://localhost<E>/env-64-depot@master --version master
+1084,587	fin 58614 0 seed replace env64lib file://localhost<E>/env-64-depot@master --version master
+1084,617	début 58634 - seed status --json
+1085,702	fin 58634 0 seed status --json
+1085,731	début 58673 - seed status --json
+1086,760	fin 58673 0 seed status --json
+1086,788	début 58708 - seed status --json
+1087,790	fin 58708 0 seed status --json
+1089,909	début 58743 - seed status --json
+1090,957	fin 58743 0 seed status --json
+1114,445	début 58784 - seed status --json
+1115,481	fin 58784 0 seed status --json
+1122,096	début 58819 - seed remove env64lib --purge
+1124,167	fin 58819 0 seed remove env64lib --purge
+1124,198	début 58830 - seed status --json
+1125,119	fin 58830 0 seed status --json
+1125,154	début 58860 - seed status --json
+1126,123	fin 58860 0 seed status --json
+1184,237	TERMINAL C seed add
+1185,545	début 62106 - seed status --json
+1186,610	fin 62106 0 seed status --json
+1190,285	TERMINAL C-T2 création témoin
+1191,403	début 62147 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_temoin.h
+1192,178	fin 62147 0 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_temoin.h
+1199,599	TERMINAL C-T2 suppression témoin
+1200,761	début 62188 - graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_temoin.h
+1201,533	fin 62188 0 graft --path <E>/env-64-essai/depots/lepton/library-env64lib/master/scion/sys/root/src/lib/env64lib/env64_temoin.h
+1211,713	TERMINAL C-T4 scion graft-remove --purge
+1212,780	début 62210 - file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64lib.c --json
+1213,000	fin 62210 0 file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64lib.c --json
+1213,028	début 62214 - file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64lib.h --json
+1213,240	fin 62214 0 file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/env64lib.h --json
+1213,274	début 62218 - file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/lepton-greffon.json --json
+1213,484	fin 62218 0 file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib/lepton-greffon.json --json
+1213,512	début 62222 - seed status --json
+1214,475	fin 62222 1 seed status --json
+1214,503	début 62252 - file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib --json
+1214,778	fin 62252 0 file owner <E>/env-64-essai/trunk/sys/root/src/lib/env64lib --json
+1218,157	TERMINAL C-T4b seed-clone + graft --scion
+1223,291	début 62268 - seed status --json
+1224,365	fin 62268 0 seed status --json
+1235,203	TERMINAL C-T3 suppression à la main du clone
+1236,368	début 62332 - seed status --json
+1237,387	fin 62332 1 seed status --json

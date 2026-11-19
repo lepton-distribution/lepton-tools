@@ -170,3 +170,84 @@ Constats :
 6. **Tests** : `node:test` d'abord, avec échec sur `main`. D23 et D31 vont dans `lepton.test.ts` ;
    le filtre de D24 va dans un module sans API de l'éditeur. Rejeu VSCodium : `--purge`,
    `seed replace`, regreffe ordinaire.
+
+## 4. Correction (`devenv/env-64`)
+
+| Commit | Contenu |
+| --- | --- |
+| 4cac85d | Tests D23 et D31, `test/lepton.test.ts` (3 tests). Sur le code de `main` : compilation en échec (TS2305, exports absents) ; tests émis : 3 en échec (`env-64-extension/tests-avant-correction-d23.txt`) |
+| c17be86 | `lepton.ts` : `expandHome`, `foreignHome`, `inputPath` ; `resolveLepton` développe `~`, `~<U>` et `${userHome}`. `runner.ts` : message d'introuvable précisé pour `~<autre>`. `commands.ts` : `open()` après `file add` et `file mv`, avec information pour `~<autre>`. Description du réglage et traductions complétées |
+| d066a18 | Tests D24, `test/batch.test.ts` (4 tests). Sur le code de `main` : compilation en échec (TS2305, TS2339) ; tests émis : 4 en échec (`env-64-extension/tests-avant-correction-d24.txt`) |
+| 8e81559 | `batch.ts` : `Batcher.retain`, `isUnder`, `splitRoots`, `deletedClones`. `watch.ts` : racines observées depuis l'activation (`roots`), filtrage du lot au `refresh`, `clonesChanged` (`seed status --json` dans la file, puis information si un clone a été supprimé hors de lepton) ; les autres chemins sont regreffés comme avant |
+| 56cd33f | Version 0.5.3 : `package.json`, `package-lock.json`, `README.md:8`, `extension/README.md` ; `dist/lepton-0.5.3.vsix` ajouté et `lepton-0.5.2.vsix` retiré dans le même commit |
+
+- `npm test` : **29** tests réussis, 0 échec (`package.test.ts` compris : un seul `.vsix`).
+- `npm run package` : `dist/lepton-0.5.3.vsix` (19 fichiers, 37,77 Ko).
+- Installation au Mac par `codium --install-extension extension/dist/lepton-0.5.3.vsix --force` :
+  `lepton-distribution.lepton@0.5.3`.
+
+## 5. Contrôles
+
+### 5.1 D23
+- Script rejoué : `env-64-extension/d23-apres.tsv`. Seules 4 lignes changent : `~/…`, `~<U>/…` et
+  `${userHome}/…` lancent lepton (code 0) ; `~` est développé en `<HOME>`, un répertoire, d'où
+  `spawn <HOME> EACCES` (même effet qu'un chemin absolu de répertoire sur `main`). Les autres
+  formes sont inchangées.
+- Essai dans l'éditeur : l'espace d'essai règle `lepton.path` en
+  `~/lepton-tools-dev/essais/env-64-releves/lepton-horodate.sh`. Après rechargement de la fenêtre,
+  tous les appels de l'extension passent par l'enveloppe (`env-64-extension/appels-apres.tsv`).
+
+### 5.2 D31
+« Créer un fichier dans le greffon » avec
+`~/lepton-tools-dev/essais/env-64-essai/trunk/sys/root/src/lib/env64lib/env64_d31.h` : `file add`
+rend le code 0, puis le fichier s'ouvre dans l'éditeur, sans boîte d'erreur (constat de
+l'utilisateur). La création est ensuite regreffée par F2 (code 0).
+
+### 5.3 D24
+Journal : `env-64-extension/appels-apres.tsv`. Notifications relevées par l'utilisateur.
+
+| Cas | Appels F2 après la commande | Notification |
+| --- | --- | --- |
+| U2 `seed replace` → depot2 (extension) | 2 × `seed status --json` (contrôle des racines) ; aucun `graft --path` | « remplacer env64lib — terminé » seulement |
+| U3 `seed replace` → depot (extension) | idem | idem |
+| U4 `seed remove --purge` (extension) | aucun : racine écartée par le filtrage au `refresh` | « retirer env64lib — terminé » seulement |
+| `seed remove --purge` relancé au terminal (§5.4) | 1 × `seed status --json` ; aucun `graft --path` | aucune |
+| T2 témoin créé puis supprimé (terminal) | `graft --path <fichier>`, code 0, deux fois | aucune (regreffe ordinaire inchangée) |
+| T4 `scion graft-remove --purge` (terminal) | 1 × `seed status --json` (code 1 : greffon déclaré non greffé, JSON lu) | aucune |
+| T4b clone recréé (terminal) | 1 × `seed status --json` | aucune |
+| T3 clone supprimé à la main (terminal) | 1 × `seed status --json` (code 1 : 3 liens cassés) | « Clone de library-env64lib supprimé hors de lepton : ses liens du trunk sont cassés (lepton seed status) », seule notification des essais au terminal (constat de l'utilisateur) |
+
+- Après U2 à U4, l'état est égal au départ : 3059 liens, 0 cassé, 0 régulier, graine identique
+  (`etat.sh`, 6 relevés).
+- Le filtrage au `refresh`, sans effet à l'audit, a servi pour U4 : l'ordre entre le vidage du
+  lot et la fin du `refresh` varie d'un essai à l'autre. Sans lui, le contrôle des racines aurait
+  conclu de même.
+- En T3, le nom affiché est `library-env64lib`, la feuille de la clé. Avec le clone supprimé,
+  lepton ne lit plus le manifeste du greffon (`seed status --json`, champ `name`).
+
+### 5.4 Écart de la séquence d'essai, et constat O-1 (hors périmètre)
+- **Écart de séquence.** Au premier passage des contrôles, le fichier créé pour D31
+  (`env64_d31.h`, non commité dans le clone) a fait refuser par scion les trois actions suivantes :
+  `graft-remove --purge` refusé, « contient des modifications non commitées ; --purge refusé », code
+  2. L'erreur venait de la séquence proposée par la session. Après retrait du fichier, la graine a
+  été rétablie (voir O-1), puis U2 à U4 rejoués.
+- **O-1** : `lepton seed remove <g> --purge` refusé par scion laisse la graine à moitié modifiée.
+  `seed_remove` (`lepton/seed.py:688-692`) lance `seed-scion-remove` **avant**
+  `graft-remove --purge`, et ne rétablit rien quand ce dernier échoue. Résultat :
+  `.scion.sources.list` et `.scion.ramifications` n'ont plus le greffon, `lepton-graine.json` le
+  garde (`bibliotheques`), et il reste greffé avec son clone. `lepton file remove` refuse alors :
+  « greffon … hors de la graine ». Le relancement conseillé par le message (« corriger la cause…
+  puis relancer ») aboutit : avertissement « greffé hors de la graine : retiré du trunk seulement »,
+  code 0, état égal au départ. `seed replace` n'est pas touché : son `graft-remove` vient en
+  premier et l'échec ne laisse rien. lepton est dans lepton-tools, donc O-1 n'est pas éligible au
+  ticket (règle de `HORS-PLAN.md`).
+
+## 6. Questions du PA-116
+
+1. Rapport accepté (§4, §5) ?
+2. O-1 : à ajouter à `HORS-PLAN.md` (D32), à traiter plus tard ? Il n'est pas éligible au ticket.
+3. `essais/env-64-essai`, `essais/env-64-depot`, `essais/env-64-depot2` et `essais/env-64-releves`
+   (journal brut, enveloppe, états ; les relevés utiles sont versionnés sous `env-64-extension/`) :
+   suppression par `scripts/supprimer-essai.sh` ?
+4. Fusion `--no-ff` de `devenv/env-64` dans `main`, puis push de `main` et de `devenv/env-64`
+   (PA-P). La validation Debian (installation du `.vsix` 0.5.3, rejeu de `d23.cjs`) se fera en ENV-66.
