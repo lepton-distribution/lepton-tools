@@ -33,6 +33,8 @@ from pathlib import Path, PurePosixPath
 #   après « : »)
 #   l. 4492-4493 : « Cloning into '%s'... » (ENV-66)
 #   l. 20309-20310 : « unable to access '%s': %s », U+00A0 avant « : » (cas n04, ENV-66)
+#   l. 21977-21978 : « not a git repository (or any of the parent directories): %s », U+00A0
+#   (stderr de git écrit par `scion -v` depuis 0.6.3.3, D22 ; ENV-66)
 TRADUCTIONS: list[tuple[re.Pattern[str], str]] = [
     (re.compile("fatal : La branche distante (.*) n'a pas été trouvée dans le dépôt amont (.*)$",
                 re.M),
@@ -46,6 +48,8 @@ TRADUCTIONS: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r"(?<=: )et que le dépôt existe\.$", re.M), "and the repository exists."),
     (re.compile(r"^Clonage dans '(.*)'\.\.\.$", re.M), r"Cloning into '\1'..."),
     (re.compile("impossible d'accéder à '(.*)'\u00a0: "), r"unable to access '\1': "),
+    (re.compile("ni ceci ni aucun de ses répertoires parents n'est un dépôt git\u00a0: "),
+     "not a git repository (or any of the parent directories): "),
     (re.compile("fatal : "), "fatal: "),
 ]
 

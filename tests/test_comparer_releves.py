@@ -79,6 +79,14 @@ def test_stderr_complet_de_git(tmp_path):
     assert p.returncode == 0, p.stdout
 
 
+def test_pas_un_depot_sous_v(tmp_path):
+    """ENV-66 : stderr de git écrit par `scion -v` (D22) pour une source non git
+    (fr.po l. 21977-21978, U+00A0 avant « : »)."""
+    mac = ecrire(tmp_path / "a", {"r.txt": "fatal: not a git repository (or any of the parent directories): .git\n"})
+    vm = ecrire(tmp_path / "o", {"r.txt": f"fatal{NBSP}: ni ceci ni aucun de ses répertoires parents n'est un dépôt git{NBSP}: .git\n"})
+    assert lancer(str(mac), str(vm)).returncode == 0
+
+
 def test_segment_hote_des_miroirs(tmp_path):
     mac = ecrire(tmp_path / "a", {"f12a.depots": "depots/.mirrors\ndepots/.mirrors/localhost\ndepots/.mirrors/localhost/Users\ndepots/.mirrors/localhost<HOME>\n"})
     vm = ecrire(tmp_path / "o", {"f12a.depots": "depots/.mirrors\ndepots/.mirrors/localhost\ndepots/.mirrors/localhost/home\ndepots/.mirrors/localhost<HOME>\n"})
