@@ -1,0 +1,21 @@
+
+test/lepton.test.ts(8,52): error TS2305: Module '"../src/lepton"' has no exported member 'foreignHome'.
+test/lepton.test.ts(8,65): error TS2305: Module '"../src/lepton"' has no exported member 'inputPath'.
+--- node --test out/test/lepton.test.js (émis malgré TS2305)
+ok 1 - arguments, répertoire de travail et code de retour transmis
+ok 2 - exécutable absent : code 2 et message (mis en forme par l'appelant)
+ok 3 - annulation : SIGINT, code 130
+ok 4 - résolution de l'exécutable
+not ok 5 - D23 : lepton.path, `~`, `~<utilisateur courant>` et `${userHome}` développés
+    + actual - expected
+  expected: '/h/moi/.local/bin/lepton'
+  actual: '~/.local/bin/lepton'
+not ok 6 - D23 : `~<autre compte>` reconnu (message d'introuvable précisé)
+not ok 7 - D31 : chemin saisi ouvert comme lepton le lit (`~`, relatif au rootstock)
+ok 8 - JSON de lepton : lu, ou undefined
+ok 9 - entrée standard transmise (check --stdin)
+ok 10 - portée d'une anomalie : situation de lepton, ligne entière, première ligne
+ok 11 - texte d'un diagnostic : emplacement en tête, numéro de ligne de xmllint retiré si situé
+ok 12 - sortie JSON de check lue telle quelle
+# pass 9
+# fail 3

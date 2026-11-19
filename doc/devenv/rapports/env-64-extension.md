@@ -145,3 +145,28 @@ Constats :
    - D24 : le filtre (chemin, racines observées) séparé dans un module sans API de l'éditeur
      (`batch.ts` ou voisin), testé par `node:test`, plus le rejeu VSCodium du §3 du fichier
      d'étape (U4, puis la regreffe ordinaire T2 ; U2 ajouté).
+
+## 3. PA-115 (2026-11-19, décisions de l'utilisateur)
+
+1. **D23** : `~`, `~<utilisateur courant>` et `${userHome}` sont développés dans `lepton.path`.
+   Pour `~<autre compte>`, lepton n'est pas lancé et le message d'introuvable est précisé (« seuls
+   ~, ~<U> et ${userHome} sont développés »), traduit. `$HOME` n'est pas pris en charge. La
+   description du réglage est complétée.
+2. **D31** est traité dans ENV-64, dans le même lot que D23. Avant d'ouvrir le fichier après
+   `file add` et `file mv`, l'extension développe `~` et `~<moi>` et résout un chemin relatif depuis
+   `runner.cwd()`. Elle ne développe pas `${userHome}`, que lepton ne développe pas dans les
+   chemins. Pour `~<autre compte>`, le fichier n'est pas ouvert et une information le dit.
+3. **D24**, option (a′). Au vidage du lot, F2 sépare les racines `scion/` des autres chemins, qui
+   restent regreffés comme avant. S'il y a une racine, `seed status --json` passe dans la file (donc
+   après la commande de lepton en cours). Ensuite, pour chaque racine :
+   - présente → rien ;
+   - absente et greffon encore greffé → information « clone supprimé hors de lepton… » ;
+   - absente et greffon non greffé → rien.
+
+   Le filtrage du lot au `refresh` est gardé en complément (décision de l'utilisateur), bien que
+   son effet ait été nul dans les cas mesurés (§1.3).
+4. **Cas couverts** : les 6 cas du §1.3.
+5. **Version** : 0.5.3.
+6. **Tests** : `node:test` d'abord, avec échec sur `main`. D23 et D31 vont dans `lepton.test.ts` ;
+   le filtre de D24 va dans un module sans API de l'éditeur. Rejeu VSCodium : `--purge`,
+   `seed replace`, regreffe ordinaire.

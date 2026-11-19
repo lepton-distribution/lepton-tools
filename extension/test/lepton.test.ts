@@ -1,11 +1,12 @@
 // Tests du point d'appel de lepton (node:test, sans l'éditeur) : un faux lepton en shell.
 import * as assert from "node:assert/strict";
 import { chmodSync, mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { tmpdir, userInfo } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
 import {
-  EXIT_FAILURE, EXIT_INTERRUPT, diagnosticMessage, lastMessage, parseJson, placeOf, resolveLepton, runLepton,
+  EXIT_FAILURE, EXIT_INTERRUPT, diagnosticMessage, foreignHome, inputPath, lastMessage, parseJson, placeOf,
+  resolveLepton, runLepton,
 } from "../src/lepton";
 
 function fakeLepton(body: string): string {
@@ -56,6 +57,46 @@ test("résolution de l'exécutable", () => {
   mkdirSync(join(home, ".local", "bin"), { recursive: true });
   writeFileSync(join(home, ".local", "bin", "lepton"), "");
   assert.equal(resolveLepton("", home), join(home, ".local", "bin", "lepton"));
+});
+
+test("D23 : lepton.path, `~`, `~<utilisateur courant>` et `${userHome}` développés", () => {
+  const home = "/h/moi";
+  const me = userInfo().username;
+  assert.equal(resolveLepton("~/.local/bin/lepton", home), "/h/moi/.local/bin/lepton");
+  assert.equal(resolveLepton(`~${me}/.local/bin/lepton`, home), "/h/moi/.local/bin/lepton");
+  assert.equal(resolveLepton("${userHome}/.local/bin/lepton", home), "/h/moi/.local/bin/lepton");
+  assert.equal(resolveLepton("~", home), "/h/moi");
+  assert.equal(resolveLepton("${userHome}", home), "/h/moi");
+  // laissés tels quels : autre compte (message précisé par l'appelant), $HOME, variable hors tête
+  assert.equal(resolveLepton("~inconnu64/bin/lepton", home), "~inconnu64/bin/lepton");
+  assert.equal(resolveLepton("$HOME/bin/lepton", home), "$HOME/bin/lepton");
+  assert.equal(resolveLepton("/opt/${userHome}/lepton", home), "/opt/${userHome}/lepton");
+  assert.equal(resolveLepton("${userHome}x/lepton", home), "${userHome}x/lepton");
+  assert.equal(resolveLepton("lepton", home), "lepton");
+});
+
+test("D23 : `~<autre compte>` reconnu (message d'introuvable précisé)", () => {
+  const me = userInfo().username;
+  assert.equal(foreignHome("~inconnu64/bin/lepton"), true);
+  assert.equal(foreignHome("~inconnu64"), true);
+  assert.equal(foreignHome("~/bin/lepton"), false);
+  assert.equal(foreignHome(`~${me}/bin/lepton`), false);
+  assert.equal(foreignHome("/opt/~x/lepton"), false);
+  assert.equal(foreignHome("lepton"), false);
+});
+
+test("D31 : chemin saisi ouvert comme lepton le lit (`~`, relatif au rootstock)", () => {
+  const home = "/h/moi";
+  const me = userInfo().username;
+  assert.equal(inputPath("~/src/x.c", "/r", home), "/h/moi/src/x.c");
+  assert.equal(inputPath(`~${me}/src/x.c`, "/r", home), "/h/moi/src/x.c");
+  assert.equal(inputPath("trunk/x.c", "/r", home), "/r/trunk/x.c");
+  assert.equal(inputPath("../autre/x.c", "/r/s", home), "/r/autre/x.c");
+  assert.equal(inputPath("/abs/x.c", "/r", home), "/abs/x.c");
+  // lepton ne développe pas ${userHome} dans un chemin : relatif, comme lui
+  assert.equal(inputPath("${userHome}/x.c", "/r", home), "/r/${userHome}/x.c");
+  // autre compte : dossier inconnu de Node, pas d'ouverture
+  assert.equal(inputPath("~inconnu64/x.c", "/r", home), undefined);
 });
 
 test("JSON de lepton : lu, ou undefined", () => {
