@@ -35,8 +35,10 @@ Essais :
   fixtures, journaux, `git-po/fr.po`, journaux des regreffes) **supprimés** par
   `scripts/supprimer-essai.sh` à la demande de l'utilisateur (2026-11-19, après la session). Les
   attendus et relevés utiles sont versionnés sous `rapports/env-66-mac/`.
-- VM, laissés en place : `~/env-66-journaux`, `~/tmp-pytest/env-66` et `~/tmp-pytest/env-61`
-  (D38).
+- VM : `~/env-66-journaux` et `~/tmp-pytest` entier (env-57, env-61, env-66) **supprimés** par
+  `scripts/supprimer-essai.sh` (ordre `R66-2`, `FIN-SUCCÈS`, accord de l'utilisateur dans la
+  session VM, 2026-11-19) ; `~/tmp-pytest` recréé vide. `essais/` de la VM ne contient plus que
+  `env-13-debian`, `env-28-debian`, `env-53-c5`, `env-53-debian`.
 
 ## Fait pendant la session
 - **Préparation** (`rapports/env-66-mac.md` §1) :
