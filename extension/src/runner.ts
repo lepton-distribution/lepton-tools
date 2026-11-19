@@ -3,7 +3,8 @@
 import * as path from "node:path";
 import * as vscode from "vscode";
 import { SerialQueue } from "./batch";
-import { EXIT_INTERRUPT, EXIT_OK, EXIT_USER, LeptonResult, lastMessage, resolveLepton, runLepton } from "./lepton";
+import { userInfo } from "node:os";
+import { EXIT_INTERRUPT, EXIT_OK, EXIT_USER, LeptonResult, foreignHome, lastMessage, resolveLepton, runLepton } from "./lepton";
 
 export class LeptonRunner implements vscode.Disposable {
   private readonly queue = new SerialQueue();
@@ -49,7 +50,10 @@ export class LeptonRunner implements vscode.Disposable {
         this.output.append(t);
       }
     }, signal,
-      (e) => vscode.l10n.t("lepton not found: {0} (setting lepton.path)", e)).finally(() => {
+      (e) => foreignHome(e)
+        ? vscode.l10n.t("lepton not found: {0} (setting lepton.path; only ~, ~{1} and {2} are expanded)",
+          e, userInfo().username, "${userHome}")
+        : vscode.l10n.t("lepton not found: {0} (setting lepton.path)", e)).finally(() => {
       this.running--;
       this.lastEnd = Date.now();
     });

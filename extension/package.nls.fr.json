@@ -19,7 +19,7 @@
   "command.generate": "générer presets et espace de travail",
   "displayName": "Lepton",
   "description": "Environnement de développement Lepton : commandes de l'outil lepton, vue de l'architecture, regreffe automatique, relance de clangd et erreurs des manifestes à la saisie dans VSCodium (ENV-12).",
-  "config.path": "Exécutable `lepton`. Vide : `~/.local/bin/lepton` (installation pipx) s'il existe, sinon `lepton` du `PATH`.",
+  "config.path": "Exécutable `lepton` ; `~/…`, `~<utilisateur>/…` (utilisateur courant) et `${userHome}/…` sont développés. Vide : `~/.local/bin/lepton` (installation pipx) s'il existe, sinon `lepton` du `PATH`.",
   "config.autoGraft.enabled": "Regreffer automatiquement à la création ou à la suppression de fichiers sous `scion/` d'un clone greffé (éditeur, terminal, git) : `lepton graft --path …`.",
   "config.autoGraft.delay": "Délai (ms) après le dernier événement de fichier avant la regreffe automatique ; les événements sont regroupés.",
   "config.redirectTrunkCreations": "Déplacer un fichier régulier créé dans le trunk vers le clone de son greffon propriétaire (`lepton file add --adopt`) ; le trunk garde un lien.",
