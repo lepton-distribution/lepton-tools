@@ -216,3 +216,15 @@ Appels de l'extension rejoués en ligne de commande, chemin saisi `~/…/rs/trun
 - x02 `file add …` (`pathAdd`) : code 0, créé dans `lepton-noyau`, regreffé ;
 - x03 `file remove …` (`pathRemove`) : code 0, retiré ; état de `<C>` égal au départ, clone
   propre.
+
+Essai dans VSCodium fait par l'utilisateur (2026-11-19), extension 0.5.2, espace
+`<C>/env11.code-workspace`, canal « Lepton » `ext/vscodium-canal.txt` :
+- « Lepton: créer un fichier dans le greffon » (palette, sans désignation), chemin saisi
+  `~/…/rs/trunk/sys/root/src/lib/env63-vscodium.c` : `file owner … --json` code 0, `file add …`
+  code 0 (créé dans `lepton-noyau`), puis regreffe automatique F2 `graft --path <clone>/…` code 0 ;
+  **boîte de dialogue d'erreur** juste après (texte non relevé) : l'extension ouvre
+  `vscode.Uri.file(<chemin saisi>)` sans développer `~` (`commands.ts:258`) — D31 constaté ;
+- « Lepton: retirer le fichier de son greffon », même chemin : `file remove …` code 0, regreffe
+  F2 code 0.
+État de `<C>` après : égal au départ (liens, cassés, réguliers, graine, liste greffée,
+`depots/`), clone `original` propre.
