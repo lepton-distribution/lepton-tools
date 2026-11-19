@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import MKCONF, PROJECT_XML, assert_trunk_clean, url
+from conftest import D21_FORMS, D21_UNKNOWN, MKCONF, PROJECT_XML, assert_trunk_clean, url
 from lepton import generate as gen
 from lepton.cli import main
 from lepton.rootstock import Rootstock, project_key
@@ -628,3 +628,19 @@ def test_config_refus(project, capsys, argv, message):
     assert main(["seed", "config", *argv, "--no-generate", "-C", str(project)]) == 1
     assert message in capsys.readouterr().err
     assert _graine(project).read_text(encoding="utf-8") == before
+
+
+# --- D21 (ENV-63, PA-113) : --clangd reçu sans shell -----------------------------------------------
+@pytest.mark.parametrize("form", D21_FORMS)
+def test_d21_find_clangd_tilde(tools, tilde, form):
+    """`--clangd ~/…` : `~` développé, puis traitement inchangé (avant : « introuvable ») ; relatif et
+    absolu inchangés (un relatif reste relatif : D30, hors de D21)."""
+    found = gen.find_clangd(tilde.prefix(form) + "tools/clangd-19")
+    assert found == (str(tools / "clangd-19") if form != "relatif" else "../tools/clangd-19")
+
+
+def test_d21_find_clangd_name_and_unknown_user(tools, tilde):
+    """Nom sans `/` : cherché dans le PATH (inchangé) ; `~<utilisateur sans compte>/…` : message."""
+    assert gen.find_clangd("clangd-19") == str(tools / "clangd-19")
+    with pytest.raises(gen.LeptonError, match=f"--clangd « ~{D21_UNKNOWN}/clangd » : répertoire personnel de « ~{D21_UNKNOWN} » introuvable"):
+        gen.find_clangd(f"~{D21_UNKNOWN}/clangd")

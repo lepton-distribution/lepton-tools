@@ -17,7 +17,8 @@ from lepton import __version__, cmake, mkconf
 from lepton.checks import removal_unprovided
 from lepton.errors import EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
 from lepton.rootstock import (KERNEL_KEY, PROJECT_SUBPATH, SOURCES_LIST, STEM_DIR, Manifest, Rootstock,
-                              TrunkReport, find_manifest, is_system_file, project_key, read_sources, scion_key)
+                              TrunkReport, expand_user, find_manifest, is_system_file, project_key, read_sources,
+                              scion_key)
 from lepton.scion_runner import git, run, scion
 from lepton.templates import c_identifier, render_text, render_tree, templates_dir
 from lepton.validation import SEED_MANIFEST, validate_data, validate_xml
@@ -105,11 +106,7 @@ def parse_location(text: str, version: str | None = None, subpath: str | None = 
         raise LeptonError(f"version « {ver} » invalide", "branche ou tag git : segments non vides, ni « . » ni « .. »")
     if is_url(loc):
         return Origin(loc, ver or DEFAULT_VERSION, path)
-    try:
-        expanded = Path(loc).expanduser()
-    except RuntimeError:             # `~utilisateur` sans compte (PA-105 d'ENV-59)
-        raise LeptonError(f"origine locale « {loc} » : répertoire personnel de « {loc.split('/')[0]} » "
-                          "introuvable", "vérifier le nom qui suit « ~ », ou donner un chemin absolu") from None
+    expanded = expand_user(loc, "origine locale")   # `~utilisateur` sans compte : PA-105 d'ENV-59
     local = expanded.resolve()       # indice et contrôle d'existence : même chemin (D17)
     if ver and ver != LOCAL_VERSION:
         raise LeptonError(f"origine locale « {loc} » : version « {ver} » sans effet (scion utilise un "
@@ -372,10 +369,11 @@ def seed_new(args) -> int:
                           "--origin <famille du BSP>=LOCATION[@VERSION][:PATH]")
     family_name, family_text = next(iter(origins.items()))
 
-    root = Path(args.rootstock or ".").resolve()
+    root = expand_user(args.rootstock or ".", "-C").resolve()
     if root.exists() and (not root.is_dir() or any(root.iterdir())):
         raise LeptonError(f"{root} existe et n'est pas un répertoire vide", "choisir un répertoire absent ou vide (-C DIR)")
-    seed_repo = Path(args.seed_repo).resolve() if args.seed_repo else root / "depots" / "lepton-seed" / name
+    seed_repo = (expand_user(args.seed_repo, "--seed-repo").resolve() if args.seed_repo
+                 else root / "depots" / "lepton-seed" / name)
     if seed_repo.exists() and (not seed_repo.is_dir() or any(seed_repo.iterdir())):
         raise LeptonError(f"{seed_repo} existe et n'est pas vide", "choisir un autre --seed-repo")
     kernel = parse_location(kernel_text, rootstock=root)

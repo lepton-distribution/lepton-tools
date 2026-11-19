@@ -1,0 +1,1 @@
+lepton seed new env63 -C <T>/n3-r --seed-repo ../../cibles-avant/g3-r --bsp qemu-mps2-an386 --backend freertos --mkconf sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml --origin lepton-noyau=<C>/depots/lepton/original/master --origin qemu-mps2=<C>/depots/lepton/family-qemu-mps2/master --origin qemu-mps2-an386=<C>/depots/lepton/bsp-qemu-mps2-an386/master

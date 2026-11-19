@@ -1,0 +1,51 @@
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+clangd relancé quand <C>/build/.active/compile_commands.json change
+
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+Observation de 5 greffon(s) et du trunk <C>/trunk
+
+$ <HOME>/.local/bin/lepton seed tree --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton file owner ~/lepton-tools-dev/essais/env-63-essai/rs/trunk/sys/root/src/lib/env63-vscodium.c --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton file add ~/lepton-tools-dev/essais/env-63-essai/rs/trunk/sys/root/src/lib/env63-vscodium.c    (<C>)
+créé dans lepton-noyau : <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-vscodium.c
+scion: greffe : 6 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+scion: greffe partielle : 3043 feuilles liées dans <C>/trunk
+→ code 0
+
+$ <HOME>/.local/bin/lepton graft --path <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-vscodium.c    (<C>)
+scion: greffe : 6 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+scion: greffe partielle : 3043 feuilles liées dans <C>/trunk
+regreffe de lepton-noyau faite
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton file remove ~/lepton-tools-dev/essais/env-63-essai/rs/trunk/sys/root/src/lib/env63-vscodium.c    (<C>)
+retiré de lepton-noyau : <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-vscodium.c
+scion: greffe : 6 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+scion: greffe partielle : 3042 feuilles liées dans <C>/trunk
+→ code 0
+
+$ <HOME>/.local/bin/lepton graft --path <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-vscodium.c    (<C>)
+scion: greffe : 6 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+scion: greffe partielle : 3042 feuilles liées dans <C>/trunk
+regreffe de lepton-noyau faite
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0
+
+$ <HOME>/.local/bin/lepton seed status --json    (<C>)
+→ code 0

@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from lepton.errors import EXIT_OK, EXIT_USER, LeptonError
-from lepton.rootstock import GRAFTED_LIST, STEM_DIR, Rootstock, find_manifest, is_system_file
+from lepton.rootstock import GRAFTED_LIST, STEM_DIR, Rootstock, expand_user, find_manifest, is_system_file
 from lepton.scion_runner import git, scion
 from lepton.seed import _info, finish, scion_on_trunk
 
@@ -91,7 +91,7 @@ def _owner_of(owners: list[Owner], real: Path) -> Owner | None:
 
 def _locate(rs: Rootstock, owners: list[Owner], raw: str) -> Target:
     """Chemin du trunk (absolu ou relatif au cwd) ou chemin dans un clone greffé."""
-    path = Path(os.path.abspath(raw))
+    path = Path(os.path.abspath(expand_user(raw, "chemin")))    # `~` reçu sans shell (D21)
     path = path.parent.resolve() / path.name        # répertoires du trunk : vrais répertoires (E6)
     if path == rs.trunk or rs.trunk in path.parents:
         rel = path.relative_to(rs.trunk)

@@ -1,0 +1,3 @@
+inchangé  <G>/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <G>/trunk/CMakeUserPresets.json)
+écrit     <G>/env11.code-workspace
+presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <G>/trunk)

@@ -1,9 +1,11 @@
 """Fixtures : dépôts git locaux de greffons factices et rootstocks temporaires (scion réel, sans réseau)."""
 
 import json
+import pwd
 import shutil
 import subprocess
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -128,3 +130,35 @@ def assert_trunk_clean(root: Path) -> None:
             assert p.exists(), f"lien cassé : {p}"
         elif p.is_file():
             assert p.name == ".scion.grafted.list", f"fichier régulier dans le trunk : {p}"
+
+
+# --- D21 (ENV-63, PA-113) : `~` dans les chemins saisis --------------------------------------------
+D21_USER = "lepton-d21"                 # compte simulé : `~lepton-d21` = HOME de test
+D21_UNKNOWN = "lepton-inconnu-d21"      # compte absent : message de lepton (forme du PA-105)
+# formes : `~` et `~<utilisateur>` reçus sans shell (extension, `--option=~/…`), à développer ;
+# relative (au répertoire courant) et absolue, inchangées
+D21_FORMS = ["~", "~utilisateur", "relatif", "absolu"]
+
+
+@pytest.fixture
+def tilde(tmp_path, monkeypatch):
+    """HOME = tmp_path ; `~lepton-d21` développé en tmp_path (`pwd.getpwnam` simulé, lu par
+    `os.path.expanduser`) ; répertoire courant vide `tmp_path/cwd`. `no_tilde()` vérifie qu'aucun
+    `<cwd>/~…` n'a été créé ; `prefix(forme)` désigne tmp_path dans chaque forme."""
+    real = pwd.getpwnam
+    if D21_UNKNOWN in {p.pw_name for p in pwd.getpwall()}:
+        pytest.skip(f"le compte {D21_UNKNOWN} existe")
+    monkeypatch.setattr(pwd, "getpwnam",
+                        lambda name: SimpleNamespace(pw_dir=str(tmp_path)) if name == D21_USER else real(name))
+    monkeypatch.setenv("HOME", str(tmp_path))
+    cwd = tmp_path / "cwd"
+    cwd.mkdir()
+    monkeypatch.chdir(cwd)
+
+    def no_tilde() -> None:
+        assert sorted(p.name for p in cwd.iterdir()) == [], "<cwd>/~… créé (D21)"
+
+    def prefix(form: str) -> str:
+        """Préfixe qui désigne tmp_path dans la forme `form` (D21_FORMS)."""
+        return {"~": "~/", "~utilisateur": f"~{D21_USER}/", "relatif": "../", "absolu": f"{tmp_path}/"}[form]
+    return SimpleNamespace(home=tmp_path, cwd=cwd, no_tilde=no_tilde, prefix=prefix)

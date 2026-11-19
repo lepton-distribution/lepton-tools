@@ -4,7 +4,9 @@ import json
 import subprocess
 from pathlib import Path
 
-from conftest import assert_trunk_clean
+import pytest
+
+from conftest import D21_FORMS, D21_UNKNOWN, assert_trunk_clean
 from lepton import seed
 from lepton.cli import main
 from lepton.errors import LeptonError
@@ -204,3 +206,23 @@ def test_grf4_remove(project):
     assert_trunk_clean(project)
     # noyau et BSP courant : refus (GRA-2)
     assert main(["scion", "remove", "board-q", "-C", str(project), "--no-cmake"]) == 1
+
+
+# --- D21 (ENV-63, PA-113) : scion new --repo reçu sans shell ---------------------------------------
+@pytest.mark.parametrize("form", D21_FORMS)
+def test_d21_scion_new_repo_tilde(project, tilde, form):
+    """`scion new --repo ~/…` : `~` développé ; rien sous `<cwd>/~` (avant : « dépôt créé :
+    `<cwd>/~/…` », code 0) ; relatif et absolu inchangés."""
+    assert main(["scion", "new", "my-util", "--type", "bibliotheque", "--repo", tilde.prefix(form) + "repo",
+                 "--no-seed", "--no-cmake", "-C", str(project)]) == 0
+    assert (tilde.home / "repo/.git").is_dir()
+    tilde.no_tilde()
+
+
+def test_d21_scion_new_repo_unknown_user(project, tilde, capsys):
+    """`--repo ~<utilisateur sans compte>/…` : message de lepton, rien de créé."""
+    assert main(["scion", "new", "my-util", "--type", "bibliotheque", "--repo", f"~{D21_UNKNOWN}/repo",
+                 "--no-seed", "--no-cmake", "-C", str(project)]) == 1
+    assert f"--repo « ~{D21_UNKNOWN}/repo » : répertoire personnel de « ~{D21_UNKNOWN} » introuvable" in capsys.readouterr().err
+    tilde.no_tilde()
+    assert_trunk_clean(project)

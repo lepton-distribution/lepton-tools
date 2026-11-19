@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import MKCONF, PROJECT_XML, assert_trunk_clean, url
+from conftest import D21_FORMS, D21_UNKNOWN, MKCONF, PROJECT_XML, assert_trunk_clean, url
 from lepton.cli import main
 from lepton.rootstock import Rootstock, scion_key
 from lepton.seed import Origin, parse_location
@@ -412,3 +412,33 @@ def test_gra6_status_from_clone_dir(project, monkeypatch, capsys):
     monkeypatch.chdir(project / "depots/lepton/original/master/scion")
     assert main(["seed", "status"]) == 0
     assert "lepton-noyau" in capsys.readouterr().out
+
+
+# --- D21 (ENV-63, PA-113) : seed new -C, --seed-repo reçus sans shell ------------------------------
+def _d21_seed_new(repos, root: str, seed_repo: str) -> int:
+    return main(["seed", "new", "demo", "-C", root, "--seed-repo", seed_repo, "--bsp", "board-q", "--mkconf", MKCONF,
+                 "--origin", f"lepton-noyau={repos['kernel']}", "--origin", f"fam-test={repos['family']}",
+                 "--origin", f"board-q={repos['bsp']}"])
+
+
+@pytest.mark.parametrize("option", ["-C", "--seed-repo"])
+@pytest.mark.parametrize("form", D21_FORMS)
+def test_d21_seed_new_tilde(repos, tilde, option, form):
+    """`seed new -C ~/…`, `--seed-repo ~/…` : `~` développé ; rien sous `<cwd>/~` (avant : code 0,
+    rootstock ou graine créés sous `<cwd>/~/…`, rapport env-63 §1.2) ; relatif et absolu inchangés."""
+    paths = {"-C": str(tilde.home / "new"), "--seed-repo": str(tilde.home / "graine")}
+    paths[option] = tilde.prefix(form) + Path(paths[option]).name
+    assert _d21_seed_new(repos, paths["-C"], paths["--seed-repo"]) == 0
+    assert (tilde.home / "new/trunk").is_dir() and (tilde.home / "graine/scion/.scion").is_dir()
+    tilde.no_tilde()
+
+
+@pytest.mark.parametrize("option", ["-C", "--seed-repo"])
+def test_d21_seed_new_unknown_user(repos, tilde, capsys, option):
+    """`~<utilisateur sans compte>/…` : message de lepton, rien de créé."""
+    paths = {"-C": str(tilde.home / "new"), "--seed-repo": str(tilde.home / "graine")}
+    paths[option] = f"~{D21_UNKNOWN}/x"
+    assert _d21_seed_new(repos, paths["-C"], paths["--seed-repo"]) == 1
+    assert f"{option} « ~{D21_UNKNOWN}/x » : répertoire personnel de « ~{D21_UNKNOWN} » introuvable" in capsys.readouterr().err
+    assert not (tilde.home / "new").exists() and not (tilde.home / "graine").exists()
+    tilde.no_tilde()

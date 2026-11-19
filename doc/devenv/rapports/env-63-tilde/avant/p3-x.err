@@ -1,0 +1,8 @@
+scion: rootstock installé dans <T>/n3-x (trunk : trunk)
+scion: scion lepton/original::tree déclaré dans <W>/p3-x/~inconnu63/<hT>/g3-x/scion/.scion (version *)
+scion: scion lepton/family-qemu-mps2 déclaré dans <W>/p3-x/~inconnu63/<hT>/g3-x/scion/.scion (version *)
+scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <W>/p3-x/~inconnu63/<hT>/g3-x/scion/.scion (version *)
+scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+scion: greffe : 3055 feuilles liées dans <T>/n3-x/trunk
+scion: scion lepton/project-env63 déclaré dans <W>/p3-x/~inconnu63/<hT>/g3-x/scion/.scion (version *)
+scion: greffe partielle : 3 feuilles liées dans <T>/n3-x/trunk
