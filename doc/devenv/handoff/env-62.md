@@ -1,111 +1,105 @@
-# Passation ENV-62 — Claude Code : règle U3, invites à refuser, outils des consignes VM (D26, D28, D27) — session du 2026-11-18 (préparation)
+# Passation ENV-62 — Claude Code : règle U3, invites à refuser, outils des consignes VM (D26, D28, D27) — session du 2026-11-19
 
 ## Statut
-À démarrer. Cette session était hors étape : révision du plan après ENV-61, avec la skill
-`lepton-portage-instructions`.
-- Les étapes ENV-62 à ENV-66 sont rédigées ; aucune tâche d'ENV-62 n'est exécutée.
-- Aucun fichier de l'arbre Lepton, de scion, de lepton, de l'extension ou de `.claude/` n'est
-  touché.
-- Aucune branche `devenv/env-62` n'existe.
-
-La session qui exécutera ENV-62 remplacera cette passation.
+Terminée. D26 et D28 sont décidés et seront appliqués en ENV-66. D27 est traité ; la preuve sur la
+VM se fera en ENV-66. PA-111 et PA-112 sont tranchés. Rapport : `rapports/env-62-claude-code.md`.
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `main`, à jour avec `origin/main` ; `devenv/revision-2026-11-18` (depuis `main` 24ca20a), fusionnée `--no-ff` dans `main` (c422a41), les deux poussées (PA-P, accord de l'utilisateur) | `main` : le commit de consignation des pushes (non poussé, à pousser avec les commits d'ENV-62), au-dessus de 0735f71 et a24de52 (poussés), 949997f (consignation du push) et c422a41 (fusion) ; branche : 16da928 (révision du plan) | oui |
-| seed.scions | `master` | 975caf6 (tag 0.6.3.2), non touché | oui |
+| lepton-tools | `main` : fusion `--no-ff` de `devenv/env-62` (depuis `main` c514033) ; `main` et `devenv/env-62` poussées (PA-P, accord de l'utilisateur) | branche : « devenv(env-62): état et passation » ; `main` : commit de fusion | oui |
 | clone noyau `depots/lepton/original/master` | `master` | dfc960b, non touché | oui |
-| autres | `master` / `original-tree` | non touchés : graine 15740f9 | oui |
+| autres | seed.scions `master` 975caf6 (tag 0.6.3.2), graine `original-tree` 15740f9 | non touchés | oui |
 
 Outils :
-- Mac : scion 0.6.3.2, lepton 0.1.0, extension 0.5.2, Claude Code 2.1.327 ;
-- VM : scion 0.6.3.2, lepton 0.1.0, extension 0.5.2, Claude Code 2.1.326.
+- Mac : Claude Code **2.1.328**, scion 0.6.3.2, lepton 0.1.0, extension 0.5.2.
+- VM : processus Claude Code **2.1.325** pendant R61-1 (champ `version` du journal), 2.1.326
+  installé sur disque ; rien n'a été fait sur la VM dans cette étape.
 
-VM : état laissé par R61-1 (`handoff/env-61.md`). `~/.claude/settings.json` y garde ses 3 règles
-`allow` utilisateur (D19, PA-103). La décision d'ENV-62 sur D26 (PA-111) est appliquée en ENV-66.
+Réglages du Mac : `~/.claude/settings.json` revenu à son empreinte d'avant (`561789c8…25ce2`).
+`.claude/settings.json`, `.claude/settings.local.json` et `~/.claude.json` n'ont pas changé.
 
 ## Fait pendant la session
-- Début de session : état conforme à `handoff/env-61.md` (`main` 24ca20a, propre).
-- Sources de D21 à D28 lues :
-  - `HORS-PLAN.md` (D21 à D28) ;
-  - `rapports/env-59-tilde.md` §1.4, §1.6, §5.3 ;
-  - `rapports/env-60-scion.md` §1.2, §1.3, §1.9, §2 ;
-  - `rapports/env-61-debian.md` §3.2, §9 ; `rapports/env-61-mac.md` §1.3, §5 ;
-  - `rapports/env-54-permissions.md` §3 ; `consignes/env-61-debian.md` (`fr()`, l. 172) ;
-  - `handoff/env-61.md`.
-- Relevés en lecture seule, repris dans les fichiers d'étapes :
-  - D21 : `lepton/rootstock.py:226`, `seed.py:375` et `378`, `scions.py:125`, `files.py:94`,
-    `generate.py:117` ; forme de référence `seed.py:109` ;
-  - D23, D24 : `extension/src/lepton.ts:22`, `watch.ts` (F2 l. 96-100 sans filtre, trunk
-    l. 107-110 avec `recentlyBusy`), `runner.ts:21`, `commands.ts:120-127`, `package.json:5` ;
-  - D22, D25 : `scion/gitops.py:37` (`_run`, dernière ligne de stderr) ; `scion/graft.py:57`
-    (`sync`), `275` (`_fetch`), `342` (`clone_updates`), `383` (`_check_clone`) ;
-    `scion/cli.py:96` (`_clone_seed`) ;
-  - D26 à D28 : `.claude/settings.json` (7 `allow`, 5 `ask`, 5 `deny`) ;
-    `rapports/env-57-mac/decisions.py`, `env-56-scion/fixture.py`.
-- Décisions de l'utilisateur, sur questions posées :
-  - D22 et D25 : une étape, deux lots, un tag ;
-  - D23 et D24 : une étape, deux lots, une version de l'extension ;
-  - D26 à D28 : une étape en tête, décisions sur la VM appliquées à la validation Debian ;
-  - validation Debian groupée en dernière étape.
-- Fichiers d'étapes :
-  - `etapes/ENV-62-claude-code-regles-consignes.md` ;
-  - `ENV-63-lepton-chemins-tilde.md` ;
-  - `ENV-64-extension-path-purge.md` ;
-  - `ENV-65-scion-clone-existant-message.md` ;
-  - `ENV-66-validation-debian.md`.
-- Autres documents mis à jour :
-  - ORCHESTRATION §2, §4 (PA-111 à PA-120), §5bis et §6 ;
-  - `DEVENV-STATUS.md` : étapes, décision, prochaine action, journal ;
-  - `HORS-PLAN.md` : D21 à D28 planifiés.
-- Relecture par un agent indépendant (ORCHESTRATION §5bis, effort `xhigh`, lecture seule) :
-  0 bloquant, 13 à corriger, 14 suggestions. La session a vérifié les principaux constats (n° 1,
-  2, 3, 4, 7, 8, 26), tous confirmés ; tous appliqués sur décision de l'utilisateur. Détail au
-  journal de `DEVENV-STATUS.md` (2026-11-18).
+- D26 (rapport §1). Agent `claude-code-guide` pour la documentation et le CHANGELOG. Nouvel
+  outil `rapports/env-62-claude-code/raisons.py`, qui relève aussi `reasonCode` et `grantScope`.
+  - Essai à chaud T1-T7 : tout passe au classifieur, même le `deny`. Conclusion :
+    `~/.claude/settings.json` n'est lu qu'au démarrage de la session.
+  - L'utilisateur a relancé Claude Code (`claude --continue`), puis l'essai a été rejoué :
+    - règle à joker `Bash(python3 -m unittest discover *)` : classifieur (T1, T2, T3b) ;
+    - règle exacte sur la même commande : `subcommandResults` (T5) ;
+    - `pipx install` exact : `rule userSettings` (T6) ;
+    - `deny` exact : `reject rule userSettings` (T7).
+  - Cause : en mode auto, une règle à joker sur un interpréteur est écartée. Le `~` et la source
+    de la règle n'y changent rien.
+  - Journal U3 de la VM, copié par l'utilisateur dans `~/Documents/` : pas de `reasonCode`, et
+    processus en 2.1.325.
+- D28 (§2). Inventaire : 4 confirmations par erreur, toutes sans effet, aucune annoncée juste
+  avant le lancement.
+  - Rejeu sous 2.1.328 : l'invite d'une règle `ask` ne propose plus « ne plus demander »
+    (`user_temporary`, `grantScope once`). L'invite suivante paraît ; elle a été refusée.
+    Empreintes inchangées.
+- D27 (§3). Les 4 défauts sont décrits, avec un tableau des outils (`LC_ALL`, `<HOME>`, segment
+  d'hôte, traductions). `po/fr.po` de git v2.47.3 contient U+00A0 après « fatal ».
+- Mise en place :
+  - `scripts/comparer-releves.py` et `tests/test_comparer_releves.py` (10 tests) ;
+  - `rapports/env-56-scion/fixture.py` : `LC_ALL=C` et ancêtres de `<HOME>` sous
+    `depots/.mirrors/<hôte>/` en `<HOME/..>`. Rejouée au Mac : 76 relevés, seul le nom de la base
+    change ;
+  - ORCHESTRATION §2bis : réglages utilisateur de la VM (2 règles), lecture des réglages au
+    démarrage, invites à refuser, outils de comparaison.
+- Contrôles :
+  - sorties réelles de la VM `env-61-debian/11-fixture56/` : **0 / 76** écart avec l'outil ;
+  - pytest **537** ; la règle pytest du dépôt reste appliquée sous 2.1.328.
+- `HORS-PLAN.md` : D26 et D28 « décidé en ENV-62, appliqué en ENV-66 » ; D27 « traité en ENV-62,
+  preuve sur la VM en ENV-66 ». Aucun ticket.
+- `essais/env-62-essai` supprimé par `scripts/supprimer-essai.sh`.
 
 ## Reste à faire dans l'étape
-- [ ] Tâche 1 : audit et essai témoin, jusqu'au PA-111.
-- [ ] Tâche 2 : amendement du §2bis et mise en place selon le PA-111.
-- [ ] Tâche 3 : contrôles, PA-112.
+- Rien.
+- Pour ENV-66 :
+  - §0 de la consigne : l'utilisateur retire `Bash(python3 -m unittest discover *)` de
+    `~/.claude/settings.json` de la VM avant d'ouvrir la session. Bloc attendu : rapport §5 ;
+  - U3 attendu au classifieur, avec un contrôle positif d'une règle utilisateur (forme de T6) ;
+  - invites à refuser annoncées « À REFUSER » par `AVANCEMENT` avant le lancement ;
+  - comparaisons de la fixture par `scripts/comparer-releves.py` (`--home-attendu`,
+    `--home-obtenu`), sans `fr()` ;
+  - version de Claude Code de la VM lue au champ `version` du journal.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
 | --- | --- | --- |
-| Découpage ENV-62 (D26, D28, D27), ENV-63 (D21), ENV-64 (D23, D24), ENV-65 (D25, D22), ENV-66 (Debian) ; ordre 62, puis 63, 64 et 65 permutables, 66 | utilisateur | oui |
-| ENV-62 : lieu de l'essai de D26 (`.claude/settings.local.json` du Mac, réglages utilisateur du Mac, ou VM en ENV-66) | proposition non validée (plan de session d'ENV-62) | non |
-| ENV-62 : parades de D28 (annonce « À REFUSER », cible absente, contrôle non interactif) ; sort du défaut « ne plus demander » | proposition non validée (PA-111) | non |
-| ENV-62 : amendement du §2bis pour D27 (`LC_ALL=C`, traductions de `po/fr.po`, segment d'hôte, contrôle vérifié contre le code installé) ; outil commun éventuel | proposition non validée (PA-111) | non |
-| ENV-63 : `~` développé comme au PA-105, ou refusé ; portée sur les 6 chemins | proposition non validée (PA-113) | non |
-| ENV-64 : options de D24 (`recentlyBusy`, relecture de `seed status`, message seul) ; version 0.5.3 | proposition non validée (PA-115) | non |
-| ENV-65 : options de D25 (refus forme P-V1, checkout, reclonage) et de D22 (ligne `fatal:`, première ligne, sortie sous `-v`) ; version 0.6.3.3 ou 0.6.4.0 | proposition non validée (PA-117) | non |
-| ENV-66 : critères C1 à C9 ; D24 dans VSCodium sur la VM | proposition non validée (PA-119) | non |
+| Plan de session : règle d'essai dans `~/.claude/settings.json` ; rejeu sous 2.1.328 ; PA-P pour les invites sur cibles absentes ; journal U3 copié par l'utilisateur | utilisateur | oui |
+| Relance de Claude Code pour l'essai D26 | utilisateur | oui (journal) |
+| PA-111 : cause de D26, règle de la VM retirée au §0 d'ENV-66, règles du dépôt inchangées ; parade D28 (annonce et cible absente), défaut documenté seulement ; amendement D27 ; fixture et outil commun ; ni `CLAUDE.md` ni skills | utilisateur | oui |
+| PA-112 : rapport accepté, essai supprimé, fusion et push | utilisateur | oui |
 
 ## Pièges rencontrés
-- Les numéros de ligne de D21 dans `HORS-PLAN.md` (`seed.py:369`, `372`) datent d'avant 74c9c97 :
-  ce sont aujourd'hui les lignes 375 et 378.
-- Piste pour D26, non vérifiée : le mode auto écarte les « Wildcarded interpreters like
-  `Bash(python*)` » (`rapports/env-54-permissions.md` §3, point 2). L'audit d'ENV-62 l'établit ou
-  l'écarte.
-- Une lecture groupée qui cite une commande `ask` déclenche l'invite (ENV-54 §10.2, O-0) :
-  chercher par l'outil Grep.
-- `.claude/settings.local.json` du Mac porte 3 `allow` non documentés jusqu'ici
-  (`Bash(git fetch *)`, `Bash(echo "code=$?")`, un `Read(…)` sous `essais/env-60-fixture/`) :
-  un essai de règles au Mac n'est pas comparable à la VM sans en tenir compte.
-- Node.js est absent de la VM : un essai `node` de l'extension n'y tourne pas (PA-119).
+- `~/.claude/settings.json` modifié pendant la session → sans effet, même un `deny` → il n'est lu
+  qu'au démarrage : relancer (`claude --continue` garde la conversation et le journal).
+- Une règle retirée de `~/.claude/settings.json` reste chargée dans le processus en cours.
+- `claude --version` donne la version installée, pas celle du processus → lire le champ
+  `version` du journal.
+- `touch` sous `essais/` → décision `mode` (écriture dans un répertoire de travail) : ce n'est
+  pas un témoin de règle. Prendre une commande hors des répertoires de travail (`pipx install`
+  sur une cible absente).
+- zsh : un joker non protégé sans correspondance (`-p env62_*.py`) empêche de lancer la
+  commande → le protéger par des guillemets.
+- Le dossier iCloud de sauvegarde de `~/.claude/` est illisible pour la session (« Operation not
+  permitted ») : l'archive du hook n'a pas pu être vérifiée par la session.
 
 ## Critères de validation
-- [ ] PA-111 et PA-112 tranchés et consignés.
-- [ ] D26 : cause établie, ou essai qui la laisse ouverte, et décision relevée au rapport.
-- [ ] D28 : inventaire des invites à refuser ; rejeu de « ne plus demander » sous 2.1.327.
-- [ ] D27 : chaque défaut avec sa parade au §2bis, ou dans l'outil commun.
-- [ ] `settings.json` en JSON valide s'il change ; `pytest` complet vert.
-- [ ] `HORS-PLAN.md` : D26 et D28 « décidé, appliqué en ENV-66 », D27 traité, avec renvoi au
-      rapport.
+- [x] PA-111 et PA-112 tranchés et consignés.
+- [x] D26 : cause établie, et décision relevée au rapport.
+- [x] D28 : inventaire des invites à refuser ; rejeu de « ne plus demander » (sous 2.1.328, décision
+      de l'utilisateur).
+- [x] D27 : chaque défaut avec sa parade ; 0 écart sur les sorties réelles de la VM.
+- [x] Fichiers de réglages du Mac revenus à leur empreinte d'avant ; `settings.json` inchangé ;
+      `pytest` complet vert.
+- [x] `HORS-PLAN.md` : D26 et D28 « décidé, appliqué en ENV-66 », D27 « traité en ENV-62, preuve
+      sur la VM en ENV-66 », avec renvoi au rapport.
 
 ## Reprise
 Commande ou première action de la session suivante :
 ```
-démarre la session ENV-62 (skill devenv-session) : lire etapes/ENV-62-claude-code-regles-consignes.md
-et cette passation ; branche devenv/env-62 de lepton-tools depuis main ; tâche 1 jusqu'au PA-111
+démarre ENV-63 avec la skill devenv-session (ENV-63, ENV-64, ENV-65 permutables ; ENV-63 conseillée avant ENV-64)
 ```
