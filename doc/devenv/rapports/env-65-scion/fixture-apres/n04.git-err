@@ -1,0 +1,4 @@
+$ git clone -b master https://scion-essai.invalid/plain.git d
+code 128
+Cloning into 'd'...
+fatal: unable to access 'https://scion-essai.invalid/plain.git/': Could not resolve host: scion-essai.invalid

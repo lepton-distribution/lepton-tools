@@ -224,3 +224,120 @@ Conséquences :
 9. **Outils** : `scripts/comparer-releves.py` n'est pas touché dans cette étape. ENV-66 relèvera
    ses attendus avec le nouveau scion (fichier d'étape, pièges), et y ajoutera au besoin la
    règle `impossible d'accéder à`. Écarts attendus à l'essai : les `.err` du §2.3.
+
+## 4. Décisions du PA-117 (2026-11-19, utilisateur)
+
+Les propositions du §3 sont retenues telles quelles :
+1. D25 : refus au texte de `_check_clone` (version seule, sans `fetch`), clone laissé en place.
+2. Cas couverts :
+   - `seed-clone` contrôle les clones adoptés, avant tout clonage ; la liste greffée reste
+     inchangée et le code est 1 ;
+   - `seed-add` contrôle la graine distante existante ;
+   - non couverts : `graft` et `graft --scion`, et les graines de `seed-update` et de
+     `graft-update`. Ce dernier point est ajouté au hors-plan (`HORS-PLAN.md` D33, pas un
+     ticket : seed.scions) ;
+   - clé projetée exclue.
+3. D22 : première ligne non vide du stderr de git, avec `--quiet` ajouté à `git clone -b` ; vaut
+   pour toutes les commandes de `_run` ; le stderr complet est journalisé sous `-v`.
+4. Documentation : docstrings de `sync`, `_clone_seed` et `_run`, `CHANGELOG.md`, `README.md`.
+5. Version 0.6.3.3.
+6. `SCION_MIN_VERSION` inchangé ; `SCION_REF` 0.6.3.3 dans lepton-tools et dans le clone noyau.
+7. Aucun code de lepton. `scripts/comparer-releves.py` sera revu en ENV-66.
+
+## 5. Implémentation (seed.scions, `devenv/env-65`)
+
+| Commit | Contenu |
+| --- | --- |
+| eaf0c85 | Tests d'abord. `tests/test_existing_clone.py`, 16 tests : clone adopté hors de sa branche ou de son tag refusé, rien greffé après le refus, refus avant tout clonage, tous les clones nommés, nouvelle version d'une clé greffée ; graine distante déplacée, préexistante, tag. `tests/test_git_messages.py`, 11 tests : URL absente, répertoire non git, version absente, `--quiet`, graine absente, `fetch`, `ls-remote`, sortie traduite (U+00A0), lignes vides de tête, échec muet, stderr complet sous `-v`. Sur 0.6.3.2 : 18 échecs, tous de la forme attendue (code 0 au lieu de 1, dernière ligne au lieu de la cause) ; 9 réussites, les cas inchangés (`env-65-scion/tests-avant-correction.txt`) |
+| a87cdb5 | D25. `graft.version_fault` : lecture de version seule, sans `fetch`, reprise par `_check_clone` (textes inchangés). `graft._check_adopted`, appelé par `sync` avant `_fetch` : un scion ordinaire distant absent de la liste greffée d'avant l'appel avec ce clone et cette version → clone contrôlé ; tous les défauts nommés, code 1. `cli._clone_seed` : graine distante existante contrôlée contre `--version` (« version demandée »), code 1, rien modifié. Docstrings de `sync` et `_clone_seed` |
+| 026d4be | D22. `gitops._run` : première ligne non vide du stderr ; stderr complet en `log.debug` ; docstring. `gitops.clone` : `git clone -b <v> --quiet …`. Import de `support` avant `scion` dans le test (lancé seul) |
+| 9615cd5 | 0.6.3.3 : `scion/__init__.py`, `tests/test_cli.py`, `CHANGELOG.md` (« Corrections » : clone adopté contrôlé, graine existante contrôlée, message de git ; cas inchangés), `README.md` (deux paragraphes après P-V1) |
+
+Contrôles :
+- tests de scion : **340** (313 + 16 + 11), tous verts, plus 1 sauté (`test_network`) ;
+  `env-65-scion/tests-apres-correction.txt` : les 27 nouveaux, verts ;
+- NF-2 : `git diff 0.6.3.2 -- scion tests | grep -ci '^+.*lepton'` donne **0** ;
+- `git diff --stat 0.6.3.2 0.6.3.3` : 9 fichiers, +495 −25 ;
+- P-V1, P-E1 et `doc/projection-miroir.md` : inchangés.
+
+## 6. Essais avec la branche (venv `essais/env-65-venv`, scion 0.6.3.3)
+
+Venv installé par `pip install "git+file://<SEED_SCIONS>@devenv/env-65"` ; `scion version` donne
+0.6.3.3.
+
+- **Fixture d'ENV-65** (`fixture-apres/` contre `fixture-avant/`) :
+
+  | Cas | Avant | Après |
+  | --- | --- | --- |
+  | b01, b02 (clone adopté, branche) | **0** ; **0**, `master` greffé sous `dev` | 1 (`branche « master », version déclarée « dev » ; git -C … switch dev`, liste greffée vide) ; 1 (rien à greffer, trunk rétabli) |
+  | c01, c02 (clone adopté, tag) | **0** ; **0** | 1 (`switch --detach v1`) ; 1 |
+  | d02, d03 (graine distante déplacée) | **0**, graine de `master` lue, `own/plain/master` cloné ; **0** | 1 (`graine existante hors de la version demandée, non reprise (rien n'a été modifié) : … switch autre`), aucun clone ; 0, la liste de d01 (`own/plain dev`) regreffée, `f.txt` = « dev » |
+  | d04, d05 (graine préexistante hors version) | **0** ; **0** | 1 ; 1 |
+  | n01, n02, n05, n06b, n07b (D22) | `… : and the repository exists.` | `… : fatal: '<B>/repos/…' does not appear to be a git repository` |
+  | n03, n04 | cause sur la dernière ligne | même ligne ; commande `git clone -b … --quiet` |
+
+  Identiques à l'avant, tous fichiers compris : a01 à a06 (clone greffé, puis déplacé :
+  accepté par `seed-clone` et `graft`, refusé par `seed-add`, décision du PA-117), b03, c03, e01
+  à e07 (témoins), f01 à f05 (branche de travail), n06, n07.
+- **Fixtures d'ENV-56 et d'ENV-60** (`fixture56-apres/`, `fixture60-apres/`, contre `*-avant/`) :
+  seuls des `.err` diffèrent, plus `fixture.tsv`. Codes, `.out`, `.depots`, `.clones` et
+  `.trunk` sont identiques. Écarts attendus (fichier d'étape, pièges), classés par script :
+  - `--quiet` seul ajouté à la commande `git clone -b` : ENV-56 f05, f06 ; ENV-60 k01, k02, k04,
+    k05, k07, k08, k10, k15 à k19, k18b, k19b (14) ;
+  - première ligne de git au lieu de « and the repository exists. » : ENV-56 f01 à f04, f07, f09b,
+    f09c, f10, f11, f12a, f12b (11, ceux du §2.3), dont les rapports de `mirror-sync`
+    (« amont inaccessible : … does not appear to be a git repository »).
+- **lepton, clone préexistant hors version** (`essai.sh`, rootstock `essais/env-65-essai` et
+  `essais/env-65-essai-avant`, copies d'`essais/env-11/qemu` par `rsync -a` sans `build/` ; dépôt
+  `essais/env-65-depot`, greffon `bibliotheque` `env65lib`, `master` 54dfd3d, `dev` 711093e avec
+  `DEV.txt`). Le clone est fait par `git clone` sans `-b` sous `depots/lepton/library-env65lib/dev`
+  (sur `master`) :
+
+  | Cas | 0.6.3.2 (`essai-avant/`) | 0.6.3.3 (`essai-apres/`) |
+  | --- | --- | --- |
+  | l01 `lepton seed add env65lib <P>@dev --type bibliotheque --no-cmake` | **0** : 3 liens vers `…/library-env65lib/dev/…` sans `DEV.txt` (contenu de `master`), graine et liste greffée changées | 2 : `scion: … déclaré …`, `scion: … retiré …`, `lepton: attention: ajout de lepton@library-env65lib annulé (graine et trunk restaurés)`, `lepton: erreur: échec de « scion seed-clone … » (code 1) :`, puis le refus de scion (une ligne `erreur :`) ; liens, graine, liste greffée = départ ; clone laissé sur `master` |
+  | l02 (l01 relancé) | 1 : `lepton: erreur: greffon « env65lib » déjà greffé` (la greffe fausse reste) | 2, identique à l01 |
+  | l03 : clone remis sur `dev`, `seed add`, `check`, `seed remove --purge` | — | 0 (4 liens, `DEV.txt` compris), 0, 0 ; après le retrait, tout est égal au départ |
+
+- **`seed add` réussi puis `seed remove`** (`env-56-scion/succes.sh`, famille F7 de GitHub, copie
+  neuve `essais/env-65-succes-0633`) : `diff -r env-60-scion/succes-0632 env-65-scion/succes-0633`
+  ne diffère que par `scion.txt` (venv, 0.6.3.3). Messages, codes, liens, clones tiers et tête de
+  la famille sont identiques à 0.6.3.2.
+
+## 7. Version, lepton, noyau
+
+- seed.scions :
+  - tag annoté local `0.6.3.3` sur 9615cd5 (tête de `devenv/env-65`) ;
+  - `pipx install --force "git+file://<SEED_SCIONS>@0.6.3.3"` : scion 0.6.3.3, ses 10 modules
+    identiques au tag (`cmp`) ;
+  - `lepton --version` donne `scion 0.6.3.3 (requis ≥ 0.6.2.0)`.
+- lepton-tools, 420b2f5 :
+  - `SCION_REF="0.6.3.3"` (`scripts/install-vscodium.sh`, `bash -n` sans erreur), `README.md`,
+    note de `lepton/__init__.py` ;
+  - `SCION_MIN_VERSION` inchangé, (0, 6, 2, 0) ;
+  - docstring de `_undo_add` : un clone préexistant hors de sa version est refusé par
+    `seed-clone` et reste tel quel ;
+  - lepton n'est pas réinstallé : seuls un commentaire et une docstring changent.
+- `pytest` de lepton-tools (venv `~/lepton-tools-dev/venv-lepton-tools`, scion 0.6.3.3 du PATH) :
+  **567** verts, `test_echec_de_scion_sans_double_affichage` compris.
+- Clone noyau, branche `devenv/env-65` (depuis `master` dfc960b), e589b63 :
+  - `SCION_REF` 0.6.3.3 dans `scripts/install-{macos,debian}.sh`, `README.md`,
+    `README-PAQUET.md`, `doc/BUILDING.md` ; `bash -n` des deux scripts sans erreur ;
+  - fichiers hors de `scion/` : rien n'est greffé, le trunk ne change pas ;
+  - contrôles de `<ROOTSTOCK>` : 0 lien cassé ; 9 fichiers réguliers, tous des `.DS_Store` du
+    Finder (5 du 12 novembre, 4 du 18 novembre, avant la session), tolérés
+    (`.scion.trunk.tolerated`). Il y en avait 7 en ENV-60 ;
+  - avant la fusion dans `master`, `graft-update` refuserait ce clone sur `devenv/env-65`
+    (piège du fichier d'étape) ; aucune regreffe n'est prévue.
+- `<ROOTSTOCK>` n'est pas regreffé : l'audit n'y trouve aucun clone hors de sa version (§1.5).
+
+## 8. Binaires
+
+Pas d'oracle :
+- la correction ne touche que la reprise d'un clone existant hors de sa version (refusée) et le
+  texte des messages d'échec de git ;
+- un clone à sa version est repris tel quel. Les témoins (e01 à e07), l'essai l03 et la greffe
+  réussie de la famille F7 (§6) donnent des clones et des liens identiques à 0.6.3.2 ;
+- `<ROOTSTOCK>` n'est pas regreffé, et ses clones ne sont pas touchés ;
+- l'arbre composé ne change donc pas, et aucune reconstruction n'est nécessaire (forme
+  d'`env-56-scion.md` §6).
