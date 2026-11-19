@@ -27,13 +27,25 @@ from pathlib import Path, PurePosixPath
 # git v2.47.3, po/fr.po (sha256 62fbd300…cb8b8) : msgid → msgstr, octet pour octet.
 #   l. 4549-4550 : « Remote branch %s not found in upstream %s »
 #   l. 22994-22995 : « fatal: » → « fatal : »
-#   l. 15855-15865 : « …and the repository exists. » → « …et que le dépôt existe. » (scion ne
-#   relaie que la dernière ligne, après « : »)
+#   l. 15855-15864 : « Could not read from remote repository. … and the repository exists. » →
+#   « Impossible de lire le dépôt distant. … et que le dépôt existe. » : bloc entier (stderr
+#   complet, `*.git-err` d'ENV-65), puis dernière ligne seule (relayée par scion ≤ 0.6.3.2,
+#   après « : »)
+#   l. 4492-4493 : « Cloning into '%s'... » (ENV-66)
+#   l. 20309-20310 : « unable to access '%s': %s », U+00A0 avant « : » (cas n04, ENV-66)
 TRADUCTIONS: list[tuple[re.Pattern[str], str]] = [
     (re.compile("fatal : La branche distante (.*) n'a pas été trouvée dans le dépôt amont (.*)$",
                 re.M),
      r"fatal: Remote branch \1 not found in upstream \2"),
+    (re.compile("Impossible de lire le dépôt distant\\.\n\n"
+                "Veuillez vérifier que vous avez les droits d'accès\n"
+                "et que le dépôt existe\\.$", re.M),
+     "Could not read from remote repository.\n\n"
+     "Please make sure you have the correct access rights\n"
+     "and the repository exists."),
     (re.compile(r"(?<=: )et que le dépôt existe\.$", re.M), "and the repository exists."),
+    (re.compile(r"^Clonage dans '(.*)'\.\.\.$", re.M), r"Cloning into '\1'..."),
+    (re.compile("impossible d'accéder à '(.*)'\u00a0: "), r"unable to access '\1': "),
     (re.compile("fatal : "), "fatal: "),
 ]
 

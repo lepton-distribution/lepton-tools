@@ -50,6 +50,35 @@ def test_depot_existe_et_prefixe_seul(tmp_path):
     assert lancer(str(mac), str(vm)).returncode == 0
 
 
+def test_acces_impossible_n04(tmp_path):
+    """ENV-66 : `unable to access '%s': %s` (fr.po l. 20309-20310, U+00A0 avant « : »)."""
+    mac = ecrire(tmp_path / "a", {"n04.err": "erreur : (code 128) : fatal: unable to access 'https://h.invalid/p.git/': Could not resolve host: h.invalid\n"})
+    vm = ecrire(tmp_path / "o", {"n04.err": f"erreur : (code 128) : fatal{NBSP}: impossible d'accéder à 'https://h.invalid/p.git/'{NBSP}: Could not resolve host: h.invalid\n"})
+    p = lancer(str(mac), str(vm))
+    assert p.returncode == 0, p.stdout
+    ordinaire = ecrire(tmp_path / "o2", {"n04.err": f"erreur : (code 128) : fatal{NBSP}: impossible d'accéder à 'https://h.invalid/p.git/' : Could not resolve host: h.invalid\n"})
+    assert lancer(str(mac), str(ordinaire)).returncode == 1
+
+
+def test_stderr_complet_de_git(tmp_path):
+    """ENV-66 : `*.git-err` de la fixture d'ENV-65 (stderr complet) : « Cloning into » (l. 4492-4493)
+    et le bloc « Could not read from remote repository. » (l. 15855-15864)."""
+    anglais = ("Cloning into 'd'...\n"
+               "fatal: '<B>/repos/absent' does not appear to be a git repository\n"
+               "fatal: Could not read from remote repository.\n\n"
+               "Please make sure you have the correct access rights\n"
+               "and the repository exists.\n")
+    francais = ("Clonage dans 'd'...\n"
+                f"fatal{NBSP}: '<B>/repos/absent' does not appear to be a git repository\n"
+                f"fatal{NBSP}: Impossible de lire le dépôt distant.\n\n"
+                "Veuillez vérifier que vous avez les droits d'accès\n"
+                "et que le dépôt existe.\n")
+    mac = ecrire(tmp_path / "a", {"n01.git-err": anglais})
+    vm = ecrire(tmp_path / "o", {"n01.git-err": francais})
+    p = lancer(str(mac), str(vm))
+    assert p.returncode == 0, p.stdout
+
+
 def test_segment_hote_des_miroirs(tmp_path):
     mac = ecrire(tmp_path / "a", {"f12a.depots": "depots/.mirrors\ndepots/.mirrors/localhost\ndepots/.mirrors/localhost/Users\ndepots/.mirrors/localhost<HOME>\n"})
     vm = ecrire(tmp_path / "o", {"f12a.depots": "depots/.mirrors\ndepots/.mirrors/localhost\ndepots/.mirrors/localhost/home\ndepots/.mirrors/localhost<HOME>\n"})
