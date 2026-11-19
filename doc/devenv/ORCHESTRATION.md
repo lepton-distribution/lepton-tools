@@ -121,11 +121,19 @@ Règles des consignes VM (décision PA-31 d'ENV-22, 2026-11-02 ; leçons de R15-
       un programme qui lance la commande lui échappent ;
     - un script qui a besoin d'une commande `ask` se coupe en deux phases ; la session la lance
       entre les deux (forme de `rapports/env-57-mac/regreffer-essai.sh`).
-  - Réglages utilisateur de la VM (D19, PA-103) : ses 3 règles `allow` de
-    `~/.claude/settings.json` sont gardées : `Bash(pipx install:*)`,
-    `Bash(git clone * https://github.com/lepton-distribution/*)`,
-    `Bash(python3 -m unittest discover *)`. Elles s'ajoutent à celles du dépôt (les listes se
-    cumulent) ; une décision `userSettings` sur la VM leur revient.
+  - Réglages utilisateur de la VM (D19, PA-103 ; D26, PA-111 du 2026-11-19,
+    `rapports/env-62-claude-code.md` §1) : 2 règles `allow` dans `~/.claude/settings.json`,
+    `Bash(pipx install:*)` et `Bash(git clone * https://github.com/lepton-distribution/*)`.
+    `Bash(python3 -m unittest discover *)` est retirée par l'utilisateur au §0 de la consigne
+    d'ENV-66 : en mode auto, une règle à joker sur un interpréteur est écartée, avec ou sans `~`,
+    quelle que soit sa source ; une règle exacte reste appliquée. Les règles utilisateur
+    s'ajoutent à celles du dépôt (les listes se cumulent) ; une décision `userSettings` sur la VM
+    leur revient.
+  - **Lecture des réglages** (D26, PA-111) : `~/.claude/settings.json` n'est lu qu'au démarrage
+    de la session (les règles du dépôt sont relues à chaud). Toute modification se fait avant
+    l'ouverture de la session, ou est suivie d'une relance. La version de Claude Code en cours se
+    lit au champ `version` du journal de session, pas par `claude --version` (version installée
+    sur disque : 2.1.326 relevé en R61-1, processus en 2.1.325).
   La consigne écrit chaque commande dans la forme couverte ; son §2 renvoie à ce paragraphe au lieu
   d'en recopier les formes. Toute commande encore refusée, ou
   hors des règles, n'est jamais contournée : `AVANCEMENT` avec la commande exacte, l'utilisateur
@@ -133,6 +141,22 @@ Règles des consignes VM (décision PA-31 d'ENV-22, 2026-11-02 ; leçons de R15-
   « Untrusted Code Integration »), R43-1 et R53-1 (« Modify Shared Resources »), R21-1 (`rm -rf`,
   « Irreversible Local Destruction ») ; `rootstock-install`, `seed-add`, `graft` et
   `rejouer-oracle.sh` toujours acceptés.
+- **Invites à refuser** (D28, PA-111 du 2026-11-19, `rapports/env-62-claude-code.md` §2) :
+  chaque invite à refuser porte sur une cible absente, et elle est annoncée « À REFUSER » dans le
+  message qui précède immédiatement son lancement (côté VM : `AVANCEMENT` avant le lancement,
+  jamais après). Le contrôle reste interactif. Sous Claude Code 2.1.328, l'invite d'une commande
+  soumise à une règle `ask` ne propose plus « ne plus demander » ; sous 2.1.326, ce choix était
+  relevé `user_permanent`, rien n'était écrit, et l'invite suivante paraissait quand même.
+- **Outils de comparaison** (D27, PA-111, `rapports/env-62-claude-code.md` §3) :
+  - `LC_ALL=C` dans chaque outil qui lance un programme dont la sortie est comparée ;
+  - toute traduction de git est tirée de `po/fr.po` de la version de la VM, octet pour octet
+    (« fatal » y est suivi d'une espace insécable U+00A0) ;
+  - `<HOME>` et ses ancêtres sont normalisés sous `depots/.mirrors/<hôte>/` (`<HOME/..>` pour
+    `/Users` ou `/home`) ;
+  - un contrôle de correction est vérifié contre le code installé au Mac avant d'écrire la
+    consigne ;
+  - outil commun : `scripts/comparer-releves.py` (traductions de git, segment d'hôte ; tests
+    `tests/test_comparer_releves.py`), plutôt qu'un filtre écrit dans la consigne.
 - **Branche des clones d'un rootstock existant** (P-1 d'ENV-28, E-1 de `rapports/env-28-debian.md`,
   décision du 2026-11-02 ; allégée au PA-45 d'ENV-29, 2026-11-03) : avant tout `graft-update` ou
   toute lecture d'un rootstock existant, les vérifications préalables de la consigne relèvent la

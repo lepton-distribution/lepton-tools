@@ -16,6 +16,8 @@ Aucune URL réseau : amonts, miroirs et dépôts absents sont des chemins file:/
 
 from __future__ import annotations
 
+import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -35,7 +37,9 @@ UPSTREAM = make_fixture.make_repo(REPOS / "amont", {"README.md": "amont\n"})
 MIRROR_PRESENT = REPOS / "miroirs/present.git"
 MIRROR_ABSENT = "file://localhost" + str(REPOS / "miroirs/absent.git")  # jamais créé
 MIRROR_PRESENT.mkdir(parents=True)
-subprocess.run(["git", "init", "-q", "--bare"], cwd=MIRROR_PRESENT, check=True)
+# ENV-62 (D27, PA-111) : messages de git en anglais quel que soit l'hôte
+ENV = {**os.environ, "LC_ALL": "C"}
+subprocess.run(["git", "init", "-q", "--bare"], cwd=MIRROR_PRESENT, check=True, env=ENV)
 
 rows: list[str] = []
 
@@ -77,15 +81,31 @@ def dirs(r: Path) -> dict[str, bool]:
     return found
 
 
+# ENV-62 (D27, PA-111) : ancêtres de <HOME> sous depots/.mirrors/<hôte>/ (`/Users` au Mac, `/home`
+# sur Debian), du plus proche au plus lointain, en <HOME/..>, <HOME/../..>…
+ANCETRES = [(str(a), "<HOME" + "/.." * (i + 1) + ">")
+            for i, a in enumerate(Path.home().parents) if str(a) != "/"]
+MIROIRS = re.compile(r"(depots/\.mirrors/[^/\s]+)(/[^\s<]*)")
+
+
+def _ancetre(m: re.Match) -> str:
+    chemin = m.group(2)
+    for a, jeton in ANCETRES:
+        if chemin == a or chemin.startswith(a + "/"):
+            return m.group(1) + jeton + chemin[len(a):]
+    return m.group(0)
+
+
 def norm(text: str) -> str:
     """<B> pour la base, y compris dans un chemin de dépôt de travail de miroir (sans « / » initial)."""
-    return (text.replace(str(BASE), "<B>").replace(str(BASE).lstrip("/"), "<B>")
+    text = (text.replace(str(BASE), "<B>").replace(str(BASE).lstrip("/"), "<B>")
             .replace(str(Path.home()), "<HOME>"))
+    return MIROIRS.sub(_ancetre, text)
 
 
 def case(name: str, r: Path, label: str, *argv: str) -> None:
     before = dirs(r)
-    p = subprocess.run([str(SCION), *argv], cwd=r, capture_output=True, text=True)
+    p = subprocess.run([str(SCION), *argv], cwd=r, capture_output=True, text=True, env=ENV)
     after = dirs(r)
     new = [d for d in after if d not in before]
     residues = [d for d in new if after[d]]
