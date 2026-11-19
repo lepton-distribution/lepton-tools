@@ -78,6 +78,40 @@ Copie fournie par l'utilisateur : `<HOME>/Documents/3498db03-cbec-4248-9c02-7e12
   (« broad allow rules that grant arbitrary code execution ») déjà sous 2.1.325. À établir par
   l'essai après relance (§1.4).
 
+### 1.4 Essai témoin après relance (2026-11-19, 07:41 UTC, processus 2.1.328)
+
+Session reprise par `claude --continue` (même journal ; entrées `version` 2.1.328), règles du §1.2
+présentes au démarrage :
+
+| N° | Commande | Règle utilisateur | Décision |
+| --- | --- | --- | --- |
+| T1 | `python3 -m unittest discover -s ~/…/env-62-absent` (forme d'U3) | `Bash(python3 -m unittest discover *)` | `accept config classifier` |
+| T2 | idem, `<HOME>/…` absolu | idem | `classifier` |
+| T3b | `python3 -m unittest discover -p 'env62_absent_*.py'` | idem | `classifier` |
+| T5 | `python3 -m unittest discover -p 'env62_temoin_*.py'` | règle exacte `Bash(python3 -m unittest discover -p 'env62_temoin_*.py')` | `accept config subcommandResults` |
+| T6 | `pipx install <HOME>/…/env-62-absent` | règle exacte | `accept config rule userSettings` ; code 1, rien installé |
+| T7 | `pipx install <HOME>/…/env-62-absent-deny` | `deny` exact | `reject config rule userSettings`, `reasonCode` `rule:userSettings` |
+
+Conclusions :
+- **`~/.claude/settings.json` n'est lu qu'au démarrage de la session** (T6, T7 après relance,
+  contre §1.2 à chaud). Les règles du dépôt, elles, sont relues à chaud (ENV-54).
+- **Cause de D26** : en mode auto, la règle à joker `Bash(python3 -m unittest discover *)` est
+  écartée, avec ou sans `~`, avec ou sans `-s` (T1, T2, T3b). Une règle exacte sur la même
+  commande reste appliquée (T5), comme une règle exacte hors interpréteur (T6). C'est la règle
+  documentée (« broad allow rules that grant arbitrary code execution are dropped […] Narrow
+  rules like `Bash(npm test)` stay in effect », `permission-modes`) : `python3 -m <module> *`
+  exécute du code arbitraire. Constaté sous 2.1.325 (VM, §1.3) et 2.1.328 (Mac) ; la source de la
+  règle n'y change rien (`userSettings` ici et sur la VM).
+- Le `~` n'est pas en cause (T1 et T2 identiques).
+- U1 (`Bash(pipx install:*)`) et U2 (`Bash(git clone * https://…/*)`) restent appliquées sur la
+  VM (`subcommandResults`, §1.3).
+- Dépendance des étapes suivantes : seul `etapes/ENV-66-validation-debian.md:32-33` cite la
+  commande, pour le contrôle U3 lui-même. Aucune commande d'ENV-63 à ENV-66 ne dépend de la règle.
+
+Remise en état : règles retirées par l'outil Edit ; empreinte de `~/.claude/settings.json`
+revenue à `561789c8…25ce2` (avant). Les règles retirées restent chargées dans le processus en
+cours jusqu'à son arrêt (cibles absentes, sans effet).
+
 ## 2. D28 — invites à refuser
 
 À compléter : inventaire, rejeu de « ne plus demander ».
