@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2088  # `~` littéral voulu : chemin transmis sans développement (D21)
 # ENV-63 (D21) : chemins saisis de lepton, par forme, sur un rootstock d'essai (jamais <ROOTSTOCK>).
-# Repris d'env-59-tilde/autres.sh. Usage : chemins.sh <essai E> <phase> <sortie versionnée>
+# Repris d'env-59-tilde/autres.sh. Usage : chemins.sh <essai E> <phase> <sortie versionnée> [<clangd>]
 #   <E>/rs    : rootstock d'essai <C> (copie d'essais/env-11/qemu sans build/, graine de projet) ;
 #   <E>/gen   : copie de <C> pour les `generate --clangd` qui réussissent (ils écrivent) ;
 #   <E>/w-<phase>/<cas> : répertoire courant vide de chaque cas hors <C> ;
@@ -21,7 +21,7 @@
 # revienne au départ.
 set -u
 export LC_ALL=C
-E=$1 phase=$2 vers=$3
+E=$1 phase=$2 vers=$3 CL=${4:-clangd-mp-21}   # ENV-66 : nom de clangd (Debian : clangd)
 here=$(cd "$(dirname "$0")" && pwd)
 RL=$here/../env-51-messages/releve.sh
 ETAT=$here/../env-55-url-file/etat.sh
@@ -33,7 +33,7 @@ for d in "$W" "$T" "$brut"; do [ -e "$d" ] && { echo "$d existe déjà" >&2; exi
 [ -d "$C/trunk" ] || { echo "$C : rootstock d'essai absent" >&2; exit 2; }
 [ -d "$G/trunk" ] || rsync -a "$C/" "$G/"
 mkdir -p "$W" "$T" "$brut" "$vers" "$W/outils"
-ln -s "$(command -v clangd-mp-21)" "$W/outils/clangd"
+ln -s "$(command -v "$CL")" "$W/outils/clangd"
 develop() { bash -c "printf '%s' $1"; }
 relpath() { python3 -c 'import os,sys;print(os.path.relpath(sys.argv[1],sys.argv[2]))' "$1" "$2"; }
 hT=${T#"$HOME"/} hC=${C#"$HOME"/} hW=${W#"$HOME"/}
@@ -140,7 +140,7 @@ if [ "$build0" = non ] && [ -e "$C/build" ]; then
 fi
 cas p6-r "generate --clangd" r "$G" - lepton generate --clangd "$(relpath "$W/outils/clangd" "$G")"
 grep -h '"clangd.path"' "$G"/*.code-workspace >"$brut/p6-r.clangd"
-cas p6-n "generate --clangd" nom "$G" - lepton generate --clangd clangd-mp-21
+cas p6-n "generate --clangd" nom "$G" - lepton generate --clangd "$CL"
 grep -h '"clangd.path"' "$G"/*.code-workspace >"$brut/p6-n.clangd"
 
 # hors des 6 : check FILE (lecture), seed mkconf import PATH (forme t : refus attendu)
