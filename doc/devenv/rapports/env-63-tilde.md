@@ -128,3 +128,16 @@ développe `~`, la commande réussirait et l'extension ouvrirait `~/…` pris te
 7. **`README.md`** : aucun changement (§1.5). Proposition : inchangé.
 8. **O-1, O-2** : au hors-plan, ou écartées. Proposition : O-1 au hors-plan (lepton) ; O-2
    présenté au PA-115 d'ENV-64 (extension, même famille que D23).
+
+## 3. PA-113 (2026-11-19, décisions de l'utilisateur)
+
+| Question | Décision |
+| --- | --- |
+| Forme | `~` et `~<utilisateur>` développés, comme `parse_location` (PA-105) |
+| Portée | les 6 chemins (`graft --path` suit `_locate`) ; §1.3 au hors-plan (D29) |
+| `~<utilisateur sans compte>/…` | message de lepton, forme du PA-105 (§2 point 3) |
+| `--clangd` | nom sans `/` cherché dans le PATH ; valeur en `~` développée, puis traitement actuel |
+| Factorisation | fonction commune `expand_user(text, what)` dans `lepton/rootstock.py`, reprise par `parse_location` (message identique) |
+| Tests | un test paramétré par chemin, dans le fichier de la commande (§2 point 6) |
+| `README.md` | inchangé |
+| O-1, O-2 | O-1 au hors-plan (D30) ; O-2 au hors-plan (D31), présenté au PA-115 d'ENV-64 |
