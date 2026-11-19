@@ -231,6 +231,33 @@ présentée à l'utilisateur au moment où la VM lançait A1 (invite à refuser,
 confirmée par erreur, sans effet (cible absente), puis rejouée et refusée. Parade appliquée pour la
 suite de R66-1 : aucune invite au Mac pendant que la VM en présente une.
 
+## 3bis. Contrôle du rapport VM (tâche 4)
+
+Branche `origin/devenv/env-66-debian` = 9f34370, un commit sur 0eca739 (`devenv/env-66`), 984
+fichiers, tous sous `rapports/env-66-debian.md`, `rapports/env-66-debian/` et
+`rapports/oracles/env-66-debian/` (aucun autre fichier touché). Relevés extraits par
+`git archive`, comparaisons refaites au Mac par `scripts/comparer-releves.py --home-attendu
+/Users/cle_d_anton --home-obtenu /home/lepton-user` :
+
+| Critère | Refait au Mac | = rapport VM |
+| --- | --- | --- |
+| C2 | `settings-utilisateur.json` : `permissions.allow` = 2 règles ; `15-decisions.tsv` : `pipx install --force` `rule projectSettings` ; U1, U2 `subcommandResults` ; U3 `classifier` ; A1 `user_temporary` (19:12:22) puis `rejet-invite` (19:13:33) ; H1 `reject hook` ; 4 `graft-update` `user_temporary projectSettings` (19:14:59 à 19:19:27) | oui |
+| C3 | `9-resume-<nom>.txt` ×3 contre `attendu/c3/graft-update-resume.txt` : seule la l. 61 diffère, remplacée par les 2 lignes de la variante « point de montage » de git (`po/fr.po` l. 21981-21988) | oui |
+| C4 | `10-c4` : écarts=50 / 289, classés au Mac : 19 `.W` (racine sans `.DS_Store` ni `.scion.trunk.tolerated`, rien d'autre), `depart.etat`, 6 relevés `p1-z`, `p4-z` (zsh absent), 15 `.err` `p2-*`, `p3-*`, `p5add-*`, `p5dir-*`, `p5graft-t` (ligne « chemin(s) ignoré(s) par git » seule), 6 `p6-*.out` (`presets : env11-debug-qemu`), `p6-n.cmd`, `p6-n.clangd`, `resume.tsv` | oui |
+| C5 | `11-c5` : écarts=2 / 28 (`depart.etat` ; `l03.etat` : 3 empreintes de la graine seules) ; fixtures : 0 / 284, 2 / 179, 1 / 76 ; k07 et f05 : seule la fin du message diffère (`warning: Could not find remote branch nope to clone.`) ; pytest : 570 tests, 0 échec, 0 erreur, 0 ignoré | oui |
+| C6 | `11-d23` : écarts=0 / 1 | oui |
+| C7 | `oracles/env-66-debian` : `mklepton` = `env-61-debian` ; `comparer-oracle.py` contre `env-61-debian` : 0 pour les 16 presets | oui |
+
+Cause de l'écart de C4 classe 3, vérifiée au Mac : `.DS_Store` du Finder ignorés par git dans les
+clones de la copie du Mac (noyau 6, BSP an386 7). Leçon pour les consignes : le contrôle Mac du
+§1.4 a été rejoué sur le même rootstock d'origine que l'attendu, il ne pouvait montrer ni la
+racine, ni la graine, ni les fichiers ignorés propres au Mac.
+
+`FIN-SUCCÈS R66-1` vérifié : C1 à C7 atteints (C2, C5 avec un écart, C3 avec un écart admis, C6 et
+C7 au rejeu), C8 écarté au PA-119, C9 partiel (`~/tmp-pytest/env-61`, 421 Mo, laissé sur la VM :
+`supprimer-essai.sh` n'accepte que `~/tmp-pytest` entier, ORCHESTRATION §2bis ; la forme du §14
+de la consigne n'était pas exécutable telle qu'écrite).
+
 ## 4. Journal des messages (§2bis)
 
 | ID | Date | Type | Sens | Résumé | Remis |
@@ -265,3 +292,4 @@ suite de R66-1 : aucune invite au Mac pendant que la VM en présente une.
 | AVANCEMENT R66-1 (T3 rejeu, option c) | 2026-11-19 | VM → Mac | décision de l'utilisateur dans la session VM : « option (c), rejoue T3 sur c5/rs » ; espace `env11.code-workspace` présent ; `seed add` 0, 3063 liens, clone présent ; VSCodium (fenêtre c4/gen) à fermer, puis ouvert sur c5/rs par l'utilisateur, nombre de greffons observés à relever | oui |
 | AVANCEMENT R66-1 (T3 rejeu) | 2026-11-19 | VM → Mac | « Observation de 6 greffon(s) » à l'ouverture, sans rafraîchissement ; clone supprimé par `supprimer-essai.sh` ; **T3 (c) conforme** : une seule notification, « Clone de library-env65lib supprimé hors de lepton : ses liens du trunk sont cassés (lepton seed status) », aucun échec de regreffe ; 3063 liens, 4 cassés | oui |
 | QUESTION R66-1 (§15, push) | 2026-11-19 | VM → utilisateur | rapport commité 9f34370 sur `devenv/env-66-debian` (depuis 0eca739 ; 984 fichiers : `env-66-debian.md`, `env-66-debian/`, `oracles/env-66-debian/` ; `15-decisions.tsv` 90 appels) ; push demandé à l'utilisateur dans la session VM | oui |
+| FIN-SUCCÈS R66-1 | 2026-11-19 | VM → Mac | C1 à C7 atteints, C8 écarté, C9 partiel (`~/tmp-pytest/env-61` refusé par l'enveloppe) ; `devenv/env-66-debian` 9f34370 poussée sur accord de l'utilisateur ; rapport `rapports/env-66-debian.md`, relevés `rapports/env-66-debian/`, oracle `oracles/env-66-debian/` ; points pour le hors-plan : variante « point de montage », `--single-branch` et git 2.47.3, greffon ajouté hors de l'extension non observé, `seed remove` d'un clone disparu, `LEPTON_EMBOS_ROOT`, `~/tmp-pytest/<sous-répertoire>` ; vérifié par la session Mac (§3bis) | oui |
