@@ -1,0 +1,7 @@
+scion: rootstock installé dans <T>/n2-r (trunk : trunk)
+scion: scion lepton/original::tree déclaré dans <T>/n2-r/depots/lepton-seed/env63/scion/.scion (version *)
+scion: scion lepton/family-qemu-mps2 déclaré dans <T>/n2-r/depots/lepton-seed/env63/scion/.scion (version *)
+scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <T>/n2-r/depots/lepton-seed/env63/scion/.scion (version *)
+scion: greffe : 3055 feuilles liées dans <T>/n2-r/trunk
+scion: scion lepton/project-env63 déclaré dans <T>/n2-r/depots/lepton-seed/env63/scion/.scion (version *)
+scion: greffe partielle : 3 feuilles liées dans <T>/n2-r/trunk

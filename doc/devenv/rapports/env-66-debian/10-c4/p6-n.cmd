@@ -1,0 +1,1 @@
+lepton generate --clangd clangd

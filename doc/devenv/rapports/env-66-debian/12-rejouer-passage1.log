@@ -1,0 +1,37 @@
+== qemu-mps2-an386-embos
+== qemu-mps2-an386-embos-soft
+== qemu-mps2-an386-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-66-debian/qemu-mps2-an386-freertos (1639 symboles)
+== qemu-mps2-an386-freertos-soft
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-66-debian/qemu-mps2-an386-freertos-soft (1638 symboles)
+== qemu-mps2-an500-embos
+== qemu-mps2-an500-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-66-debian/qemu-mps2-an500-freertos (1601 symboles)
+== nucleo-f429zi-embos
+== nucleo-f429zi-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-66-debian/nucleo-f429zi-freertos (1804 symboles)
+== nucleo-f439zi-embos
+== nucleo-f439zi-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-66-debian/nucleo-f439zi-freertos (1804 symboles)
+== nucleo-wl55jc1-embos
+== nucleo-wl55jc1-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-66-debian/nucleo-wl55jc1-freertos (1275 symboles)
+== samd21-xplained-pro-embos
+== samd21-xplained-pro-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-66-debian/samd21-xplained-pro-freertos (991 symboles)
+== stm32f746g-disco-embos
+== stm32f746g-disco-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-66-debian/stm32f746g-disco-freertos (1676 symboles)
+== qemu-mps2-an386-freertos (ctest)
+== qemu-mps2-an386-freertos-soft (ctest)
+== qemu-mps2-an500-freertos (ctest)
+rejouer-oracle: échecs :
+  qemu-mps2-an386-embos:construction
+  qemu-mps2-an386-embos-soft:construction
+  qemu-mps2-an500-embos:construction
+  nucleo-f429zi-embos:construction
+  nucleo-f439zi-embos:construction
+  nucleo-wl55jc1-embos:construction
+  samd21-xplained-pro-embos:construction
+  stm32f746g-disco-embos:construction
+code=1
