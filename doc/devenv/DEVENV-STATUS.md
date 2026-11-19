@@ -76,7 +76,7 @@ Démarrer ENV-65 (skill `devenv-session`). Point de départ, tout publié : lept
 | ENV-62 | Claude Code : règle U3, invites à refuser, outils des consignes VM (D26, D28, D27) | terminée (2026-11-19) ; rapport `rapports/env-62-claude-code.md` ; outil `scripts/comparer-releves.py` ; ORCHESTRATION §2bis amendé | lepton-tools `devenv/env-62` (depuis `main` c514033 ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/env-62.md` |
 | ENV-63 | lepton : `~` dans les chemins saisis (D21) | terminée (2026-11-19) ; rapport `rapports/env-63-tilde.md` ; outil `rapports/env-63-tilde/chemins.sh` | lepton-tools `devenv/env-63` (depuis `main` 332babc ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/env-63.md` |
 | ENV-64 | Extension : `lepton.path` et regreffe après `--purge` (D23, D24) | terminée (2026-11-19) ; rapport `rapports/env-64-extension.md` ; extension 0.5.3 ; outil `rapports/env-64-extension/d23.cjs` | lepton-tools `devenv/env-64` (depuis `main` c5c9183 ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/env-64.md` |
-| ENV-65 | scion : clone existant hors version, message de `git clone` (D25, D22) | à faire | — | — |
+| ENV-65 | scion : clone existant hors version, message de `git clone` (D25, D22) | en cours (2026-11-19) | seed.scions `devenv/env-65` (depuis `master` 975caf6), lepton-tools `devenv/env-65` (depuis `main` f715f87) | — |
 | ENV-66 | Validation Debian groupée (ENV-62 à ENV-65) | à faire | — | — |
 
 Statuts possibles : à faire, en cours, bloquée (raison), terminée (date), abandonnée (décision).

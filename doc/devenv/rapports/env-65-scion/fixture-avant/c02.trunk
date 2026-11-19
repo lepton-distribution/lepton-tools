@@ -1,0 +1,4 @@
+-- liste greffée
+own plain v1 depots/own/plain/v1 <B>/c01/seed/scion/.scion
+-- liens du trunk : 1
+trunk/f.txt -> ../depots/own/plain/v1/scion/f.txt
