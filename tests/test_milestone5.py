@@ -1,10 +1,13 @@
 """Jalon 5 d'ENV-8 : fichiers et regreffe — file, dir, graft (FIC-1, FIC-2, FIC-3, FIC-6)."""
 
+import json
 import os
 import subprocess
 from pathlib import Path
 
-from conftest import assert_trunk_clean
+import pytest
+
+from conftest import D21_FORMS, D21_UNKNOWN, assert_trunk_clean
 from lepton.cli import main
 
 SRC = "trunk/sys/root/src"
@@ -162,3 +165,31 @@ def test_graft_refuses_other_regular_files(project, capsys):
     assert _lepton(project, "graft", "--force") == 1                   # contrôle final du trunk
     assert "fichier régulier" in capsys.readouterr().err
     stray.unlink()
+
+
+# --- D21 (ENV-63, PA-113) : chemins de file, dir, graft --path reçus sans shell (`_locate`) --------
+@pytest.mark.parametrize("form", D21_FORMS)
+def test_d21_locate_tilde(project, repos, tilde, capsys, form):
+    """`file owner`, `file add`, `dir add`, `graft --path` d'un chemin `~/…` (saisi dans l'extension) :
+    `~` développé (avant : « ni dans le trunk …, ni dans un greffon greffé ») ; relatif et absolu
+    inchangés."""
+    p = tilde.prefix(form) + "project/"
+    capsys.readouterr()
+    assert _lepton(project, "file", "owner", p + f"{BOARD}/board.c", "--json") == 0
+    assert json.loads(capsys.readouterr().out)["status"] == "owned"
+    assert _lepton(project, "file", "add", p + f"{BOARD}/d21.c") == 0
+    assert (repos["bsp"] / BOARD_CLONE / "d21.c").is_file()
+    assert _lepton(project, "dir", "add", p + f"{BOARD}/d21") == 0
+    assert (repos["bsp"] / BOARD_CLONE / "d21").is_dir()
+    assert _lepton(project, "graft", "--path", p + f"{BOARD}/board.c", "--no-cmake") == 0
+    tilde.no_tilde()
+    assert_trunk_clean(project)
+
+
+def test_d21_locate_unknown_user(project, tilde, capsys):
+    """`~<utilisateur sans compte>/…` : message de lepton, rien de créé."""
+    capsys.readouterr()
+    assert _lepton(project, "file", "add", f"~{D21_UNKNOWN}/x.c") == 1
+    assert f"chemin « ~{D21_UNKNOWN}/x.c » : répertoire personnel de « ~{D21_UNKNOWN} » introuvable" in capsys.readouterr().err
+    tilde.no_tilde()
+    assert_trunk_clean(project)

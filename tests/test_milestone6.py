@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import MKCONF, PROJECT_XML, assert_trunk_clean, url
+from conftest import D21_FORMS, D21_UNKNOWN, MKCONF, PROJECT_XML, assert_trunk_clean, url
 from lepton.cli import main
 from lepton.rootstock import KERNEL_KEY, Rootstock, scion_key
 from lepton.scion_runner import scion
@@ -444,3 +444,21 @@ def test_check_graine_projet_invalide_refusee(project, capsys):
     code, out = _check(project, capsys)
     assert code == 1
     assert "lepton-graine.json: /: champ obligatoire absent : bsp" in out
+
+
+# --- D21 (ENV-63, PA-113) : `-C` reçu sans shell ---------------------------------------------------
+@pytest.mark.parametrize("form", D21_FORMS)
+def test_d21_rootstock_option_tilde(project, tilde, capsys, form):
+    """`-C ~/…`, `-C ~<utilisateur>/…` (`--rootstock=~/…`, extension) : `~` développé, comme le shell ;
+    formes relative et absolue inchangées."""
+    expected, _ = _check(project, capsys)
+    assert main(["check", "-C", tilde.prefix(form) + "project"]) == expected
+    assert "n'est pas un rootstock" not in capsys.readouterr().err
+    tilde.no_tilde()
+
+
+def test_d21_rootstock_option_unknown_user(tilde, capsys):
+    """`-C ~<utilisateur sans compte>/…` : message de lepton (forme du PA-105)."""
+    assert main(["check", "-C", f"~{D21_UNKNOWN}/project"]) == 1
+    assert f"-C « ~{D21_UNKNOWN}/project » : répertoire personnel de « ~{D21_UNKNOWN} » introuvable" in capsys.readouterr().err
+    tilde.no_tilde()
