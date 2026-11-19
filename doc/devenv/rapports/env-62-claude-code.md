@@ -243,3 +243,28 @@ PA-111 tranché le 2026-11-19 : les propositions 1 à 5 sont retenues telles que
     ]
 }
 ```
+
+## 6. Contrôles (tâche 3)
+
+- D26 : aucune règle du dépôt n'a changé ; la règle de la VM change en ENV-66 (§0). Pas de rejeu
+  au Mac au-delà du §1.4.
+- D27, sur les sorties réelles de la VM (pas de simulation au Mac) :
+  `python3 -I scripts/comparer-releves.py --home-attendu <HOME Mac> --home-obtenu <HOME VM>
+  env-61-mac/attendu/fixture56 env-61-debian/11-fixture56` → f05.err, f06.err, f12a.depots,
+  f12b.depots `identique`, **écarts=0 / 4** ; les 76 fichiers : **écarts=0 / 76**, code 0. Témoin
+  sans `--home-*` : f12a.depots en écart (`écarts=1 / 1`).
+- Fichiers de réglages du Mac : `~/.claude/settings.json` revenu à `561789c8…25ce2` (§1.4) ;
+  `.claude/settings.json`, `.claude/settings.local.json`, `~/.claude.json` inchangés pendant le
+  rejeu de D28 (§2.2). `.claude/settings.json` n'a pas changé (pas de `json.tool` requis).
+- pytest complet : `~/lepton-tools-dev/venv-lepton-tools/bin/pytest -q -rs -p no:cacheprovider
+  --basetemp <essai>/pytest --junitxml <essai>/pytest.xml` (forme couverte) → **537 passed**
+  (527 + 10 de `test_comparer_releves.py`), 7 min 46 ; décision `accept config
+  subcommandResults` : la règle `Bash(~/lepton-tools-dev/venv-lepton-tools/bin/pytest:*)` reste
+  appliquée en mode auto sous 2.1.328.
+
+## 7. PA-112
+
+À trancher : rapport ; sort d'`essais/env-62-essai` (empreintes, relevés de la fixture, clone de
+seed.scions, pytest) par `scripts/supprimer-essai.sh` ; fusion `--no-ff` de `devenv/env-62` dans
+`main` et push (PA-P). Copie du journal de la VM dans `<HOME>/Documents/` : hors du dépôt, à
+supprimer par l'utilisateur. Preuve sur la VM en ENV-66.
