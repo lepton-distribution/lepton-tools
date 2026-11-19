@@ -1,0 +1,4 @@
+$ git clone -b nope file://localhost<B>/repos/plain d
+code 128
+Cloning into 'd'...
+fatal: Remote branch nope not found in upstream origin

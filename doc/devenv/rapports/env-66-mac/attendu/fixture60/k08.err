@@ -1,0 +1,1 @@
+erreur : échec de « git clone -b scion --quiet file://localhost<B>/repos/plain <B>/k08/rootstock/depots/own/plain/scion » (code 128) : fatal: Remote branch scion not found in upstream origin

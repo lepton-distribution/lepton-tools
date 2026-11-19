@@ -1,0 +1,2 @@
+(cd <C>/depots/lepton/library-env65lib) git clone -q file://localhost<P> dev
+(cd <C>/depots/lepton/library-env65lib/dev) git checkout -q dev

@@ -1,0 +1,3 @@
+FAILED tests/test_comparer_releves.py::test_acces_impossible_n04 - AssertionError: n04.err	écart
+FAILED tests/test_comparer_releves.py::test_stderr_complet_de_git - AssertionError: n01.git-err	écart
+2 failed, 10 passed in 19.52s
