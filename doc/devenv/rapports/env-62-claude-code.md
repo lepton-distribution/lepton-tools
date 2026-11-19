@@ -213,3 +213,33 @@ reprend le C5 d'ENV-66.
    commun de comparaison sous `scripts/` (normalisation des traductions et du segment, tests sous
    `tests/`), appliqué aux sorties réelles de la VM en tâche 3 ; ou règles seules.
 5. `CLAUDE.md` et skills : inchangés.
+
+PA-111 tranché le 2026-11-19 : les propositions 1 à 5 sont retenues telles quelles
+(`DEVENV-STATUS.md` §Décisions).
+
+## 5. Mise en place (tâche 2)
+
+- `scripts/comparer-releves.py` : compare deux répertoires de relevés après normalisation
+  (table `TRADUCTIONS` tirée de `po/fr.po` v2.47.3, U+00A0 compris ; ancêtres de `<HOME>` sous
+  `depots/.mirrors/<hôte>/` en `<HOME/..>`, avec le HOME de chaque côté) ; codes 0, 1, 2.
+  Tests `tests/test_comparer_releves.py` (10).
+- `env-56-scion/fixture.py` : `LC_ALL=C` pour `git init` et scion ; `norm()` remplace les ancêtres
+  de `<HOME>` sous `depots/.mirrors/<hôte>/`. Rejoué au Mac (`essais/env-62-essai/f56`, clone
+  seed.scions au tag 0.6.3.2, 08a1460, scion 0.6.3.2 de pipx) : code 0, 76 relevés ; contre
+  `env-61-mac/attendu/fixture56/` par l'outil commun : seul le nom de la base change
+  (`essais/env-61-fixture` → `essais/env-62-essai`, f12a et f12b l. 7), comme en ENV-61 ;
+  l. 3 de f12a : `depots/.mirrors/localhost<HOME/..>`.
+- ORCHESTRATION §2bis : réglages utilisateur de la VM (2 règles), lecture des réglages au
+  démarrage, invites à refuser, outils de comparaison.
+- `.claude/settings.json`, `CLAUDE.md`, skills : inchangés.
+
+### D26 : bloc attendu sur la VM après le §0 d'ENV-66
+
+```json
+"permissions": {
+    "allow": [
+        "Bash(pipx install:*)",
+        "Bash(git clone * https://github.com/lepton-distribution/*)"
+    ]
+}
+```
