@@ -12,7 +12,8 @@ from pathlib import Path
 
 from lepton import seed
 from lepton.errors import EXIT_OK, LeptonError
-from lepton.rootstock import SOURCE_ROOT, STEM_DIR, Rootstock, find_manifest, is_system_file, scion_key
+from lepton.rootstock import (SOURCE_ROOT, STEM_DIR, Rootstock, expand_user, find_manifest, is_system_file,
+                              scion_key)
 from lepton.scion_runner import git, run
 from lepton.templates import SCION_KIND, c_identifier, render_text, render_tree, templates_dir
 from lepton.validation import SCION_MANIFEST, validate_data
@@ -122,7 +123,8 @@ def scion_new(args) -> int:
     seed.check_new_scion(rs, name, kind)
     dest = args.destination or DEFAULT_DESTINATION[kind].format(name=name)
     _check_destination(dest)
-    repo = Path(args.repo).resolve() if args.repo else rs.depots / "lepton" / f"{SCION_KIND[kind]}-{name}" / "master"
+    repo = (expand_user(args.repo, "--repo").resolve() if args.repo
+            else rs.depots / "lepton" / f"{SCION_KIND[kind]}-{name}" / "master")
     _check_repo(repo)
     target = repo / STEM_DIR / SOURCE_ROOT / dest
 

@@ -23,7 +23,7 @@ from pathlib import Path, PurePosixPath
 
 from lepton.checks import KERNEL_PRESETS, board_presets, check_seed_options
 from lepton.errors import EXIT_OK, EXIT_TOOL, LeptonError
-from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, project_key
+from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, expand_user, project_key
 from lepton.scion_runner import run
 from lepton.seed import _info, _remind_commit, _warn, finish, graft_project, load_graine, project_stem
 from lepton.validation import SCHEMA_FILES, SCION_MANIFEST, SEED_MANIFEST, schemas_dir
@@ -114,6 +114,8 @@ def find_clangd(explicit: str | None) -> str | None:
     """clangd LLVM (PA-1) : `--clangd`, sinon le plus récent des `clangd`, `clangd-N`, `clangd-mp-N` du
     PATH dont la version n'est pas celle d'Apple ; à défaut, `clangd` tel quel (avertissement)."""
     if explicit:
+        if explicit.startswith("~"):   # D21 : chemin développé ; nom sans `/` cherché dans le PATH
+            explicit = str(expand_user(explicit, "--clangd"))
         path = shutil.which(explicit) or (explicit if Path(explicit).is_file() else None)
         if path is None:
             raise LeptonError(f"--clangd « {explicit} » introuvable", "donner le chemin d'un exécutable clangd")

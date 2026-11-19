@@ -41,6 +41,17 @@ def is_system_file(name: str) -> bool:
     return name == ".DS_Store" or name.startswith("._")
 
 
+def expand_user(text: str | Path, what: str) -> Path:
+    """`~` et `~<utilisateur>` développés comme par le shell, pour un chemin reçu sans lui
+    (extension, `--option=~/…`) : D21, PA-113 d'ENV-63 ; forme du PA-105 d'ENV-59. `what` nomme
+    l'entrée dans le message ; `~<utilisateur sans compte>` : LeptonError (et non une trace)."""
+    try:
+        return Path(text).expanduser()
+    except RuntimeError:
+        raise LeptonError(f"{what} « {text} » : répertoire personnel de « {str(text).split('/')[0]} » "
+                          "introuvable", "vérifier le nom qui suit « ~ », ou donner un chemin absolu") from None
+
+
 def scion_key(kind: str, name: str) -> str:
     """Clé scion d'un greffon créé par lepton : un préfixe par greffon, donc un clone distinct."""
     return f"{SHELF}@{KEY_PREFIX[kind]}-{name}"
@@ -223,7 +234,7 @@ class Rootstock:
     def discover(cls, explicit: str | Path | None = None, start: Path | None = None) -> "Rootstock":
         """`-C DIR`, sinon le premier répertoire portant la signature en remontant (trunk ou clone)."""
         if explicit is not None:
-            path = Path(explicit).resolve()
+            path = expand_user(explicit, "-C").resolve()
             if not (path / SIGNATURE).exists():
                 raise LeptonError(f"{path} n'est pas un rootstock ({SIGNATURE} absent)",
                                   "indiquer la racine du rootstock avec -C DIR")
