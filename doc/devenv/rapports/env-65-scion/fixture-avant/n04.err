@@ -1,0 +1,1 @@
+erreur : échec de « git clone -b master https://scion-essai.invalid/plain.git <B>/n04/rootstock/depots/own/x/master » (code 128) : fatal: unable to access 'https://scion-essai.invalid/plain.git/': Could not resolve host: scion-essai.invalid

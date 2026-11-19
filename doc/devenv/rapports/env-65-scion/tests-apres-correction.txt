@@ -1,0 +1,40 @@
+test_branch_off_its_version_is_refused (test_existing_clone.TestAdoptedClone.test_branch_off_its_version_is_refused) ... ok
+test_every_faulty_clone_is_named (test_existing_clone.TestAdoptedClone.test_every_faulty_clone_is_named) ... ok
+test_new_version_of_a_grafted_scion_is_adopted (test_existing_clone.TestAdoptedClone.test_new_version_of_a_grafted_scion_is_adopted)
+A grafted scion whose seed now declares another version takes a new clone. ... ok
+test_nothing_is_grafted_after_the_refusal (test_existing_clone.TestAdoptedClone.test_nothing_is_grafted_after_the_refusal)
+The path of a client: seed-scion-add, seed-clone, then graft --scion. ... ok
+test_refused_before_anything_is_cloned (test_existing_clone.TestAdoptedClone.test_refused_before_anything_is_cloned) ... ok
+test_seed_add_refuses_it_too (test_existing_clone.TestAdoptedClone.test_seed_add_refuses_it_too)
+Unchanged since 0.5.4.0. ... ok
+test_tag_off_its_commit_is_refused (test_existing_clone.TestAdoptedClone.test_tag_off_its_commit_is_refused) ... ok
+test_adopted_clone_at_its_version_is_kept_as_it_is (test_existing_clone.TestAdoptedCloneUnchanged.test_adopted_clone_at_its_version_is_kept_as_it_is) ... ok
+test_adopted_tag_at_its_commit_is_kept (test_existing_clone.TestAdoptedCloneUnchanged.test_adopted_tag_at_its_commit_is_kept) ... ok
+test_grafted_clone_on_a_work_branch_is_regrafted (test_existing_clone.TestAdoptedCloneUnchanged.test_grafted_clone_on_a_work_branch_is_regrafted)
+Work in a clone: another branch, then seed-clone and graft, as before. ... ok
+test_missing_clone_is_cloned (test_existing_clone.TestAdoptedCloneUnchanged.test_missing_clone_is_cloned) ... ok
+test_foreign_seed_clone_is_refused (test_existing_clone.TestExistingRemoteSeed.test_foreign_seed_clone_is_refused) ... ok
+test_seed_at_its_branch_still_moves_forward (test_existing_clone.TestExistingRemoteSeed.test_seed_at_its_branch_still_moves_forward)
+Unchanged: an existing seed at its branch moves by fast-forward. ... ok
+test_seed_given_as_a_path_is_not_checked (test_existing_clone.TestExistingRemoteSeed.test_seed_given_as_a_path_is_not_checked)
+A seed given as a path has no version: left as it is. ... ok
+test_seed_moved_off_its_branch_is_refused (test_existing_clone.TestExistingRemoteSeed.test_seed_moved_off_its_branch_is_refused) ... ok
+test_seed_tag_off_its_commit_is_refused (test_existing_clone.TestExistingRemoteSeed.test_seed_tag_off_its_commit_is_refused) ... ok
+test_clone_is_quiet (test_git_messages.TestFailureMessages.test_clone_is_quiet) ... ok
+test_clone_of_a_directory_outside_git_names_the_cause (test_git_messages.TestFailureMessages.test_clone_of_a_directory_outside_git_names_the_cause) ... ok
+test_clone_of_an_absent_repository_names_the_cause (test_git_messages.TestFailureMessages.test_clone_of_an_absent_repository_names_the_cause) ... ok
+test_fetch_of_a_vanished_origin_names_the_cause (test_git_messages.TestFailureMessages.test_fetch_of_a_vanished_origin_names_the_cause)
+The version check of seed-add fetches a branch's upstream. ... ok
+test_ls_remote_of_a_vanished_origin_names_the_cause (test_git_messages.TestFailureMessages.test_ls_remote_of_a_vanished_origin_names_the_cause)
+The version check of seed-add reads a tag in the upstream. ... ok
+test_missing_version_keeps_its_single_line (test_git_messages.TestFailureMessages.test_missing_version_keeps_its_single_line) ... ok
+test_remote_seed_absent_names_the_cause (test_git_messages.TestFailureMessages.test_remote_seed_absent_names_the_cause) ... ok
+test_leading_blank_lines_are_skipped (test_git_messages.TestFirstLine.test_leading_blank_lines_are_skipped) ... ok
+test_silent_failure_has_no_detail (test_git_messages.TestFirstLine.test_silent_failure_has_no_detail) ... ok
+test_translated_output_keeps_its_first_line (test_git_messages.TestFirstLine.test_translated_output_keeps_its_first_line) ... ok
+test_whole_output_travels_and_is_logged (test_git_messages.TestFirstLine.test_whole_output_travels_and_is_logged) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 28.327s
+
+OK

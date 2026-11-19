@@ -1,0 +1,39 @@
+cas	libellé	code	clones:branche	trunk/f.txt	dernière ligne du stderr
+a01	clé own/plain dev : seed-add	0	depots/own/plain/dev:dev	—	—
+a02	graft	0	depots/own/plain/dev:dev	dev	greffe : 1 feuilles liées dans <B>/a01/rootstock/trunk
+a03	seed-clone, clone dev sur master (chemin de lepton seed add)	0	depots/own/plain/dev:master	master	—
+a04	graft après a03	0	depots/own/plain/dev:master	master	greffe : 1 feuilles liées dans <B>/a01/rootstock/trunk
+a05	graft --scion own@plain	0	depots/own/plain/dev:master	master	greffe partielle : 1 feuilles liées dans <B>/a01/rootstock/trunk
+a06	seed-add relancé (contrôle de 0.5.4.0)	1	depots/own/plain/dev:master	master	  <B>/a01/rootstock/depots/own/plain/dev : branche « master », version déclarée « dev » ; git -C <B>/a01/rootstock/depots/own/plain/dev switch dev
+b01	seed-clone, clone dev préexistant sur master (l03 d'ENV-60)	0	depots/own/plain/dev:master	—	—
+b02	graft après b01	0	depots/own/plain/dev:master	master	greffe : 1 feuilles liées dans <B>/b01/rootstock/trunk
+b03	seed-add, même clone préexistant	1	depots/own/plain/dev:master	—	  <B>/b03/rootstock/depots/own/plain/dev : branche « master », version déclarée « dev » ; git -C <B>/b03/rootstock/depots/own/plain/dev switch dev
+c01	seed-clone, clone du tag v1 préexistant sur master	0	depots/own/plain/v1:master	—	—
+c02	graft après c01	0	depots/own/plain/v1:master	master	greffe : 1 feuilles liées dans <B>/c01/rootstock/trunk
+c03	seed-add, même clone	1	depots/own/plain/v1:master	—	  <B>/c03/rootstock/depots/own/plain/v1 : branche « master », version déclarée : tag « v1 » ; git -C <B>/c03/rootstock/depots/own/plain/v1 switch --detach v1
+d01	graine distante --version autre : seed-add	0	depots/graine/autre:autre depots/own/plain/dev:dev	—	—
+d02	seed-add relancé, graine sur master (k05)	0	depots/graine/autre:master depots/own/plain/dev:dev depots/own/plain/master:master	—	—
+d03	graft après d02	0	depots/graine/autre:master depots/own/plain/dev:dev depots/own/plain/master:master	master	greffe : 1 feuilles liées dans <B>/d01/rootstock/trunk
+d04	seed-add, graine autre préexistante sur master (forme ≤ 0.6.3.1)	0	depots/graine/autre:master depots/own/plain/master:master	—	—
+d05	graft après d04	0	depots/graine/autre:master depots/own/plain/master:master	master	greffe : 1 feuilles liées dans <B>/d04/rootstock/trunk
+e01	témoin : seed-add own/plain dev	0	depots/own/plain/dev:dev	—	—
+e02	témoin : seed-clone	0	depots/own/plain/dev:dev	—	—
+e03	témoin : graft	0	depots/own/plain/dev:dev	dev	greffe : 1 feuilles liées dans <B>/e01/rootstock/trunk
+e04	témoin : seed-add own/plain v1	0	depots/own/plain/v1:détaché	—	—
+e05	témoin : seed-clone (tag)	0	depots/own/plain/v1:détaché	—	—
+e06	témoin : graine distante --version autre	0	depots/graine/autre:autre depots/own/plain/dev:dev	—	—
+e07	témoin : graine relancée	0	depots/graine/autre:autre depots/own/plain/dev:dev	—	—
+f01	clé own/plain master : seed-add	0	depots/own/plain/master:master	—	—
+f02	graft	0	depots/own/plain/master:master	master	greffe : 1 feuilles liées dans <B>/f01/rootstock/trunk
+f03	seed-clone, clone master sur la branche travail	0	depots/own/plain/master:travail	master	—
+f04	graft, branche travail	0	depots/own/plain/master:travail	master	greffe : 1 feuilles liées dans <B>/f01/rootstock/trunk
+f05	seed-add relancé, branche travail	1	depots/own/plain/master:travail	master	  <B>/f01/rootstock/depots/own/plain/master : branche « travail », version déclarée « master » ; git -C <B>/f01/rootstock/depots/own/plain/master switch master
+n01	clonage : URL absente	2	—	—	erreur : échec de « git clone -b master file://localhost<B>/repos/absent <B>/n01/rootstock/depots/own/x/master » (code 128) : and the repository exists.
+n02	clonage : répertoire non git	2	—	—	erreur : échec de « git clone -b master file://localhost<B>/repos/nongit <B>/n02/rootstock/depots/own/x/master » (code 128) : and the repository exists.
+n03	clonage : version absente	2	—	—	erreur : échec de « git clone -b nope file://localhost<B>/repos/plain <B>/n03/rootstock/depots/own/plain/nope » (code 128) : fatal: Remote branch nope not found in upstream origin
+n04	clonage : hôte introuvable (réseau)	2	—	—	erreur : échec de « git clone -b master https://scion-essai.invalid/plain.git <B>/n04/rootstock/depots/own/x/master » (code 128) : fatal: unable to access 'https://scion-essai.invalid/plain.git/': Cou
+n05	graine distante absente	2	—	—	erreur : échec de « git clone -b master file://localhost<B>/repos/absent <B>/n05/rootstock/depots/absent/master » (code 128) : and the repository exists.
+n06	préparation : seed-add own/plain dev	0	depots/own/plain/dev:dev	—	—
+n06b	fetch en échec : seed-add relancé	2	depots/own/plain/dev:dev	—	erreur : échec de « git fetch --quiet » (code 128) : and the repository exists.
+n07	préparation : seed-add own/plain v1	0	depots/own/plain/v1:détaché	—	—
+n07b	ls-remote en échec : seed-add relancé	2	depots/own/plain/v1:détaché	—	erreur : échec de « git ls-remote --tags origin refs/tags/v1 refs/tags/v1^{} » (code 128) : and the repository exists.

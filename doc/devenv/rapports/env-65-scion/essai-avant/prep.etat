@@ -1,0 +1,9 @@
+liens = départ
+casses = départ
+reguliers = départ
+graine = départ
+grafted = départ
+depots ≠ départ (2 lignes de diff)
+    > depots/lepton/library-env65lib
+    > depots/lepton/library-env65lib/dev
+clone <C>/depots/lepton/library-env65lib/dev : branche master ; HEAD = refs/heads/master refs/remotes/origin/HEAD refs/remotes/origin/master 

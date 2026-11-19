@@ -1,0 +1,2 @@
+<HOME>/lepton-tools-dev/essais/env-65-venv/bin/scion
+0.6.3.3

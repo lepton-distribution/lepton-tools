@@ -1,0 +1,26 @@
+cas	libellé	code	clones:branche	liens du trunk	dernière ligne du stderr
+k01	ordinaire, version absente, sans --single-branch (f06)	2	—	0	erreur : échec de « git clone -b nope file://localhost<B>/repos/plain <B>/k01/rootstock/depots/own/plain/nope » (code 128) : fatal: Remote branch nope not found
+k02	passage suivant de k01 (seed-add relancé)	2	—	0	erreur : échec de « git clone -b nope file://localhost<B>/repos/plain <B>/k01/rootstock/depots/own/plain/nope » (code 128) : fatal: Remote branch nope not found
+k03	graft après k01	1	—	0	trunk rétabli dans son état antérieur (0 lien(s)), .scion.grafted.list comprise
+k18	comme k01 (préparation de k18b, k18c)	2	—	0	erreur : échec de « git clone -b nope file://localhost<B>/repos/plain <B>/k18/rootstock/depots/own/plain/nope » (code 128) : fatal: Remote branch nope not found
+k18b	seed-clone après k18 (clone gardé en place)	2	—	0	erreur : échec de « git clone -b nope file://localhost<B>/repos/plain <B>/k18/rootstock/depots/own/plain/nope » (code 128) : fatal: Remote branch nope not found
+k18c	graft après k18b	1	—	0	trunk rétabli dans son état antérieur (0 lien(s)), .scion.grafted.list comprise
+k04	graine distante, version absente	2	—	0	erreur : échec de « git clone -b nope file://localhost<B>/repos/graine <B>/k04/rootstock/depots/graine/nope » (code 128) : fatal: Remote branch nope not found i
+k05	passage suivant de k04	2	—	0	erreur : échec de « git clone -b nope file://localhost<B>/repos/graine <B>/k04/rootstock/depots/graine/nope » (code 128) : fatal: Remote branch nope not found i
+k06	graft après k05	1	—	0	trunk rétabli dans son état antérieur (0 lien(s)), .scion.grafted.list comprise
+k07	voisin : graine distante, --single-branch, version absente	2	—	0	erreur : échec de « git clone -b nope --single-branch file://localhost<B>/repos/graine <B>/k07/rootstock/depots/graine/nope » (code 128) : fatal: Remote branch 
+k08	ordinaire, version = chemin du dépôt (scion), sans ref de ce nom	2	—	0	erreur : échec de « git clone -b scion file://localhost<B>/repos/plain <B>/k08/rootstock/depots/own/plain/scion » (code 128) : fatal: Remote branch scion not fo
+k09	graft après k08	1	—	0	trunk rétabli dans son état antérieur (0 lien(s)), .scion.grafted.list comprise
+k10	passage suivant de k08	2	—	0	erreur : échec de « git clone -b scion file://localhost<B>/repos/plain <B>/k08/rootstock/depots/own/plain/scion » (code 128) : fatal: Remote branch scion not fo
+k17	graine distante, version = chemin du dépôt (scion)	2	—	0	erreur : échec de « git clone -b scion file://localhost<B>/repos/graine <B>/k17/rootstock/depots/graine/scion » (code 128) : fatal: Remote branch scion not foun
+k17b	graft après k17	1	—	0	trunk rétabli dans son état antérieur (0 lien(s)), .scion.grafted.list comprise
+k11	ordinaire, branche distante « doc » et répertoire doc/	0	depots/own/ambi/doc:doc	0	—
+k12	passage suivant de k11	0	depots/own/ambi/doc:doc	0	—
+k13	voisin : k11 avec --single-branch	0	depots/own/ambi/doc:doc	0	—
+k14	voisin : tag « tests » et répertoire tests/	0	depots/own/ambi/tests:détaché	0	—
+k15	ordinaire, origine vide, version master	2	—	0	erreur : échec de « git clone -b master file://localhost<B>/repos/vide.git <B>/k15/rootstock/depots/own/vide/master » (code 128) : fatal: Remote branch master n
+k16	passage suivant de k15	2	—	0	erreur : échec de « git clone -b master file://localhost<B>/repos/vide.git <B>/k15/rootstock/depots/own/vide/master » (code 128) : fatal: Remote branch master n
+k19	ordinaire, version = commit complet de master	2	—	0	erreur : échec de « git clone -b <SHA> file://localhost<B>/repos/plain <B>/k19/rootstock/depots/own/plain/<SHA> » (code 128) : fatal: Remote branch <SHA> not fo
+k19b	passage suivant de k19	2	—	0	erreur : échec de « git clone -b <SHA> file://localhost<B>/repos/plain <B>/k19/rootstock/depots/own/plain/<SHA> » (code 128) : fatal: Remote branch <SHA> not fo
+u01a	préparation de u01 : seed-add réussi	0	depots/own/plain/master:master	0	—
+u01b	préparation de u01 : graft	0	depots/own/plain/master:master	1	greffe : 1 feuilles liées dans <B>/u01/rootstock/trunk

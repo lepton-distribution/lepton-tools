@@ -1,0 +1,20 @@
+depots/generation
+depots/generation/building
+depots/generation/building/scion
+depots/lepton
+depots/lepton-application
+depots/lepton-application/salut
+depots/lepton-application/salut/scion
+depots/lepton-seed
+depots/lepton-seed/env11
+depots/lepton-seed/env11/project
+depots/lepton-seed/env11/scion
+depots/lepton/bsp-qemu-mps2-an386
+depots/lepton/bsp-qemu-mps2-an386/master
+depots/lepton/family-qemu-mps2
+depots/lepton/family-qemu-mps2/master
+depots/lepton/original
+depots/lepton/original/master
+depots/origin
+depots/origin/scion
+depots/origin/scion/sources (vide)

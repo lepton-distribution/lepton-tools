@@ -1,0 +1,2 @@
+miroir file://localhost<B>/repos/miroirs/present.git : amont inaccessible : échec de « git fetch --quiet --prune --no-tags amont » (code 128) : and the repository exists.
+miroir file://localhost<B>/repos/miroirs/present.git : 0 référence(s) à envoyer, 1 signalement(s)
