@@ -1,0 +1,12 @@
+forme	réglage	résolu	code	sortie
+vide		<HOME>/.local/bin/lepton	0	lepton 0.1.0
+absolu	<HOME>/.local/bin/lepton	<HOME>/.local/bin/lepton	0	lepton 0.1.0
+tilde	~/.local/bin/lepton	<HOME>/.local/bin/lepton	0	lepton 0.1.0
+tilde-utilisateur	~<U>/.local/bin/lepton	<HOME>/.local/bin/lepton	0	lepton 0.1.0
+tilde-inconnu	~inconnu64/.local/bin/lepton	~inconnu64/.local/bin/lepton	2	lepton not found: ~inconnu64/.local/bin/lepton (setting lepton.path)
+tilde-seul	~	<HOME>	2	spawn <HOME> EACCES
+userHome	${userHome}/.local/bin/lepton	<HOME>/.local/bin/lepton	0	lepton 0.1.0
+env-HOME	$HOME/.local/bin/lepton	$HOME/.local/bin/lepton	2	lepton not found: $HOME/.local/bin/lepton (setting lepton.path)
+relatif-cwd	../../../../.local/bin/lepton	../../../../.local/bin/lepton	0	lepton 0.1.0
+relatif-point	./lepton	./lepton	2	lepton not found: ./lepton (setting lepton.path)
+nom-nu	lepton	lepton	0	lepton 0.1.0

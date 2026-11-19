@@ -1,0 +1,10 @@
+== n01 fr
+Clonage dans 'n01'...
+fatalM-BM- : '/home/lepton-user/lepton-tools-dev/essais/env-66-essai/repro-k07/absent' does not appear to be a git repository
+fatalM-BM- : Impossible de lire le dM-CM-)pM-CM-4t distant.
+
+Veuillez vM-CM-)rifier que vous avez les droits d'accM-CM-(s
+et que le dM-CM-)pM-CM-4t existe.
+== n04 fr
+Clonage dans 'n04'...
+fatalM-BM- : impossible d'accM-CM-)der M-CM-  'https://scion-essai.invalid/plain.git/'M-BM- : Could not resolve host: scion-essai.invalid

@@ -1,0 +1,5 @@
+5,6c5
+<             "Bash(git clone * https://github.com/lepton-distribution/*)",
+<             "Bash(python3 -m unittest discover *)"
+---
+>             "Bash(git clone * https://github.com/lepton-distribution/*)"

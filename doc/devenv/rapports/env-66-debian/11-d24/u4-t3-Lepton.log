@@ -1,0 +1,29 @@
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen)
+clangd relancé quand /home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen/build/.active/compile_commands.json change
+
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen)
+→ code 0
+
+Observation de 6 greffon(s) et du trunk /home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen/trunk
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen)
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed remove env65lib --purge    (/home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen)
+scion: scion lepton/library-env65lib retiré de /home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen/depots/lepton-seed/env11/scion/.scion
+scion: scion lepton/library-env65lib retiré : 4 feuilles
+scion: clone /home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen/depots/lepton/library-env65lib/dev supprimé
+env65lib retiré (lepton@library-env65lib)
+graine modifiée, non commitée : git -C /home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen/depots/lepton-seed/env11 commit -am "…"
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen)
+→ code 0
+
+$ /home/lepton-user/.local/bin/lepton seed status --json    (/home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen)
+Observation de 5 greffon(s) et du trunk /home/lepton-user/lepton-tools-dev/essais/env-66-essai/c4/gen/trunk
+
+→ code 0
+

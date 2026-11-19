@@ -1,0 +1,7 @@
+depots/own/plain/master
+  branche : travail
+  HEAD = refs/heads/master refs/heads/travail refs/remotes/origin/HEAD refs/remotes/origin/master
+  branches locales : master travail
+  fichiers suivis : 1
+  fichiers extraits : scion/f.txt
+  git status : (propre)

@@ -1,0 +1,1 @@
+erreur : graine existante hors de la version demandée, non reprise (rien n'a été modifié) : <B>/d01/rootstock/depots/graine/autre : branche « master », version demandée « autre » ; git -C <B>/d01/rootstock/depots/graine/autre switch autre
