@@ -195,9 +195,48 @@ ancien (piège d'ENV-61) :
 8. **PA-P** : push de `devenv/env-66`, puis envoi de l'ordre `R66-1` à la session VM désignée
    par l'utilisateur après le §0.
 
-## 3. Journal des messages (§2bis)
+## 3. Rootstocks d'essai du Mac (tâche 3)
+
+Accord de l'utilisateur (PA-P), 2026-11-19, pendant R66-1. scion 0.6.3.3, lepton 0.1.0. Branches
+relevées avant (`env-53-mac/inventaire-clones.sh`) : clones de greffons sur `master`, propres,
+noyau dfc960b partout ; graine `bout-en-bout` : 2 fichiers générés non suivis du 2 novembre
+(`CMakeUserPresets.json`, `lepton-graine.lock.json`), déjà présents en ENV-61. Script
+`env-57-mac/regreffer-essai.sh avant|apres` ; entre les deux, la session lance
+`scion graft-update -v <rootstock> > <journal> 2>&1; echo "code=$?" >> <journal>` (invite `ask`
+annoncée « à confirmer », confirmée). Journaux et bilans :
+`~/lepton-tools-dev/essais/env-66-mac/regreffes/<rootstock>-*` (`env-13-vierge` :
+`~/lepton-tools-dev/essais/env-66-mac/`).
+
+| Rootstock | `graft-update` | Liens avant → après | Ajouts / retraits | `controler-trunk.py` | Clones tiers | `check` | Espace |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-13-vierge` (§1.3) | 0 ; noyau dfc960b → 2b4a647 seul | 3889 → 3889 | 0 / 0 | `CONFORME` | 8, = attendu (0 / 16), 107 992 Ko inchangés | 0 | identique |
+| `env-9` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/qemu` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/qemu-gra2` | 0 ; noyau seul (BSP an386 réinscrit, 3059 feuilles), puis `scion graft-remove lepton@bsp-qemu-mps2-an386 <rootstock>` : « retiré : 8 feuilles », clone conservé | 3051 → 3051 | 0 / 0 | `CONFORME` | — | 1 (attendu, CFG-5) | identique |
+| `env-11/bout-en-bout/rootstock` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/f429zi` | 0 ; noyau seul | 3294 → 3294 | 0 / 0 | `CONFORME` | 2, = attendu (0 / 4), 36 528 Ko inchangés | 0 | identique |
+| `env-11/wl55jc1` | 0 ; noyau seul | 3315 → 3315 | 0 / 0 | `CONFORME` | 4, = attendu (0 / 8), 40 684 Ko inchangés | 0 | identique |
+
+Partout : aucun `git clone`, aucune extraction partielle, 0 conflit ni refus, 0 lien cassé,
+0 fichier régulier, 0 `.DS_Store` dans les trunks ; `generate` avant et après au même code.
+
+**`graft-remove` refusé par le classifieur.** Lancé par la session (hors règle, comme en ENV-61,
+où il avait été accepté), il a été refusé par le mode auto (« Destructive or Unwanted Actions »).
+Il n'a pas été contourné : l'utilisateur l'a lancé dans la session Mac (`!`), sans redirection.
+La sortie, reportée par la session dans `env-11_qemu-gra2-graft-remove.log`, puis le bilan
+`apres` confirment l'état attendu.
+
+**Invites simultanées (constat pour D28).** La regreffe d'`env-9` (invite à confirmer, Mac) a été
+présentée à l'utilisateur au moment où la VM lançait A1 (invite à refuser, 19:12 UTC). A1 a été
+confirmée par erreur, sans effet (cible absente), puis rejouée et refusée. Parade appliquée pour la
+suite de R66-1 : aucune invite au Mac pendant que la VM en présente une.
+
+## 4. Journal des messages (§2bis)
 
 | ID | Date | Type | Sens | Résumé | Remis |
 | --- | --- | --- | --- | --- | --- |
 | ORDRE R66-1 | 2026-11-19 | Mac (`validation-debian-env-66`, 9ca006) → VM (`debian-linux-vm`, 4f53c0, ouverte après le §0 selon l'utilisateur) | consigne `env-66-debian.md` @ 0eca739 **par référence** (chemin, branche, commit, sha256 `48eb3e5f…561e`, le fichier fait foi, lecture intégrale demandée), et non recopiée comme en R61-1 (52 Ko) : forme du tableau §2bis (« consigne (chemin, branche, commit) ») ; périmètre C1 à C9 du PA-119 ; actions de l'utilisateur : A1 à refuser, 4 `graft-update` à confirmer, D24 (U4, T3), push ; envoi accepté par Remote Control (msg fd9183c0) | oui (envoi) |
 | ACCUSÉ R66-1 | 2026-11-19 | VM (`debian-linux-vm`, ref a67d18, adresse `bridge:session_01FkeafxUZjHhFVSETRFL9R9`) → Mac | reçu directement. §5 sans arrêt : `$T` = répertoire de travail, `devenv/env-66` = 0eca739, propre ; sha256 de la consigne = ordre ; Claude Code **2.1.328** (journal `a0115cd5-….jsonl`, première entrée 19:59:38 +0100, après `0-settings-apres.txt` 19:58:25) ; empreintes `settings.json`, hook, enveloppe, `comparer-releves.py` = Mac ; diff du §0 = entrée `unittest` seule retirée ; têtes publiées = Mac ; `$U`, `$E13` : noyau dfc960b, 3889 liens, 8 tiers ; `$C5` : noyau dfc960b, 3059 liens, `salut` modifs=2, 2 tiers F7 ; scion 0.6.3.2 ; écarts sans arrêt : `rsync` absent (prévu, §7), `node` absent (attendu), `CLAUDE_PROJECT_DIR` vide, mtime de `~/.claude/settings.json` postérieure au §0 à contenu identique (cause supposée par la VM : `/model` au démarrage) | oui |
+| AVANCEMENT R66-1 (§6, §7) | 2026-11-19 | VM → Mac | §6 conforme : scion 0.6.3.3 (`install-debian.sh`, code 0), lepton réinstallé (`rootstock.py` = dépôt, `expand_user` True), extension `0.5.2 → 0.5.3` (`changements 1`) ; constat : répertoire `lepton-distribution.lepton-0.5.2` resté dans `~/.vscode-oss/extensions` (`extensions.json` ne cite que 0.5.3) ; §7 conforme (3 copies, 3059 liens, `depot65` 3301d15 / f509460) | oui |
+| QUESTION R66-1 (§8.2, A1) | 2026-11-19 | VM → Mac et utilisateur | **écart** : invite A1 parue (règle `ask`), annoncée « À REFUSER », mais **confirmée** (`accept user_temporary projectSettings`, 19:12:22 UTC) ; code 1, « n'est pas un rootstock », sans effet. Cause probable (constat Mac) : invites `graft-update` de la tâche 3 au Mac (`env-9`, à confirmer) présentées à l'utilisateur au même moment. Réponse : l'utilisateur décide directement dans la session VM de rejouer A1 | oui |
+| AVANCEMENT R66-1 (§8 fin) | 2026-11-19 | VM → Mac | A1 second essai annoncé « À REFUSER » : `rejet-invite` (19:13:33) ; H1 `reject hook hook` ; U1, U2 `subcommandResults` (forme admise), U3 `classifier` (D26 conforme) ; `pipx install --force` `rule projectSettings` ; cible absente, `essai-hook` absent, 0 paquet `env-66`, liens de c5 = départ ; §9 commence | oui |
