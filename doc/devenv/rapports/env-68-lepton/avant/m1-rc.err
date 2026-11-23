@@ -1,0 +1,2 @@
+lepton: erreur: XML « mkconf_tauon_basic_qemu_mps2.xml » absent du trunk greffé
+  → donner le chemin, relatif au trunk, d'un XML mklepton fourni par un greffon

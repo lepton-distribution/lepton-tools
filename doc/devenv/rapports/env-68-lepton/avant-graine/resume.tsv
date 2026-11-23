@@ -1,0 +1,31 @@
+étape	code	vs départ	vs ajouté	graine.json	sources	grafted	message
+r1-add	0	liens≠ graine≠ grafted≠ depots≠ 	-	1	1	1	scion: scion lepton/library-env68lib déclaré dans <P>/r1/rs/depots/lepton-seed/env11/scion/.scion (version master)
+r1-purge	2	liens≠ graine≠ grafted≠ depots≠ 	graine≠ 	1	0	1	lepton: erreur: échec de « scion graft-remove lepton@library-env68lib --purge » (code 1) :
+r1-status	0	liens≠ graine≠ grafted≠ depots≠ 	graine≠ 	1	0	1	{
+r1-file-remove	1	liens≠ graine≠ grafted≠ depots≠ 	graine≠ 	1	0	1	lepton: erreur: greffon « env68lib » (lepton@library-env68lib) hors de la graine
+r1-relance	0	=	liens≠ graine≠ grafted≠ depots≠ 	0	0	0	lepton: attention: lepton@library-env68lib greffé hors de la graine : retiré du trunk seulement
+r2-add	0	liens≠ graine≠ grafted≠ depots≠ 	-	1	1	1	scion: scion lepton/library-env68lib déclaré dans <P>/r2/rs/depots/lepton-seed/env11/scion/.scion (version master)
+r2-purge	2	liens≠ graine≠ grafted≠ depots≠ 	graine≠ 	1	0	1	lepton: erreur: échec de « scion graft-remove lepton@library-env68lib --purge » (code 1) :
+r3-add	0	liens≠ graine≠ grafted≠ depots≠ 	-	1	1	1	scion: scion lepton/library-env68lib déclaré dans <P>/r3/rs/depots/lepton-seed/env11/scion/.scion (version master)
+r3-remove	0	depots≠ 	liens≠ graine≠ grafted≠ 	0	0	0	scion: scion lepton/library-env68lib retiré de <P>/r3/rs/depots/lepton-seed/env11/scion/.scion
+r4-add	0	liens≠ graine≠ grafted≠ depots≠ 	-	1	1	1	scion: scion lepton/library-env68lib déclaré dans <P>/r4/rs/depots/lepton-seed/env11/scion/.scion (version master)
+r4-replace	2	liens≠ graine≠ grafted≠ depots≠ 	=	1	1	1	lepton: erreur: échec de « scion graft-remove lepton@library-env68lib --purge » (code 1) :
+r5-add	0	liens≠ graine≠ grafted≠ 	-	1	1	1	scion: scion lepton/library-env68lib déclaré dans <P>/r5/rs/depots/lepton-seed/env11/scion/.scion (version *)
+r5-purge	2	liens≠ graine≠ grafted≠ 	graine≠ 	1	0	1	lepton: erreur: échec de « scion graft-remove lepton@library-env68lib --purge » (code 1) :
+g1-add	0	liens≠ graine≠ grafted≠ depots≠ 	-	1	1	1	scion: scion lepton/library-env68lib déclaré dans <P>/g1/rs/depots/lepton-seed/env11/scion/.scion (version master)
+g1-sans-clone	0	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	
+g2-add	0	liens≠ graine≠ grafted≠ depots≠ 	-	1	1	1	scion: scion lepton/library-env68lib déclaré dans <P>/g2/rs/depots/lepton-seed/env11/scion/.scion (version master)
+g2-sans-clone	0	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	
+g1-status	1	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	{
+g1-check	1	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	trunk/sys/root/src/lib/env68lib/env68lib.c: lien cassé dans le trunk : lepton graft
+g1-remove-nom	1	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	lepton: erreur: greffon « env68lib » non greffé
+g1-remove-suffixe	1	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	lepton: erreur: greffon « library-env68lib » non greffé
+g1-remove-purge	1	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	lepton: erreur: greffon « env68lib » non greffé
+g1-add	1	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	lepton: erreur: lepton@library-env68lib déjà déclaré dans la graine sans être greffé
+g1-replace-nom	1	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	lepton: erreur: greffon « env68lib » absent de la graine ou non greffé
+g1-replace-suffixe	1	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	lepton: erreur: greffon « library-env68lib » absent de la graine ou non greffé
+g1-graft	2	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	lepton: erreur: échec de « scion graft » (code 1) :
+g1-scion-graft-remove	0	graine≠ depots≠ 	liens≠ grafted≠ depots≠ 	1	1	0	scion lepton/library-env68lib retiré : 3 feuilles
+g1-apres-remove	1	graine≠ depots≠ 	liens≠ grafted≠ depots≠ 	1	1	0	lepton: erreur: greffon « env68lib » non greffé
+g1-apres-add	1	graine≠ depots≠ 	liens≠ grafted≠ depots≠ 	1	1	0	lepton: erreur: lepton@library-env68lib déjà déclaré dans la graine sans être greffé
+g2-scion-graft-remove-purge	1	liens≠ casses≠ graine≠ grafted≠ depots≠ 	casses≠ depots≠ 	1	1	1	erreur : <P>/g2/rs/depots/lepton/library-env68lib/master n'est pas un clone git ; --purge refusé

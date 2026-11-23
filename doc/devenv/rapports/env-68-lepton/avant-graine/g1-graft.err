@@ -1,0 +1,4 @@
+lepton: erreur: échec de « scion graft » (code 1) :
+erreur : scion « lepton/library-env68lib » : <P>/g1/rs/depots/lepton/library-env68lib/master/scion est absent
+trunk rétabli dans son état antérieur (3062 lien(s)), .scion.grafted.list comprise ; 3 lien(s) pointent vers des fichiers retirés des clones depuis : la prochaine greffe réussie les corrige
+  → corriger la cause signalée par scion, puis relancer

@@ -1,0 +1,4 @@
+scion: scion lepton/library-env68lib retiré de <P>/r5/rs/depots/lepton-seed/env11/scion/.scion
+lepton: erreur: échec de « scion graft-remove lepton@library-env68lib --purge » (code 1) :
+erreur : scion « lepton/library-env68lib » : <P>/d68 n'a pas été cloné par scion (attendu sous <P>/r5/rs/depots/lepton/library-env68lib/*) ; --purge refusé
+  → corriger la cause signalée par scion, puis relancer

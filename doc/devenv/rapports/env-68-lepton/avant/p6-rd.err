@@ -1,0 +1,1 @@
+lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans base à l'ouverture de l'espace ; configurer env11-debug-qemu (tâche « lepton : configurer env11-debug-qemu » ou CMake Tools), puis « clangd: Restart language server », ou relancer lepton generate avant l'ouverture
