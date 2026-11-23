@@ -1,0 +1,2 @@
+Notifications relevées par l’utilisateur pendant cas.sh (extension 0.5.4) : aucune.
+Lignes « Observation » du canal (collé par l’utilisateur) : 5 (après T3 et seed remove), 6 (seed add), 5 (scion graft-remove --purge), 6 (seed add) ; aucune pour seed replace.

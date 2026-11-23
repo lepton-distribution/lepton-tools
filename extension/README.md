@@ -41,7 +41,9 @@ Version 0.5.0 (lot 6) :
   trunk, et non sous le chemin du clone que rend gdb (`stem` et `trunk` de
   `lepton seed status --json`).
 
-Version 0.5.3 (ENV-64) : `~`, `~<utilisateur>` (courant) et `${userHome}` développés dans
+Version 0.5.4 (ENV-69) : liste des greffons observés par la regreffe automatique rafraîchie
+quand `trunk/.scion.grafted.list` change, donc aussi après un greffon ajouté ou retiré au terminal
+(`lepton seed add`, `seed remove`, `scion graft-remove`, D36). Version 0.5.3 (ENV-64) : `~`, `~<utilisateur>` (courant) et `${userHome}` développés dans
 `lepton.path` (D23) ; fichier ouvert après « créer » ou « déplacer » au chemin que lepton a lu (`~`,
 relatif au rootstock, D31) ; regreffe automatique sans la racine `scion/` d'un clone créé ou
 supprimé en entier (retrait `--purge`, remplacement d'origine), clone supprimé hors de lepton

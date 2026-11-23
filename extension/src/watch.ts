@@ -7,6 +7,8 @@
 // - L3-4 (lot 5) : lien greffé supprimé du trunk par l'utilisateur (`file owner` : `unlinked`) →
 //   « Supprimer du greffon » (`file remove`) ou « Restaurer le lien » (`graft --path`).
 // Les répertoires observés et le propriétaire viennent de lepton ; aucune règle de greffon ici.
+// Liste observée rafraîchie après une commande de l'extension, un changement de réglage, ou un
+// changement de `trunk/.scion.grafted.list` (D36, ENV-69 : greffon ajouté ou retiré au terminal).
 import { existsSync, promises as fs } from "node:fs";
 import * as path from "node:path";
 import * as vscode from "vscode";
@@ -20,6 +22,8 @@ const ADOPT_DELAY_MS = 300;
 const UNLINK_DELAY_MS = 500;
 const LEPTON_QUIET_MS = 3000;     // suppressions venues d'un lepton en cours ou tout juste fini : ignorées
 const UNLINK_MAX = 20;            // au-delà : suppression en masse (scion, git), pas une action de l'explorateur
+const LIST_DELAY_MS = 1000;       // écritures de la liste greffée regroupées (seed replace : dégreffe puis regreffe)
+const GRAFTED_LIST = ".scion.grafted.list";
 
 export class Watchers implements vscode.Disposable {
   private watchers: vscode.Disposable[] = [];
@@ -30,6 +34,8 @@ export class Watchers implements vscode.Disposable {
   private readonly roots = new Set<string>();
   private readonly adoptions: Batcher<string>;
   private readonly unlinks: Batcher<string>;
+  /** Changements de la liste greffée faits hors de l'extension (D36) : un rafraîchissement par lot. */
+  private readonly listChanges: Batcher<string>;
   private readonly subscriptions: vscode.Disposable[] = [];
   private readonly grafted = new vscode.EventEmitter<void>();
   /** Émis après une regreffe automatique (F2) ou une adoption (F3) : le trunk a changé. */
@@ -45,6 +51,7 @@ export class Watchers implements vscode.Disposable {
       }
     });
     this.unlinks = new Batcher(() => UNLINK_DELAY_MS, (paths) => this.unlinked(paths));
+    this.listChanges = new Batcher(() => LIST_DELAY_MS, () => this.refresh());
     this.subscriptions.push(
       this.grafted,
       runner.onDidRunCommand(() => void this.refresh()),
@@ -65,6 +72,7 @@ export class Watchers implements vscode.Disposable {
     this.grafts.dispose();
     this.adoptions.dispose();
     this.unlinks.dispose();
+    this.listChanges.dispose();
     this.subscriptions.forEach((d) => d.dispose());
   }
 
@@ -74,7 +82,9 @@ export class Watchers implements vscode.Disposable {
     this.signature = "";
   }
 
-  /** Répertoires observés d'après `lepton seed status --json` (trunk, `stem` de chaque greffon). */
+  /** Répertoires observés d'après `lepton seed status --json` (trunk, `stem` de chaque greffon), et
+   *  liste greffée du trunk : un greffon ajouté ou retiré hors de l'extension relance ce
+   *  rafraîchissement (D36). Ni `seed status` ni une regreffe ne réécrivent la liste : pas de boucle. */
   async refresh(force = false): Promise<void> {
     const autoGraft = this.config().get<boolean>("autoGraft.enabled", true);
     const redirect = this.config().get<boolean>("redirectTrunkCreations", true);
@@ -93,7 +103,7 @@ export class Watchers implements vscode.Disposable {
     stems.forEach((s) => this.roots.add(s));
     this.grafts.retain((p) => isUnder(p, stems));       // greffon qui n'est plus observé : pas de regreffe (D24)
     const trunk = redirect || askUnlink ? status.trunk : "";
-    const signature = JSON.stringify([trunk, stems, redirect, askUnlink]);
+    const signature = JSON.stringify([status.trunk, trunk, stems, redirect, askUnlink]);
     if (!force && signature === this.signature) {
       return;
     }
@@ -117,6 +127,13 @@ export class Watchers implements vscode.Disposable {
       });
       this.watchers.push(w);
     }
+    // liste greffée : écrite en place (événement de modification), jamais par F2 ni F3
+    const list = vscode.workspace.createFileSystemWatcher(
+      new vscode.RelativePattern(vscode.Uri.file(status.trunk), GRAFTED_LIST), false, false, false);
+    list.onDidCreate((u) => this.listChanges.add(u.fsPath));
+    list.onDidChange((u) => this.listChanges.add(u.fsPath));
+    list.onDidDelete((u) => this.listChanges.add(u.fsPath));
+    this.watchers.push(list);
     this.runner.output.appendLine(t("Watching {0} scion(s){1}", stems.length,
       trunk ? t(" and the trunk {0}", trunk) : "") + "\n");
   }
