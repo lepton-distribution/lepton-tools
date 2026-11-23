@@ -1,82 +1,79 @@
-# Passation de préparation ENV-67 — révision du plan du 2026-11-23
+# Passation ENV-67 — Consignes VM : relevés, suppressions, contrôle Mac (D38) — session du 2026-11-23
 
 ## Statut
-ENV-67 n'est pas commencée. Ce fichier est la passation de la session de révision du plan
-(hors étape), écrite pour la session qui démarrera ENV-67 ; il sera remplacé par la passation de
-cette étape.
-
-La présentation de `HORS-PLAN.md` a été achevée (fin du plan, après ENV-66), puis le plan a été
-révisé : ENV-67 à ENV-72, PA-121 à PA-132.
+terminée — D38 (1) à (3) traités au Mac (règles du §2bis, enveloppe, skill) ; la preuve sur la VM
+se fait en ENV-72.
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `main` : fusion `--no-ff` de `devenv/revision-2026-11-23` (75e500c, 234235d ; depuis `main` 172fb67) en e1b88fa ; `main` et la branche poussées (PA-P, accord de l'utilisateur, 2026-11-23) | `main` : « devenv(hors-etape): passation à jour après le push » | oui |
-| clone noyau `depots/lepton/original/master` | `master` | 2b4a647, non touché | oui |
+| lepton-tools | `devenv/env-67` (depuis `main` 052050c), fusionnée `--no-ff` dans `main` ; `main` et la branche poussées (PA-P, PA-122) | branche : « devenv(env-67): état et passation » ; `main` : fusion de `devenv/env-67`, puis consignation du push | oui |
+| clone noyau `depots/lepton/original/master` | `master` | 2b4a647, non touché (lecture seule de `scripts/lepton-env.sh`) | oui |
 | autres | seed.scions `master` 49ca4ae (tag 0.6.3.3), graine `original-tree` 15740f9 | non touchés | oui |
 
-Ce dernier commit de passation n'est pas poussé : il partira avec les commits d'ENV-67.
-Relevez l'état réel de `main` au début d'ENV-67 (`origin/main` = 6295e11, `main` un commit devant).
+Relevez l'état réel de `main` et d'`origin/main` au début de la session suivante.
 
-Outils (inchangés depuis ENV-66) :
-- Mac et VM : scion 0.6.3.3, lepton 0.1.0, extension 0.5.3, Claude Code 2.1.328 ;
-- git : 2.50.1 au Mac, 2.47.3 sur la VM ;
-- VM : `~/.claude/settings.json` à 2 règles `allow` ; `essais/` réduit à `env-13-debian`,
-  `env-28-debian`, `env-53-c5`, `env-53-debian` ; `~/tmp-pytest` vide.
+Outils : Mac : Claude Code **2.1.330** (était 2.1.328), scion 0.6.3.3, lepton 0.1.0, extension 0.5.3 ;
+VM inchangée depuis ENV-66 (rien n'y a été fait). `~/tmp-pytest` et `~/tmp-tests` absents au Mac.
 
 ## Fait pendant la session
-- Décisions sur `HORS-PLAN.md` (questions posées ; consignées dans `DEVENV-STATUS.md`
-  §Décisions, 2026-11-23).
-- Étapes `etapes/ENV-67-…` à `ENV-72-…` ; ORCHESTRATION :
-  - §2 : seed.scions, VM ;
-  - §2bis : « Invites simultanées », D39 ;
-  - §4 : PA-121 à PA-132 ;
-  - §5bis et §6.
-- `HORS-PLAN.md` mis à jour.
-- Relecture par un agent indépendant : voir le journal de `DEVENV-STATUS.md` (2026-11-23).
+- Audit : `rapports/env-67-consignes.md` §1-4 (variables à défaut silencieux, bornes de
+  l'enveloppe, contrôles Mac d'ENV-57, ENV-61, ENV-66).
+- Lot (2), 7a54b2d : `scripts/supprimer-essai.sh` admet `~/tmp-pytest` et `~/tmp-tests` et leurs
+  descendants ; 18 tests (8 en échec sur `main`, 10 rejets gardés déjà verts), shellcheck 0 ;
+  §2bis « Suppressions ».
+- Lot (1), 27f5479 : §2bis « Variables d'environnement ».
+- Lot (3), cad0172 : §2bis « Contrôle Mac d'une consigne ».
+- Contrôles, e38bb30 (rapport §6) :
+  - pytest **588** verts ;
+  - enveloppe essayée au Mac : 4 admises, 5 rejets en code 2, nettoyage ;
+  - 10 décisions `subcommandResults` (`decisions.py`) ;
+  - `.claude/settings.json` inchangé (`b01ad557…d235`).
+- Skill `lepton-cibles`, 3bc4f9f :
+  - l. 22 : défaut silencieux de `LEPTON_EMBOS_ROOT` ;
+  - texte préparé par la session (`~/Downloads/lepton-cibles.zip`), importé sur le compte par
+    l'utilisateur, synchronisé, puis copié par `scripts/importer-skills.sh`.
+- `HORS-PLAN.md` : D38 (1) à (3) traités, (4) hors plan.
 
-## Reste à faire
-- ENV-67 à ENV-72, dans l'ordre 67, puis 68 à 71 (permutables), puis 72.
-- Tickets des montées de version de D40 : créés (lepton-distribution/lepton-famille-stm32f7xx#1, HAL v1.3.4 et CMSIS device v1.2.11 ;
-  lepton-distribution/lepton-famille-stm32f4xx#1, CMSIS device v2.6.12 ; `fonctionnalité`, `P3`). Leur traitement relève de
-  `lepton-ticket-traiter`, après l'étiquette `validé` posée par l'utilisateur ; il suppose les
-  miroirs synchronisés (ENV-71).
+## Reste à faire dans l'étape
+- Rien. Preuve sur la VM en ENV-72 :
+  - consigne `consignes/env-72-debian.md` écrite selon les deux nouvelles règles du §2bis ;
+  - §5 : relevé des variables ;
+  - §14 : `~/tmp-pytest/env-66` supprimé par l'enveloppe.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
 | --- | --- | --- |
-| A1, A2, A4, D4, D12 reconfirmés hors plan | utilisateur | oui |
-| D29, D30, D32, D37 en une étape lepton (ENV-68) | utilisateur | oui |
-| D35, D33 en un tag de scion 0.6.3.4 (ENV-70) | utilisateur | oui |
-| D36, extension 0.5.4 (ENV-69) | utilisateur | oui |
-| D38 (1) à (3) traités (ENV-67), (4) hors plan | utilisateur | oui |
-| D39 : parade écrite au §2bis à la révision | utilisateur (texte de la session, relu) | oui |
-| D40 : `mirror-sync` en étape (ENV-71), montées de version en tickets | utilisateur | oui |
-| Tickets D40 créés par la session de révision relancée avec le plugin | utilisateur | oui |
-| Relecture indépendante : les 22 constats appliqués ; ENV-71 : lieu des dépôts de travail au PA-129, envoi par l'utilisateur seul | utilisateur | oui |
-| Découpage ENV-67 à ENV-72, ordre, PA-121 à PA-132 | utilisateur (plan de session approuvé) | oui |
-| Options écrites dans les fichiers d'étape et `<À CONFIRMER>` (PA-121, PA-123, PA-125, PA-127, PA-129, PA-131) | proposition non validée, à trancher à chaque point d'arrêt | non (fichiers d'étape) |
+| PA-121 (1) : §2bis + relevé au §5, arrêt ; variables `LEPTON_EMBOS_ROOT`, `SCION_REF`, `SCION_SPEC`, `LEPTON_CLONE`, `XDG_CONFIG_HOME`, `NM`, `SIZE` ; `LANG`, `LC_ALL` sans arrêt | utilisateur | oui |
+| PA-121 (2) : descendants de `~/tmp-pytest` et `~/tmp-tests` | utilisateur | oui |
+| PA-121 (3) : copie d'origine distincte + liste des classes d'écart de l'hôte | utilisateur | oui |
+| PA-121 (4) : texte du §2bis tel que proposé ; `CLAUDE.md` inchangé ; skill `lepton-cibles` corrigée | utilisateur | oui |
+| PA-122 : rapport accepté ; cibles d'essai supprimées ; skill importée avant fusion ; fusion et push | utilisateur | oui |
 
 ## Pièges rencontrés
-- Le plugin `lepton-tickets` n'était pas chargé au premier lancement de la session de révision :
-  relance par `claude --continue --plugin-dir ~/lepton-tools-dev/plugins/lepton-tickets`.
-- D35 ne se reproduit pas au Mac (git 2.50.1 n'écrit pas l'avertissement) : test par stderr
-  simulé en ENV-70, preuve réelle sur la VM en ENV-72.
-- `scion mirror-sync` n'est couvert par aucune règle de `.claude/settings.json`. L'envoi est fait
-  par l'utilisateur. Même `--dry-run` clone les 8 dépôts de travail absents (`mirror.py:270-273`) :
-  le lieu est tranché au PA-129.
-- `~/tmp-pytest` n'existe pas au Mac (ENV-67).
+- `decisions.py` exige le chemin du journal `.jsonl` en premier argument (pas de `--help`).
+- Claude Code est passé de 2.1.328 à 2.1.330 sans annonce : il faut relever la version au début de
+  chaque session (champ `version` du journal).
+- Correction d'une skill : l'utilisateur peut importer sur claude.ai un `.zip` du dossier
+  `<nom>/SKILL.md` préparé par la session (hors du dépôt, `~/Downloads`). Puis viennent la
+  synchronisation (`claude -p` hors du dépôt), le contrôle de l'empreinte et
+  `scripts/importer-skills.sh`.
 
 ## Critères de validation
-- [x] Chaque point retenu de `HORS-PLAN.md` est planifié ou consigné (D39 écrit, tickets de D40).
-- [x] PA-121 à PA-132 présents au §4 et dans les fichiers d'étape.
-- [x] Fusion et push de la révision (PA-P), accordés par l'utilisateur (e1b88fa, poussé jusqu'à 6295e11).
+- [x] PA-121 et PA-122 tranchés et consignés.
+- [x] Nouveaux tests de l'enveloppe : échec sur `main`, réussite sur la branche ; `pytest` complet
+      vert (588).
+- [x] Enveloppe : formes admises supprimées, formes rejetées refusées (code 2, rien supprimé),
+      décision `allow` relevée (`subcommandResults`).
+- [x] ORCHESTRATION §2bis : règles (1) et (3) écrites selon le PA-121 ; paragraphe
+      « Suppressions » conforme aux cibles admises par l'enveloppe.
+- [x] `HORS-PLAN.md` : D38 (1) à (3) marqués traités, avec renvoi au rapport ; (4) hors plan.
 
-Tickets créés pendant la session : lepton-distribution/lepton-famille-stm32f7xx#1, lepton-distribution/lepton-famille-stm32f4xx#1 (D40). Étiquettes du plugin (`anomalie`,
-`fonctionnalité`, `P1` à `P4`, `validé`) créées sur ces deux dépôts. Lignes restées « ticket à
-créer après publication d'ENV-N » : aucune.
+Tickets créés pendant la session : aucun. Lignes restées « ticket à créer après publication
+d'ENV-67 » : aucune.
 
 ## Reprise
+Commande ou première action de la session suivante (étape au choix parmi ENV-68 à ENV-71) :
 ```
-démarre la session ENV-67 (lire handoff/env-67.md, passation de préparation)
+démarre la session ENV-68 (lire handoff/env-67.md)
 ```
