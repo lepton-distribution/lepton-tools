@@ -77,7 +77,6 @@ nouveau r1 "file://$D"
 echo essai >"$P/r1/rs/$CL/env68-non-suivi.txt"
 pas r1 purge "$P/r1/rs" lepton seed remove env68lib --purge --no-cmake
 pas r1 status "$P/r1/rs" lepton seed status --json
-pas r1 file-remove "$P/r1/rs" lepton file remove trunk/sys/root/src/lib/env68lib/env68lib.c
 "$SUP" "$P/r1/rs/$CL/env68-non-suivi.txt" >>"$brut/journal.txt" 2>&1
 pas r1 relance "$P/r1/rs" lepton seed remove env68lib --purge --no-cmake
 # r2 : commit local absent de l'amont, seed remove --purge
@@ -95,34 +94,43 @@ pas r4 replace "$P/r4/rs" lepton seed replace env68lib "file://$D2" --no-cmake
 # r5 : origine locale greffée en place (aucun clone), seed remove --purge
 nouveau r5 "$D"
 pas r5 purge "$P/r5/rs" lepton seed remove env68lib --purge --no-cmake
+# r6 : conséquence d'un --purge refusé sur file remove (avant correction : « hors de la graine »)
+nouveau r6 "file://$D"
+echo essai >"$P/r6/rs/$CL/env68-non-suivi.txt"
+pas r6 purge "$P/r6/rs" lepton seed remove env68lib --purge --no-cmake
+pas r6 file-remove "$P/r6/rs" lepton file remove trunk/sys/root/src/lib/env68lib/env68lib.c
 
-# --- D37 : greffon déclaré dont le clone a disparu --------------------------------------------
-for cas in g1 g2; do
+# --- D37 : greffon déclaré dont le clone a disparu (une copie par retrait) ---------------------
+# g1 : constats (status, check, add, replace, graft), puis seed remove sous le nom de la graine, puis
+#      réajout ; g3 : suffixe de clé ; g4 : --purge ; g5 : après scion graft-remove ;
+# g2 : scion graft-remove --purge
+for cas in g1 g2 g3 g4 g5; do
   nouveau $cas "file://$D"
   "$SUP" "$P/$cas/rs/$CL" >>"$brut/journal.txt" 2>&1
   pas $cas sans-clone "$P/$cas/rs" true
 done
 R=$P/g1/rs
 pas g1 status "$R" lepton seed status --json
-python3 - "$brut/g1-status.out" >"$brut/g1-status.entree" <<'EOF'
+python3 - "$brut/g1-status.out" >"$brut/g1-status.entree" <<'EOF2'
 import json, sys
 d = json.load(open(sys.argv[1], encoding="utf-8"))
 for s in d["scions"]:
     if "env68lib" in s["key"]:
         print(json.dumps({k: s[k] for k in ("name", "role", "key", "in_seed", "path")}, ensure_ascii=False))
 print("missing", d["missing"], "broken_links", len(d["trunk_check"]["broken_links"]))
-EOF
+EOF2
 pas g1 check "$R" lepton check
-pas g1 remove-nom "$R" lepton seed remove env68lib --no-cmake
-pas g1 remove-suffixe "$R" lepton seed remove library-env68lib --no-cmake
-pas g1 remove-purge "$R" lepton seed remove env68lib --purge --no-cmake
-pas g1 add "$R" lepton seed add env68lib "file://$D" --type bibliotheque --no-cmake
+pas g1 add-refus "$R" lepton seed add env68lib "file://$D" --type bibliotheque --no-cmake
 pas g1 replace-nom "$R" lepton seed replace env68lib "file://$D2" --no-cmake
 pas g1 replace-suffixe "$R" lepton seed replace library-env68lib "file://$D2" --no-cmake
 pas g1 graft "$R" lepton graft --no-cmake
-pas g1 scion-graft-remove "$R" scion graft-remove "$KEY"
-pas g1 apres-remove "$R" lepton seed remove env68lib --no-cmake
-pas g1 apres-add "$R" lepton seed add env68lib "file://$D" --type bibliotheque --no-cmake
+pas g1 remove-nom "$R" lepton seed remove env68lib --no-cmake
+pas g1 readd "$R" lepton seed add env68lib "file://$D" --type bibliotheque --no-cmake
+pas g3 remove-suffixe "$P/g3/rs" lepton seed remove library-env68lib --no-cmake
+pas g4 remove-purge "$P/g4/rs" lepton seed remove env68lib --purge --no-cmake
+pas g5 scion-graft-remove "$P/g5/rs" scion graft-remove "$KEY"
+pas g5 remove "$P/g5/rs" lepton seed remove env68lib --no-cmake
+pas g5 readd "$P/g5/rs" lepton seed add env68lib "file://$D" --type bibliotheque --no-cmake
 pas g2 scion-graft-remove-purge "$P/g2/rs" scion graft-remove --purge "$KEY"
 
 U=$(id -un)

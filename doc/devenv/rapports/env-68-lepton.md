@@ -154,3 +154,129 @@ Constats :
 - **Tests, `README.md`** : proposition de la session, sans objection de l'utilisateur.
   - Tests pytest dans les fichiers existants, avec les formes `D21_FORMS`.
   - `README.md` inchangé, sauf la phrase d'usage de `seed new --mkconf`.
+
+## 3. Corrections (`devenv/env-68`)
+
+Tests écrits d'abord. Chaque nouveau test a échoué sur le code de `main` pour la cause visée ; les
+formes inchangées passaient déjà.
+
+| Commit | Objet | Tests ajoutés (modifiés) | En échec sur `main` |
+| --- | --- | --- |
+| edde54f | D29, D30 | 19 (1) | 17 |
+| 80ed13b | D32 | 3 | 3 |
+| 9051000 | D37 | 6 | 5 (le 6ᵉ, greffon du projet non admis, garde une forme inchangée) |
+
+**D29, D30 (edde54f)**
+- `cli.py` : `check FILE` lit `expand_user(name, "FILE")`.
+- `seed.py` :
+  - `import_mkconf` développe `~` (`expand_user(reference, "XML")`), puis applique la même règle
+    « absolu sous le trunk » ;
+  - `_new_mkconf` : `seed new --mkconf` développe `~` ; un absolu sous `<-C>/trunk` (chemin
+    absolu ou résolu) est ramené à ce trunk avant le contrôle du schéma ; sinon, refus
+    `--mkconf « … » hors du trunk … du rootstock à créer`, « chemin relatif au trunk attendu ».
+    Le relatif est inchangé.
+- `generate.py` : `find_clangd` rend absolu (`os.path.abspath`) un chemin qui contient un `/`.
+- Aide de `--mkconf` : « (ou absolu sous le trunk de -C) ». `README.md` inchangé : il ne dit pas
+  la forme du chemin.
+- Tests :
+  - `test_milestone1.py` : `test_d29_check_file_*` ;
+  - `test_project_mkconf.py` : `test_d29_mkconf_import_*`, `test_d29_seed_new_mkconf_*` ;
+  - `test_generate.py` : `test_d30_*`. `test_d21_find_clangd_tilde[relatif]` attend désormais
+    un absolu.
+
+**D32 (80ed13b)**
+- `seed_remove` lance `graft-remove` (avec `--purge` le cas échéant), puis `seed-scion-remove`.
+- `scion remove` passe par la même fonction.
+- Test `test_milestone3.py::test_d32_*` :
+  - causes : modification non commitée, commit local, origine locale ;
+  - état comparé octet pour octet : fichiers de `.scion/`, liste greffée, liens ;
+  - relance après nettoyage.
+
+**D37 (9051000)**
+- `seed.py:declared_without_clone(rs, name)` repère un greffon déclaré sans manifeste lisible :
+  - désigné par son nom de graine ou par le suffixe de sa clé ;
+  - clés de type famille, BSP, application ou bibliothèque seulement : ni le greffon du projet,
+    ni `original::tree`, ni `building` ;
+  - deux candidats donnent un refus.
+- `seed_remove`, pour un tel greffon :
+  - avertit : `<nom> (<clé>) : clone absent, déclaration retirée de la graine`, plus
+    `; --purge sans objet` le cas échéant ;
+  - lance `graft-remove` sans `--purge` si l'entrée est greffée, puis `seed-scion-remove` ;
+  - retire la ligne de `lepton-graine.json`, et le `<bin>` d'une application.
+- `seed replace` refuse : `clone absent, remplacement impossible` →
+  `lepton seed remove <g>, puis lepton seed add <g> LOCATION`.
+- `seed add` est inchangé : le renvoi qu'il donne devient juste.
+- Tests `test_d37_*` :
+  - nom et suffixe, puis réajout ;
+  - application avec `--purge` ;
+  - entrée déjà dégreffée ;
+  - `seed replace` refusé ;
+  - greffon du projet non admis.
+
+`pytest` complet : **616** verts (588 au départ). lepton réinstallé au Mac par
+`pipx install --force ~/lepton-tools-dev/lepton-tools`, depuis 9051000 : 18 modules du venv
+identiques à la branche, relevés hors du dépôt (`python -I`).
+
+## 4. Contrôles (lepton installé depuis 9051000)
+
+### 4.1 Table D29, D30 rejouée (`env-68-lepton/apres/`)
+Comparé à `avant/`, les lignes visées suivent le PA-123 et toutes les autres sont identiques.
+- c1-t, c1-u, c2-t (`check FILE` en `~`) : code 0, « conforme ». c1-x : `FILE « ~inconnu68/… » :
+  répertoire personnel de « ~inconnu68 » introuvable`.
+- m1-t, m1-u (`mkconf import` en `~`, sous le trunk) : code 0, XML du projet importé.
+  - m1-x : message d'`expand_user`.
+  - m1-th (`~` vers le clone) : `hors du trunk …`, comme m1-h.
+  - m1-rc (relatif au répertoire courant) : toujours refusé, car le relatif est relatif au trunk.
+- n1-t, n1-u, n1-a, n1-d (`seed new --mkconf` en `~` ou absolu sous `<-C>/trunk`) : code 0,
+  rootstock créé, XML importé. n1-x : message d'`expand_user`, rien n'est créé.
+- p6-r, p6-rs, p6-rw, p6-rd (`--clangd` relatif, avec un répertoire courant quelconque) :
+  `clangd.path` absolu, qui se résout depuis la racine.
+- Chaque cas laisse son rootstock égal à son départ, sauf les imports réussis (liens et graine,
+  attendus).
+
+### 4.2 D32, D37 rejoués (`env-68-lepton/apres-graine/`)
+Séquence de `graine.sh` redécoupée après correction : une copie par retrait (g1, g3, g4, g5), et
+la conséquence `file remove` dans un cas à part (r6). Le relevé `avant-graine/` (séquence de
+l'audit) reste la référence de l'état d'avant. Les états sont comparés à « ajouté », c'est-à-dire
+après `seed add`.
+
+| Cas | Code | État |
+| --- | --- | --- |
+| r1, r2, r5 `--purge` refusé (modification, commit local, origine locale) | 2 | **= ajouté** (graine, `lepton-graine.json`, liste greffée, liens) |
+| r1 relance après nettoyage | 0 | **= départ**, sans « hors de la graine » |
+| r6 `file remove` après un `--purge` refusé | 0 | accepté (graine cohérente) |
+| r3 sans `--purge`, r4 `seed replace` | 0, 2 | inchangés |
+| g1 `seed status`, `check`, `graft` sans clone | 1, 1, 2 | inchangés (constats) |
+| g1 `seed add` | 1 | `déjà déclaré …` → `lepton seed remove env68lib` (renvoi juste) |
+| g1 `seed replace` (nom ou suffixe) | 1 | `clone absent, remplacement impossible` → `lepton seed remove env68lib, puis lepton seed add env68lib LOCATION` ; état inchangé |
+| g1 `seed remove env68lib`, puis `seed add` | 0, 0 | retrait : liens cassés retirés ; réajout = ajouté |
+| g3 `seed remove library-env68lib` | 0 | retrait complet |
+| g4 `seed remove env68lib --purge` | 0 | `… clone absent, déclaration retirée de la graine ; --purge sans objet` |
+| g5 après `scion graft-remove` : `seed remove`, puis `seed add` | 0, 0 | retrait, puis réajout |
+
+Après chaque retrait sans clone, l'état diffère du départ par un seul point : le répertoire vide
+`depots/lepton/library-env68lib/`. Il est laissé par la suppression du clone `…/master` hors de
+lepton ; lepton ne le crée pas, et un réajout le réutilise. Les liens cassés sont égaux au départ.
+
+### 4.3 D21 inchangé (`env-63-tilde/chemins.sh`, relevés `env-68-lepton/d21/`)
+Comparaison avec `env-63-tilde/apres/` : 9 écarts sur 289 fichiers, tous expliqués.
+- c1-t (`check FILE`) : code 0, conforme (D29).
+- p6-r (`clangd.path` absolu, D30) :
+  - `.out` « inchangé », car les cas a et d qui le précèdent ont écrit le même chemin ;
+  - `.cmd` : nom de phase.
+- p2-r, p3-r, p4-r `.cmd` : nom de phase (`cibles-d21`) dans le chemin relatif.
+- `resume.tsv` : ligne c1-t.
+
+### 4.4 D17 inchangé (`env-59-tilde/essai.sh`, relevés `env-68-lepton/d17/`)
+Dépôt présent `<E>/d17-depot` (`env59lib`, `scion new --no-seed`), absent `<E>/d17-absent`.
+Comparaison avec `env-63-tilde/d17/` (547 fichiers) : 82 écarts bruts. Après normalisation, il en
+reste 12, étrangers à lepton :
+- normalisation :
+  - noms d'essai `env-63-essai` → `env-68-essai` ;
+  - commits (noyau 2b4a647 depuis ENV-65, dépôt `<P>` recréé) ;
+  - 18 `*-remove.err` : mêmes lignes dans un autre ordre (D32 : `graft-remove`, puis
+    `seed-scion-remove`) ;
+- 12 `a*-i.err` restants : scion 0.6.3.3 (D22, ENV-65), `git clone -b master --quiet` et
+  première ligne non vide du message de git.
+
+Tous les `.etat` sont égaux au départ.
