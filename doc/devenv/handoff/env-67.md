@@ -11,12 +11,12 @@ révisé : ENV-67 à ENV-72, PA-121 à PA-132.
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/revision-2026-11-23` (depuis `main` 172fb67) | commit de la révision du plan | oui |
+| lepton-tools | `main` : fusion `--no-ff` de `devenv/revision-2026-11-23` (75e500c, 234235d ; depuis `main` 172fb67) en e1b88fa ; `main` et la branche poussées (PA-P, accord de l'utilisateur, 2026-11-23) | `main` : « devenv(hors-etape): passation à jour après le push » | oui |
 | clone noyau `depots/lepton/original/master` | `master` | 2b4a647, non touché | oui |
 | autres | seed.scions `master` 49ca4ae (tag 0.6.3.3), graine `original-tree` 15740f9 | non touchés | oui |
 
-Fusion de `devenv/revision-2026-11-23` dans `main` et push : sur accord de l'utilisateur (PA-P).
-Relevez l'état réel de `main` au début d'ENV-67.
+Ce dernier commit de passation n'est pas poussé : il partira avec les commits d'ENV-67.
+Relevez l'état réel de `main` au début d'ENV-67 (`origin/main` = 6295e11, `main` un commit devant).
 
 Outils (inchangés depuis ENV-66) :
 - Mac et VM : scion 0.6.3.3, lepton 0.1.0, extension 0.5.3, Claude Code 2.1.328 ;
@@ -70,7 +70,7 @@ Outils (inchangés depuis ENV-66) :
 ## Critères de validation
 - [x] Chaque point retenu de `HORS-PLAN.md` est planifié ou consigné (D39 écrit, tickets de D40).
 - [x] PA-121 à PA-132 présents au §4 et dans les fichiers d'étape.
-- [ ] Fusion et push de la révision (PA-P), sur accord de l'utilisateur.
+- [x] Fusion et push de la révision (PA-P), accordés par l'utilisateur (e1b88fa, poussé jusqu'à 6295e11).
 
 Tickets créés pendant la session : lepton-distribution/lepton-famille-stm32f7xx#1, lepton-distribution/lepton-famille-stm32f4xx#1 (D40). Étiquettes du plugin (`anomalie`,
 `fonctionnalité`, `P1` à `P4`, `validé`) créées sur ces deux dépôts. Lignes restées « ticket à
