@@ -107,3 +107,44 @@ Voir `DEVENV-STATUS.md` §Décisions (PA-121) pour les réponses.
 3. (3) Forme de la règle : contrôle rejoué sur une copie distincte, ou liste des classes d'écart
    attendues écrite dans la consigne.
 4. Texte de l'amendement du §2bis ; effets sur `CLAUDE.md` et les skills.
+
+## 5. Mise en place (après le PA-121)
+
+| Lot | Commit | Contenu |
+| --- | --- | --- |
+| (2) | 7a54b2d | `supprimer-essai.sh` : cas `"$H"/tmp-pytest/?* \| "$H"/tmp-tests/?*` ajouté dans `juger`, en-tête l. 13-15 ; `tests/test_supprimer_essai.py` : docstring, fixture (`tmp-pytest/env-61/sous/plus`, `env-66`, `tmp-tests/a`, `tmp-pytestx`, lien `tmp-pytest/lien-lepton` → `~/lepton`), 18 cas ; ORCHESTRATION §2bis « Suppressions » |
+| (1) | 27f5479 | ORCHESTRATION §2bis « Variables d'environnement » |
+| (3) | cad0172 | ORCHESTRATION §2bis « Contrôle Mac d'une consigne » |
+
+Tests d'abord (lot (2)), sur le script de `main` : 8 échecs (6 `test_descendant_tmp_accepte`,
+`test_descendant_tmp_garde_la_validation_courante`, `test_lien_sous_tmp_supprime_sans_suivre`),
+62 réussites, dont les 10 rejets gardés (`REFUSES_TMP` ×7, descendant absent, racine en lien,
+tout ou rien). Après correction : 70 / 70 ; shellcheck 0.11.0 sans remarque.
+
+## 6. Contrôles (→ PA-122)
+
+- **pytest complet** (`~/lepton-tools-dev/venv-lepton-tools/bin/pytest -q -p no:cacheprovider`,
+  forme seule) : **588 passed** (570 + 18), 8 min 46 s.
+- **Enveloppe au Mac** (Claude Code 2.1.330), cibles créées pour l'essai : `~/tmp-pytest/env-67-a/x`,
+  `~/tmp-pytest/env-67-b/sous/plus/f`, `~/tmp-tests/env-67-c`, lien `~/tmp-pytest/env-67-lien` →
+  `~/lepton`. Chaque forme lancée seule, code lu dans le résultat de l'outil :
+
+  | Essai | Forme | Code | Effet |
+  | --- | --- | --- | --- |
+  | R1 | `~/tmp-pytest/env-67-lien/trunk` | 2 | « hors des bornes : …/lepton/trunk » |
+  | R2 | `~/tmp-pytest/env-67-a/..` | 2 | « non résoluble » |
+  | R3 | `~/tmp-pytest/../lepton` | 2 | « hors des bornes : …/lepton » |
+  | R4 | `~/tmp-pytestx` | 2 | « hors des bornes » |
+  | R5 | `~/tmp-pytest/env-67-a ~/tmp-pytest/env-67-absent` | 2 | « cible absente » ; `env-67-a` gardé (tout ou rien) |
+  | A1 | `~/tmp-pytest/env-67-a` | 0 | supprimé |
+  | A2 | `~/tmp-pytest/env-67-b/sous/` | 0 | supprimé ; `env-67-b` gardé |
+  | A3 | `~/tmp-pytest/env-67-lien` | 0 | lien supprimé, `~/lepton/trunk` intact |
+  | A4 | `~/tmp-tests/env-67-c` | 0 | supprimé |
+  | N | `~/tmp-pytest ~/tmp-tests` | 0 | nettoyage final, racines absentes ensuite |
+
+  Après R1 à R5 : arbre inchangé (`find`). **Décisions** (`rapports/env-57-mac/decisions.py
+  <journal> --motif supprimer-essai`) : les 10 appels `accept config subcommandResults` (règle
+  `allow` du dépôt), aucun `classifier`.
+- **`.claude/settings.json`** : `b01ad557…d235` avant et après ; `git diff main` vide.
+- **Skill `lepton-cibles`** : correction à faire par l'utilisateur sur le compte claude.ai
+  (PA-121 (4)), puis `scripts/importer-skills.sh` sur `devenv/env-67`.
