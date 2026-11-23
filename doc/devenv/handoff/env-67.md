@@ -37,12 +37,10 @@ Outils (inchangés depuis ENV-66) :
 
 ## Reste à faire
 - ENV-67 à ENV-72, dans l'ordre 67, puis 68 à 71 (permutables), puis 72.
-- Tickets des montées de version de D40, sur `family-stm32f7xx` (HAL v1.3.4, CMSIS device
-  v1.2.11) et `family-stm32f4xx` (CMSIS device v2.6.12). Décision de l'utilisateur : la session
-  de révision les crée après relance avec le plugin `lepton-tickets`. S'ils ne le sont pas (ligne
-  D40 de `HORS-PLAN.md`), ils sont créés avant ENV-71, par une session lancée avec
-  `claude --plugin-dir ~/lepton-tools-dev/plugins/lepton-tickets` (skill `lepton-ticket-creer`,
-  mode « depuis un chantier », texte soumis à l'accord).
+- Tickets des montées de version de D40 : créés (lepton-distribution/lepton-famille-stm32f7xx#1, HAL v1.3.4 et CMSIS device v1.2.11 ;
+  lepton-distribution/lepton-famille-stm32f4xx#1, CMSIS device v2.6.12 ; `fonctionnalité`, `P3`). Leur traitement relève de
+  `lepton-ticket-traiter`, après l'étiquette `validé` posée par l'utilisateur ; il suppose les
+  miroirs synchronisés (ENV-71).
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
@@ -60,8 +58,8 @@ Outils (inchangés depuis ENV-66) :
 | Options écrites dans les fichiers d'étape et `<À CONFIRMER>` (PA-121, PA-123, PA-125, PA-127, PA-129, PA-131) | proposition non validée, à trancher à chaque point d'arrêt | non (fichiers d'étape) |
 
 ## Pièges rencontrés
-- Le plugin `lepton-tickets` n'était pas chargé dans la session de révision : la skill
-  `lepton-ticket-creer` était absente.
+- Le plugin `lepton-tickets` n'était pas chargé au premier lancement de la session de révision :
+  relance par `claude --continue --plugin-dir ~/lepton-tools-dev/plugins/lepton-tickets`.
 - D35 ne se reproduit pas au Mac (git 2.50.1 n'écrit pas l'avertissement) : test par stderr
   simulé en ENV-70, preuve réelle sur la VM en ENV-72.
 - `scion mirror-sync` n'est couvert par aucune règle de `.claude/settings.json`. L'envoi est fait
@@ -72,10 +70,11 @@ Outils (inchangés depuis ENV-66) :
 ## Critères de validation
 - [x] Chaque point retenu de `HORS-PLAN.md` est planifié ou consigné (D39 écrit, tickets de D40).
 - [x] PA-121 à PA-132 présents au §4 et dans les fichiers d'étape.
-- [ ] Fusion et push de la révision (PA-P).
+- [ ] Fusion et push de la révision (PA-P), sur accord de l'utilisateur.
 
-Tickets créés pendant la session : voir la ligne D40 de `HORS-PLAN.md` (à défaut, à créer avant
-ENV-71). Lignes restées « ticket à créer après publication d'ENV-N » : aucune.
+Tickets créés pendant la session : lepton-distribution/lepton-famille-stm32f7xx#1, lepton-distribution/lepton-famille-stm32f4xx#1 (D40). Étiquettes du plugin (`anomalie`,
+`fonctionnalité`, `P1` à `P4`, `validé`) créées sur ces deux dépôts. Lignes restées « ticket à
+créer après publication d'ENV-N » : aucune.
 
 ## Reprise
 ```
