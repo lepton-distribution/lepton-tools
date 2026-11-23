@@ -1,0 +1,1 @@
+(cd <B>/d04/rootstock/depots/graine) git clone -q file://localhost<B>/repos/graine autre

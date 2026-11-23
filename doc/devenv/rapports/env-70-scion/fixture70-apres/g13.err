@@ -1,0 +1,1 @@
+erreur : graine hors de la version demandée, non mise à jour (rien n'a été modifié) : <B>/g12/rootstock/depots/graine/autre : HEAD détaché sur <graine:master++>, version demandée « autre » ; git -C <B>/g12/rootstock/depots/graine/autre switch autre

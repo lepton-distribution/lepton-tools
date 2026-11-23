@@ -1,0 +1,1 @@
+erreur : échec de « git clone -b master --quiet file://localhost<B>/repos/absent <B>/n05/rootstock/depots/absent/master » (code 128) : fatal: '<B>/repos/absent' does not appear to be a git repository

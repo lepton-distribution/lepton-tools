@@ -1,0 +1,79 @@
+## merge --ff-only, branche divergée (fast_forward)
+$ git merge --ff-only --quiet @{u}
+fatal: Not possible to fast-forward, aborting.
+code 128
+
+## rev-list sans amont (ahead_behind)
+$ git rev-list --left-right --count HEAD...@{u}
+fatal: no upstream configured for branch 'master'
+code 128
+
+## push non rapide (mirror._push)
+$ git push --porcelain file://localhost<B>/nu.git HEAD:refs/heads/master
+error: failed to push some refs to 'file://localhost<B>/nu.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+code 1
+
+## checkout d'un commit absent (checkout_detached)
+$ git checkout --quiet --detach <sha>
+fatal: reference is not a tree: <sha>
+code 128
+
+## clone -b absent --single-branch (clone)
+$ git clone -b nope --quiet --single-branch file://localhost<B>/amont c1
+warning: Could not find remote branch nope to clone.
+fatal: Remote branch nope not found in upstream origin
+fatal: The remote end hung up unexpectedly
+code 128
+
+## clone -b absent (clone)
+$ git clone -b nope --quiet file://localhost<B>/amont c2
+fatal: Remote branch nope not found in upstream origin
+fatal: The remote end hung up unexpectedly
+code 128
+
+## clone partiel d'un dépôt absent (clone_partial)
+$ git clone --quiet --filter=blob:none --no-checkout file://localhost<B>/absent c3
+fatal: '<B>/absent' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+code 128
+
+## clone --mirror d'un dépôt absent (mirror)
+$ git clone --quiet --mirror file://localhost<B>/absent c4
+fatal: '<B>/absent' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+code 128
+
+## fetch d'une origine absente (fetch)
+$ git fetch --quiet file://localhost<B>/absent
+fatal: '<B>/absent' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+code 128
+
+## ls-remote d'une origine absente (remote_tag_commit)
+$ git ls-remote --tags file://localhost<B>/absent refs/tags/v1
+fatal: '<B>/absent' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+code 128
+
+## sparse-checkout set hors d'un dépôt (sparse_set)
+$ git sparse-checkout set --cone x
+git: 'sparse-checkout' is not a git command. See 'git --help'.
+code 1
+

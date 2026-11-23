@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+"""ENV-70 : enveloppe de git qui journalise chaque appel (audit de D35).
+
+Placée en tête du PATH d'une fixture, elle lance le vrai git et écrit, pour chaque appel, une
+ligne JSON dans $ENV70_GITLOG : arguments, répertoire, git lancé, code, stderr complet. stdout et
+stderr sont rendus à l'appelant tels quels. Sans $ENV70_GITLOG, elle ne journalise rien.
+
+$ENV70_GIT : vrai git (défaut /usr/bin/git).
+$ENV70_GIT_SINGLE : git lancé à la place pour un appel qui porte --single-branch (git 2.18.0 du
+Mac, qui écrit l'avertissement de D35 comme git 2.47.3 de la VM).
+"""
+
+import json
+import os
+import subprocess
+import sys
+
+args = sys.argv[1:]
+real = os.environ.get("ENV70_GIT", "/usr/bin/git")
+if "--single-branch" in args and os.environ.get("ENV70_GIT_SINGLE"):
+    real = os.environ["ENV70_GIT_SINGLE"]
+p = subprocess.run([real, *args], stdin=sys.stdin, stdout=sys.stdout, stderr=subprocess.PIPE)
+err = p.stderr.decode("utf-8", "replace")
+sys.stderr.write(err)
+sys.stderr.flush()
+log = os.environ.get("ENV70_GITLOG")
+if log:
+    with open(log, "a", encoding="utf-8") as f:
+        f.write(json.dumps({"git": real, "args": args, "cwd": os.getcwd(), "code": p.returncode,
+                            "stderr": err}, ensure_ascii=False) + "\n")
+sys.exit(p.returncode)

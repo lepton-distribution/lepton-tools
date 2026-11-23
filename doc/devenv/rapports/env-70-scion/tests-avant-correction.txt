@@ -1,0 +1,31 @@
+test_clone_is_quiet (test_git_messages.TestFailureMessages.test_clone_is_quiet) ... ok
+test_clone_of_a_directory_outside_git_names_the_cause (test_git_messages.TestFailureMessages.test_clone_of_a_directory_outside_git_names_the_cause) ... ok
+test_clone_of_an_absent_repository_names_the_cause (test_git_messages.TestFailureMessages.test_clone_of_an_absent_repository_names_the_cause) ... ok
+The version check of seed-add fetches a branch's upstream. ... ok
+The version check of seed-add reads a tag in the upstream. ... ok
+test_missing_version_keeps_its_single_line (test_git_messages.TestFailureMessages.test_missing_version_keeps_its_single_line) ... ok
+test_remote_seed_absent_names_the_cause (test_git_messages.TestFailureMessages.test_remote_seed_absent_names_the_cause) ... ok
+test_an_error_line_is_a_cause (test_git_messages.TestFirstLine.test_an_error_line_is_a_cause) ... FAIL
+test_cause_is_a_single_line (test_git_messages.TestFirstLine.test_cause_is_a_single_line) ... ok
+test_first_cause_wins (test_git_messages.TestFirstLine.test_first_cause_wins) ... ok
+``git merge --ff-only`` on a diverged branch gives its advice first. ... FAIL
+test_leading_blank_lines_are_skipped (test_git_messages.TestFirstLine.test_leading_blank_lines_are_skipped) ... ok
+test_silent_failure_has_no_detail (test_git_messages.TestFirstLine.test_silent_failure_has_no_detail) ... ok
+test_translated_output_keeps_its_first_line (test_git_messages.TestFirstLine.test_translated_output_keeps_its_first_line) ... ok
+test_translated_warning_before_the_cause_is_skipped (test_git_messages.TestFirstLine.test_translated_warning_before_the_cause_is_skipped) ... FAIL
+git < 2.50 warns first on ``git clone -b <absent> --single-branch``. ... FAIL
+test_whole_output_travels_and_is_logged (test_git_messages.TestFirstLine.test_whole_output_travels_and_is_logged) ... ok
+Another language, or no prefix at all: the rule of 0.6.3.3. ... ok
+A detached seed has no upstream, and was left as it is: it is refused now. ... FAIL
+test_graft_update_refuses_it_too (test_seed_version.TestSeedOffItsVersion.test_graft_update_refuses_it_too) ... FAIL
+test_seed_update_refuses_a_seed_moved_off_its_branch (test_seed_version.TestSeedOffItsVersion.test_seed_update_refuses_a_seed_moved_off_its_branch) ... FAIL
+test_tag_seed_moved_to_a_branch_is_refused (test_seed_version.TestSeedOffItsVersion.test_tag_seed_moved_to_a_branch_is_refused) ... FAIL
+test_version_with_a_slash_is_read_from_the_whole_path (test_seed_version.TestSeedOffItsVersion.test_version_with_a_slash_is_read_from_the_whole_path) ... FAIL
+test_local_seed_without_origin_is_not_checked (test_seed_version.TestSeedVersionUnchanged.test_local_seed_without_origin_is_not_checked) ... ok
+test_seed_at_its_branch_moves_forward_with_graft_update (test_seed_version.TestSeedVersionUnchanged.test_seed_at_its_branch_moves_forward_with_graft_update) ... ok
+test_seed_at_its_branch_moves_forward_with_seed_update (test_seed_version.TestSeedVersionUnchanged.test_seed_at_its_branch_moves_forward_with_seed_update) ... ok
+test_seed_at_its_tag_is_left_as_it_is (test_seed_version.TestSeedVersionUnchanged.test_seed_at_its_tag_is_left_as_it_is) ... ok
+test_seed_given_as_a_path_is_not_checked (test_seed_version.TestSeedVersionUnchanged.test_seed_given_as_a_path_is_not_checked) ... ok
+Its directory is not named after its origin: it was given as a path. ... ok
+Ran 29 tests in 31.196s
+FAILED (failures=9)

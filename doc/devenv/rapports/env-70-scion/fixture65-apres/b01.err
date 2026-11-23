@@ -1,0 +1,2 @@
+erreur : 1 clone(s) existant(s) hors de leur version déclarée, non repris (liste greffée et clones inchangés) :
+  <B>/b01/rootstock/depots/own/plain/dev : branche « master », version déclarée « dev » ; git -C <B>/b01/rootstock/depots/own/plain/dev switch dev

@@ -14,5 +14,7 @@ __version__ = "0.1.0"
 # ENV-60 : un clone est fait à sa version déclarée ou pas du tout (0.6.3.2, D18), sans effet sur
 # lepton : minimum inchangé (PA-107) ;
 # ENV-65 : clone existant repris seulement à sa version, première ligne de git dans les messages
-# (0.6.3.3, D25, D22), sans effet sur lepton : minimum inchangé (PA-117)
+# (0.6.3.3, D25, D22), sans effet sur lepton : minimum inchangé (PA-117) ;
+# ENV-70 : graine clonée contrôlée par seed-update et graft-update, cause de l'échec de git après
+# un avertissement (0.6.3.4, D33, D35), sans effet sur lepton : minimum inchangé (PA-127)
 SCION_MIN_VERSION = (0, 6, 2, 0)
