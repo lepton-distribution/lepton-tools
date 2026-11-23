@@ -280,3 +280,37 @@ reste 12, étrangers à lepton :
   première ligne non vide du message de git.
 
 Tous les `.etat` sont égaux au départ.
+
+### 4.5 Extension (VSCodium, utilisateur, 2026-11-23)
+
+Copie `essais/env-68-essai/ext/rs`, partie de M (graine non migrée) :
+- greffon `env68lib` ajouté en `file://`, puis son clone supprimé par l'enveloppe ;
+- espace généré ;
+- avant l'essai : 3059 liens, dont 3 cassés (`ext/etat-avant/`) ;
+- lepton 0.1.0 depuis 9051000, extension 0.5.3.
+
+1. **D29** : `seedMkconfImport`, chemin saisi `~/lepton-tools-dev/essais/env-68-essai/ext/rs/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml`.
+   - Notification : `lepton: erreur: trunk incohérent après l'opération : lien cassé : …/trunk/sys/root/src/lib/env68lib/{env68lib.c,env68lib.h,lepton-greffon.json} → déplacer les fichiers réguliers…`.
+   - État relevé : le chemin `~` a bien été lu, et l'import est fait. `mklepton_xml` vaut
+     `sys/user/env11/etc/mkconf_env11.xml` ; `mkconf_env11.xml`, `.boot` et `.init` sont
+     greffés depuis le greffon du projet.
+   - L'erreur vient du contrôle final du trunk (`finish`) : il a vu les 3 liens cassés du greffon
+     sans clone, préparés pour l'essai 2. L'ordre des essais proposé par la session était
+     mauvais : D37 aurait dû passer d'abord.
+2. **D37** : `seedRemove`, greffon `library-env68lib` (nom proposé par `pickScion`).
+   - Notification : `lepton : retirer library-env68lib — terminé`.
+   - État (`ext/etat-apres/`) :
+     - 3059 liens, 0 lien cassé, 0 fichier régulier ;
+     - `library-env68lib` absent de `.scion.sources.list` et de `.scion.grafted.list` ;
+     - `bibliotheques` vide ;
+     - le répertoire vide `depots/lepton/library-env68lib/` reste (§4.2).
+
+**Constat O-1 (hors périmètre)** : une opération lancée sur un trunk déjà incohérent (lien cassé,
+fichier régulier) est faite, puis signalée en échec par `finish` (`trunk incohérent après
+l'opération`).
+- L'opération n'est pas annulée, et le message ne dit pas qu'elle a été faite.
+- Le message ne distingue pas non plus une incohérence antérieure d'une incohérence créée par
+  l'opération.
+- Ici, l'import était fait, mais la notification ne montrait qu'une erreur.
+- Ce comportement préexiste à ENV-68 : il tient à `finish`, inchangé. lepton-tools n'est pas un
+  greffon, O-1 n'est donc pas éligible au ticket.
