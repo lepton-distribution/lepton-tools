@@ -1,0 +1,9 @@
+$ /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/env-69-extension/lepton-horodate.sh seed status --json    (/Users/cle_d_anton/lepton-tools-dev/essais/env-69-essai)
+clangd relancé quand /Users/cle_d_anton/lepton-tools-dev/essais/env-69-essai/build/.active/compile_commands.json change
+
+→ code 0
+
+$ /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/env-69-extension/lepton-horodate.sh seed status --json    (/Users/cle_d_anton/lepton-tools-dev/essais/env-69-essai)
+→ code 0
+
+Observation de 5 greffon(s) et du trunk /Users/cle_d_anton/lepton-tools-dev/essais/env-69-essai/trunk

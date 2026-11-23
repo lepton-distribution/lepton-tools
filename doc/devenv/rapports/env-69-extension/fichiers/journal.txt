@@ -1,0 +1,44 @@
+## 01 lepton -C <E> seed add env69lib file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot@master --type bibliotheque --no-cmake
+scion: scion lepton/library-env69lib déclaré dans <E>/depots/lepton-seed/env11/scion/.scion (version master)
+scion: greffe partielle : 3 feuilles liées dans <E>/trunk
+env69lib ajouté (lepton@library-env69lib, master, file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot)
+graine modifiée, non commitée : git -C <E>/depots/lepton-seed/env11 commit -am "…"
+code=0
+## 02 lepton -C <E> seed replace env69lib file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot2@master --no-cmake
+scion: scion lepton/library-env69lib retiré : 3 feuilles
+scion: clone <E>/depots/lepton/library-env69lib/master supprimé
+scion: scion lepton/library-env69lib déclaré dans <E>/depots/lepton-seed/env11/scion/.scion (version master)
+scion: greffe partielle : 4 feuilles liées dans <E>/trunk
+env69lib remplacé (lepton@library-env69lib : master file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot → master file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot2)
+graine modifiée, non commitée : git -C <E>/depots/lepton-seed/env11 commit -am "…"
+code=0
+## 03 lepton -C <E> seed replace env69lib file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot@master --no-cmake
+scion: scion lepton/library-env69lib retiré : 4 feuilles
+scion: clone <E>/depots/lepton/library-env69lib/master supprimé
+scion: scion lepton/library-env69lib déclaré dans <E>/depots/lepton-seed/env11/scion/.scion (version master)
+scion: greffe partielle : 3 feuilles liées dans <E>/trunk
+env69lib remplacé (lepton@library-env69lib : master file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot2 → master file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot)
+graine modifiée, non commitée : git -C <E>/depots/lepton-seed/env11 commit -am "…"
+code=0
+## 04 lepton -C <E> seed remove env69lib --purge --no-cmake
+scion: scion lepton/library-env69lib retiré : 3 feuilles
+scion: clone <E>/depots/lepton/library-env69lib/master supprimé
+scion: scion lepton/library-env69lib retiré de <E>/depots/lepton-seed/env11/scion/.scion
+env69lib retiré (lepton@library-env69lib)
+graine modifiée, non commitée : git -C <E>/depots/lepton-seed/env11 commit -am "…"
+code=0
+## 05 lepton -C <E> seed add env69lib file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot@master --type bibliotheque --no-cmake
+scion: scion lepton/library-env69lib déclaré dans <E>/depots/lepton-seed/env11/scion/.scion (version master)
+scion: greffe partielle : 3 feuilles liées dans <E>/trunk
+env69lib ajouté (lepton@library-env69lib, master, file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot)
+graine modifiée, non commitée : git -C <E>/depots/lepton-seed/env11 commit -am "…"
+code=0
+clé : lepton@library-env69lib
+## 06 scion graft-remove --purge lepton@library-env69lib <E>
+scion lepton/library-env69lib retiré : 3 feuilles
+clone <E>/depots/lepton/library-env69lib/master supprimé
+code=0
+## 07 scion graft <E>
+greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+greffe : 3059 feuilles liées dans <E>/trunk
+code=0

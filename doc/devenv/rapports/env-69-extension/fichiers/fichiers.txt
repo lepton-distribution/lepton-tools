@@ -1,0 +1,134 @@
+# 01 lepton -C <E> seed add env69lib file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot@master --type bibliotheque --no-cmake
+changé	depots/lepton
+changé	depots/lepton-seed/env11/scion/.scion/.scion.ramifications
+changé	depots/lepton-seed/env11/scion/.scion/.scion.sources.list
+changé	depots/lepton-seed/env11/scion/.scion/lepton-graine.json
+ajouté	depots/lepton/library-env69lib
+ajouté	depots/lepton/library-env69lib/master
+ajouté	depots/lepton/library-env69lib/master/scion
+ajouté	depots/lepton/library-env69lib/master/scion/sys
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src/lib
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/env69lib.c
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/env69lib.h
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/lepton-greffon.json
+changé	trunk/.scion.grafted.list
+liens du trunk	+3 -0 ~0
+stems après :
+building <E>/depots/generation/building/scion 
+lepton-noyau <E>/depots/lepton/original/master/scion 
+qemu-mps2 <E>/depots/lepton/family-qemu-mps2/master/scion 
+qemu-mps2-an386 <E>/depots/lepton/bsp-qemu-mps2-an386/master/scion 
+project-env11 <E>/depots/lepton-seed/env11/project/scion 
+env69lib <E>/depots/lepton/library-env69lib/master/scion 
+
+# 02 lepton -C <E> seed replace env69lib file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot2@master --no-cmake
+changé	depots/lepton-seed/env11/scion/.scion/.scion.sources.list
+changé	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/env69_v2.h
+liens du trunk	+1 -0 ~0
+stems après :
+building <E>/depots/generation/building/scion 
+lepton-noyau <E>/depots/lepton/original/master/scion 
+qemu-mps2 <E>/depots/lepton/family-qemu-mps2/master/scion 
+qemu-mps2-an386 <E>/depots/lepton/bsp-qemu-mps2-an386/master/scion 
+project-env11 <E>/depots/lepton-seed/env11/project/scion 
+env69lib <E>/depots/lepton/library-env69lib/master/scion 
+
+# 03 lepton -C <E> seed replace env69lib file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot@master --no-cmake
+changé	depots/lepton-seed/env11/scion/.scion/.scion.sources.list
+changé	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/env69_v2.h
+liens du trunk	+0 -1 ~0
+stems après :
+building <E>/depots/generation/building/scion 
+lepton-noyau <E>/depots/lepton/original/master/scion 
+qemu-mps2 <E>/depots/lepton/family-qemu-mps2/master/scion 
+qemu-mps2-an386 <E>/depots/lepton/bsp-qemu-mps2-an386/master/scion 
+project-env11 <E>/depots/lepton-seed/env11/project/scion 
+env69lib <E>/depots/lepton/library-env69lib/master/scion 
+
+# 04 lepton -C <E> seed remove env69lib --purge --no-cmake
+changé	depots/lepton
+changé	depots/lepton-seed/env11/scion/.scion/.scion.ramifications
+changé	depots/lepton-seed/env11/scion/.scion/.scion.sources.list
+changé	depots/lepton-seed/env11/scion/.scion/lepton-graine.json
+retiré	depots/lepton/library-env69lib
+retiré	depots/lepton/library-env69lib/master
+retiré	depots/lepton/library-env69lib/master/scion
+retiré	depots/lepton/library-env69lib/master/scion/sys
+retiré	depots/lepton/library-env69lib/master/scion/sys/root
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src/lib
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/env69lib.c
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/env69lib.h
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/lepton-greffon.json
+changé	trunk/.scion.grafted.list
+liens du trunk	+0 -3 ~0
+stems après :
+building <E>/depots/generation/building/scion 
+lepton-noyau <E>/depots/lepton/original/master/scion 
+qemu-mps2 <E>/depots/lepton/family-qemu-mps2/master/scion 
+qemu-mps2-an386 <E>/depots/lepton/bsp-qemu-mps2-an386/master/scion 
+project-env11 <E>/depots/lepton-seed/env11/project/scion 
+
+# 05 lepton -C <E> seed add env69lib file://localhost<HOME>/lepton-tools-dev/essais/env-69-depot@master --type bibliotheque --no-cmake
+changé	depots/lepton
+changé	depots/lepton-seed/env11/scion/.scion/.scion.ramifications
+changé	depots/lepton-seed/env11/scion/.scion/.scion.sources.list
+changé	depots/lepton-seed/env11/scion/.scion/lepton-graine.json
+ajouté	depots/lepton/library-env69lib
+ajouté	depots/lepton/library-env69lib/master
+ajouté	depots/lepton/library-env69lib/master/scion
+ajouté	depots/lepton/library-env69lib/master/scion/sys
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src/lib
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/env69lib.c
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/env69lib.h
+ajouté	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/lepton-greffon.json
+changé	trunk/.scion.grafted.list
+liens du trunk	+3 -0 ~0
+stems après :
+building <E>/depots/generation/building/scion 
+lepton-noyau <E>/depots/lepton/original/master/scion 
+qemu-mps2 <E>/depots/lepton/family-qemu-mps2/master/scion 
+qemu-mps2-an386 <E>/depots/lepton/bsp-qemu-mps2-an386/master/scion 
+project-env11 <E>/depots/lepton-seed/env11/project/scion 
+env69lib <E>/depots/lepton/library-env69lib/master/scion 
+
+# 06 scion graft-remove --purge lepton@library-env69lib <E>
+changé	depots/lepton
+retiré	depots/lepton/library-env69lib
+retiré	depots/lepton/library-env69lib/master
+retiré	depots/lepton/library-env69lib/master/scion
+retiré	depots/lepton/library-env69lib/master/scion/sys
+retiré	depots/lepton/library-env69lib/master/scion/sys/root
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src/lib
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/env69lib.c
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/env69lib.h
+retiré	depots/lepton/library-env69lib/master/scion/sys/root/src/lib/env69lib/lepton-greffon.json
+changé	trunk/.scion.grafted.list
+liens du trunk	+0 -3 ~0
+stems après :
+building <E>/depots/generation/building/scion 
+lepton-noyau <E>/depots/lepton/original/master/scion 
+qemu-mps2 <E>/depots/lepton/family-qemu-mps2/master/scion 
+qemu-mps2-an386 <E>/depots/lepton/bsp-qemu-mps2-an386/master/scion 
+project-env11 <E>/depots/lepton-seed/env11/project/scion 
+
+# 07 scion graft <E>
+liens du trunk	+0 -0 ~0
+stems après :
+building <E>/depots/generation/building/scion 
+lepton-noyau <E>/depots/lepton/original/master/scion 
+qemu-mps2 <E>/depots/lepton/family-qemu-mps2/master/scion 
+qemu-mps2-an386 <E>/depots/lepton/bsp-qemu-mps2-an386/master/scion 
+project-env11 <E>/depots/lepton-seed/env11/project/scion 
+

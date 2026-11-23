@@ -80,7 +80,7 @@ Démarrer l'une des étapes permutables ENV-69 (extension 0.5.4 : D36), ENV-70 (
 | ENV-66 | Validation Debian groupée (ENV-62 à ENV-65) | terminée (2026-11-19) ; rapports `rapports/env-66-mac.md`, `rapports/env-66-debian.md` ; oracle Debian `oracles/env-66-debian/` ; fin du plan | lepton-tools `devenv/env-66` (depuis `main` 6bc05ad ; fusionnée `--no-ff` dans `main`, poussée) ; `devenv/env-66-debian` (VM, depuis 0eca739, 9f34370, poussée, fusionnée dans `devenv/env-66`) | `handoff/env-66.md` |
 | ENV-67 | Consignes VM : relevés, suppressions, contrôle Mac (D38) | terminée (2026-11-23) ; rapport `rapports/env-67-consignes.md` ; preuve sur la VM en ENV-72 | lepton-tools `devenv/env-67` (depuis `main` 052050c ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/env-67.md` |
 | ENV-68 | lepton : chemins saisis et cohérence de la graine (D29, D30, D32, D37) | terminée (2026-11-23) ; rapport `rapports/env-68-lepton.md` ; preuve sur la VM en ENV-72 | lepton-tools `devenv/env-68` (depuis `main` 58ed8f1 ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/env-68.md` |
-| ENV-69 | Extension : greffons observés rafraîchis (D36) | à faire | — | — |
+| ENV-69 | Extension : greffons observés rafraîchis (D36) | en cours (2026-11-23) | lepton-tools `devenv/env-69` (depuis `main` c0fff59) | — |
 | ENV-70 | scion : cause de l'échec de git, version de la graine clonée (D35, D33) | à faire | — | — |
 | ENV-71 | Miroirs de conservation : synchronisation (D40) | à faire | — | — |
 | ENV-72 | Validation Debian groupée (ENV-67 à ENV-71) | à faire | — | — |
