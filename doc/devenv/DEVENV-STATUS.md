@@ -81,7 +81,7 @@ Démarrer l'une des étapes permutables ENV-70 (scion 0.6.3.4 : D35, D33) ou ENV
 | ENV-67 | Consignes VM : relevés, suppressions, contrôle Mac (D38) | terminée (2026-11-23) ; rapport `rapports/env-67-consignes.md` ; preuve sur la VM en ENV-72 | lepton-tools `devenv/env-67` (depuis `main` 052050c ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/env-67.md` |
 | ENV-68 | lepton : chemins saisis et cohérence de la graine (D29, D30, D32, D37) | terminée (2026-11-23) ; rapport `rapports/env-68-lepton.md` ; preuve sur la VM en ENV-72 | lepton-tools `devenv/env-68` (depuis `main` 58ed8f1 ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/env-68.md` |
 | ENV-69 | Extension : greffons observés rafraîchis (D36) | terminée (2026-11-23) ; rapport `rapports/env-69-extension.md` ; extension 0.5.4 ; preuve sur la VM en ENV-72 | lepton-tools `devenv/env-69` (depuis `main` c0fff59 ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/env-69.md` |
-| ENV-70 | scion : cause de l'échec de git, version de la graine clonée (D35, D33) | à faire | — | — |
+| ENV-70 | scion : cause de l'échec de git, version de la graine clonée (D35, D33) | en cours (2026-11-23) | lepton-tools `devenv/env-70` (depuis `main` fa7b883) ; seed.scions `devenv/env-70` (depuis `master` 49ca4ae) | `handoff/env-69.md` |
 | ENV-71 | Miroirs de conservation : synchronisation (D40) | à faire | — | — |
 | ENV-72 | Validation Debian groupée (ENV-67 à ENV-71) | à faire | — | — |
 

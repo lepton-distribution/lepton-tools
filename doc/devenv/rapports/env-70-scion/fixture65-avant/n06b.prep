@@ -1,0 +1,1 @@
+(cd <B>/n06/rootstock/depots/own/plain/dev) git remote set-url origin file://localhost<B>/repos/absent

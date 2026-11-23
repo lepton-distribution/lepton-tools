@@ -1,0 +1,1 @@
+(cd <B>/g12/rootstock/depots/graine/autre) git checkout -q --detach origin/master

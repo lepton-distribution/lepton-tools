@@ -1,0 +1,130 @@
+clone	depots/lepton/bsp-nucleo-f429zi/master	master	conforme	branche master	lepton/bsp-nucleo-f429zi
+clone	depots/lepton/bsp-nucleo-f439zi/master	master	conforme	branche master	lepton/bsp-nucleo-f439zi
+clone	depots/lepton/bsp-nucleo-wl55jc1/master	master	conforme	branche master	lepton/bsp-nucleo-wl55jc1
+clone	depots/lepton/bsp-qemu-mps2-an386/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an386
+clone	depots/lepton/bsp-qemu-mps2-an500/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an500
+clone	depots/lepton/bsp-samd21-xplained-pro/master	master	conforme	branche master	lepton/bsp-samd21-xplained-pro
+clone	depots/lepton/bsp-stm32f746g-disco/master	master	conforme	branche master	lepton/bsp-stm32f746g-disco
+clone	depots/lepton/family-qemu-mps2/master	master	conforme	branche master	lepton/family-qemu-mps2
+clone	depots/lepton/family-samd21/master	master	conforme	branche master	lepton/family-samd21
+clone	depots/lepton/family-stm32f4xx/master	master	conforme	branche master	lepton/family-stm32f4xx
+clone	depots/lepton/family-stm32f7xx/master	master	conforme	branche master	lepton/family-stm32f7xx
+clone	depots/lepton/family-stm32wlxx/master	master	conforme	branche master	lepton/family-stm32wlxx
+clone	depots/lepton/original/master	master	conforme	branche master	lepton/original::tree
+clone	depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1	3c77349ce04c8af401454cc51f85ea9a50e34fc1	conforme	HEAD détaché 3c77349	tiers/cmsis-device-f4
+clone	depots/tiers/cmsis-device-f7/v1.2.10	v1.2.10	conforme	HEAD détaché 2352e88 (tag)	tiers/cmsis-device-f7
+clone	depots/tiers/cmsis-device-wl/v1.4.0	v1.4.0	conforme	HEAD détaché 71a0b78 (tag)	tiers/cmsis-device-wl
+clone	depots/tiers/stm32-mw-subghz-phy/v1.5.0	v1.5.0	conforme	HEAD détaché 7dc059f (tag)	tiers/stm32-mw-subghz-phy
+clone	depots/tiers/stm32cubewl/v1.6.0	v1.6.0	conforme	HEAD détaché f934cd2 (tag)	tiers/stm32cubewl::utilities tiers/stm32cubewl::radio-core-inc
+clone	depots/tiers/stm32f4xx-hal-driver/v1.8.5	v1.8.5	conforme	HEAD détaché b6f0ed3 (tag)	tiers/stm32f4xx-hal-driver
+clone	depots/tiers/stm32f7xx-hal-driver/v1.3.3	v1.3.3	conforme	HEAD détaché e1446fa (tag)	tiers/stm32f7xx-hal-driver
+clone	depots/tiers/stm32wlxx-hal-driver/v1.6.0	v1.6.0	conforme	HEAD détaché 5c87cf0 (tag)	tiers/stm32wlxx-hal-driver
+graine	depots/lepton-seed.scions/original-tree	original-tree	conforme	branche original-tree	
+bilan	<HOME>/lepton	clones=21	graines=1	graines_locales=0	orphelins=0	hors_version=0
+clone	depots/lepton/bsp-qemu-mps2-an386/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an386
+clone	depots/lepton/family-qemu-mps2/master	master	conforme	branche master	lepton/family-qemu-mps2
+clone	depots/lepton/original/master	master	conforme	branche master	lepton/original::tree
+graine locale	depots/lepton-seed/bout-en-bout	-	sans objet	branche main	sans origin : chemin
+bilan	<HOME>/lepton-tools-dev/essais/env-11/bout-en-bout/rootstock	clones=3	graines=0	graines_locales=1	orphelins=0	hors_version=0
+clone	depots/lepton/bsp-nucleo-f429zi/master	master	conforme	branche master	lepton/bsp-nucleo-f429zi
+clone	depots/lepton/family-stm32f4xx/master	master	conforme	branche master	lepton/family-stm32f4xx
+clone	depots/lepton/original/master	master	conforme	branche master	lepton/original::tree
+clone	depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1	3c77349ce04c8af401454cc51f85ea9a50e34fc1	conforme	HEAD détaché 3c77349	tiers/cmsis-device-f4
+clone	depots/tiers/stm32f4xx-hal-driver/v1.8.5	v1.8.5	conforme	HEAD détaché b6f0ed3 (tag)	tiers/stm32f4xx-hal-driver
+graine locale	depots/lepton-seed/env11f4	-	sans objet	branche main	sans origin : chemin
+bilan	<HOME>/lepton-tools-dev/essais/env-11/f429zi	clones=5	graines=0	graines_locales=1	orphelins=0	hors_version=0
+clone	depots/lepton/bsp-qemu-mps2-an386/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an386
+clone	depots/lepton/family-qemu-mps2/master	master	conforme	branche master	lepton/family-qemu-mps2
+clone	depots/lepton/original/master	master	conforme	branche master	lepton/original::tree
+graine locale	depots/lepton-seed/env11	-	sans objet	branche main	sans origin : chemin
+orphelin local	depots/lepton-application/salut	-	sans objet	branche master	sans origin : dépôt local
+bilan	<HOME>/lepton-tools-dev/essais/env-11/qemu	clones=3	graines=0	graines_locales=1	orphelins=1	hors_version=0
+clone	depots/lepton/family-qemu-mps2/master	master	conforme	branche master	lepton/family-qemu-mps2
+clone	depots/lepton/original/master	master	conforme	branche master	lepton/original::tree
+graine locale	depots/lepton-seed/env11	-	sans objet	branche main	sans origin : chemin
+orphelin	depots/lepton/bsp-qemu-mps2-an386/master	master	conforme	branche master	hors liste greffée
+bilan	<HOME>/lepton-tools-dev/essais/env-11/qemu-gra2	clones=2	graines=0	graines_locales=1	orphelins=1	hors_version=0
+clone	depots/lepton/bsp-nucleo-wl55jc1/master	master	conforme	branche master	lepton/bsp-nucleo-wl55jc1
+clone	depots/lepton/family-stm32wlxx/master	master	conforme	branche master	lepton/family-stm32wlxx
+clone	depots/lepton/original/master	master	conforme	branche master	lepton/original::tree
+clone	depots/tiers/cmsis-device-wl/v1.4.0	v1.4.0	conforme	HEAD détaché 71a0b78 (tag)	tiers/cmsis-device-wl
+clone	depots/tiers/stm32-mw-subghz-phy/v1.5.0	v1.5.0	conforme	HEAD détaché 7dc059f (tag)	tiers/stm32-mw-subghz-phy
+clone	depots/tiers/stm32cubewl/v1.6.0	v1.6.0	conforme	HEAD détaché f934cd2 (tag)	tiers/stm32cubewl::utilities tiers/stm32cubewl::radio-core-inc
+clone	depots/tiers/stm32wlxx-hal-driver/v1.6.0	v1.6.0	conforme	HEAD détaché 5c87cf0 (tag)	tiers/stm32wlxx-hal-driver
+graine locale	depots/lepton-seed/env11wl	-	sans objet	branche main	sans origin : chemin
+bilan	<HOME>/lepton-tools-dev/essais/env-11/wl55jc1	clones=7	graines=0	graines_locales=1	orphelins=0	hors_version=0
+clone	depots/lepton/bsp-nucleo-f429zi/master	master	conforme	branche master	lepton/bsp-nucleo-f429zi
+clone	depots/lepton/bsp-nucleo-f439zi/master	master	conforme	branche master	lepton/bsp-nucleo-f439zi
+clone	depots/lepton/bsp-nucleo-wl55jc1/master	master	conforme	branche master	lepton/bsp-nucleo-wl55jc1
+clone	depots/lepton/bsp-qemu-mps2-an386/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an386
+clone	depots/lepton/bsp-qemu-mps2-an500/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an500
+clone	depots/lepton/bsp-samd21-xplained-pro/master	master	conforme	branche master	lepton/bsp-samd21-xplained-pro
+clone	depots/lepton/bsp-stm32f746g-disco/master	master	conforme	branche master	lepton/bsp-stm32f746g-disco
+clone	depots/lepton/family-qemu-mps2/master	master	conforme	branche master	lepton/family-qemu-mps2
+clone	depots/lepton/family-samd21/master	master	conforme	branche master	lepton/family-samd21
+clone	depots/lepton/family-stm32f4xx/master	master	conforme	branche master	lepton/family-stm32f4xx
+clone	depots/lepton/family-stm32f7xx/master	master	conforme	branche master	lepton/family-stm32f7xx
+clone	depots/lepton/family-stm32wlxx/master	master	conforme	branche master	lepton/family-stm32wlxx
+clone	depots/lepton/original/master	master	conforme	branche master	lepton/original::tree
+clone	depots/tiers/cmsis-device-f4/3c77349ce04c8af401454cc51f85ea9a50e34fc1	3c77349ce04c8af401454cc51f85ea9a50e34fc1	conforme	HEAD détaché 3c77349	tiers/cmsis-device-f4
+clone	depots/tiers/cmsis-device-f7/v1.2.10	v1.2.10	conforme	HEAD détaché 2352e88 (tag)	tiers/cmsis-device-f7
+clone	depots/tiers/cmsis-device-wl/v1.4.0	v1.4.0	conforme	HEAD détaché 71a0b78 (tag)	tiers/cmsis-device-wl
+clone	depots/tiers/stm32-mw-subghz-phy/v1.5.0	v1.5.0	conforme	HEAD détaché 7dc059f (tag)	tiers/stm32-mw-subghz-phy
+clone	depots/tiers/stm32cubewl/v1.6.0	v1.6.0	conforme	HEAD détaché f934cd2 (tag)	tiers/stm32cubewl::utilities tiers/stm32cubewl::radio-core-inc
+clone	depots/tiers/stm32f4xx-hal-driver/v1.8.5	v1.8.5	conforme	HEAD détaché b6f0ed3 (tag)	tiers/stm32f4xx-hal-driver
+clone	depots/tiers/stm32f7xx-hal-driver/v1.3.3	v1.3.3	conforme	HEAD détaché e1446fa (tag)	tiers/stm32f7xx-hal-driver
+clone	depots/tiers/stm32wlxx-hal-driver/v1.6.0	v1.6.0	conforme	HEAD détaché 5c87cf0 (tag)	tiers/stm32wlxx-hal-driver
+graine	depots/lepton-seed.scions/original-tree	original-tree	conforme	branche original-tree	
+bilan	<HOME>/lepton-tools-dev/essais/env-13-vierge	clones=21	graines=1	graines_locales=0	orphelins=0	hors_version=0
+clone	depots/lepton/bsp-nucleo-f429zi/master	master	conforme	branche master	lepton/bsp-nucleo-f429zi
+clone	depots/lepton/bsp-nucleo-f439zi/master	master	conforme	branche master	lepton/bsp-nucleo-f439zi
+clone	depots/lepton/bsp-nucleo-wl55jc1/master	master	conforme	branche master	lepton/bsp-nucleo-wl55jc1
+clone	depots/lepton/bsp-qemu-mps2-an386/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an386
+clone	depots/lepton/bsp-qemu-mps2-an500/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an500
+clone	depots/lepton/bsp-samd21-xplained-pro/master	master	conforme	branche master	lepton/bsp-samd21-xplained-pro
+clone	depots/lepton/bsp-stm32f746g-disco/master	master	conforme	branche master	lepton/bsp-stm32f746g-disco
+clone	depots/lepton/family-qemu-mps2/master	master	conforme	branche master	lepton/family-qemu-mps2
+clone	depots/lepton/family-samd21/master	master	conforme	branche master	lepton/family-samd21
+clone	depots/lepton/family-stm32f4xx/master	master	HORS VERSION	branche devenv/env-34	lepton/family-stm32f4xx
+clone	depots/lepton/family-stm32f7xx/master	master	conforme	branche master	lepton/family-stm32f7xx
+clone	depots/lepton/family-stm32wlxx/master	master	conforme	branche master	lepton/family-stm32wlxx
+clone	depots/lepton/original/master	master	HORS VERSION	branche devenv/env-34	lepton/original::tree
+graine	depots/lepton-seed.scions/original-tree	original-tree	conforme	branche original-tree	
+bilan	<HOME>/lepton-tools-dev/essais/env-34-copie	clones=13	graines=1	graines_locales=0	orphelins=0	hors_version=2
+clone	depots/lepton/bsp-nucleo-f429zi/master	master	HORS VERSION	branche devenv/env-35	lepton/bsp-nucleo-f429zi
+clone	depots/lepton/bsp-nucleo-f439zi/master	master	HORS VERSION	branche devenv/env-35	lepton/bsp-nucleo-f439zi
+clone	depots/lepton/bsp-nucleo-wl55jc1/master	master	conforme	branche master	lepton/bsp-nucleo-wl55jc1
+clone	depots/lepton/bsp-qemu-mps2-an386/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an386
+clone	depots/lepton/bsp-qemu-mps2-an500/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an500
+clone	depots/lepton/bsp-samd21-xplained-pro/master	master	conforme	branche master	lepton/bsp-samd21-xplained-pro
+clone	depots/lepton/bsp-stm32f746g-disco/master	master	conforme	branche master	lepton/bsp-stm32f746g-disco
+clone	depots/lepton/family-qemu-mps2/master	master	conforme	branche master	lepton/family-qemu-mps2
+clone	depots/lepton/family-samd21/master	master	conforme	branche master	lepton/family-samd21
+clone	depots/lepton/family-stm32f4xx/master	master	HORS VERSION	branche devenv/env-35	lepton/family-stm32f4xx
+clone	depots/lepton/family-stm32f7xx/master	master	conforme	branche master	lepton/family-stm32f7xx
+clone	depots/lepton/family-stm32wlxx/master	master	conforme	branche master	lepton/family-stm32wlxx
+clone	depots/lepton/original/master	master	conforme	branche master	lepton/original::tree
+graine	depots/lepton-seed.scions/original-tree	original-tree	conforme	branche original-tree	
+bilan	<HOME>/lepton-tools-dev/essais/env-35-copie	clones=13	graines=1	graines_locales=0	orphelins=0	hors_version=3
+clone	depots/lepton/bsp-nucleo-f429zi/master	master	conforme	branche master	lepton/bsp-nucleo-f429zi
+clone	depots/lepton/bsp-nucleo-f439zi/master	master	conforme	branche master	lepton/bsp-nucleo-f439zi
+clone	depots/lepton/bsp-nucleo-wl55jc1/master	master	conforme	branche master	lepton/bsp-nucleo-wl55jc1
+clone	depots/lepton/bsp-qemu-mps2-an386/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an386
+clone	depots/lepton/bsp-qemu-mps2-an500/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an500
+clone	depots/lepton/bsp-samd21-xplained-pro/master	master	conforme	branche master	lepton/bsp-samd21-xplained-pro
+clone	depots/lepton/bsp-stm32f746g-disco/master	master	conforme	branche master	lepton/bsp-stm32f746g-disco
+clone	depots/lepton/family-qemu-mps2/master	master	conforme	branche master	lepton/family-qemu-mps2
+clone	depots/lepton/family-samd21/master	master	conforme	branche master	lepton/family-samd21
+clone	depots/lepton/family-stm32f4xx/master	master	conforme	branche master	lepton/family-stm32f4xx
+clone	depots/lepton/family-stm32f7xx/master	master	conforme	branche master	lepton/family-stm32f7xx
+clone	depots/lepton/family-stm32wlxx/master	master	HORS VERSION	branche devenv/env-37	lepton/family-stm32wlxx
+clone	depots/lepton/original/master	master	conforme	branche master	lepton/original::tree
+graine	depots/lepton-seed.scions/original-tree	original-tree	conforme	branche original-tree	
+bilan	<HOME>/lepton-tools-dev/essais/env-37-copie	clones=13	graines=1	graines_locales=0	orphelins=0	hors_version=1
+bilan	<HOME>/lepton-tools-dev/essais/env-40-miroirs/rootstock	clones=0	graines=0	graines_locales=0	orphelins=0	hors_version=0
+bilan	<HOME>/lepton-tools-dev/essais/env-40-publication/rootstock	clones=0	graines=0	graines_locales=0	orphelins=0	hors_version=0
+clone	depots/lepton/bsp-qemu-mps2-an386/master	master	conforme	branche master	lepton/bsp-qemu-mps2-an386
+clone	depots/lepton/family-qemu-mps2/master	master	conforme	branche master	lepton/family-qemu-mps2
+clone	depots/lepton/original/master	master	conforme	branche master	lepton/original::tree
+graine locale	depots/lepton-seed/env9	-	sans objet	branche main	sans origin : chemin
+bilan	<HOME>/lepton-tools-dev/essais/env-9	clones=3	graines=0	graines_locales=1	orphelins=0	hors_version=0

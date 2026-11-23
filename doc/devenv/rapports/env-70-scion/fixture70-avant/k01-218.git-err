@@ -1,0 +1,5 @@
+$ /usr/local/git/bin/git clone -b nope --quiet --single-branch file://localhost<B>/repos/plain d
+code 128
+warning: Could not find remote branch nope to clone.
+fatal: Remote branch nope not found in upstream origin
+fatal: The remote end hung up unexpectedly
