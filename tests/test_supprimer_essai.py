@@ -1,8 +1,9 @@
 """ENV-54 (D16, PA-95) : enveloppe de suppression `scripts/supprimer-essai.sh`.
 
 Le script n'accepte que les descendants d'`~/lepton-tools-dev/essais/` hors des références, les
-`<rootstock>/build/<preset>` (`~/lepton` ou un rootstock d'essai) et les répertoires de journaux
-de la VM. Tout autre chemin est refusé (code 2), tout ou rien. Chaque test travaille dans un
+`<rootstock>/build/<preset>` (`~/lepton` ou un rootstock d'essai), les répertoires de journaux
+de la VM, `~/tmp-pytest` et `~/tmp-tests` entiers ou l'un de leurs descendants (ENV-67, D38 (2),
+PA-121). Tout autre chemin est refusé (code 2), tout ou rien. Chaque test travaille dans un
 `HOME` temporaire : rien n'est touché hors de `tmp_path`.
 """
 
@@ -39,6 +40,11 @@ def home(tmp_path: Path) -> Path:
     for d in ("env-53-journaux", "env-x-journaux", "tmp-pytest", "tmp-tests", "autre/build/p"):
         (h / d).mkdir(parents=True)
     (h / "autre" / ".scion.rootstock.signature").write_text("")
+    # ENV-67 (D38 (2)) : basetemp de pytest d'une validation précédente et de la courante.
+    for d in ("tmp-pytest/env-61/sous/plus", "tmp-pytest/env-66", "tmp-tests/a", "tmp-pytestx"):
+        (h / d).mkdir(parents=True)
+    (h / "tmp-pytest" / "env-61" / "sous" / "f").write_text("x")
+    (h / "tmp-pytest" / "lien-lepton").symlink_to(rs)
     return h
 
 
@@ -71,6 +77,92 @@ def test_cible_acceptee_est_supprimee(home: Path, rel: str) -> None:
     assert r.returncode == 0, r.stderr
     assert not cible.exists()
     assert "supprimé : " in r.stdout
+
+
+# ENV-67 (D38 (2), PA-121) : descendants stricts de ~/tmp-pytest et de ~/tmp-tests.
+ACCEPTES_TMP = [
+    "tmp-pytest/env-61",
+    "tmp-pytest/env-61/",
+    "tmp-pytest/env-61/sous",
+    "tmp-pytest/env-61/sous/f",
+    "tmp-pytest/env-66/../env-61",
+    "tmp-tests/a",
+]
+
+
+@pytest.mark.parametrize("rel", ACCEPTES_TMP)
+def test_descendant_tmp_accepte(home: Path, rel: str) -> None:
+    cible = (home / rel).resolve()
+    r = lancer(home, f"{home}/{rel}")
+    assert r.returncode == 0, r.stderr
+    assert not cible.exists()
+    assert "supprimé : " in r.stdout
+    assert (home / "tmp-pytest").is_dir() and (home / "tmp-tests").is_dir()
+    assert (home / "lepton" / "trunk" / "sys" / "f").exists()
+
+
+def test_descendant_tmp_garde_la_validation_courante(home: Path) -> None:
+    """Forme du §14 d'ENV-66 : la basetemp précédente part, la courante reste."""
+    r = lancer(home, str(home / "tmp-pytest" / "env-61"))
+    assert r.returncode == 0, r.stderr
+    assert not (home / "tmp-pytest" / "env-61").exists()
+    assert (home / "tmp-pytest" / "env-66").is_dir()
+
+
+def test_lien_sous_tmp_supprime_sans_suivre(home: Path) -> None:
+    lien = home / "tmp-pytest" / "lien-lepton"
+    r = lancer(home, str(lien))
+    assert r.returncode == 0, r.stderr
+    assert not lien.is_symlink()
+    assert (home / "lepton" / "trunk" / "sys" / "f").exists()
+
+
+# Rejets gardés sous ~/tmp-pytest et ~/tmp-tests (passent avant comme après ENV-67).
+REFUSES_TMP = [
+    ("tmp-pytest/.", "non résoluble"),
+    ("tmp-pytest/env-61/..", "non résoluble"),
+    ("tmp-tests/a/..", "non résoluble"),
+    ("tmp-pytest/../lepton", "hors des bornes"),
+    ("tmp-pytest/env-61/../../lepton/trunk", "hors des bornes"),
+    ("tmp-pytest/lien-lepton/trunk", "hors des bornes"),
+    ("tmp-pytestx", "hors des bornes"),
+]
+
+
+@pytest.mark.parametrize("rel,raison", REFUSES_TMP)
+def test_rejet_sous_tmp(home: Path, rel: str, raison: str) -> None:
+    r = lancer(home, f"{home}/{rel}")
+    assert r.returncode == 2, r.stdout
+    assert raison in r.stderr
+    assert "rien n'a été supprimé" in r.stderr
+    assert (home / "tmp-pytest" / "env-61" / "sous" / "f").exists()
+    assert (home / "tmp-tests" / "a").is_dir()
+    assert (home / "tmp-pytestx").is_dir()
+    assert (home / "lepton" / "trunk" / "sys" / "f").exists()
+
+
+def test_descendant_tmp_absent_refuse(home: Path) -> None:
+    r = lancer(home, str(home / "tmp-pytest" / "absent"))
+    assert r.returncode == 2
+    assert "rien n'a été supprimé" in r.stderr
+
+
+def test_racine_tmp_en_lien_descendant_refuse(home: Path) -> None:
+    """~/tmp-pytest lien vers ~/lepton : ses descendants se résolvent hors des bornes."""
+    t = home / "tmp-pytest"
+    t.rename(home / "tmp-pytest-ancien")
+    t.symlink_to(home / "lepton")
+    r = lancer(home, str(t / "trunk"))
+    assert r.returncode == 2
+    assert "hors des bornes" in r.stderr
+    assert (home / "lepton" / "trunk" / "sys" / "f").exists()
+
+
+def test_tout_ou_rien_sous_tmp(home: Path) -> None:
+    bon = home / "tmp-pytest" / "env-61"
+    r = lancer(home, str(bon), str(home / "tmp-pytestx"))
+    assert r.returncode == 2
+    assert bon.is_dir()
 
 
 REFUSES = [

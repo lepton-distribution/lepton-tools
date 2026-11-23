@@ -10,7 +10,9 @@
 #     d'un trunk/ et d'un depots/tiers/ ;
 #   - <rootstock>/build/<preset>, où <rootstock> (signature scion présente) est ~/lepton ou un
 #     descendant d'essais/ (références comprises) ;
-#   - ~/env-<N>-journaux, ~/tmp-pytest, ~/tmp-tests.
+#   - ~/env-<N>-journaux ;
+#   - ~/tmp-pytest et ~/tmp-tests, entiers ou l'un de leurs descendants (ENV-67, D38 (2), PA-121 :
+#     basetemp de pytest d'une validation précédente, ~/tmp-pytest/env-<N>).
 # Toute autre cible est refusée, de même qu'une cible absente. Tout ou rien : si une cible est
 # refusée, rien n'est supprimé.
 # Codes de retour : 0 supprimé (ou accepté avec -n), 1 usage, 2 refus.
@@ -116,7 +118,7 @@ juger() {
         n1="${c#"$H"/env-}"; n1="${n1%-journaux}"
         case "$n1" in "" | *[!0-9]*) echo "hors des bornes : $c"; return 2 ;; esac
         ;;
-      "$H/tmp-pytest" | "$H/tmp-tests") ;;
+      "$H/tmp-pytest" | "$H/tmp-tests" | "$H"/tmp-pytest/?* | "$H"/tmp-tests/?*) ;;
       *) echo "hors des bornes : $c"; return 2 ;;
     esac
   fi

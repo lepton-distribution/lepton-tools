@@ -102,7 +102,9 @@ Règles des consignes VM (décision PA-31 d'ENV-22, 2026-11-02 ; leçons de R15-
     reste exigé : la confirmation ne remplace pas l'accord donné au point d'arrêt.
   - Suppressions : `scripts/supprimer-essai.sh <cible>…` (règle `allow`) ; il n'accepte que les
     descendants d'`essais/` hors références, `<rootstock>/build/<preset>`, `~/env-<N>-journaux`,
-    `~/tmp-pytest`, `~/tmp-tests`, tout ou rien. `rm -rf` direct reste jugé par le classifieur.
+    `~/tmp-pytest`, `~/tmp-tests` et leurs descendants (ENV-67, D38 (2), PA-121 :
+    `~/tmp-pytest/env-<N>` d'une validation précédente), tout ou rien. `rm -rf` direct reste jugé
+    par le classifieur.
   - `pipx install --force ~/lepton-tools-dev/lepton-tools`, `git clone file://…` et
     `git clone https://github.com/lepton-distribution/…` (URL en premier argument), pytest par
     `~/lepton-tools-dev/venv-lepton-tools/bin/pytest` ou `~/lepton-tools-dev/venv-test/bin/pytest` :
