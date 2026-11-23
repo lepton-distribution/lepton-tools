@@ -1,0 +1,3 @@
+lepton: erreur: graine refusée :
+  /mklepton_xml: valeur "~/<hP>/t/n1-t/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml" non conforme au motif ^\.?[A-Za-z0-9_+@-][A-Za-z0-9_.+@-]*(/\.?[A-Za-z0-9_+@-][A-Za-z0-9_.+@-]*)*$
+  → corriger NAME, --bsp, --backend ou --mkconf (chemin relatif au trunk)

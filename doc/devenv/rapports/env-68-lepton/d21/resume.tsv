@@ -1,0 +1,48 @@
+cas	chemin	forme	code	cwd/~*	cible	C	message
+p1-t	-C	t	0	non	-	=	5 fichier(s) conforme(s).
+p1-u	-C	u	0	non	-	=	5 fichier(s) conforme(s).
+p1-x	-C	x	1	non	-	=	lepton: erreur: -C « ~inconnu63/<hC> » : répertoire personnel de « ~inconnu63 » introuvable
+p1-a	-C	a	0	non	-	=	5 fichier(s) conforme(s).
+p1-d	-C	d	0	non	-	=	5 fichier(s) conforme(s).
+p1-r	-C	r	0	non	-	=	5 fichier(s) conforme(s).
+p1-z	-C	z	0	non	-	=	5 fichier(s) conforme(s).
+p2-t	seed new -C	t	0	non	créée	=	scion: rootstock installé dans <T>/n2-t (trunk : trunk)
+p2-u	seed new -C	u	0	non	créée	=	scion: rootstock installé dans <T>/n2-u (trunk : trunk)
+p2-x	seed new -C	x	1	non	absente	=	lepton: erreur: -C « ~inconnu63/<hT>/n2-x » : répertoire personnel de « ~inconnu63 » introuvable
+p2-a	seed new -C	a	0	non	créée	=	scion: rootstock installé dans <T>/n2-a (trunk : trunk)
+p2-d	seed new -C	d	0	non	créée	=	scion: rootstock installé dans <T>/n2-d (trunk : trunk)
+p2-r	seed new -C	r	0	non	créée	=	scion: rootstock installé dans <T>/n2-r (trunk : trunk)
+p3-t	--seed-repo	t	0	non	créée	=	scion: rootstock installé dans <T>/n3-t (trunk : trunk)
+p3-u	--seed-repo	u	0	non	créée	=	scion: rootstock installé dans <T>/n3-u (trunk : trunk)
+p3-x	--seed-repo	x	1	non	absente	=	lepton: erreur: --seed-repo « ~inconnu63/<hT>/g3-x » : répertoire personnel de « ~inconnu63 » introuvable
+p3-a	--seed-repo	a	0	non	créée	=	scion: rootstock installé dans <T>/n3-a (trunk : trunk)
+p3-d	--seed-repo	d	0	non	créée	=	scion: rootstock installé dans <T>/n3-d (trunk : trunk)
+p3-r	--seed-repo	r	0	non	créée	=	scion: rootstock installé dans <T>/n3-r (trunk : trunk)
+p4-t	scion new --repo	t	0	non	créée	=	dépôt créé : <T>/r4-t (lib/env63t)
+p4-u	scion new --repo	u	0	non	créée	=	dépôt créé : <T>/r4-u (lib/env63u)
+p4-x	scion new --repo	x	1	non	absente	=	lepton: erreur: --repo « ~inconnu63/<hT>/r4-x » : répertoire personnel de « ~inconnu63 » introuvable
+p4-a	scion new --repo	a	0	non	créée	=	dépôt créé : <T>/r4-a (lib/env63a)
+p4-d	scion new --repo	d	0	non	créée	=	dépôt créé : <T>/r4-d (lib/env63d)
+p4-r	scion new --repo	r	0	non	créée	=	dépôt créé : <T>/r4-r (lib/env63r)
+p4-z	scion new --repo	z	0	non	créée	=	dépôt créé : <T>/r4-z (lib/env63z)
+p5-t	_locate (file owner)	t	0	non	-	=	{
+p5-u	_locate (file owner)	u	0	non	-	=	{
+p5-x	_locate (file owner)	x	1	non	-	=	lepton: erreur: chemin « ~inconnu63/<hC>/trunk/CMakeLists.txt » : répertoire personnel de « ~inconnu63 » introuvable
+p5-a	_locate (file owner)	a	0	non	-	=	{
+p5-d	_locate (file owner)	d	0	non	-	=	{
+p5-r	_locate (file owner)	r	0	non	-	=	{
+p5add-t	_locate (file add)	t	0	non	créée	liens ≠ départ clones ≠ départ 	créé dans lepton-noyau : <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-nouveau.c
+p5dir-t	_locate (dir add)	t	0	non	créée	liens ≠ départ clones ≠ départ 	créé dans lepton-noyau : <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-rep/ (.gitkeep)
+p5add-u	annulation (file remove)	-	0	non	absente	liens ≠ départ clones ≠ départ 	retiré de lepton-noyau : <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-nouveau.c
+p5dir-u	annulation (dir remove)	-	0	non	absente	=	retiré de lepton-noyau : <C>/depots/lepton/original/master/scion/sys/root/src/lib/env63-rep/
+p5graft-t	_locate (graft --path)	t	0	non	-	=	regreffe de lepton-noyau faite
+p6-t	generate --clangd	t	0	non	-	=	lepton: attention: <C>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans 
+p6-u	generate --clangd	u	0	non	-	=	lepton: attention: <C>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans 
+p6-x	generate --clangd	x	1	non	-	=	lepton: erreur: --clangd « ~inconnu63/<hW>/outils/clangd » : répertoire personnel de « ~inconnu63 » introuvable
+p6-a	generate --clangd	a	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans
+p6-d	generate --clangd	d	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans
+p6-r	generate --clangd	r	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans
+p6-n	generate --clangd	nom	0	non	-	=	lepton: attention: <G>/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans
+c1-t	check FILE	t	0	non	-	=	1 fichier(s) conforme(s).
+c1-a	check FILE	a	0	non	-	=	1 fichier(s) conforme(s).
+m1-t	seed mkconf import	t	1	non	-	=	lepton: erreur: XML de la graine déjà fourni par le greffon du projet (sys/user/env11/etc/mkconf_env11.xml)

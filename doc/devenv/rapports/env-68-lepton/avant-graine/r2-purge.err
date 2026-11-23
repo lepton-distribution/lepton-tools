@@ -1,0 +1,4 @@
+scion: scion lepton/library-env68lib retiré de <P>/r2/rs/depots/lepton-seed/env11/scion/.scion
+lepton: erreur: échec de « scion graft-remove lepton@library-env68lib --purge » (code 1) :
+erreur : <P>/r2/rs/depots/lepton/library-env68lib/master contient des commits absents de l'amont ; --purge refusé
+  → corriger la cause signalée par scion, puis relancer

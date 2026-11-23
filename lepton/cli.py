@@ -31,7 +31,7 @@ from pathlib import Path
 
 from lepton import __version__, checks, configs, files, generate, scion_runner, scions, seed, tree
 from lepton.errors import EXIT_INTERRUPT, EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
-from lepton.rootstock import Rootstock
+from lepton.rootstock import Rootstock, expand_user
 from lepton.scion_runner import scion_status_line
 from lepton.validation import validate_file
 
@@ -76,7 +76,7 @@ def cmd_check(args) -> int:
     if not args.files:
         checked, anomalies = checks.check_rootstock(Rootstock.discover(args.rootstock), _warn, _note)
     for name in args.files:
-        path = Path(name)
+        path = expand_user(name, "FILE")    # D29 (PA-123) : `~` reçu sans shell
         try:
             found = validate_file(path, text)
         except LeptonError as e:
@@ -125,7 +125,8 @@ def _add_seed_parser(sub, common) -> None:
     p.add_argument("name", metavar="NAME", help="nom du projet")
     p.add_argument("--bsp", required=True, metavar="BSP", help="greffon BSP de la carte")
     p.add_argument("--mkconf", required=True, metavar="PATH",
-                   help="XML mklepton de référence, chemin relatif au trunk, copié dans la graine (O5)")
+                   help="XML mklepton de référence, chemin relatif au trunk (ou absolu sous le trunk de -C), "
+                        "copié dans la graine (O5)")
     p.add_argument("--backend", default="embos", choices=["embos", "freertos"], help="backend (défaut : embos)")
     p.add_argument("--seed-repo", metavar="DIR", help="dépôt git de la graine (défaut : depots/lepton-seed/NAME)")
     p.add_argument("--origin", action="append", metavar="SCION=LOCATION[@VERSION][:PATH]",

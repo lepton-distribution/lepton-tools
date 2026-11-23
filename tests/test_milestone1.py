@@ -13,6 +13,8 @@ from lepton import __version__
 from lepton.cli import main
 from lepton.validation import SCHEMA_FILES, schemas_dir
 
+from conftest import D21_FORMS, D21_UNKNOWN
+
 REPO = Path(__file__).resolve().parent.parent
 EXAMPLES = REPO / "schemas" / "exemples"
 VALID = sorted(EXAMPLES.glob("*.json")) + sorted(EXAMPLES.glob("*.xml"))
@@ -140,3 +142,22 @@ def test_usage_error_exit_1(argv, capsys):
         code = exc.code
     assert code == 1
     assert capsys.readouterr().err
+
+
+# --- D29 (ENV-68, PA-123) : `check FILE` reçu sans shell ---------------------------------------------
+@pytest.mark.parametrize("form", D21_FORMS)
+def test_d29_check_file_tilde(tilde, form, capsys):
+    """`~/…` et `~<utilisateur>/…` développés (avant : « fichier introuvable ») ; relatif (au
+    répertoire courant) et absolu inchangés ; aucun `<cwd>/~…`."""
+    f = tilde.home / "m" / "lepton-greffon.json"
+    f.parent.mkdir()
+    shutil.copyfile(EXAMPLES / "greffon-bibliotheque.json", f)
+    assert main(["check", tilde.prefix(form) + "m/lepton-greffon.json"]) == 0, capsys.readouterr()
+    assert "1 fichier(s) conforme(s)." in capsys.readouterr().out
+    tilde.no_tilde()
+
+
+def test_d29_check_file_unknown_user(tilde, capsys):
+    assert main(["check", f"~{D21_UNKNOWN}/lepton-greffon.json"]) == 1
+    assert (f"FILE « ~{D21_UNKNOWN}/lepton-greffon.json » : répertoire personnel de « ~{D21_UNKNOWN} » "
+            "introuvable") in capsys.readouterr().err

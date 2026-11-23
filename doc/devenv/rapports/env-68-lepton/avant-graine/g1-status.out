@@ -1,0 +1,141 @@
+{
+  "rootstock": "<P>/g1/rs",
+  "trunk": "<P>/g1/rs/trunk",
+  "seed": {
+    "path": "<P>/g1/rs/depots/lepton-seed/env11",
+    "manifest": "<P>/g1/rs/depots/lepton-seed/env11/scion/.scion/lepton-graine.json",
+    "branch": "main",
+    "commit": "124db52",
+    "dirty": 3,
+    "dirty_files": [
+      "scion/.scion/.scion.ramifications",
+      "scion/.scion/.scion.sources.list",
+      "scion/.scion/lepton-graine.json"
+    ],
+    "ahead": null,
+    "behind": null
+  },
+  "scions": [
+    {
+      "name": "building",
+      "role": "sans manifeste",
+      "key": "lepton@building",
+      "version": "*",
+      "location": "depots/generation/building",
+      "path": "<P>/g1/rs/depots/generation/building",
+      "stem": "<P>/g1/rs/depots/generation/building/scion",
+      "in_seed": true,
+      "branch": null,
+      "commit": null,
+      "dirty": null,
+      "dirty_files": [],
+      "ahead": null,
+      "behind": null
+    },
+    {
+      "name": "lepton-noyau",
+      "role": "noyau",
+      "key": "lepton@original::tree",
+      "version": "master",
+      "location": "https://github.com/lepton-distribution/lepton-original-tree.scions.git",
+      "path": "<P>/g1/rs/depots/lepton/original/master",
+      "stem": "<P>/g1/rs/depots/lepton/original/master/scion",
+      "in_seed": true,
+      "branch": "master",
+      "commit": "2b4a647",
+      "dirty": 0,
+      "dirty_files": [],
+      "ahead": 0,
+      "behind": 0
+    },
+    {
+      "name": "qemu-mps2",
+      "role": "famille",
+      "key": "lepton@family-qemu-mps2",
+      "version": "master",
+      "location": "https://github.com/lepton-distribution/lepton-famille-qemu-mps2.git",
+      "path": "<P>/g1/rs/depots/lepton/family-qemu-mps2/master",
+      "stem": "<P>/g1/rs/depots/lepton/family-qemu-mps2/master/scion",
+      "in_seed": true,
+      "branch": "master",
+      "commit": "3954357",
+      "dirty": 0,
+      "dirty_files": [],
+      "ahead": 0,
+      "behind": 0
+    },
+    {
+      "name": "qemu-mps2-an386",
+      "role": "bsp",
+      "key": "lepton@bsp-qemu-mps2-an386",
+      "version": "master",
+      "location": "https://github.com/lepton-distribution/lepton-bsp-qemu-mps2-an386.git",
+      "path": "<P>/g1/rs/depots/lepton/bsp-qemu-mps2-an386/master",
+      "stem": "<P>/g1/rs/depots/lepton/bsp-qemu-mps2-an386/master/scion",
+      "in_seed": true,
+      "branch": "master",
+      "commit": "10a8889",
+      "dirty": 0,
+      "dirty_files": [],
+      "ahead": 0,
+      "behind": 0
+    },
+    {
+      "name": "project-env11",
+      "role": "projet",
+      "key": "lepton@project-env11",
+      "version": "*",
+      "location": "depots/lepton-seed/env11",
+      "path": "<P>/g1/rs/depots/lepton-seed/env11/project",
+      "stem": "<P>/g1/rs/depots/lepton-seed/env11/project/scion",
+      "in_seed": true,
+      "branch": "main",
+      "commit": "124db52",
+      "dirty": 0,
+      "dirty_files": [],
+      "ahead": null,
+      "behind": null
+    },
+    {
+      "name": "library-env68lib",
+      "role": "sans manifeste",
+      "key": "lepton@library-env68lib",
+      "version": "master",
+      "location": "file://localhost<P>/d68",
+      "path": "<P>/g1/rs/depots/lepton/library-env68lib/master",
+      "stem": "<P>/g1/rs/depots/lepton/library-env68lib/master/scion",
+      "in_seed": true,
+      "branch": null,
+      "commit": null,
+      "dirty": null,
+      "dirty_files": [],
+      "ahead": null,
+      "behind": null
+    }
+  ],
+  "configurations": [
+    {
+      "name": "debug-qemu",
+      "build_type": "Debug",
+      "run": "qemu",
+      "preset": "env11-debug-qemu"
+    },
+    {
+      "name": "release-qemu",
+      "build_type": "Release",
+      "run": "qemu",
+      "preset": "env11-release-qemu"
+    }
+  ],
+  "missing": [
+    "env68lib"
+  ],
+  "trunk_check": {
+    "regular_files": [],
+    "broken_links": [
+      "<P>/g1/rs/trunk/sys/root/src/lib/env68lib/env68lib.c",
+      "<P>/g1/rs/trunk/sys/root/src/lib/env68lib/env68lib.h",
+      "<P>/g1/rs/trunk/sys/root/src/lib/env68lib/lepton-greffon.json"
+    ]
+  }
+}

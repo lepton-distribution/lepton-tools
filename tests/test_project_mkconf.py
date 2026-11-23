@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import MKCONF, PROJECT_XML, assert_trunk_clean, url
+from conftest import D21_UNKNOWN, MKCONF, PROJECT_XML, assert_trunk_clean, url
 from lepton import mkconf
 from lepton.cli import main
 from lepton.errors import LeptonError
@@ -227,3 +227,66 @@ def test_mkconf_import_chemin_absolu(project, capsys):
     assert _graine(project)["mklepton_xml"] == PROJECT_XML
     assert f"copie de {MKCONF}" in capsys.readouterr().out
     assert_trunk_clean(project)
+
+
+# --- D29 (ENV-68, PA-123) : chemins du XML reçus sans shell ------------------------------------------
+@pytest.mark.parametrize("form", ["~", "~utilisateur", "absolu"])
+def test_d29_mkconf_import_tilde(project, tilde, form, capsys):
+    """`~/…` sous le trunk : développé, puis ramené au trunk comme un absolu (avant : « absent du trunk
+    greffé ») ; absolu inchangé ; aucun `<cwd>/~…`."""
+    _unmigrate(project)
+    assert main(["seed", "mkconf", "import", tilde.prefix(form) + f"project/trunk/{MKCONF}",
+                 "-C", str(project)]) == 0, capsys.readouterr().err
+    assert _graine(project)["mklepton_xml"] == PROJECT_XML
+    assert f"copie de {MKCONF}" in capsys.readouterr().out
+    assert_trunk_clean(project)
+    tilde.no_tilde()
+
+
+def test_d29_mkconf_import_tilde_refus(project, tilde, capsys):
+    """`~/…` hors du trunk (clone) : refusé comme l'absolu ; `~<sans compte>` : message ; relatif :
+    relatif au trunk (inchangé). Graine inchangée."""
+    _unmigrate(project)
+    before = _graine_path(project).read_text(encoding="utf-8")
+    clone = (project / "trunk" / MKCONF).resolve().relative_to(tilde.home)
+    assert main(["seed", "mkconf", "import", f"~/{clone}", "-C", str(project)]) == 1
+    assert "hors du trunk" in capsys.readouterr().err
+    assert main(["seed", "mkconf", "import", f"~{D21_UNKNOWN}/x.xml", "-C", str(project)]) == 1
+    assert f"« ~{D21_UNKNOWN}/x.xml » : répertoire personnel de « ~{D21_UNKNOWN} » introuvable" in capsys.readouterr().err
+    assert main(["seed", "mkconf", "import", f"../project/trunk/{MKCONF}", "-C", str(project)]) == 1
+    assert "absent du trunk greffé" in capsys.readouterr().err
+    assert _graine_path(project).read_text(encoding="utf-8") == before
+    tilde.no_tilde()
+
+
+def _new(root, repos, mkconf):
+    return main(["seed", "new", "demo", "-C", str(root), "--bsp", "board-q", "--mkconf", mkconf,
+                 "--origin", f"lepton-noyau={url(repos['kernel'])}@master",
+                 "--origin", f"fam-test={repos['family']}", "--origin", f"board-q={repos['bsp']}"])
+
+
+@pytest.mark.parametrize("form", ["~", "~utilisateur", "absolu"])
+def test_d29_seed_new_mkconf_tilde(repos, tilde, form, capsys):
+    """`--mkconf` `~/…` ou absolu sous le trunk du rootstock créé (`-C`) : développé, ramené au trunk
+    (avant : « graine refusée », motif du schéma) ; aucun `<cwd>/~…`."""
+    root = tilde.home / "new"
+    assert _new(root, repos, tilde.prefix(form) + f"new/trunk/{MKCONF}") == 0, capsys.readouterr().err
+    assert _graine(root)["mklepton_xml"] == PROJECT_XML
+    assert f"copie de {MKCONF}" in capsys.readouterr().out
+    tilde.no_tilde()
+
+
+@pytest.mark.parametrize("mkconf, message", [
+    ("~/ailleurs/mkconf_x.xml", "hors du trunk"),
+    ("/ailleurs/mkconf_x.xml", "hors du trunk"),
+    (f"~{D21_UNKNOWN}/x.xml", "répertoire personnel"),
+])
+def test_d29_seed_new_mkconf_refus(repos, tilde, mkconf, message, capsys):
+    """Hors du trunk du rootstock créé : refusé avant toute action, par un message (et non le motif
+    du schéma) ; rien n'est créé."""
+    root = tilde.home / "new"
+    assert _new(root, repos, mkconf) == 1
+    err = capsys.readouterr().err
+    assert message in err and "motif" not in err
+    assert not root.exists()
+    tilde.no_tilde()

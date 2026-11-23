@@ -1,0 +1,32 @@
+cas	chemin	forme	code	cwd/~*	R	message
+c1-t	check FILE	t	0	non	=	1 fichier(s) conforme(s).
+c1-u	check FILE	u	0	non	=	1 fichier(s) conforme(s).
+c1-x	check FILE	x	1	non	=	lepton: erreur: FILE « ~inconnu68/<hC>/depots/lepton-seed/env11/scion/.scion/lepton-graine.json » : répertoire personnel de « ~inco
+c1-a	check FILE	a	0	non	=	1 fichier(s) conforme(s).
+c1-d	check FILE	d	0	non	=	1 fichier(s) conforme(s).
+c1-r	check FILE	r	0	non	=	1 fichier(s) conforme(s).
+c2-t	check FILE (trunk)	t	0	non	=	1 fichier(s) conforme(s).
+c2-a	check FILE (trunk)	a	0	non	=	1 fichier(s) conforme(s).
+c2-r	check FILE (trunk)	r	0	non	=	1 fichier(s) conforme(s).
+m1-t	seed mkconf import	t	0	non	liens≠ graine≠ 	XML du projet : sys/user/env11/etc/mkconf_env11.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+m1-u	seed mkconf import	u	0	non	liens≠ graine≠ 	XML du projet : sys/user/env11/etc/mkconf_env11.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+m1-x	seed mkconf import	x	1	non	=	lepton: erreur: XML « ~inconnu68/<hP>/m1-x/rs/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml » : répertoire pers
+m1-a	seed mkconf import	a	0	non	liens≠ graine≠ 	XML du projet : sys/user/env11/etc/mkconf_env11.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+m1-d	seed mkconf import	d	0	non	liens≠ graine≠ 	XML du projet : sys/user/env11/etc/mkconf_env11.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+m1-r	seed mkconf import	r	0	non	liens≠ graine≠ 	XML du projet : sys/user/env11/etc/mkconf_env11.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+m1-rc	seed mkconf import	rc	1	non	=	lepton: erreur: XML « mkconf_tauon_basic_qemu_mps2.xml » absent du trunk greffé
+m1-h	seed mkconf import	h	1	non	=	lepton: erreur: XML « <P>/m1-h/rs/depots/lepton/original/master/scion/sys/user/tauon-basic/etc/mkconf_tauon_bas
+m1-th	seed mkconf import	th	1	non	=	lepton: erreur: XML « <P>/m1-th/rs/depots/lepton/original/master/scion/sys/user/tauon-basic/etc/mkconf_tauon_ba
+n1-t	seed new --mkconf	t	0	non	-	XML du projet : sys/user/env68/etc/mkconf_env68.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+n1-u	seed new --mkconf	u	0	non	-	XML du projet : sys/user/env68/etc/mkconf_env68.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+n1-x	seed new --mkconf	x	1	non	-	lepton: erreur: --mkconf « ~inconnu68/<hP>/t/n1-x/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml » : répertoire 
+n1-a	seed new --mkconf	a	0	non	-	XML du projet : sys/user/env68/etc/mkconf_env68.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+n1-d	seed new --mkconf	d	0	non	-	XML du projet : sys/user/env68/etc/mkconf_env68.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+n1-r	seed new --mkconf	r	0	non	-	XML du projet : sys/user/env68/etc/mkconf_env68.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+p6-a	generate --clangd	a	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans base 
+p6-t	generate --clangd	t	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans base 
+p6-n	generate --clangd	nom	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans base 
+p6-r	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans base 
+p6-rs	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans base 
+p6-rw	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans base 
+p6-rd	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans base 
