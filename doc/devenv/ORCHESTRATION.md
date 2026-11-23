@@ -176,6 +176,15 @@ Règles des consignes VM (décision PA-31 d'ENV-22, 2026-11-02 ; leçons de R15-
     de la VM) puis relance la session ; jamais par une affectation en tête d'une commande.
   - `LANG` et `LC_ALL` : relevées sans arrêt.
   - Toute variable à défaut lue par un script d'une consigne s'ajoute à cette liste.
+- **Contrôle Mac d'une consigne** (D38 (3), PA-121 d'ENV-67, 2026-11-23 ; constat de R66-1, C4
+  et C5, `rapports/env-67-consignes.md` §3) :
+  - le contrôle de correction rejoué au Mac se fait sur une copie d'origine distincte de celle de
+    l'attendu : autre racine (sans `.DS_Store`), sa propre graine (autre commit, presets
+    différents), clones sans fichiers ignorés propres au Mac ;
+  - un rejeu sur la même origine ne prouve que le déterminisme de l'outil ;
+  - la consigne liste en plus, avec leur cause, les classes d'écart que le Mac ne peut simuler
+    (shell, nom de clangd, langue de git hors table, segment d'hôte) ;
+  - un écart hors de cette liste est un défaut de la consigne.
 - **Branche des clones d'un rootstock existant** (P-1 d'ENV-28, E-1 de `rapports/env-28-debian.md`,
   décision du 2026-11-02 ; allégée au PA-45 d'ENV-29, 2026-11-03) : avant tout `graft-update` ou
   toute lecture d'un rootstock existant, les vérifications préalables de la consigne relèvent la
