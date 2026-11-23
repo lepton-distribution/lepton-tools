@@ -206,3 +206,17 @@ version y ferait échouer C3 d'ENV-72 si le refus est retenu.
    k07 et f05 de la VM devraient égaler le Mac en ENV-72.
 9. **ENV-72** (à porter dans sa consigne) : relever la branche de
    `depots/lepton-seed.scions/original-tree` de chaque rootstock de la VM avant C3.
+
+## 4. Décisions du PA-127 (2026-11-23, utilisateur)
+
+Les propositions du §3 sont retenues telles quelles :
+1. D35 : première ligne non vide dont le préfixe est `fatal:` ou `error:` (anglais, ou
+   `fatal⍽: `, `erreur⍽: `), sinon première ligne non vide ; une ligne ; toutes les commandes de
+   `_run`.
+2. D33 : refus au texte de `version_fault(…, declared="demandée")`, code 1, rien modifié ;
+   contrôle dans `seed_updates` avant les autres contrôles de la graine.
+3. Graines couvertes : dépôt = `depots/<base de l'URL origin>/<version>` (barre admise), branche
+   ou tag ; non couvertes : graines par chemin, graines sans `origin`.
+4. Documentation, version 0.6.3.4, `SCION_MIN_VERSION` inchangé, `SCION_REF` 0.6.3.4
+   (lepton-tools, clone noyau), aucun code de lepton, relevé de la graine dans la consigne
+   d'ENV-72.
