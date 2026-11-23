@@ -1,0 +1,73 @@
+(extrait collé par l'utilisateur ; <ENV> = /Users/cle_d_anton/lepton-tools-dev/lepton-tools/doc/devenv/rapports/env-69-extension/lepton-horodate.sh, <E> = /Users/cle_d_anton/lepton-tools-dev/essais/env-69-essai)
+Observation de 5 greffon(s) et du trunk <E>/trunk
+
+$ <ENV> seed status --json    (<E>)
+→ code 0
+
+Observation de 6 greffon(s) et du trunk <E>/trunk
+
+$ <ENV> seed status --json    (<E>)
+→ code 1
+
+--- début de cas.sh
+$ <ENV> file owner <E>/trunk/sys/root/src/lib/env69lib --json    (<E>)
+→ code 0
+
+$ <ENV> seed status --json    (<E>)
+→ code 0
+
+Observation de 5 greffon(s) et du trunk <E>/trunk
+
+$ <ENV> graft --path <E>/depots/lepton/bsp-qemu-mps2-an386/master/scion/sys/root/src/kernel/dev/bsp/qemu-mps2-an386/env69_temoin.h    (<E>)
+scion: greffe : 7 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+scion: greffe partielle : 9 feuilles liées dans <E>/trunk
+regreffe de qemu-mps2-an386 faite
+→ code 0
+
+$ <ENV> graft --path <E>/depots/lepton/bsp-qemu-mps2-an386/master/scion/sys/root/src/kernel/dev/bsp/qemu-mps2-an386/env69_temoin.h    (<E>)
+scion: greffe : 7 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+scion: greffe partielle : 8 feuilles liées dans <E>/trunk
+regreffe de qemu-mps2-an386 faite
+→ code 0
+
+$ <ENV> seed status --json    (<E>)
+→ code 0
+
+Observation de 6 greffon(s) et du trunk <E>/trunk
+
+$ <ENV> file owner <E>/trunk/sys/root/src/lib/env69lib/env69lib.c --json    (<E>)
+→ code 0
+
+$ <ENV> file owner <E>/trunk/sys/root/src/lib/env69lib/env69lib.h --json    (<E>)
+→ code 0
+
+$ <ENV> file owner <E>/trunk/sys/root/src/lib/env69lib/lepton-greffon.json --json    (<E>)
+→ code 0
+
+$ <ENV> seed status --json    (<E>)
+→ code 0
+
+$ <ENV> file owner <E>/trunk/sys/root/src/lib/env69lib --json    (<E>)
+→ code 0
+
+$ <ENV> seed status --json    (<E>)
+→ code 0
+
+$ <ENV> seed status --json    (<E>)
+→ code 0
+
+$ <ENV> seed status --json    (<E>)
+→ code 0
+
+$ <ENV> seed status --json    (<E>)
+→ code 1
+
+$ <ENV> seed status --json    (<E>)
+→ code 1
+
+Observation de 5 greffon(s) et du trunk <E>/trunk
+
+$ <ENV> seed status --json    (<E>)
+→ code 0
+
+Observation de 6 greffon(s) et du trunk <E>/trunk

@@ -1,0 +1,25 @@
+(collé par l'utilisateur ; <ENV> = <LEPTON_TOOLS>/doc/devenv/rapports/env-69-extension/lepton-horodate.sh, <E> = /Users/cle_d_anton/lepton-tools-dev/essais/env-69-essai)
+$ <ENV> seed status --json    (<E>)
+→ code 0
+
+$ <ENV> seed remove env69lib --purge    (<E>)
+scion: scion lepton/library-env69lib retiré : 3 feuilles
+scion: clone <E>/depots/lepton/library-env69lib/master supprimé
+scion: scion lepton/library-env69lib retiré de <E>/depots/lepton-seed/env11/scion/.scion
+env69lib retiré (lepton@library-env69lib)
+graine modifiée, non commitée : git -C <E>/depots/lepton-seed/env11 commit -am "…"
+→ code 0
+
+$ <ENV> seed status --json    (<E>)
+→ code 0
+
+$ <ENV> seed status --json    (<E>)
+Observation de 5 greffon(s) et du trunk <E>/trunk
+
+→ code 0
+
+$ <ENV> seed status --json    (<E>)
+→ code 0
+
+$ <ENV> seed status --json    (<E>)
+→ code 0

@@ -84,3 +84,69 @@ Conséquences :
 | Cas couverts | `seed add`, `seed remove` (avec ou sans `--purge`), `seed replace`, `scion graft-remove`, `scion graft` d'un greffon ajouté à la liste, tous au terminal ; `seed replace` sans effet sur la liste observée (stems inchangés) |
 | Tests | Logique de l'éditeur (observateur, `Batcher` déjà testé par `node:test`) : essai VSCodium seul, appels relevés par l'enveloppe ; aucun nouveau test `node:test` |
 | Version | 0.5.4 (décision du 2026-11-23) |
+
+Décisions de l'utilisateur (PA-125, 2026-11-23) : propositions retenues telles quelles ; variante
+(a) du regroupement ; essai VSCodium seul.
+
+## 3. Correction
+
+| Commit | Contenu |
+| --- | --- |
+| 5cf4c45 | `watch.ts` : observateur de `<trunk>/.scion.grafted.list` (création, modification, suppression) créé à chaque reconstruction par `refresh()` ; événements regroupés par un `Batcher` (`listChanges`, 1000 ms) qui relance `refresh()` ; `status.trunk` ajouté à la signature (observateur présent même si seule la regreffe automatique est active) ; `onDidRunCommand` et `onDidChangeConfiguration` inchangés. PA-125 consigné |
+| 3e91c82 | Version 0.5.4 : `package.json`, `package-lock.json`, `extension/README.md`, `README.md` ; `dist/lepton-0.5.4.vsix` remplace `lepton-0.5.3.vsix` |
+
+- `npm test` : 29 verts (aucun test ajouté, PA-125 (4)). `npm run package` : 19 fichiers, 38,21 Ko.
+- Installé au Mac : `codium --install-extension extension/dist/lepton-0.5.4.vsix --force`,
+  `lepton-distribution.lepton@0.5.4`, actif après rechargement de la fenêtre.
+
+## 4. Contrôles (0.5.4, VSCodium, `essais/env-69-essai`)
+
+Copie remise au départ avant les contrôles : `seed remove env69lib` (déclaré sans clone, forme
+D37 d'ENV-68), répertoire vide (D42) supprimé : 3059 liens, 0 cassé, graine propre.
+
+### 4.1 T3
+Relevés : `env-69-extension/t3-apres/`.
+- Rechargement : « Observation de 5 greffon(s) ».
+- `seed add` au terminal : un `seed status --json` 1,7 s après, puis « Observation de 6
+  greffon(s) » au canal, sans commande de l'extension.
+- Suppression du clone par `supprimer-essai.sh` : un `seed status --json` (code 1, liens cassés)
+  1,1 s après ; **une seule notification**, « Clone de library-env69lib supprimé hors de lepton :
+  ses liens du trunk sont cassés (lepton seed status) » (constat de l'utilisateur). 3062 liens,
+  3 cassés. **T3 probant.**
+
+### 4.2 Cas couverts et regreffe ordinaire (terminal)
+Outil `env-69-extension/cas.sh` (pause de 4 s entre les étapes) ; relevés `env-69-extension/cas/`.
+Aucune notification (constat de l'utilisateur).
+
+| Opération au terminal | Appels de l'extension | Observés (canal) |
+| --- | --- | --- |
+| `seed remove` (déclaré sans clone, après T3) | 1 × `file owner` (L3-4, répertoire du trunk), 1 × `seed status` | 6 → 5 |
+| témoin créé puis supprimé dans le clone BSP | `graft --path`, code 0, deux fois | inchangés |
+| `seed add` | 1 × `seed status` | 5 → 6 |
+| `seed replace` → depot2 | 3 × `file owner` (L3-4, liens retirés par la dégreffe), 2 × `seed status` | inchangés (pas de ligne) |
+| `seed replace` → depot | 2 × `seed status` | inchangés |
+| `scion graft-remove --purge` | 2 × `seed status` (code 1 : greffon déclaré non greffé) | 6 → 5 |
+| `seed remove` (déclaré, non greffé) | aucun (liste greffée inchangée) | — |
+| `seed add` | 1 × `seed status` | 5 → 6 |
+
+- Les `file owner` de L3-4 après une dégreffe faite au terminal existaient sur 0.5.3 (`recentlyBusy`
+  ne voit que les lepton de l'extension) ; aucun n'aboutit à une question (`unlinked` non rendu).
+- Au plus 2 `seed status` par opération ; aucune rafale, aucune boucle.
+
+### 4.3 U4 : retrait `--purge` depuis l'extension (D24)
+Relevés : `env-69-extension/u4/`.
+- Une seule notification, « lepton : retirer env69lib — terminé » ; aucun `graft --path`, aucun
+  avertissement « regreffe automatique » (constat de l'utilisateur).
+- Après la commande : 4 × `seed status --json` en file (≈ 1 s chacun, code 0), puis « Observation
+  de 5 greffon(s) ». En ENV-64 (0.5.3, `env-64-extension/appels-apres.tsv` l. 88-93) : 2. L'un
+  des deux de plus est celui de l'observateur de la liste (variante (a) du PA-125). L'autre n'est
+  pas attribué par le journal : contrôle des racines de F2 (`clonesChanged`), dont l'ordre par
+  rapport au `refresh` varie d'un essai à l'autre (`rapports/env-64-extension.md` §5.3).
+- État : 3059 liens, 0 cassé, 0 régulier, `check` conforme, clone absent.
+
+## 5. PA-126 — questions
+- Rapport accepté (T3 probant, D24 et regreffe ordinaire inchangés, au plus 4 `seed status` en
+  file après une commande de l'extension) ?
+- Sort d'`essais/env-69-essai`, `env-69-mesures`, `env-69-depot`, `env-69-depot2`,
+  `env-69-releves` : suppression par `scripts/supprimer-essai.sh` (proposé).
+- Fusion `--no-ff` de `devenv/env-69` dans `main` et push de `main` et de la branche (PA-P).

@@ -1,0 +1,1 @@
+Notification relevée par l’utilisateur (U4, palette « retirer un greffon de la graine », --purge, extension 0.5.4) : une seule, « lepton : retirer env69lib — terminé ». Aucun avertissement « regreffe automatique ».

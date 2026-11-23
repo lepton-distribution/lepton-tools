@@ -1,0 +1,2 @@
+Notifications relevées par l’utilisateur (T3 après correction, extension 0.5.4) : une seule,
+« Clone de library-env69lib supprimé hors de lepton : ses liens du trunk sont cassés (lepton seed status) ».
