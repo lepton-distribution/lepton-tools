@@ -710,11 +710,14 @@ def seed_remove(args, command: str = "seed remove") -> int:
         raise LeptonError(f"« {name} » est la famille du BSP {graine['bsp']}", "changer de BSP avant de la retirer")
 
     unprovided = removal_unprovided(rs, graine, key)    # avant retrait : fichiers encore greffés
-    if key in {s.key for s in rs.sources()}:
+    declared = key in {s.key for s in rs.sources()}
+    # D32 (PA-123 d'ENV-68) : trunk d'abord ; scion contrôle le clone avant tout changement, un
+    # `--purge` refusé laisse donc graine et trunk intacts
+    scion_on_trunk(rs, "graft-remove", key, *(["--purge"] if args.purge else []))
+    if declared:
         scion("seed-scion-remove", "--seed", str(seed_root), key, cwd=rs.path)
     else:
         _warn(f"{key} greffé hors de la graine : retiré du trunk seulement")
-    scion_on_trunk(rs, "graft-remove", key, *(["--purge"] if args.purge else []))
 
     application = name in graine.get("applications", [])
     for field in ("applications", "bibliotheques"):

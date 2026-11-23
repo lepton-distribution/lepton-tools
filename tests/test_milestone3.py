@@ -442,3 +442,45 @@ def test_d21_seed_new_unknown_user(repos, tilde, capsys, option):
     assert f"{option} « ~{D21_UNKNOWN}/x » : répertoire personnel de « ~{D21_UNKNOWN} » introuvable" in capsys.readouterr().err
     assert not (tilde.home / "new").exists() and not (tilde.home / "graine").exists()
     tilde.no_tilde()
+
+
+# --- D32 (ENV-68, PA-123) : seed remove --purge refusé par scion ------------------------------------
+def _state(root: Path) -> dict:
+    """Graine (fichiers de `.scion/`), liste greffée et liens du trunk : état comparé avant / après."""
+    dot = Rootstock(root).seed_dot()
+    links = {str(p.relative_to(root)): os.readlink(p) for p in (root / "trunk").rglob("*") if p.is_symlink()}
+    return {"seed": {p.name: p.read_bytes() for p in sorted(dot.iterdir()) if p.is_file()},
+            "grafted": (root / "trunk/.scion.grafted.list").read_bytes(), "links": links}
+
+
+@pytest.mark.parametrize("cause, origin, message", [
+    ("modifié", "url", "modifications non commitées"),
+    ("commit local", "url", "commits absents de l'amont"),
+    ("origine locale", "local", "n'a pas été cloné par scion"),
+])
+def test_d32_seed_remove_purge_refuse_laisse_la_graine(project, repos, capsys, cause, origin, message):
+    """`--purge` refusé par scion : graine, lepton-graine.json, liste greffée et trunk inchangés (avant :
+    greffon retiré de .scion.sources.list et .scion.ramifications, gardé ailleurs) ; relance après
+    correction : retrait complet."""
+    location = url(repos["lib"]) if origin == "url" else str(repos["lib"])
+    assert main(["seed", "add", "my-lib", location, "--type", "bibliotheque", "-C", str(project),
+                 "--no-cmake"]) == 0
+    clone = project / "depots/lepton/library-my-lib/master"
+    if cause == "modifié":
+        (clone / "non-suivi.txt").write_text("x\n")
+    elif cause == "commit local":
+        subprocess.run(["git", "-C", str(clone), "commit", "-q", "--allow-empty", "-m", "local"], check=True)
+    before = _state(project)
+    capsys.readouterr()
+    assert main(["seed", "remove", "my-lib", "--purge", "--no-cmake", "-C", str(project)]) != 0
+    assert message in capsys.readouterr().err
+    assert _state(project) == before
+    assert _graine(project)["bibliotheques"] == ["my-lib"]
+    assert_trunk_clean(project)
+    if cause == "modifié":
+        (clone / "non-suivi.txt").unlink()
+        assert main(["seed", "remove", "my-lib", "--purge", "--no-cmake", "-C", str(project)]) == 0
+        assert "hors de la graine" not in capsys.readouterr().err
+        assert not clone.exists() and _graine(project)["bibliotheques"] == []
+        assert scion_key("bibliotheque", "my-lib") not in {s.key for s in Rootstock(project).sources()}
+        assert_trunk_clean(project)
