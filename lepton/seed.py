@@ -17,9 +17,9 @@ from urllib.parse import urlparse
 from lepton import __version__, cmake, mkconf
 from lepton.checks import removal_unprovided
 from lepton.errors import EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
-from lepton.rootstock import (KERNEL_KEY, PROJECT_SUBPATH, SOURCES_LIST, STEM_DIR, Manifest, Rootstock,
-                              TrunkReport, expand_user, find_manifest, is_system_file, project_key, read_sources,
-                              scion_key)
+from lepton.rootstock import (KERNEL_KEY, KEY_PREFIX, PROJECT_SUBPATH, SHELF, SOURCES_LIST, STEM_DIR, Manifest,
+                              Rootstock, TrunkReport, expand_user, find_manifest, is_system_file, project_key,
+                              read_sources, scion_key)
 from lepton.scion_runner import git, run, scion
 from lepton.templates import c_identifier, render_text, render_tree, templates_dir
 from lepton.validation import SEED_MANIFEST, validate_data, validate_xml
@@ -695,10 +695,31 @@ def _undo_add(rs: Rootstock, seed_root: Path, key: str) -> None:
         _warn(f"annulation incomplète de {key} : {e.message}")
 
 
+def declared_without_clone(rs: Rootstock, name: str) -> tuple[str, str] | None:
+    """D37 (PA-123 d'ENV-68) : greffon déclaré dans la graine sans manifeste lisible (clone absent),
+    désigné par son nom dans la graine (`my-lib`) ou par le suffixe de sa clé (`library-my-lib`,
+    nom de `seed status`) ; rend (clé, nom). Seules les clés des types de lepton (famille, BSP,
+    application, bibliothèque) : ni le greffon du projet, ni la graine de référence."""
+    declared = {s.key for s in rs.sources()} - set(rs.manifests())
+    found = set()
+    for kind, prefix in KEY_PREFIX.items():
+        if scion_key(kind, name) in declared:
+            found.add((scion_key(kind, name), name))
+        if name.startswith(f"{prefix}-") and f"{SHELF}@{name}" in declared:
+            found.add((f"{SHELF}@{name}", name[len(prefix) + 1:]))
+    if len(found) > 1:
+        raise LeptonError(f"« {name} » désigne plusieurs greffons sans clone : "
+                          f"{', '.join(sorted(k for k, _ in found))}", "le désigner par le suffixe de sa clé")
+    return found.pop() if found else None
+
+
 def seed_remove(args, command: str = "seed remove") -> int:
     rs, seed_root, graine_path, graine = _seed_context(args, command)
     name = args.scion
     key = rs.key_of(name)
+    without_clone = key is None and declared_without_clone(rs, name)
+    if without_clone:
+        key, name = without_clone
     if key is None:
         raise LeptonError(f"greffon « {name} » non greffé", "lepton seed status")
     if name == graine["noyau"] or name == graine["bsp"]:
@@ -711,9 +732,14 @@ def seed_remove(args, command: str = "seed remove") -> int:
 
     unprovided = removal_unprovided(rs, graine, key)    # avant retrait : fichiers encore greffés
     declared = key in {s.key for s in rs.sources()}
+    if without_clone:
+        _warn(f"{name} ({key}) : clone absent, déclaration retirée de la graine"
+              + (" ; --purge sans objet" if args.purge else ""))
     # D32 (PA-123 d'ENV-68) : trunk d'abord ; scion contrôle le clone avant tout changement, un
-    # `--purge` refusé laisse donc graine et trunk intacts
-    scion_on_trunk(rs, "graft-remove", key, *(["--purge"] if args.purge else []))
+    # `--purge` refusé laisse donc graine et trunk intacts. Sans clone (D37) : `graft-remove` sans
+    # `--purge` retire l'entrée de la liste greffée et les liens cassés.
+    if not without_clone or key in {e.key for e in rs.grafted()}:
+        scion_on_trunk(rs, "graft-remove", key, *(["--purge"] if args.purge and not without_clone else []))
     if declared:
         scion("seed-scion-remove", "--seed", str(seed_root), key, cwd=rs.path)
     else:
@@ -740,6 +766,9 @@ def seed_replace(args) -> int:
     rs, seed_root, _, _ = _seed_context(args, "seed replace")
     name = args.scion
     key = rs.key_of(name)
+    if key is None and (without_clone := declared_without_clone(rs, name)):
+        raise LeptonError(f"greffon « {name} » ({without_clone[0]}) : clone absent, remplacement impossible",
+                          f"lepton seed remove {without_clone[1]}, puis lepton seed add {without_clone[1]} LOCATION")
     old = {s.key: s for s in rs.sources()}.get(key) if key else None
     if old is None:
         raise LeptonError(f"greffon « {name} » absent de la graine ou non greffé", "lepton seed status")

@@ -4,6 +4,7 @@ import json
 import os
 import pwd
 import re
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -484,3 +485,76 @@ def test_d32_seed_remove_purge_refuse_laisse_la_graine(project, repos, capsys, c
         assert not clone.exists() and _graine(project)["bibliotheques"] == []
         assert scion_key("bibliotheque", "my-lib") not in {s.key for s in Rootstock(project).sources()}
         assert_trunk_clean(project)
+
+
+# --- D37 (ENV-68, PA-123) : greffon déclaré dont le clone a disparu ---------------------------------
+def _sans_clone(project: Path, repos, name: str = "my-lib", kind: str = "bibliotheque") -> Path:
+    repo = repos["lib"] if kind == "bibliotheque" else repos["app"]
+    assert main(["seed", "add", name, url(repo), "--type", kind, "-C", str(project), "--no-cmake"]) == 0
+    prefix = "library" if kind == "bibliotheque" else "application"
+    clone = project / f"depots/lepton/{prefix}-{name}/master"
+    shutil.rmtree(clone)
+    return clone
+
+
+@pytest.mark.parametrize("given", ["my-lib", "library-my-lib"])
+def test_d37_seed_remove_sans_clone(project, repos, capsys, given):
+    """Nom de la graine ou suffixe de clé (nom de seed status et de l'extension) : déclaration, ligne
+    de lepton-graine.json, entrée de la liste greffée et liens cassés retirés (avant : « non
+    greffé ») ; le greffon se réajoute ensuite."""
+    key = scion_key("bibliotheque", "my-lib")
+    _sans_clone(project, repos)
+    assert _by_name(_status(project, capsys)[1])["library-my-lib"]["role"] == "sans manifeste"
+    assert main(["seed", "remove", given, "--no-cmake", "-C", str(project)]) == 0, capsys.readouterr().err
+    assert "clone absent" in capsys.readouterr().err
+    assert _graine(project)["bibliotheques"] == []
+    assert key not in {s.key for s in Rootstock(project).sources()}
+    assert key not in {e.key for e in Rootstock(project).grafted()}
+    assert_trunk_clean(project)
+    assert main(["seed", "add", "my-lib", url(repos["lib"]), "--type", "bibliotheque", "-C", str(project),
+                 "--no-cmake"]) == 0
+    assert _graine(project)["bibliotheques"] == ["my-lib"]
+    assert_trunk_clean(project)
+
+
+def test_d37_seed_remove_sans_clone_purge_et_application(project, repos, capsys):
+    """Application sans clone, `--purge` : sans objet (signalé), retrait complet, `<bin>` retiré du XML."""
+    _sans_clone(project, repos, "my-app", "application")
+    assert '<bin name="my_app"' in (project / "trunk" / PROJECT_XML).read_text()
+    capsys.readouterr()
+    assert main(["seed", "remove", "my-app", "--purge", "--no-cmake", "-C", str(project)]) == 0
+    err = capsys.readouterr().err
+    assert "clone absent" in err and "--purge sans objet" in err
+    assert _graine(project)["applications"] == []
+    assert '<bin name="my_app"' not in (project / "trunk" / PROJECT_XML).read_text()
+    assert_trunk_clean(project)
+
+
+def test_d37_seed_remove_sans_clone_deja_degreffe(project, repos, capsys):
+    """Entrée déjà retirée de la liste greffée (`scion graft-remove`) : seule la déclaration reste."""
+    _sans_clone(project, repos)
+    subprocess.run(["scion", "graft-remove", scion_key("bibliotheque", "my-lib")], cwd=project, check=True,
+                   capture_output=True)
+    assert main(["seed", "remove", "my-lib", "--no-cmake", "-C", str(project)]) == 0
+    assert scion_key("bibliotheque", "my-lib") not in {s.key for s in Rootstock(project).sources()}
+    assert _graine(project)["bibliotheques"] == []
+    assert_trunk_clean(project)
+
+
+def test_d37_seed_replace_sans_clone_refuse(project, repos, capsys):
+    """seed replace sans clone : refus qui renvoie à seed remove puis seed add ; rien ne change."""
+    _sans_clone(project, repos)
+    before = _state(project)
+    capsys.readouterr()
+    assert main(["seed", "replace", "library-my-lib", url(repos["lib"]), "--no-cmake", "-C", str(project)]) == 1
+    err = capsys.readouterr().err
+    assert "clone absent" in err and "lepton seed remove my-lib" in err and "lepton seed add" in err
+    assert _state(project) == before
+
+
+def test_d37_greffon_du_projet_non_retire(project, capsys):
+    """Le greffon local du projet (sans manifeste) n'est pas admis comme greffon sans clone."""
+    before = _state(project)
+    assert main(["seed", "remove", "project-demo", "--no-cmake", "-C", str(project)]) == 1
+    assert "non greffé" in capsys.readouterr().err
+    assert _state(project) == before
