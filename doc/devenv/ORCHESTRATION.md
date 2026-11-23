@@ -166,6 +166,16 @@ Règles des consignes VM (décision PA-31 d'ENV-22, 2026-11-02 ; leçons de R15-
     consigne ;
   - outil commun : `scripts/comparer-releves.py` (traductions de git, segment d'hôte ; tests
     `tests/test_comparer_releves.py`), plutôt qu'un filtre écrit dans la consigne.
+- **Variables d'environnement** (D38 (1), PA-121 d'ENV-67, 2026-11-23 ; constat de R66-1,
+  `rapports/env-67-consignes.md` §1) : une variable lue avec un défaut silencieux n'est jamais
+  supposée héritée du terminal.
+  - Le §5 de chaque consigne VM relève `LEPTON_EMBOS_ROOT` (et `Start/Inc/RTOS.h` sous elle),
+    `SCION_REF`, `SCION_SPEC`, `LEPTON_CLONE`, `XDG_CONFIG_HOME`, `NM`, `SIZE`, chacune avec sa
+    valeur attendue (vide ou chemin).
+  - Absente ou différente : arrêt, `AVANCEMENT` avec la valeur lue. L'utilisateur la pose (profil
+    de la VM) puis relance la session ; jamais par une affectation en tête d'une commande.
+  - `LANG` et `LC_ALL` : relevées sans arrêt.
+  - Toute variable à défaut lue par un script d'une consigne s'ajoute à cette liste.
 - **Branche des clones d'un rootstock existant** (P-1 d'ENV-28, E-1 de `rapports/env-28-debian.md`,
   décision du 2026-11-02 ; allégée au PA-45 d'ENV-29, 2026-11-03) : avant tout `graft-update` ou
   toute lecture d'un rootstock existant, les vérifications préalables de la consigne relèvent la
