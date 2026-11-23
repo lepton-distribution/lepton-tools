@@ -5,7 +5,7 @@ Outillage de l'environnement de développement Lepton : outil en ligne de comman
 script d'installation de VSCodium.
 
 État : outil `lepton` 0.1.0 (ENV-8 à ENV-16 ; interface : `doc/devenv/rapports/env-8-interface.md`) ;
-extension Lepton 0.5.3 (`extension/`). Voir `doc/devenv/`.
+extension Lepton 0.5.4 (`extension/`). Voir `doc/devenv/`.
 
 Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée par pipx ; scion ≥ 0.6.2.0
 requis, projection des dépôts tiers ; `scripts/install-vscodium.sh` installe 0.6.3.3, extraction partielle des clones projetés, aucun répertoire laissé par un clonage en échec, aucun clone gardé ni repris hors de sa version, cause de l'échec de git dans le message). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`, puis
