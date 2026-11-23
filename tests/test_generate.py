@@ -633,10 +633,9 @@ def test_config_refus(project, capsys, argv, message):
 # --- D21 (ENV-63, PA-113) : --clangd reçu sans shell -----------------------------------------------
 @pytest.mark.parametrize("form", D21_FORMS)
 def test_d21_find_clangd_tilde(tools, tilde, form):
-    """`--clangd ~/…` : `~` développé, puis traitement inchangé (avant : « introuvable ») ; relatif et
-    absolu inchangés (un relatif reste relatif : D30, hors de D21)."""
-    found = gen.find_clangd(tilde.prefix(form) + "tools/clangd-19")
-    assert found == (str(tools / "clangd-19") if form != "relatif" else "../tools/clangd-19")
+    """`--clangd ~/…` : `~` développé, puis traitement inchangé (avant : « introuvable ») ; absolu
+    inchangé ; relatif rendu absolu depuis le répertoire courant (D30, ENV-68)."""
+    assert gen.find_clangd(tilde.prefix(form) + "tools/clangd-19") == str(tools / "clangd-19")
 
 
 def test_d21_find_clangd_name_and_unknown_user(tools, tilde):
@@ -644,3 +643,22 @@ def test_d21_find_clangd_name_and_unknown_user(tools, tilde):
     assert gen.find_clangd("clangd-19") == str(tools / "clangd-19")
     with pytest.raises(gen.LeptonError, match=f"--clangd « ~{D21_UNKNOWN}/clangd » : répertoire personnel de « ~{D21_UNKNOWN} » introuvable"):
         gen.find_clangd(f"~{D21_UNKNOWN}/clangd")
+
+
+# --- D30 (ENV-68, PA-123) : --clangd relatif ----------------------------------------------------------
+@pytest.mark.parametrize("given", ["./clangd-19", "../clangd-19", "sub/../clangd-19"])
+def test_d30_find_clangd_relative_made_absolute(tools, monkeypatch, given):
+    """Chemin relatif (avec `/`) : rendu absolu depuis le répertoire courant de generate (avant :
+    écrit tel quel dans clangd.path, faux hors de la racine du rootstock)."""
+    (tools / "sub").mkdir()
+    monkeypatch.chdir(tools if not given.startswith("../") else tools / "sub")
+    assert gen.find_clangd(given) == str(tools / "clangd-19")
+
+
+def test_d30_generate_clangd_relative(project, tools, tmp_path, monkeypatch):
+    """`generate -C <rootstock> --clangd <relatif>` lancé hors du rootstock : clangd.path absolu."""
+    cwd = tmp_path / "ailleurs"
+    cwd.mkdir()
+    monkeypatch.chdir(cwd)
+    assert main(["generate", "-C", str(project), "--clangd", "../tools/clangd-19"]) == 0
+    assert _workspace(project)["settings"]["clangd.path"] == str(tools / "clangd-19")

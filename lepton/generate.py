@@ -116,6 +116,8 @@ def find_clangd(explicit: str | None) -> str | None:
     if explicit:
         if explicit.startswith("~"):   # D21 : chemin développé ; nom sans `/` cherché dans le PATH
             explicit = str(expand_user(explicit, "--clangd"))
+        if "/" in explicit:            # D30 (PA-123) : relatif rendu absolu depuis le répertoire courant
+            explicit = os.path.abspath(explicit)
         path = shutil.which(explicit) or (explicit if Path(explicit).is_file() else None)
         if path is None:
             raise LeptonError(f"--clangd « {explicit} » introuvable", "donner le chemin d'un exécutable clangd")

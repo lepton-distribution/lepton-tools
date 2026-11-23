@@ -6,6 +6,7 @@ graine, et les fichiers du greffon local du projet (`project/scion/` : XML mklep
 """
 
 import json
+import os
 import re
 import shutil
 import sys
@@ -262,7 +263,9 @@ def _validate_project_xml(xml: Path, label: str) -> None:
 def import_mkconf(rs: Rootstock, seed_root: Path, project: str, reference: str) -> str:
     """O5 : copie du XML de référence `reference` (relatif au trunk) et de ses `<file src_file>` dans
     le greffon projet, `src_file` réécrits ; greffe ; rend le chemin du XML du projet (trunk).
-    Chemin absolu admis sous le trunk (désigné dans l'explorateur, F7 d'ENV-12), ramené au trunk."""
+    Chemin absolu admis sous le trunk (désigné dans l'explorateur, F7 d'ENV-12), ramené au trunk ;
+    `~` développé d'abord (D29, PA-123 d'ENV-68), puis même règle."""
+    reference = str(expand_user(reference, "XML"))
     if Path(reference).is_absolute():
         try:
             reference = str(Path(reference).relative_to(rs.trunk))
@@ -341,8 +344,28 @@ def seed_mkconf_import(args) -> int:
 # --------------------------------------------------------------------------
 # seed new (GRA-1, GRA-2, GRA-3)
 # --------------------------------------------------------------------------
+def _new_mkconf(text: str, rootstock: str | None) -> str:
+    """`seed new --mkconf` (D29, PA-123 d'ENV-68) : `~` développé ; un absolu sous le trunk du
+    rootstock à créer (`-C`) est ramené à ce trunk, avant le contrôle du schéma ; hors de ce trunk,
+    refus. Un relatif est rendu tel quel (relatif au trunk)."""
+    path = expand_user(text, "--mkconf")
+    if not path.is_absolute():
+        return text
+    root = expand_user(rootstock or ".", "-C")
+    path = Path(os.path.normpath(path))
+    for trunk in (Path(os.path.abspath(root)) / "trunk", root.resolve() / "trunk"):
+        try:
+            return path.relative_to(trunk).as_posix()
+        except ValueError:
+            pass
+    raise LeptonError(f"--mkconf « {text} » hors du trunk {root.resolve() / 'trunk'} du rootstock à créer",
+                      "chemin relatif au trunk attendu (XML fourni par un greffon, ex. "
+                      "sys/user/<application>/etc/mkconf_<…>.xml)")
+
+
 def seed_new(args) -> int:
     name, bsp_name = args.name, args.bsp
+    args.mkconf = _new_mkconf(args.mkconf, args.rootstock)
     for label, value in (("NAME", name), ("--bsp", bsp_name)):
         if not _IDENT.match(value):
             raise LeptonError(f"{label} « {value} » invalide", "minuscules, chiffres, « . », « _ », « - »")
