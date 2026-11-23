@@ -132,6 +132,25 @@ Constats :
 - l'extension propose `library-env68lib` (`pickScion`, `commands.ts:72-80` : `label` = `name` de
   `seed status`), qui est le suffixe de la clé.
 
-## 2. Questions du PA-123
+## 2. PA-123 (2026-11-23) — décisions de l'utilisateur
 
-Voir la présentation en session ; les réponses sont consignées au §3 après décision.
+- **D29** : `expand_user` (forme d'ENV-63) pour les 3 chemins.
+  - `mkconf import` : le chemin développé suit la règle « absolu sous le trunk → ramené au trunk,
+    sinon refus ».
+  - `seed new --mkconf` : `~` et l'absolu sont développés, puis ramenés au futur `<-C>/trunk`
+    avant le contrôle du schéma. Hors de ce trunk : refus par un message clair (« relatif au
+    trunk attendu »), au lieu du motif.
+- **D30** : un `--clangd` relatif qui contient un `/` est rendu absolu depuis le répertoire
+  courant. Un nom sans `/` reste cherché dans le PATH.
+- **D32** : ordre inversé dans `seed remove`, `graft-remove` d'abord, puis `seed-scion-remove`.
+  `seed replace` est inchangé.
+- **D37** : `seed remove` admet un greffon déclaré sans clone.
+  - Noms acceptés : le nom de la graine et le suffixe de clé.
+  - Opérations : `scion graft-remove` sans `--purge` (`--purge` sans objet, signalé), puis
+    `seed-scion-remove`, puis retrait de la ligne de `lepton-graine.json`.
+  - Le message de `seed add` est inchangé.
+  - `seed replace` est refusé : « clone absent : lepton seed remove, puis lepton seed add ».
+  - L'extension est inchangée.
+- **Tests, `README.md`** : proposition de la session, sans objection de l'utilisateur.
+  - Tests pytest dans les fichiers existants, avec les formes `D21_FORMS`.
+  - `README.md` inchangé, sauf la phrase d'usage de `seed new --mkconf`.
