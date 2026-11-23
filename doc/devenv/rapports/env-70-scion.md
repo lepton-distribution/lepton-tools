@@ -220,3 +220,81 @@ Les propositions du §3 sont retenues telles quelles :
 4. Documentation, version 0.6.3.4, `SCION_MIN_VERSION` inchangé, `SCION_REF` 0.6.3.4
    (lepton-tools, clone noyau), aucun code de lepton, relevé de la graine dans la consigne
    d'ENV-72.
+
+## 5. Implémentation (seed.scions, `devenv/env-70`)
+
+| Commit | Contenu |
+| --- | --- |
+| a0521d9 | Tests d'abord. `tests/test_seed_version.py`, 11 tests (D33) : graine hors de sa branche refusée par `seed-update`, puis par `graft-update` (tête, liste greffée, liens inchangés, aucun clone), graine détachée, graine à tag mise sur une branche, version à barre ; témoins : avance sur sa branche (`seed-update`, `graft-update`), graine au tag laissée, graine par chemin, graine sous `depots/` posée à la main, graine sans `origin`. `tests/test_git_messages.py`, 7 tests (D35) : avertissement avant la cause (anglais, français), astuces avant la cause, ligne `error:`/`erreur⍽: `, première cause gardée, repli sans ligne de cause, une seule ligne. Sur 0.6.3.3 : 9 échecs, tous de la forme attendue ; 9 réussites, les témoins (`env-70-scion/tests-avant-correction.txt`) |
+| d987923 | D35. `gitops.cause` : première ligne `fatal: `/`error: `/`fatal⍽: `/`erreur⍽: ` (`CAUSE_PREFIXES`), sinon première ligne non vide ; `_run` s'en sert ; docstrings de `_run` et `clone` |
+| a598cd8 | D33. `gitops.origin_url` ; `graft.seed_clone_name` (repris par `cli._clone_seed`) ; `graft.cloned_seed_version` (dépôt = `depots/<base de l'URL origin>/<version>`) ; `seed_updates` contrôle la graine par `version_fault(…, declared="demandée")` avant les autres contrôles, code 1, et laisse une graine à tag sans l'avancer. Test ajouté : graine à tag sur une branche encore au commit du tag, que `version_fault` accepte et que 0.6.3.3 avançait (échec vérifié sans la correction) |
+| 473b653 | 0.6.3.4 : `scion/__init__.py`, `tests/test_cli.py`, `CHANGELOG.md` (« Corrections » : graine hors version, cause après un avertissement ; cas inchangés), `README.md` (paragraphe des seeds clonés, phrase du message de git) |
+
+Écart à la décision du PA-127, introduit à l'implémentation : une graine clonée à un tag est
+vérifiée, mais jamais avancée. C'est la règle des clones (« un tag est vérifié, jamais tiré »,
+`README.md`). Sans elle, une graine à tag remise sur une branche encore au commit du tag passe
+le contrôle, puis est avancée au-delà du tag. À confirmer au PA-128.
+
+Contrôles :
+- tests de scion : **359** (340 + 19), tous verts, plus 1 sauté (`test_network`) ;
+  `env-70-scion/tests-apres-correction.txt` : les 19 nouveaux et les tests du module, verts ;
+- NF-2 : `git diff 0.6.3.3 -- scion tests | grep -ci '^+.*lepton'` → **0** ;
+- `git diff --stat 0.6.3.3 0.6.3.4` : 9 fichiers, +360 −26 ;
+- aucun test existant inversé.
+
+## 6. Essai avec la branche (venv `essais/env-70-venv`, scion 0.6.3.4)
+
+Venv installé par `pip install "git+file://<SEED_SCIONS>@devenv/env-70"` ; `scion version`
+donne 0.6.3.4. `rejouer.sh <venv>/bin/scion apres` : 4 fixtures, code 0.
+
+- **Fixture 70** (`fixture70-apres/` contre `fixture70-avant/`) :
+
+  | Cas | Avant | Après |
+  | --- | --- | --- |
+  | g04, g06 | **0**, `master` avancé, `own/plain/master` cloné, liste réécrite (g06 : greffé) | **1**, `graine hors de la version demandée, non mise à jour (rien n'a été modifié) : … branche « master », version demandée « autre » ; git -C … switch autre` ; graine, `depots/`, liste greffée et trunk = état d'avant la commande |
+  | g11 | **0**, `autre` avancé au-delà de `t1` | **1**, `version demandée : tag « t1 » ; … switch --detach t1` |
+  | g13 | **0**, graine détachée lue | **1**, `HEAD détaché sur <graine:master++>, version demandée « autre »` |
+  | g21 | **0**, `f/x` lue sur `master` | **1**, `version demandée « f/x » ; … switch f/x` |
+  | k01, k02 | `… : warning: Could not find remote branch nope to clone.` | `… : fatal: Remote branch nope not found in upstream origin` |
+
+  Identiques à l'avant, tous fichiers compris : g01-g03, g05, g07-g10, g12, g14-g20 (témoins),
+  k03.
+- **Fixtures d'ENV-65 et d'ENV-60** : identiques à l'avant, tous fichiers compris.
+- **Fixture d'ENV-56** : seuls `f12a.depots` et `f12b.depots` diffèrent. Ces fichiers listent les
+  ancêtres du miroir sous `depots/.mirrors/localhost<HOME>/…`, et le nom de la base y paraît
+  (`…/avant/…` au lieu de `…/apres/…`). C'est le chemin, pas scion.
+- **Français** : le git du Mac n'est pas traduit. Le cas se prouve par
+  `test_translated_warning_before_the_cause_is_skipped`, dont le texte vient de `po/fr.po`
+  v2.47.3, U+00A0 compris : la cause paraît. La preuve avec git 2.47.3 se fera sur la VM, en
+  ENV-72 (k07, f05).
+- `git-echecs-apres.tsv` : les appels git et leur stderr sont les mêmes qu'avant. Un appel en
+  échec de moins (49 au lieu de 50), parce que les refus de D33 arrêtent la commande avant.
+
+## 7. Version, lepton, noyau
+
+- Tag annoté local `0.6.3.4` sur 473b653. `pipx install --force
+  "git+file://<SEED_SCIONS>@0.6.3.4"` : `scion version` donne 0.6.3.4, et les 10 modules
+  installés sont identiques au tag.
+- lepton-tools 4e9e7ce : `SCION_REF="0.6.3.4"` (`install-vscodium.sh`), `README.md`, note de
+  `lepton/__init__.py`. `SCION_MIN_VERSION` inchangé, (0, 6, 2, 0).
+- Clone noyau, branche `devenv/env-70` (depuis `master` 2b4a647), e9b52e4 :
+  `install-macos.sh`, `install-debian.sh` (2 lignes), `README.md`, `README-PAQUET.md`,
+  `doc/BUILDING.md`, soit 6 lignes, comme en ENV-65. Écrit dans le clone, jamais par le trunk ;
+  après l'écriture, le trunk n'a ni fichier régulier ni lien cassé.
+- pytest de lepton-tools (venv `~/lepton-tools-dev/venv-lepton-tools`, scion 0.6.3.4 du PATH) :
+  **616 passed**, dont `test_echec_de_scion_sans_double_affichage`.
+- Le clone noyau est sur `devenv/env-70` jusqu'à sa fusion dans `master` : un `graft-update` de
+  `<ROOTSTOCK>` le refuserait d'ici là (`rapports/env-29-scion.md` §4). Aucun n'est prévu.
+
+## 8. Binaires
+
+Pas d'oracle :
+- la correction ne touche que le contrôle d'une graine clonée par `seed-update` et
+  `graft-update` (refus) et le texte des messages d'échec de git ;
+- une graine à sa version avance comme avant. Les témoins g02, g08, g15, g17 et g19 donnent des
+  graines, des clones et des liens identiques à 0.6.3.3 ;
+- les graines distantes du Mac sont à leur version (§2.3). `<ROOTSTOCK>` n'est pas regreffé, et
+  ses clones ne sont touchés que par 6 lignes de documentation et de scripts d'installation du
+  clone noyau, hors de toute construction ;
+- l'arbre composé ne change donc pas, et aucune reconstruction n'est nécessaire (forme
+  d'`env-56-scion.md` §6).

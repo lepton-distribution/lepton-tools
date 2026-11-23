@@ -1,0 +1,14 @@
+depots/graine/f/x
+  branche : f/x
+  HEAD = refs/heads/f/x refs/remotes/origin/autre refs/remotes/origin/f/x
+  branches locales : f/x
+  fichiers suivis : 7
+  fichiers extraits : g01.txt g08.txt g11.txt g15.txt g17.txt scion/.scion/.scion.ramifications scion/.scion/.scion.sources.list
+  git status : (propre)
+depots/own/plain/dev
+  branche : dev
+  HEAD = refs/heads/dev refs/remotes/origin/dev
+  branches locales : dev
+  fichiers suivis : 1
+  fichiers extraits : scion/f.txt
+  git status : (propre)

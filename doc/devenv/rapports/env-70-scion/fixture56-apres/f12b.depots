@@ -1,0 +1,13 @@
+depots/.mirrors
+depots/.mirrors/localhost
+depots/.mirrors/localhost<HOME/..>
+depots/.mirrors/localhost<HOME>
+depots/.mirrors/localhost<HOME>/lepton-tools-dev
+depots/.mirrors/localhost<HOME>/lepton-tools-dev/essais
+depots/.mirrors/localhost<HOME>/lepton-tools-dev/essais/env-70-fixture
+depots/.mirrors/localhost<HOME>/lepton-tools-dev/essais/env-70-fixture/apres
+depots/.mirrors/localhost<HOME>/lepton-tools-dev/essais/env-70-fixture/apres/fixture56
+depots/.mirrors/localhost<B>
+depots/.mirrors/localhost<B>/repos
+depots/.mirrors/localhost<B>/repos/miroirs
+depots/.mirrors/localhost<B>/repos/miroirs/present.git

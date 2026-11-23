@@ -1,0 +1,2 @@
+erreur : 1 clone(s) à remettre à leur version déclarée avant la mise à jour (trunk et clones inchangés) :
+  <B>/c03/rootstock/depots/own/plain/v1 : branche « master », version déclarée : tag « v1 » ; git -C <B>/c03/rootstock/depots/own/plain/v1 switch --detach v1
