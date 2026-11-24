@@ -1,0 +1,27 @@
+# Envoi lancé par l'utilisateur (`! LC_ALL=C scion mirror-sync -v /Users/cle_d_anton/lepton`), 2026-11-24.
+# Extrait recopié de la sortie affichée dans la conversation (commandes git de configuration et lignes « identique » omises) ; stderr vide.
+git push --porcelain https://github.com/lepton-distribution/mirror-cmsis_device_f4.git refs/amont/heads/master:refs/heads/master refs/amont/tags/v2.6.12:refs/tags/v2.6.12
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : branche « master » envoyée (avance rapide 9192c7b -> 8c79dcf)
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : tag « v2.6.12 » envoyé (nouveau)
+git push --porcelain https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git refs/amont/heads/main:refs/heads/main refs/amont/tags/v1.7.0:refs/tags/v1.7.0
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : branche « main » envoyée (avance rapide 5c87cf0 -> e388844)
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : tag « v1.7.0 » envoyé (nouveau)
+git push --porcelain https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git refs/amont/heads/main:refs/heads/main refs/amont/tags/v1.5.2:refs/tags/v1.5.2
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : branche « main » envoyée (avance rapide 7dc059f -> 47c14de)
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : tag « v1.5.2 » envoyé (nouveau)
+git push --porcelain https://github.com/lepton-distribution/mirror-STM32CubeWL.git refs/amont/heads/main:refs/heads/main
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : branche « main » envoyée (avance rapide f934cd2 -> 2259ce0)
+git push --porcelain https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git refs/amont/heads/master:refs/heads/master refs/amont/tags/v1.3.4:refs/tags/v1.3.4
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : branche « master » envoyée (avance rapide e860c4f -> e879045)
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : tag « v1.3.4 » envoyé (nouveau)
+git push --porcelain https://github.com/lepton-distribution/mirror-cmsis_device_f7.git refs/amont/heads/master:refs/heads/master refs/amont/tags/v1.2.11:refs/tags/v1.2.11
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : branche « master » envoyée (avance rapide 2352e88 -> 52e4aad)
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : tag « v1.2.11 » envoyé (nouveau)
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : 0 référence(s) envoyée(s), 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : 2 référence(s) envoyée(s), 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : 2 référence(s) envoyée(s), 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-cmsis-device-wl.git : 0 référence(s) envoyée(s), 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : 2 référence(s) envoyée(s), 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : 1 référence(s) envoyée(s), 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : 2 référence(s) envoyée(s), 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : 2 référence(s) envoyée(s), 0 signalement(s)

@@ -1,0 +1,25 @@
+== cmsis_device_f4 master 9192c7b9df75a142f2027ab266601fe061fc00b3...8c79dcf2f1d866d139a5d66240083ae6194b6dd1
+status=ahead ahead=1 behind=0
+8c79dcf 2026-11-18T12:28:13Z Release v2.6.12
+== stm32f7xx-hal-driver master e860c4ff226d0e4ac2837b31960649898b29ee88...e87904585ac637409e7697a1992d3ff7a7c13586
+status=ahead ahead=1 behind=0
+e879045 2026-11-19T13:33:57Z Release v1.3.4
+== cmsis_device_f7 master 2352e888e821aa0f4fe549bd5ea81d29c67a3222...52e4aad017cd5daa760cb5803f96dfa77a0d6d85
+status=ahead ahead=1 behind=0
+52e4aad 2026-11-19T12:49:03Z Release v1.2.11
+== stm32wlxx-hal-driver main 5c87cf00992c6e4ecf56c7c129b8dcfc6aa6f88e...e38884401956a04dde853ef71934ad3b549c2f63
+status=ahead ahead=2 behind=0
+e70dfa4 2026-11-19T08:36:18Z [HAL][RTC] Resolve unsigned arithmetic warning in RTC BCD conversion
+e388844 2026-11-23T11:15:55Z Release v1.7.0
+== stm32-mw-subghz-phy main 7dc059f353f359ec65c60a0549d53c1ebeaafa79...47c14dea2c57000260309857f40927f7cf4c1643
+status=ahead ahead=1 behind=0
+47c14de 2026-11-23T10:45:02Z Release v1.5.2
+== STM32CubeWL main f934cd298bf82d45f96aac2f335c0bbd26d0b946...2259ce0dd331399ef3cf11e4c3585ea674a7f08f
+status=ahead ahead=1 behind=0
+2259ce0 2026-11-20T13:48:13Z [HAL] Upload new fixes
+== tags
+cmsis_device_f4 v2.6.12 2026-11-18T12:28:48Z -> 8c79dcf Release v2.6.12
+stm32f7xx-hal-driver v1.3.4 2026-11-19T13:34:52Z -> e879045 Release v1.3.4
+cmsis_device_f7 v1.2.11 2026-11-19T13:27:33Z -> 52e4aad Release v1.2.11
+stm32wlxx-hal-driver v1.7.0 2026-11-23T11:18:02Z -> e388844 Release v1.7.0
+stm32-mw-subghz-phy v1.5.2 2026-11-23T14:38:05Z -> 47c14de Release v1.5.2
