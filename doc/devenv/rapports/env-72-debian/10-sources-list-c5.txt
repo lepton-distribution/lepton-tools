@@ -1,0 +1,3 @@
+4:lepton	original::tree	master	ssh://git@github.com/lepton-distribution/lepton-original-tree.scions.git
+5:lepton	family-qemu-mps2	master	ssh://git@github.com/lepton-distribution/lepton-famille-qemu-mps2.git
+6:lepton	bsp-qemu-mps2-an386	master	ssh://git@github.com/lepton-distribution/lepton-bsp-qemu-mps2-an386.git

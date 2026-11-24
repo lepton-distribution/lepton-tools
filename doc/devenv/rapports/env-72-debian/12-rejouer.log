@@ -1,0 +1,40 @@
+== qemu-mps2-an386-embos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/qemu-mps2-an386-embos (1599 symboles)
+== qemu-mps2-an386-embos-soft
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/qemu-mps2-an386-embos-soft (1596 symboles)
+== qemu-mps2-an386-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/qemu-mps2-an386-freertos (1639 symboles)
+== qemu-mps2-an386-freertos-soft
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/qemu-mps2-an386-freertos-soft (1638 symboles)
+== qemu-mps2-an500-embos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/qemu-mps2-an500-embos (1561 symboles)
+== qemu-mps2-an500-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/qemu-mps2-an500-freertos (1601 symboles)
+== nucleo-f429zi-embos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/nucleo-f429zi-embos (1768 symboles)
+== nucleo-f429zi-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/nucleo-f429zi-freertos (1804 symboles)
+== nucleo-f439zi-embos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/nucleo-f439zi-embos (1768 symboles)
+== nucleo-f439zi-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/nucleo-f439zi-freertos (1804 symboles)
+== nucleo-wl55jc1-embos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/nucleo-wl55jc1-embos (1229 symboles)
+== nucleo-wl55jc1-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/nucleo-wl55jc1-freertos (1275 symboles)
+== samd21-xplained-pro-embos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/samd21-xplained-pro-embos (941 symboles)
+== samd21-xplained-pro-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/samd21-xplained-pro-freertos (991 symboles)
+== stm32f746g-disco-embos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/stm32f746g-disco-embos (1640 symboles)
+== stm32f746g-disco-freertos
+oracle capturé dans /home/lepton-user/lepton-tools-dev/lepton-tools/doc/devenv/rapports/oracles/env-72-debian/stm32f746g-disco-freertos (1676 symboles)
+== qemu-mps2-an386-embos (ctest)
+== qemu-mps2-an386-embos-soft (ctest)
+== qemu-mps2-an386-freertos (ctest)
+== qemu-mps2-an386-freertos-soft (ctest)
+== qemu-mps2-an500-embos (ctest)
+== qemu-mps2-an500-freertos (ctest)
+rejouer-oracle: tout a réussi
+code=0

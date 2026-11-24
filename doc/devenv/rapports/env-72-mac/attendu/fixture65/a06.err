@@ -1,0 +1,2 @@
+erreur : 1 clone(s) à remettre à leur version déclarée avant la mise à jour (trunk et clones inchangés) :
+  <B>/a01/rootstock/depots/own/plain/dev : branche « master », version déclarée « dev » ; git -C <B>/a01/rootstock/depots/own/plain/dev switch dev

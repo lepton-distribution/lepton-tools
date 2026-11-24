@@ -1,0 +1,320 @@
+g1-add-refus.cmd	identique
+g1-add-refus.code	identique
+g1-add-refus.err	identique
+g1-add-refus.out	identique
+g1-add-refus.vs-ajoute	identique
+g1-add-refus.vs-depart	identique
+g1-add.cmd	identique
+g1-add.code	identique
+g1-add.err	identique
+g1-add.out	identique
+g1-add.vs-ajoute	identique
+g1-add.vs-depart	identique
+g1-check.cmd	identique
+g1-check.code	identique
+g1-check.err	identique
+g1-check.out	identique
+g1-check.vs-ajoute	identique
+g1-check.vs-depart	identique
+g1-graft.cmd	identique
+g1-graft.code	identique
+g1-graft.err	identique
+g1-graft.out	identique
+g1-graft.vs-ajoute	identique
+g1-graft.vs-depart	identique
+g1-readd.cmd	identique
+g1-readd.code	identique
+g1-readd.err	identique
+g1-readd.out	identique
+g1-readd.vs-ajoute	identique
+g1-readd.vs-depart	identique
+g1-remove-nom.cmd	identique
+g1-remove-nom.code	identique
+g1-remove-nom.err	identique
+g1-remove-nom.out	identique
+g1-remove-nom.vs-ajoute	identique
+g1-remove-nom.vs-depart	identique
+g1-replace-nom.cmd	identique
+g1-replace-nom.code	identique
+g1-replace-nom.err	identique
+g1-replace-nom.out	identique
+g1-replace-nom.vs-ajoute	identique
+g1-replace-nom.vs-depart	identique
+g1-replace-suffixe.cmd	identique
+g1-replace-suffixe.code	identique
+g1-replace-suffixe.err	identique
+g1-replace-suffixe.out	identique
+g1-replace-suffixe.vs-ajoute	identique
+g1-replace-suffixe.vs-depart	identique
+g1-sans-clone.cmd	identique
+g1-sans-clone.code	identique
+g1-sans-clone.err	identique
+g1-sans-clone.out	identique
+g1-sans-clone.vs-ajoute	identique
+g1-sans-clone.vs-depart	identique
+g1-status.cmd	identique
+g1-status.code	identique
+g1-status.entree	identique
+g1-status.err	identique
+g1-status.out	écart
+--- attendu/g1-status.out
++++ obtenu/g1-status.out
+@@ -5,7 +5,7 @@
+     "path": "<P>/g1/rs/depots/lepton-seed/env11",
+     "manifest": "<P>/g1/rs/depots/lepton-seed/env11/scion/.scion/lepton-graine.json",
+     "branch": "main",
+-    "commit": "124db52",
++    "commit": "da02c79",
+     "dirty": 3,
+     "dirty_files": [
+       "scion/.scion/.scion.ramifications",
+@@ -90,7 +90,7 @@
+       "stem": "<P>/g1/rs/depots/lepton-seed/env11/project/scion",
+       "in_seed": true,
+       "branch": "main",
+-      "commit": "124db52",
++      "commit": "da02c79",
+       "dirty": 0,
+       "dirty_files": [],
+       "ahead": null,
+@@ -119,12 +119,6 @@
+       "build_type": "Debug",
+       "run": "qemu",
+       "preset": "env11-debug-qemu"
+-    },
+-    {
+-      "name": "release-qemu",
+-      "build_type": "Release",
+-      "run": "qemu",
+-      "preset": "env11-release-qemu"
+     }
+   ],
+   "missing": [
+g1-status.vs-ajoute	identique
+g1-status.vs-depart	identique
+g2-add.cmd	identique
+g2-add.code	identique
+g2-add.err	identique
+g2-add.out	identique
+g2-add.vs-ajoute	identique
+g2-add.vs-depart	identique
+g2-sans-clone.cmd	identique
+g2-sans-clone.code	identique
+g2-sans-clone.err	identique
+g2-sans-clone.out	identique
+g2-sans-clone.vs-ajoute	identique
+g2-sans-clone.vs-depart	identique
+g2-scion-graft-remove-purge.cmd	identique
+g2-scion-graft-remove-purge.code	identique
+g2-scion-graft-remove-purge.err	identique
+g2-scion-graft-remove-purge.out	identique
+g2-scion-graft-remove-purge.vs-ajoute	identique
+g2-scion-graft-remove-purge.vs-depart	identique
+g3-add.cmd	identique
+g3-add.code	identique
+g3-add.err	identique
+g3-add.out	identique
+g3-add.vs-ajoute	identique
+g3-add.vs-depart	identique
+g3-remove-suffixe.cmd	identique
+g3-remove-suffixe.code	identique
+g3-remove-suffixe.err	identique
+g3-remove-suffixe.out	identique
+g3-remove-suffixe.vs-ajoute	identique
+g3-remove-suffixe.vs-depart	identique
+g3-sans-clone.cmd	identique
+g3-sans-clone.code	identique
+g3-sans-clone.err	identique
+g3-sans-clone.out	identique
+g3-sans-clone.vs-ajoute	identique
+g3-sans-clone.vs-depart	identique
+g4-add.cmd	identique
+g4-add.code	identique
+g4-add.err	identique
+g4-add.out	identique
+g4-add.vs-ajoute	identique
+g4-add.vs-depart	identique
+g4-remove-purge.cmd	identique
+g4-remove-purge.code	identique
+g4-remove-purge.err	identique
+g4-remove-purge.out	identique
+g4-remove-purge.vs-ajoute	identique
+g4-remove-purge.vs-depart	identique
+g4-sans-clone.cmd	identique
+g4-sans-clone.code	identique
+g4-sans-clone.err	identique
+g4-sans-clone.out	identique
+g4-sans-clone.vs-ajoute	identique
+g4-sans-clone.vs-depart	identique
+g5-add.cmd	identique
+g5-add.code	identique
+g5-add.err	identique
+g5-add.out	identique
+g5-add.vs-ajoute	identique
+g5-add.vs-depart	identique
+g5-readd.cmd	identique
+g5-readd.code	identique
+g5-readd.err	identique
+g5-readd.out	identique
+g5-readd.vs-ajoute	identique
+g5-readd.vs-depart	identique
+g5-remove.cmd	identique
+g5-remove.code	identique
+g5-remove.err	identique
+g5-remove.out	identique
+g5-remove.vs-ajoute	identique
+g5-remove.vs-depart	identique
+g5-sans-clone.cmd	identique
+g5-sans-clone.code	identique
+g5-sans-clone.err	identique
+g5-sans-clone.out	identique
+g5-sans-clone.vs-ajoute	identique
+g5-sans-clone.vs-depart	identique
+g5-scion-graft-remove.cmd	identique
+g5-scion-graft-remove.code	identique
+g5-scion-graft-remove.err	identique
+g5-scion-graft-remove.out	identique
+g5-scion-graft-remove.vs-ajoute	identique
+g5-scion-graft-remove.vs-depart	identique
+prep-d68.cmd	identique
+prep-d68.code	identique
+prep-d68.err	identique
+prep-d68.out	identique
+prep-d68b.cmd	identique
+prep-d68b.code	identique
+prep-d68b.err	identique
+prep-d68b.out	identique
+r1-add.cmd	identique
+r1-add.code	identique
+r1-add.err	identique
+r1-add.out	identique
+r1-add.vs-ajoute	identique
+r1-add.vs-depart	identique
+r1-purge.cmd	identique
+r1-purge.code	identique
+r1-purge.err	identique
+r1-purge.out	identique
+r1-purge.vs-ajoute	identique
+r1-purge.vs-depart	identique
+r1-relance.cmd	identique
+r1-relance.code	identique
+r1-relance.err	identique
+r1-relance.out	identique
+r1-relance.vs-ajoute	identique
+r1-relance.vs-depart	identique
+r1-status.cmd	identique
+r1-status.code	identique
+r1-status.err	identique
+r1-status.out	écart
+--- attendu/r1-status.out
++++ obtenu/r1-status.out
+@@ -5,7 +5,7 @@
+     "path": "<P>/r1/rs/depots/lepton-seed/env11",
+     "manifest": "<P>/r1/rs/depots/lepton-seed/env11/scion/.scion/lepton-graine.json",
+     "branch": "main",
+-    "commit": "124db52",
++    "commit": "da02c79",
+     "dirty": 3,
+     "dirty_files": [
+       "scion/.scion/.scion.ramifications",
+@@ -90,7 +90,7 @@
+       "stem": "<P>/r1/rs/depots/lepton-seed/env11/project/scion",
+       "in_seed": true,
+       "branch": "main",
+-      "commit": "124db52",
++      "commit": "da02c79",
+       "dirty": 0,
+       "dirty_files": [],
+       "ahead": null,
+@@ -106,7 +106,7 @@
+       "stem": "<P>/r1/rs/depots/lepton/library-env68lib/master/scion",
+       "in_seed": true,
+       "branch": "master",
+-      "commit": "f6aed02",
++      "commit": "6d36d14",
+       "dirty": 1,
+       "dirty_files": [
+         "env68-non-suivi.txt"
+@@ -121,12 +121,6 @@
+       "build_type": "Debug",
+       "run": "qemu",
+       "preset": "env11-debug-qemu"
+-    },
+-    {
+-      "name": "release-qemu",
+-      "build_type": "Release",
+-      "run": "qemu",
+-      "preset": "env11-release-qemu"
+     }
+   ],
+   "missing": [],
+r1-status.vs-ajoute	identique
+r1-status.vs-depart	identique
+r2-add.cmd	identique
+r2-add.code	identique
+r2-add.err	identique
+r2-add.out	identique
+r2-add.vs-ajoute	identique
+r2-add.vs-depart	identique
+r2-purge.cmd	identique
+r2-purge.code	identique
+r2-purge.err	identique
+r2-purge.out	identique
+r2-purge.vs-ajoute	identique
+r2-purge.vs-depart	identique
+r3-add.cmd	identique
+r3-add.code	identique
+r3-add.err	identique
+r3-add.out	identique
+r3-add.vs-ajoute	identique
+r3-add.vs-depart	identique
+r3-remove.cmd	identique
+r3-remove.code	identique
+r3-remove.err	identique
+r3-remove.out	identique
+r3-remove.vs-ajoute	identique
+r3-remove.vs-depart	identique
+r4-add.cmd	identique
+r4-add.code	identique
+r4-add.err	identique
+r4-add.out	identique
+r4-add.vs-ajoute	identique
+r4-add.vs-depart	identique
+r4-replace.cmd	identique
+r4-replace.code	identique
+r4-replace.err	identique
+r4-replace.out	identique
+r4-replace.vs-ajoute	identique
+r4-replace.vs-depart	identique
+r5-add.cmd	identique
+r5-add.code	identique
+r5-add.err	identique
+r5-add.out	identique
+r5-add.vs-ajoute	identique
+r5-add.vs-depart	identique
+r5-purge.cmd	identique
+r5-purge.code	identique
+r5-purge.err	identique
+r5-purge.out	identique
+r5-purge.vs-ajoute	identique
+r5-purge.vs-depart	identique
+r6-add.cmd	identique
+r6-add.code	identique
+r6-add.err	identique
+r6-add.out	identique
+r6-add.vs-ajoute	identique
+r6-add.vs-depart	identique
+r6-file-remove.cmd	identique
+r6-file-remove.code	identique
+r6-file-remove.err	identique
+r6-file-remove.out	identique
+r6-file-remove.vs-ajoute	identique
+r6-file-remove.vs-depart	identique
+r6-purge.cmd	identique
+r6-purge.code	identique
+r6-purge.err	identique
+r6-purge.out	identique
+r6-purge.vs-ajoute	identique
+r6-purge.vs-depart	identique
+resume.tsv	identique
+écarts=2 / 244

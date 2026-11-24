@@ -1,0 +1,4 @@
+trunk/sys/root/src/lib/env68lib/env68lib.c: lien cassé dans le trunk : lepton graft
+trunk/sys/root/src/lib/env68lib/env68lib.h: lien cassé dans le trunk : lepton graft
+trunk/sys/root/src/lib/env68lib/lepton-greffon.json: lien cassé dans le trunk : lepton graft
+depots/lepton-seed/env11/scion/.scion/lepton-graine.json: /bibliotheques/0: bibliotheque « env68lib » non greffé (GRA-2)

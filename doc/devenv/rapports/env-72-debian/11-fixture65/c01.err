@@ -1,0 +1,2 @@
+erreur : 1 clone(s) existant(s) hors de leur version déclarée, non repris (liste greffée et clones inchangés) :
+  <B>/c01/rootstock/depots/own/plain/v1 : branche « master », version déclarée : tag « v1 » ; git -C <B>/c01/rootstock/depots/own/plain/v1 switch --detach v1

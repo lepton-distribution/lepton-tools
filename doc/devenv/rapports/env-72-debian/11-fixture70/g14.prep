@@ -1,0 +1,1 @@
+(cd <B>/g14) git clone -q -b autre file://localhost<B>/repos/graine graine-locale
