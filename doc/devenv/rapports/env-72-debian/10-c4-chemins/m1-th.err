@@ -1,0 +1,2 @@
+lepton: erreur: XML « <P>/m1-th/rs/depots/lepton/original/master/scion/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml » hors du trunk <P>/m1-th/rs/trunk
+  → désigner le XML par le trunk (lien greffé), pas par le clone

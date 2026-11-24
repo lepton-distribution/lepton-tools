@@ -1,0 +1,14 @@
+graft-update-resume.txt	écart
+--- attendu/graft-update-resume.txt
++++ obtenu/graft-update-resume.txt
+@@ -58,7 +58,8 @@
+ projection tiers/cmsis-device-f7 : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:7 « Include/stm32f746xx.h » -> 1 fichier(s)
+ projection tiers/cmsis-device-f7 : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:8 « LICENSE.md » -> 1 fichier(s)
+ projection tiers/cmsis-device-f7 : <R>/depots/lepton/family-stm32f7xx/master/scion/.scion/.scion.projections:9 « README.md » -> 1 fichier(s)
+-fatal: not a git repository (or any of the parent directories): .git
++fatal: ni ceci ni aucun de ses répertoires parents (jusqu'au point de montage /) n'est un dépôt git
++Arrêt à la limite du système de fichiers (GIT_DISCOVERY_ACROSS_FILESYSTEM n'est pas défini).
+ greffe : 3889 feuilles liées dans <R>/trunk
+ clone <R>/depots/tiers/stm32f4xx-hal-driver/v1.8.5 : répertoire extrait Inc
+ clone <R>/depots/tiers/stm32f4xx-hal-driver/v1.8.5 : répertoire extrait Src
+écarts=1 / 1

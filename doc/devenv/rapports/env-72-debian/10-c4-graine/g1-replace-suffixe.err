@@ -1,0 +1,2 @@
+lepton: erreur: greffon « library-env68lib » (lepton@library-env68lib) : clone absent, remplacement impossible
+  → lepton seed remove env68lib, puis lepton seed add env68lib LOCATION

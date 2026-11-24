@@ -1,0 +1,1 @@
+erreur : échec de « git clone -b nope --quiet --single-branch file://localhost<B>/repos/graine <B>/k02/rootstock/depots/graine/nope » (code 128) : fatal: Remote branch nope not found in upstream origin
