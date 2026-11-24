@@ -205,6 +205,38 @@ Rootstocks d'essai du Mac (tâche 3) : `essais/env-13-vierge` est déjà regreff
 `essais/env-9` et, sous `essais/env-11/`, `qemu`, `qemu-gra2`, `bout-en-bout/rootstock`, `f429zi`,
 `wl55jc1`, après l'`AVANCEMENT` « fin des invites de la VM » ou le `FIN-*` (D39), sur accord.
 
+## 3. Rootstocks d'essai du Mac (tâche 3)
+
+Accord de l'utilisateur (PA-P), 2026-11-24, après l'`AVANCEMENT` « fin des invites de la VM
+jusqu'au push » de R72-1 (D39) : aucune invite de la VM n'était possible pendant ces regreffes.
+scion 0.6.3.4, lepton 0.1.0. Script `env-57-mac/regreffer-essai.sh avant|apres` ; entre les deux,
+la session lance `scion graft-update -v <rootstock> > <journal> 2>&1; echo "code=$?" >> <journal>`.
+Journaux et bilans : `~/lepton-tools-dev/essais/env-72-mac/regreffes/<rootstock>-*`.
+
+Inventaire avant : clones de greffons sur `master`, amont réglé, propres, noyau 2b4a647 partout ;
+graines de projet locales sans amont (`env9`, `env11` ×2, `bout-en-bout`, `env11f4`, `env11wl`) ;
+la graine de `bout-en-bout` porte ses 2 fichiers non suivis du 2026-11-02 (`modifs=2`, connus).
+
+| Rootstock | `graft-update` | Liens avant → après | Ajouts / retraits | `controler-trunk.py` | Clones tiers | `check` | Espace |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `env-13-vierge` (§1.3) | 0 ; noyau 2b4a647 → 0c2e43e seul | 3889 → 3889 | 0 / 0 | `CONFORME` | 8, = attendu (0 / 16), 107 992 Ko inchangés | 0 | identique |
+| `env-9` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/qemu` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/qemu-gra2` | 0 ; noyau seul (BSP an386 réinscrit, 3059 feuilles), puis `scion graft-remove lepton@bsp-qemu-mps2-an386 <rootstock>` code 0, 8 feuilles, clone conservé | 3051 → 3051 | 0 / 0 | `CONFORME` | — | 1 (attendu, CFG-5) | identique |
+| `env-11/bout-en-bout/rootstock` | 0 ; noyau seul | 3059 → 3059 | 0 / 0 | `CONFORME` | — | 0 | identique |
+| `env-11/f429zi` | 0 ; noyau seul | 3294 → 3294 | 0 / 0 | `CONFORME` | 2, = attendu (0 / 4), 36 528 Ko inchangés | 0 | identique |
+| `env-11/wl55jc1` | 0 ; noyau seul | 3315 → 3315 | 0 / 0 | `CONFORME` | 4, = attendu (0 / 8), 40 684 Ko inchangés | 0 | identique |
+
+Partout : aucun `git clone`, aucune extraction partielle (clones tiers déjà partiels), 0 conflit
+ni refus, 0 lien cassé, 0 fichier régulier, 0 `.DS_Store` dans les trunks ; `generate` avant et
+après : 0 (`qemu-gra2` : 1, attendu).
+
+Décisions (journal de session, `decisions.py --motif graft-update --motif graft-remove`) : les 7
+`graft-update` sur invite `ask` confirmée par l'utilisateur (`user_temporary`, `projectSettings`) :
+`env-13-vierge` à 14:36 UTC (préparation, avant l'ordre), les 6 autres de 15:42 à 15:48 UTC
+(après la fin des invites de la VM) ; le `graft-remove`, hors règle, accepté par le classifieur.
+Aucun refus.
+
 ## 4. Journal des messages (§2bis)
 
 | ID | Type | Sens | Date (heure locale) | Résumé | Remis |
