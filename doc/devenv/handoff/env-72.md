@@ -11,7 +11,7 @@ pause (voir Reprise).
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/env-72` (depuis `main` 8cbbf25), fusionnée `--no-ff` dans `main` ; `main`, `devenv/env-72` et `devenv/env-72-debian` poussées (PA-132) | branche : « devenv(env-72): état et passation » ; `main` : fusion de `devenv/env-72` (c060d58, poussée), puis un commit local **non poussé** « devenv(hors-etape): fin du plan après ENV-72, décisions sur HORS-PLAN ; passation » (push sur accord, PA-P) | oui |
+| lepton-tools | `devenv/env-72` (depuis `main` 8cbbf25), fusionnée `--no-ff` dans `main` ; `main`, `devenv/env-72` et `devenv/env-72-debian` poussées (PA-132) | branche : « devenv(env-72): état et passation » ; `main` : fusion de `devenv/env-72` (c060d58, poussée), puis « devenv(hors-etape): fin du plan après ENV-72, décisions sur HORS-PLAN ; passation » (ecfc7e8) et la consignation de son push, poussés (PA-P, accord de l'utilisateur du 2026-11-24) | oui |
 | lepton-tools (VM) | `devenv/env-72-debian` (depuis 5411f78) | 9869e39 « devenv(env-72): rapport de validation Debian R72-1 … », fusionnée dans `devenv/env-72` (593769f) | — |
 | clone noyau `depots/lepton/original/master` | `master` | 0c2e43e (non touché) | oui |
 | seed.scions | `master` | 929c01a, tag 0.6.3.4 (non touché) | oui |
@@ -101,7 +101,7 @@ décision (traiter, hors plan, abandonner).
 
 Procédure de relance :
 1. Avant la révision, relever l'état :
-   - lepton-tools : `main` = `origin/main`, et l'éventuel commit hors étape non poussé ;
+   - lepton-tools : `main` = `origin/main` (tout est poussé au 2026-11-24) ;
    - seed.scions : `master` 929c01a, tag 0.6.3.4 ;
    - noyau : `master` 0c2e43e ;
    - Mac et VM : scion 0.6.3.4, lepton 0.1.0, extension 0.5.4, Claude Code, git ;
