@@ -1,0 +1,2 @@
+erreur : échec de « git clone -b nope --quiet --single-branch file://localhost/home/lepton-user/lepton-tools-dev/essais/env-72-fixture/f70/repos/plain /home/lepton-user/lepton-tools-dev/essais/env-72-fixture/f70/k03/rootstock/depots/own/plain/nope » (code 128) : fatal : La branche distante nope n'a pas été trouvée dans le dépôt amont origin
+code=2

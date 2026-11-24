@@ -1,0 +1,1 @@
+lepton seed new env68 -C <P>/t/n1-t --mkconf ~/<hP>/t/n1-t/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml --bsp qemu-mps2-an386 --backend freertos --origin lepton-noyau=<C>/depots/lepton/original/master --origin qemu-mps2=<C>/depots/lepton/family-qemu-mps2/master --origin qemu-mps2-an386=<C>/depots/lepton/bsp-qemu-mps2-an386/master

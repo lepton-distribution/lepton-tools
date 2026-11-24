@@ -1,0 +1,2 @@
+lepton: erreur: lepton@library-env68lib déjà déclaré dans la graine sans être greffé
+  → lepton seed remove env68lib, ou scion seed-scion-remove --seed <P>/g1/rs/depots/lepton-seed/env11 lepton@library-env68lib

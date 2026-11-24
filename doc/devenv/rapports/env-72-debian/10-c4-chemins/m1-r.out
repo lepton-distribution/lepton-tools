@@ -1,0 +1,3 @@
+XML du projet : sys/user/env11/etc/mkconf_env11.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+presets à régénérer (LEPTON_MKCONF) : lepton generate -C <P>/m1-r/rs
+graine modifiée, non commitée : git -C <P>/m1-r/rs/depots/lepton-seed/env11 commit -am "…"

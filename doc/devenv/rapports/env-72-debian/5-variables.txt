@@ -1,0 +1,9 @@
+LEPTON_EMBOS_ROOT=/home/lepton-user/lepton/third_party/embos/cortexm-gcc/5.20.0.0
+SCION_REF absente
+SCION_SPEC absente
+LEPTON_CLONE absente
+XDG_CONFIG_HOME absente
+NM absente
+SIZE absente
+LANG=fr_FR.UTF-8
+LC_ALL absente
