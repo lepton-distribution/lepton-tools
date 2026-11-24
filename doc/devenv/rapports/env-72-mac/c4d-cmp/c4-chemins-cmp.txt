@@ -1,0 +1,311 @@
+c1-a.cmd	identique
+c1-a.code	identique
+c1-a.err	identique
+c1-a.etat	identique
+c1-a.out	identique
+c1-d.cmd	identique
+c1-d.code	identique
+c1-d.err	identique
+c1-d.etat	identique
+c1-d.out	identique
+c1-r.cmd	identique
+c1-r.code	identique
+c1-r.err	identique
+c1-r.etat	identique
+c1-r.out	identique
+c1-t.cmd	identique
+c1-t.code	identique
+c1-t.err	identique
+c1-t.etat	identique
+c1-t.out	identique
+c1-u.cmd	identique
+c1-u.code	identique
+c1-u.err	identique
+c1-u.etat	identique
+c1-u.out	identique
+c1-x.cmd	identique
+c1-x.code	identique
+c1-x.err	identique
+c1-x.etat	identique
+c1-x.out	identique
+c2-a.cmd	identique
+c2-a.code	identique
+c2-a.err	identique
+c2-a.etat	identique
+c2-a.out	identique
+c2-r.cmd	identique
+c2-r.code	identique
+c2-r.err	identique
+c2-r.etat	identique
+c2-r.out	identique
+c2-t.cmd	identique
+c2-t.code	identique
+c2-t.err	identique
+c2-t.etat	identique
+c2-t.out	identique
+m1-a.cmd	identique
+m1-a.code	identique
+m1-a.err	identique
+m1-a.etat	identique
+m1-a.graine	identique
+m1-a.out	identique
+m1-d.cmd	identique
+m1-d.code	identique
+m1-d.err	identique
+m1-d.etat	identique
+m1-d.graine	identique
+m1-d.out	identique
+m1-h.cmd	identique
+m1-h.code	identique
+m1-h.err	identique
+m1-h.etat	identique
+m1-h.graine	identique
+m1-h.out	identique
+m1-r.cmd	identique
+m1-r.code	identique
+m1-r.err	identique
+m1-r.etat	identique
+m1-r.graine	identique
+m1-r.out	identique
+m1-rc.cmd	identique
+m1-rc.code	identique
+m1-rc.err	identique
+m1-rc.etat	identique
+m1-rc.graine	identique
+m1-rc.out	identique
+m1-t.cmd	identique
+m1-t.code	identique
+m1-t.err	identique
+m1-t.etat	identique
+m1-t.graine	identique
+m1-t.out	identique
+m1-th.cmd	identique
+m1-th.code	identique
+m1-th.err	identique
+m1-th.etat	identique
+m1-th.graine	identique
+m1-th.out	identique
+m1-u.cmd	identique
+m1-u.code	identique
+m1-u.err	identique
+m1-u.etat	identique
+m1-u.graine	identique
+m1-u.out	identique
+m1-x.cmd	identique
+m1-x.code	identique
+m1-x.err	identique
+m1-x.etat	identique
+m1-x.graine	identique
+m1-x.out	identique
+n1-a.cible	identique
+n1-a.cmd	identique
+n1-a.code	identique
+n1-a.err	écart
+--- attendu/n1-a.err
++++ obtenu/n1-a.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <P>/t/n1-a/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <P>/t/n1-a/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <P>/t/n1-a/depots/lepton-seed/env68/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <P>/t/n1-a/trunk
+ scion: scion lepton/project-env68 déclaré dans <P>/t/n1-a/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <P>/t/n1-a/trunk
+n1-a.out	identique
+n1-d.cible	identique
+n1-d.cmd	identique
+n1-d.code	identique
+n1-d.err	écart
+--- attendu/n1-d.err
++++ obtenu/n1-d.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <P>/t/n1-d/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <P>/t/n1-d/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <P>/t/n1-d/depots/lepton-seed/env68/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <P>/t/n1-d/trunk
+ scion: scion lepton/project-env68 déclaré dans <P>/t/n1-d/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <P>/t/n1-d/trunk
+n1-d.out	identique
+n1-r.cible	identique
+n1-r.cmd	identique
+n1-r.code	identique
+n1-r.err	écart
+--- attendu/n1-r.err
++++ obtenu/n1-r.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <P>/t/n1-r/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <P>/t/n1-r/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <P>/t/n1-r/depots/lepton-seed/env68/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <P>/t/n1-r/trunk
+ scion: scion lepton/project-env68 déclaré dans <P>/t/n1-r/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <P>/t/n1-r/trunk
+n1-r.out	identique
+n1-t.cible	identique
+n1-t.cmd	identique
+n1-t.code	identique
+n1-t.err	écart
+--- attendu/n1-t.err
++++ obtenu/n1-t.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <P>/t/n1-t/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <P>/t/n1-t/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <P>/t/n1-t/depots/lepton-seed/env68/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <P>/t/n1-t/trunk
+ scion: scion lepton/project-env68 déclaré dans <P>/t/n1-t/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <P>/t/n1-t/trunk
+n1-t.out	identique
+n1-u.cible	identique
+n1-u.cmd	identique
+n1-u.code	identique
+n1-u.err	écart
+--- attendu/n1-u.err
++++ obtenu/n1-u.err
+@@ -2,7 +2,6 @@
+ scion: scion lepton/original::tree déclaré dans <P>/t/n1-u/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: scion lepton/family-qemu-mps2 déclaré dans <P>/t/n1-u/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: scion lepton/bsp-qemu-mps2-an386 déclaré dans <P>/t/n1-u/depots/lepton-seed/env68/scion/.scion (version *)
+-scion: greffe : 13 chemin(s) ignoré(s) par git, non greffé(s) (détail avec -v)
+ scion: greffe : 3055 feuilles liées dans <P>/t/n1-u/trunk
+ scion: scion lepton/project-env68 déclaré dans <P>/t/n1-u/depots/lepton-seed/env68/scion/.scion (version *)
+ scion: greffe partielle : 3 feuilles liées dans <P>/t/n1-u/trunk
+n1-u.out	identique
+n1-x.cible	identique
+n1-x.cmd	identique
+n1-x.code	identique
+n1-x.err	identique
+n1-x.out	identique
+p6-a.clangd	identique
+p6-a.cmd	identique
+p6-a.code	identique
+p6-a.err	identique
+p6-a.out	écart
+--- attendu/p6-a.out
++++ obtenu/p6-a.out
+@@ -1,3 +1,3 @@
+ inchangé  <P>/G/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <P>/G/trunk/CMakeUserPresets.json)
+ écrit     <P>/G/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <P>/G/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <P>/G/trunk)
+p6-n.clangd	identique
+p6-n.cmd	identique
+p6-n.code	identique
+p6-n.err	identique
+p6-n.out	écart
+--- attendu/p6-n.out
++++ obtenu/p6-n.out
+@@ -1,3 +1,3 @@
+ inchangé  <P>/G/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <P>/G/trunk/CMakeUserPresets.json)
+ écrit     <P>/G/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <P>/G/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <P>/G/trunk)
+p6-r.clangd	identique
+p6-r.cmd	identique
+p6-r.code	identique
+p6-r.err	identique
+p6-r.out	écart
+--- attendu/p6-r.out
++++ obtenu/p6-r.out
+@@ -1,3 +1,3 @@
+ inchangé  <P>/G/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <P>/G/trunk/CMakeUserPresets.json)
+ écrit     <P>/G/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <P>/G/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <P>/G/trunk)
+p6-rd.clangd	identique
+p6-rd.cmd	identique
+p6-rd.code	identique
+p6-rd.err	identique
+p6-rd.out	écart
+--- attendu/p6-rd.out
++++ obtenu/p6-rd.out
+@@ -1,3 +1,3 @@
+ inchangé  <P>/G/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <P>/G/trunk/CMakeUserPresets.json)
+ inchangé  <P>/G/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <P>/G/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <P>/G/trunk)
+p6-rs.clangd	identique
+p6-rs.cmd	identique
+p6-rs.code	identique
+p6-rs.err	identique
+p6-rs.out	écart
+--- attendu/p6-rs.out
++++ obtenu/p6-rs.out
+@@ -1,3 +1,3 @@
+ inchangé  <P>/G/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <P>/G/trunk/CMakeUserPresets.json)
+ inchangé  <P>/G/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <P>/G/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <P>/G/trunk)
+p6-rw.clangd	identique
+p6-rw.cmd	identique
+p6-rw.code	identique
+p6-rw.err	identique
+p6-rw.out	écart
+--- attendu/p6-rw.out
++++ obtenu/p6-rw.out
+@@ -1,3 +1,3 @@
+ inchangé  <P>/G/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <P>/G/trunk/CMakeUserPresets.json)
+ inchangé  <P>/G/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <P>/G/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <P>/G/trunk)
+p6-t.clangd	identique
+p6-t.cmd	identique
+p6-t.code	identique
+p6-t.err	identique
+p6-t.out	écart
+--- attendu/p6-t.out
++++ obtenu/p6-t.out
+@@ -1,3 +1,3 @@
+ inchangé  <P>/G/depots/lepton-seed/env11/project/scion/CMakeUserPresets.json (greffé : <P>/G/trunk/CMakeUserPresets.json)
+ inchangé  <P>/G/env11.code-workspace
+-presets : env11-debug-qemu, env11-release-qemu (cmake --list-presets dans <P>/G/trunk)
++presets : env11-debug-qemu (cmake --list-presets dans <P>/G/trunk)
+resume.tsv	écart
+--- attendu/resume.tsv
++++ obtenu/resume.tsv
+@@ -1,7 +1,7 @@
+ cas	chemin	forme	code	cwd/~*	R	message
+ c1-t	check FILE	t	0	non	=	1 fichier(s) conforme(s).
+ c1-u	check FILE	u	0	non	=	1 fichier(s) conforme(s).
+-c1-x	check FILE	x	1	non	=	lepton: erreur: FILE « ~inconnu68/<hC>/depots/lepton-seed/env11/scion/.scion/lepton-graine.json » : répertoire personnel de « ~i
++c1-x	check FILE	x	1	non	=	lepton: erreur: FILE « ~inconnu68/<hC>/depots/lepton-seed/env11/scion/.scion/lepton-graine.json » : répertoire personnel de « ~
+ c1-a	check FILE	a	0	non	=	1 fichier(s) conforme(s).
+ c1-d	check FILE	d	0	non	=	1 fichier(s) conforme(s).
+ c1-r	check FILE	r	0	non	=	1 fichier(s) conforme(s).
+@@ -10,23 +10,23 @@
+ c2-r	check FILE (trunk)	r	0	non	=	1 fichier(s) conforme(s).
+ m1-t	seed mkconf import	t	0	non	liens≠ graine≠ 	XML du projet : sys/user/env11/etc/mkconf_env11.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+ m1-u	seed mkconf import	u	0	non	liens≠ graine≠ 	XML du projet : sys/user/env11/etc/mkconf_env11.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+-m1-x	seed mkconf import	x	1	non	=	lepton: erreur: XML « ~inconnu68/<hP>/m1-x/rs/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml » : répertoire p
++m1-x	seed mkconf import	x	1	non	=	lepton: erreur: XML « ~inconnu68/<hP>/m1-x/rs/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml » : répertoire 
+ m1-a	seed mkconf import	a	0	non	liens≠ graine≠ 	XML du projet : sys/user/env11/etc/mkconf_env11.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+ m1-d	seed mkconf import	d	0	non	liens≠ graine≠ 	XML du projet : sys/user/env11/etc/mkconf_env11.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+ m1-r	seed mkconf import	r	0	non	liens≠ graine≠ 	XML du projet : sys/user/env11/etc/mkconf_env11.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+ m1-rc	seed mkconf import	rc	1	non	=	lepton: erreur: XML « mkconf_tauon_basic_qemu_mps2.xml » absent du trunk greffé
+-m1-h	seed mkconf import	h	1	non	=	lepton: erreur: XML « <P>/m1-h/rs/depots/lepton/original/master/scion/sys/user/tauon-basic/etc/mkconf_tauon_
+-m1-th	seed mkconf import	th	1	non	=	lepton: erreur: XML « <P>/m1-th/rs/depots/lepton/original/master/scion/sys/user/tauon-basic/etc/mkconf_tauon
++m1-h	seed mkconf import	h	1	non	=	lepton: erreur: XML « <P>/m1-h/rs/depots/lepton/original/master/scion/sys/user/tauon-basic/etc/mkconf_tauon
++m1-th	seed mkconf import	th	1	non	=	lepton: erreur: XML « <P>/m1-th/rs/depots/lepton/original/master/scion/sys/user/tauon-basic/etc/mkconf_tauo
+ n1-t	seed new --mkconf	t	0	non	-	XML du projet : sys/user/env68/etc/mkconf_env68.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+ n1-u	seed new --mkconf	u	0	non	-	XML du projet : sys/user/env68/etc/mkconf_env68.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+-n1-x	seed new --mkconf	x	1	non	-	lepton: erreur: --mkconf « ~inconnu68/<hP>/t/n1-x/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml » : répertoi
++n1-x	seed new --mkconf	x	1	non	-	lepton: erreur: --mkconf « ~inconnu68/<hP>/t/n1-x/trunk/sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml » : réperto
+ n1-a	seed new --mkconf	a	0	non	-	XML du projet : sys/user/env68/etc/mkconf_env68.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+ n1-d	seed new --mkconf	d	0	non	-	XML du projet : sys/user/env68/etc/mkconf_env68.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+ n1-r	seed new --mkconf	r	0	non	-	XML du projet : sys/user/env68/etc/mkconf_env68.xml (copie de sys/user/tauon-basic/etc/mkconf_tauon_basic_qemu_mps2.xml, avec .boot, .init)
+-p6-a	generate --clangd	a	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans ba
+-p6-t	generate --clangd	t	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans ba
+-p6-n	generate --clangd	nom	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans ba
+-p6-r	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans ba
+-p6-rs	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans ba
+-p6-rw	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans ba
+-p6-rd	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans ba
++p6-a	generate --clangd	a	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans b
++p6-t	generate --clangd	t	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans b
++p6-n	generate --clangd	nom	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans b
++p6-r	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans b
++p6-rs	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans b
++p6-rw	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans b
++p6-rd	generate --clangd	r	0	non	-	lepton: attention: <P>/G/build/.active/compile_commands.json absent, aucun preset configuré : clangd sans b
+écarts=13 / 165
