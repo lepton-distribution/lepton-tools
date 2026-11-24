@@ -1,0 +1,183 @@
+git config --unset-all remote.origin.mirror (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+git config remote.origin.url https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+git config --replace-all remote.origin.fetch +refs/heads/*:refs/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+git config --add remote.origin.fetch +refs/tags/*:refs/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+git config remote.amont.url https://github.com/STMicroelectronics/stm32f4xx-hal-driver.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+git config --replace-all remote.amont.fetch +refs/heads/*:refs/amont/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+git config --add remote.amont.fetch +refs/tags/*:refs/amont/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+git config remote.amont.tagOpt --no-tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+git fetch --quiet --prune --no-tags origin (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+git fetch --quiet --prune --no-tags amont (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/heads refs/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/amont/heads refs/amont/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git)
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : branche « master » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.7.10 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.7.11 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.7.12 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.7.13 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.7.6 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.7.7 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.7.8 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.7.9 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.8.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.8.1 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.8.2 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.8.3 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.8.4 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.8.5 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : tag « v1.8.6 » identique
+git config --unset-all remote.origin.mirror (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+git config remote.origin.url https://github.com/lepton-distribution/mirror-cmsis_device_f4.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+git config --replace-all remote.origin.fetch +refs/heads/*:refs/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+git config --add remote.origin.fetch +refs/tags/*:refs/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+git config remote.amont.url https://github.com/STMicroelectronics/cmsis_device_f4.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+git config --replace-all remote.amont.fetch +refs/heads/*:refs/amont/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+git config --add remote.amont.fetch +refs/tags/*:refs/amont/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+git config remote.amont.tagOpt --no-tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+git fetch --quiet --prune --no-tags origin (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+git fetch --quiet --prune --no-tags amont (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/heads refs/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/amont/heads refs/amont/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f4.git)
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : branche « master » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : tag « v2.6.10 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : tag « v2.6.11 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : tag « v2.6.12 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : tag « v2.6.3 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : tag « v2.6.4 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : tag « v2.6.6 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : tag « v2.6.7 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : tag « v2.6.8 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : tag « v2.6.9 » identique
+git config --unset-all remote.origin.mirror (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+git config remote.origin.url https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+git config --replace-all remote.origin.fetch +refs/heads/*:refs/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+git config --add remote.origin.fetch +refs/tags/*:refs/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+git config remote.amont.url https://github.com/STMicroelectronics/stm32wlxx-hal-driver.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+git config --replace-all remote.amont.fetch +refs/heads/*:refs/amont/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+git config --add remote.amont.fetch +refs/tags/*:refs/amont/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+git config remote.amont.tagOpt --no-tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+git fetch --quiet --prune --no-tags origin (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+git fetch --quiet --prune --no-tags amont (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/heads refs/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/amont/heads refs/amont/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git)
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : branche « main » identique
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : tag « v1.0.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : tag « v1.1.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : tag « v1.2.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : tag « v1.3.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : tag « v1.3.1 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : tag « v1.4.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : tag « v1.5.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : tag « v1.6.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : tag « v1.7.0 » identique
+git config --unset-all remote.origin.mirror (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+git config remote.origin.url https://github.com/lepton-distribution/mirror-cmsis-device-wl.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+git config --replace-all remote.origin.fetch +refs/heads/*:refs/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+git config --add remote.origin.fetch +refs/tags/*:refs/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+git config remote.amont.url https://github.com/STMicroelectronics/cmsis-device-wl.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+git config --replace-all remote.amont.fetch +refs/heads/*:refs/amont/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+git config --add remote.amont.fetch +refs/tags/*:refs/amont/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+git config remote.amont.tagOpt --no-tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+git fetch --quiet --prune --no-tags origin (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+git fetch --quiet --prune --no-tags amont (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/heads refs/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/amont/heads refs/amont/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis-device-wl.git)
+miroir https://github.com/lepton-distribution/mirror-cmsis-device-wl.git : branche « main » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis-device-wl.git : tag « v1.0.0 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis-device-wl.git : tag « v1.1.0 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis-device-wl.git : tag « v1.1.1 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis-device-wl.git : tag « v1.2.0 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis-device-wl.git : tag « v1.3.0 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis-device-wl.git : tag « v1.4.0 » identique
+git config --unset-all remote.origin.mirror (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+git config remote.origin.url https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+git config --replace-all remote.origin.fetch +refs/heads/*:refs/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+git config --add remote.origin.fetch +refs/tags/*:refs/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+git config remote.amont.url https://github.com/STMicroelectronics/stm32-mw-subghz-phy.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+git config --replace-all remote.amont.fetch +refs/heads/*:refs/amont/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+git config --add remote.amont.fetch +refs/tags/*:refs/amont/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+git config remote.amont.tagOpt --no-tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+git fetch --quiet --prune --no-tags origin (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+git fetch --quiet --prune --no-tags amont (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/heads refs/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/amont/heads refs/amont/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git)
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : branche « main » identique
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : tag « v1.0.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : tag « v1.1.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : tag « v1.2.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : tag « v1.3.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : tag « v1.4.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : tag « v1.5.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : tag « v1.5.2 » identique
+git config --unset-all remote.origin.mirror (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+git config remote.origin.url https://github.com/lepton-distribution/mirror-STM32CubeWL.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+git config --replace-all remote.origin.fetch +refs/heads/*:refs/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+git config --add remote.origin.fetch +refs/tags/*:refs/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+git config remote.amont.url https://github.com/STMicroelectronics/STM32CubeWL.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+git config --replace-all remote.amont.fetch +refs/heads/*:refs/amont/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+git config --add remote.amont.fetch +refs/tags/*:refs/amont/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+git config remote.amont.tagOpt --no-tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+git fetch --quiet --prune --no-tags origin (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+git fetch --quiet --prune --no-tags amont (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/heads refs/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/amont/heads refs/amont/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-STM32CubeWL.git)
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : branche « main » identique
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : tag « v1.0.0 » identique
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : tag « v1.1.0 » identique
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : tag « v1.2.0 » identique
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : tag « v1.3.0 » identique
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : tag « v1.3.1 » identique
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : tag « v1.4.0 » identique
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : tag « v1.5.0 » identique
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : tag « v1.6.0 » identique
+git config --unset-all remote.origin.mirror (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+git config remote.origin.url https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+git config --replace-all remote.origin.fetch +refs/heads/*:refs/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+git config --add remote.origin.fetch +refs/tags/*:refs/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+git config remote.amont.url https://github.com/STMicroelectronics/stm32f7xx-hal-driver.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+git config --replace-all remote.amont.fetch +refs/heads/*:refs/amont/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+git config --add remote.amont.fetch +refs/tags/*:refs/amont/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+git config remote.amont.tagOpt --no-tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+git fetch --quiet --prune --no-tags origin (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+git fetch --quiet --prune --no-tags amont (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/heads refs/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/amont/heads refs/amont/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git)
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : branche « master » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : tag « v1.2.10 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : tag « v1.2.7 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : tag « v1.2.8 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : tag « v1.2.9 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : tag « v1.3.0 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : tag « v1.3.1 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : tag « v1.3.2 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : tag « v1.3.3 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : tag « v1.3.4 » identique
+git config --unset-all remote.origin.mirror (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+git config remote.origin.url https://github.com/lepton-distribution/mirror-cmsis_device_f7.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+git config --replace-all remote.origin.fetch +refs/heads/*:refs/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+git config --add remote.origin.fetch +refs/tags/*:refs/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+git config remote.amont.url https://github.com/STMicroelectronics/cmsis_device_f7.git (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+git config --replace-all remote.amont.fetch +refs/heads/*:refs/amont/heads/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+git config --add remote.amont.fetch +refs/tags/*:refs/amont/tags/* (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+git config remote.amont.tagOpt --no-tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+git fetch --quiet --prune --no-tags origin (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+git fetch --quiet --prune --no-tags amont (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/heads refs/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+git for-each-ref --format=%(objectname)%00%(*objectname)%00%(refname) refs/amont/heads refs/amont/tags (cwd=/Users/cle_d_anton/lepton/depots/.mirrors/github.com/lepton-distribution/mirror-cmsis_device_f7.git)
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : branche « master » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : tag « v1.2.10 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : tag « v1.2.11 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : tag « v1.2.4 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : tag « v1.2.5 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : tag « v1.2.6 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : tag « v1.2.7 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : tag « v1.2.8 » identique
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : tag « v1.2.9 » identique
+miroir https://github.com/lepton-distribution/mirror-stm32f4xx-hal-driver.git : 0 référence(s) à envoyer, 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f4.git : 0 référence(s) à envoyer, 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-stm32wlxx-hal-driver.git : 0 référence(s) à envoyer, 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-cmsis-device-wl.git : 0 référence(s) à envoyer, 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-stm32-mw-subghz-phy.git : 0 référence(s) à envoyer, 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-STM32CubeWL.git : 0 référence(s) à envoyer, 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-stm32f7xx-hal-driver.git : 0 référence(s) à envoyer, 0 signalement(s)
+miroir https://github.com/lepton-distribution/mirror-cmsis_device_f7.git : 0 référence(s) à envoyer, 0 signalement(s)
