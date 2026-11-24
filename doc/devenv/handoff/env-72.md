@@ -4,12 +4,14 @@
 terminée : l'ordre R72-1 a été validé sur la VM Debian. C1 à C7 sont atteints, C8 écarté et C9
 fait. D35 est prouvé avec git 2.47.3, en anglais et en français ; D33, D29, D30, D32, D37, D36,
 D38 (1) à (3) et D40 sont prouvés sur la VM. Les binaires des 16 presets sont identiques à ceux de
-R66-1. C'est la **fin du plan** : il reste à présenter `HORS-PLAN.md`.
+R66-1. C'est la **fin du plan**. `HORS-PLAN.md` a été présenté le 2026-11-24, hors étape, et les
+décisions sont consignées. La révision du plan est reportée par l'utilisateur : le chantier est en
+pause (voir Reprise).
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `devenv/env-72` (depuis `main` 8cbbf25), fusionnée `--no-ff` dans `main` ; `main`, `devenv/env-72` et `devenv/env-72-debian` poussées (PA-132) | branche : « devenv(env-72): état et passation » ; `main` : fusion de `devenv/env-72` | oui |
+| lepton-tools | `devenv/env-72` (depuis `main` 8cbbf25), fusionnée `--no-ff` dans `main` ; `main`, `devenv/env-72` et `devenv/env-72-debian` poussées (PA-132) | branche : « devenv(env-72): état et passation » ; `main` : fusion de `devenv/env-72` (c060d58, poussée), puis un commit local **non poussé** « devenv(hors-etape): fin du plan après ENV-72, décisions sur HORS-PLAN ; passation » (push sur accord, PA-P) | oui |
 | lepton-tools (VM) | `devenv/env-72-debian` (depuis 5411f78) | 9869e39 « devenv(env-72): rapport de validation Debian R72-1 … », fusionnée dans `devenv/env-72` (593769f) | — |
 | clone noyau `depots/lepton/original/master` | `master` | 0c2e43e (non touché) | oui |
 | seed.scions | `master` | 929c01a, tag 0.6.3.4 (non touché) | oui |
@@ -49,12 +51,13 @@ rapport VM §3bis, messages §4) et `rapports/env-72-debian.md`. Consigne :
 - **PA-132** tranché : fusions et push. `HORS-PLAN.md` : 9 points marqués prouvés sur la VM.
 
 ## Reste à faire dans l'étape
-- Rien dans l'étape. Fin du plan : présenter `HORS-PLAN.md` à l'utilisateur pour décision. Deux
-  constats de R72-1 n'y sont pas inscrits et sont à proposer à cette présentation :
-  - notification de l'extension visible seulement dans le centre de notifications de VSCodium sur
-    la VM (non affichée en surimpression) ;
-  - `env11.code-workspace` des copies d'essai, qui porte le chemin absolu de `$C5` (clangd relancé
-    sur `$C5`, déjà vu en R66-1).
+- Rien dans l'étape. La présentation de fin du plan de `HORS-PLAN.md` est faite (2026-11-24) :
+  - tickets relevés : lepton-famille-stm32f7xx#1, lepton-famille-stm32f4xx#1 et
+    lepton-famille-stm32wlxx#1 sont ouverts ;
+  - A1 à A4, D4, D12, D34 et D38 (4) restent hors plan ;
+  - D41 et D42 sont **à traiter** ;
+  - les constats de R72-1 sont inscrits en D44 à D47, suite non décidée.
+- Reste, à la reprise : la révision du plan (voir Reprise).
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans DEVENV-STATUS ? |
@@ -67,6 +70,8 @@ rapport VM §3bis, messages §4) et `rapports/env-72-debian.md`. Consigne :
 | Classe « graine `env11` » étendue (branche, URL `ssh://` déclarées) | session Mac (défaut de la consigne) | oui |
 | Tâche 3 : 6 regreffes après la fin des invites de la VM | utilisateur | oui (journal) |
 | PA-132 : fusions `--no-ff` et push des trois branches | utilisateur | oui |
+| Fin du plan : A1 à A4, D4, D12, D34, D38 (4) hors plan ; D41, D42 à traiter ; D44 à D47 inscrits ; révision du plan reportée, chantier en pause | utilisateur | oui |
+| D44 à D47 : « suite non décidée, à présenter à la prochaine révision du plan » ; rubriques « non éligible au ticket » | proposition non validée (session) | oui (`HORS-PLAN.md`) |
 
 ## Pièges rencontrés
 - Variable « posée » par un `export` tapé dans un terminal → absente des nouveaux terminaux. Parade : l'écrire dans `~/.bashrc` (shell `/bin/bash`, pas de `~/.bash_profile` sur la VM), vérifier dans un nouveau terminal.
@@ -83,13 +88,32 @@ rapport VM §3bis, messages §4) et `rapports/env-72-debian.md`. Consigne :
 - [x] D38 : variables traitées selon le PA-121 ; nettoyage de sous-répertoires par l'enveloppe.
 - [x] D39 : aucune invite simultanée Mac et VM ; toute confirmation par erreur consignée (A1).
 - [x] Rootstocks d'essai regreffés : 0 lien cassé, 0 fichier régulier ; `check` code 0 (`qemu-gra2` : 1).
-- [ ] Fin du plan : `HORS-PLAN.md` présenté à l'utilisateur pour décision (prochaine action).
+- [x] Fin du plan : `HORS-PLAN.md` présenté à l'utilisateur et décisions consignées (2026-11-24).
 
 Tickets créés pendant la session : aucun.
 Lignes restées « ticket à créer après publication d'ENV-72 » : aucune.
 
 ## Reprise
-Commande ou première action de la session suivante :
+Le chantier est en pause par décision de l'utilisateur. Rien n'est à lancer sans sa demande.
+
+À faire à la reprise : réviser le plan pour planifier D41 et D42, et présenter D44 à D47 pour
+décision (traiter, hors plan, abandonner).
+
+Procédure de relance :
+1. Avant la révision, relever l'état :
+   - lepton-tools : `main` = `origin/main`, et l'éventuel commit hors étape non poussé ;
+   - seed.scions : `master` 929c01a, tag 0.6.3.4 ;
+   - noyau : `master` 0c2e43e ;
+   - Mac et VM : scion 0.6.3.4, lepton 0.1.0, extension 0.5.4, Claude Code, git ;
+   - les tickets lepton-famille-stm32f4xx#1, lepton-famille-stm32f7xx#1 et
+     lepton-famille-stm32wlxx#1 : un ticket fermé sans correction revient en décision ;
+   - l'amont ST, pour savoir si un STM32CubeWL `v1.7.0` est publié (D43).
+2. Réviser le plan avec la skill `lepton-portage-instructions` (hors de ce dépôt). Les fichiers
+   d'étape sont numérotés à partir d'ENV-73. Avant le commit, la révision est relue par un agent
+   indépendant (ORCHESTRATION §5bis), et les constats retenus sont consignés au journal.
+3. Ensuite, sessions d'étape ordinaires : skill `devenv-session`, une branche `devenv/env-<N>`.
+
+Commande de la session suivante :
 ```
-présente HORS-PLAN.md (fin du plan après ENV-72, lire handoff/env-72.md)
+révise le plan (fin du plan après ENV-72, lire handoff/env-72.md) : planifier D41 et D42, présenter D44 à D47
 ```
