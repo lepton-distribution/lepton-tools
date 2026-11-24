@@ -1,0 +1,2 @@
+erreur : <B>/k18/rootstock/trunk/.scion.grafted.list est vide : ajoutez un seed avec « scion seed-add »
+trunk rétabli dans son état antérieur (0 lien(s)), .scion.grafted.list comprise
