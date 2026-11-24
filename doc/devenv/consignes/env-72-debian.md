@@ -2,8 +2,11 @@
 
 Fichier autonome : avec `ORCHESTRATION.md` §2bis, il suffit à conduire la session VM. Rédigé le
 2026-11-24 par la session Mac `validation-debian-env-72` (tâche 1 d'ENV-72), repris de
-`consignes/env-66-debian.md`. **Soumis à l'utilisateur au PA-131** (consigne, §0, C3, C6, C8,
-C9). Son texte est envoyé tel quel dans l'ordre `R72-1`.
+`consignes/env-66-debian.md`. Validé par l'utilisateur au PA-131 (2026-11-24) : préalable du §0
+(`LEPTON_EMBOS_ROOT` dans `~/.bashrc`, relance de la session) ; regreffe de `$U`, `$E13`, `$C5` et
+`$R53` (C3) ; T3 de D36 dans VSCodium sur la VM, par l'utilisateur (C6) ; reconstruction des 16
+presets et miroir à blanc maintenus (C7) ; cartes écartées (C8) ; nettoyage tel qu'écrit (C9).
+Son texte est envoyé tel quel dans l'ordre `R72-1`.
 
 ## 0. Préalable, avant l'ordre (utilisateur) — PA-131
 
@@ -55,7 +58,7 @@ Valider sur Debian x86_64 l'état publié après ENV-67 à ENV-71 :
   `SCION_REF` 0.6.3.4, 5 fichiers hors de `scion/`). Aucun lien ne change ;
 - constructions host et 16 presets dans `$R53` regreffé : **aucun binaire changé** depuis R66-1.
 
-**Pas de cartes** dans cette session (C8, à confirmer au PA-131). Aucune écriture flash.
+**Pas de cartes** dans cette session (C8, écarté au PA-131). Aucune écriture flash.
 
 Références publiées (toutes poussées) :
 
@@ -733,7 +736,7 @@ référence « à envoyer » n'est admise que si une publication de l'amont post
 
 ## 13. Cartes (C8)
 
-Proposé écarté au PA-131 : ni binaire, ni flash, ni sonde ne changent. Aucune commande OpenOCD.
+Écarté au PA-131 : ni binaire, ni flash, ni sonde ne changent. Aucune commande OpenOCD.
 
 ## 14. Nettoyage de la VM (C9)
 
@@ -746,7 +749,7 @@ Puis, par la session, règle `allow` :
 scripts/supprimer-essai.sh ~/lepton-tools-dev/essais/env-72-essai ~/lepton-tools-dev/essais/env-72-fixture ~/env-66-journaux ~/tmp-pytest/env-66 ~/tmp-pytest/env-72-enveloppe
 ```
 Puis la session vérifie l'absence (`ls -d …`) et le consigne. Conservés : `$U`, `$E13`, `$C5`
-(regreffés au §9), `$R53`, `$J`, `~/tmp-pytest` et `~/tmp-pytest/env-72`. Périmètre à valider au
+(regreffés au §9), `$R53`, `$J`, `~/tmp-pytest` et `~/tmp-pytest/env-72`. Périmètre validé au
 PA-131.
 
 ## 15. Critères et rapport
@@ -760,7 +763,7 @@ PA-131.
 | C5 D35, D33, pytest | §11.1 : fixtures 65, 60, 56 écarts=0 ; fixture70 écarts limités à `k01-218.git-err`, `k01-250.git-err` ; k01, k02, k03, k07, f05 : la cause `fatal: Remote branch nope not found in upstream origin` ; g04, g06, g11, g13, g21 code 1 ; §11.2 : la cause en français (`fatal⍽: La branche distante…`) ; §11.3 : pytest 616 passed |
 | C6 D36 | extension 0.5.4 installée ; T3 : « Observation de N+1 greffon(s) » après `seed add` au terminal, une seule notification « Clone de library-env72lib supprimé hors de lepton… » après la suppression du clone ; états relevés |
 | C7 Constructions, miroir | premier passage code 0 (variable du profil) ; host ctest 7/7 ; 16 presets construits ; QEMU fumée et banc 20/20, 16/16, 19/19, `peripheriques` ×4 ; mklepton = `env-66-debian` = `env-52-apres` ; `comparer_R66-1` 0 pour les 16 presets ; `mirror-sync --dry-run` : code 0, 8 miroirs, 0 à envoyer (ou expliqué par l'amont), 0 signalement ; rien envoyé |
-| C8 Cartes | écarté (à confirmer au PA-131) |
+| C8 Cartes | écarté (PA-131) |
 | C9 Nettoyage | `$W`, `$FX`, `~/env-66-journaux`, `~/tmp-pytest/env-66`, `~/tmp-pytest/env-72-enveloppe` supprimés par l'enveloppe (descendants de `~/tmp-pytest` compris, D38 (2)) ; absents |
 
 Avant le commit, relevé final des décisions (toute la session) :
