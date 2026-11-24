@@ -104,3 +104,10 @@ Un premier essai, `!` précédé d'un caractère, est arrivé comme message sans
 
 Pour ENV-72 : le `mirror-sync --dry-run` de la VM doit donner 0 référence à envoyer, sauf nouvelle
 publication de l'amont après le 2026-11-24 14:36 +0100.
+
+## 7. PA-130 (2026-11-24) et ticket D43
+Rapport accepté par l'utilisateur ; fusion `--no-ff` de `devenv/env-71` dans `main` et push accordés.
+D43 (versions WL nouvelles) : ticket lepton-distribution/lepton-famille-stm32wlxx#1
+(`fonctionnalité`, `P3`), publié après accord sur le texte (skill `lepton-ticket-creer` §8 ; plugin
+rechargé dans la session) ; étiquettes `fonctionnalité` et `P3` créées sur le dépôt (accord).
+Le couple WL est à reprendre d'un tag STM32CubeWL `v1.7.0` ou suivant.
