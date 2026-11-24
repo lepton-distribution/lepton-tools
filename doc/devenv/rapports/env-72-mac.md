@@ -237,6 +237,42 @@ Décisions (journal de session, `decisions.py --motif graft-update --motif graft
 (après la fin des invites de la VM) ; le `graft-remove`, hors règle, accepté par le classifieur.
 Aucun refus.
 
+## 3bis. Contrôle du rapport VM (tâche 4)
+
+`FIN-SUCCÈS R72-1` reçu. Branche `origin/devenv/env-72-debian` 9869e39, un commit sur 5411f78
+(`devenv/env-72`) ; 1278 fichiers ajoutés, tous sous `rapports/env-72-debian*` et
+`rapports/oracles/env-72-debian/` (aucun autre fichier touché). Relevés extraits par `git archive`
+dans le répertoire temporaire de la session ; comparaisons refaites au Mac par
+`scripts/comparer-releves.py --home-attendu /Users/cle_d_anton --home-obtenu /home/lepton-user`.
+
+| Critère | Refait au Mac sur les relevés poussés | Verdict |
+| --- | --- | --- |
+| C1 | `5-variables.txt` : `LEPTON_EMBOS_ROOT` = attendu, six absentes, `LANG=fr_FR.UTF-8`, `LC_ALL` absente ; versions du `FIN` (scion 0.6.3.4, 18 modules, extension 0.5.4) | conforme |
+| C2 | `15-decisions.tsv` : `pipx install --force` `rule projectSettings` ; U1, U2, R1, R2, E1, `git clone`, pytest, suppression de T3 `subcommandResults` ; A1 `accept user_temporary` (15:29:07, confirmée par erreur, sans effet) puis `rejet-invite` (15:30:15) ; H1 `reject hook` ; 4 `graft-update` `user_temporary projectSettings` (15:35:21 à 15:40:09) ; chemin personnel normalisé (`<HOME>`) | conforme (incident A1 consigné, décision (a) de l'utilisateur) |
+| C3 | résumés régénérés des 3 journaux `graft-update` (filtre `resume()`) contre `attendu/c3/` : `écarts=1 / 1` ×3, diff limité à la variante « point de montage » (D34) ; bilans : noyau 2b4a647 → 0c2e43e seul ; `$C5` `CONFORME`, F7 0 / 4, `check` 0 | conforme (D34 admis, plan) |
+| C4 | `c4-chemins` `écarts=15 / 165` : les 13 de la copie distincte (§1.5) + `p6-n.cmd`, `p6-n.clangd` (hôte) ; lignes changées : 7 `presets`, 5 « 13 chemin(s) ignoré(s) par git », clangd ; `resume.tsv` colonnes 1-6 identiques. `c4-graine` `écarts=2 / 244` (`g1-status.out`, `r1-status.out`) : commits, configuration `release-qemu` absente, branche de la graine (`master` sur la VM, `main` au Mac) et `location` des 3 greffons publiés (`ssh://git@github.com/…` contre `https://…`) | conforme (classe « graine `env11` », plus large que listé : défaut de la consigne) |
+| C5 | fixture65 0 / 284, fixture60 0 / 179, fixture56 0 / 76, fixture70 2 / 202 (`k01-218.git-err`, `k01-250.git-err` : `warning` puis `fatal` par `/usr/bin/git` 2.47.3) ; k01, k02, k03, k07, f05 finissent par `fatal: Remote branch nope not found in upstream origin` ; `11-d35-fr.log` : `fatal` + U+00A0 + `: La branche distante nope…` (vérifié par `od`), code 2 ; pytest 616, 0 échec | conforme — **D35 prouvé avec git 2.47.3** |
+| C6 | rapport et `FIN` : « Observation de 5 » → « de 6 » après `seed add` au terminal, une seule notification après la suppression du clone (centre de notifications, non affichée en surimpression) | conforme (constat d'affichage) |
+| C7 | mklepton = `env-66-debian` = `env-52-apres` ; `comparer-oracle.py env-66-debian` code 0 pour les 16 presets ; ctest 7/7, banc 20/20, 16/16, 19/19 (×2), `peripheriques` ×4 ; `12-mirror-sync.log` : 8 × « 0 référence(s) à envoyer, 0 signalement(s) », code 0 | conforme |
+| C8 | écarté (PA-131) | — |
+| C9 | `FIN` : `env-72-essai`, `env-72-fixture`, `~/tmp-pytest/env-72-enveloppe` supprimés par l'enveloppe (liste corrigée) | conforme (hors commit, par le message) |
+
+D39 : dernière invite de la VM avant le push à 15:40:09 UTC ; regreffes du Mac de 15:42:45 à
+15:48:32 UTC, après l'`AVANCEMENT` « fin des invites » ; aucune commande à invite au Mac pendant le
+push (16:49:10 UTC). Aucune invite simultanée.
+
+Défauts de la consigne relevés pendant R72-1 (tous expliqués, aucun ne change un résultat) :
+1. `~/env-66-journaux`, `~/tmp-pytest/env-66` donnés présents (supprimés par R66-2) ; §14 corrigé
+   par décision de l'utilisateur ;
+2. variante « point de montage » (D34) non listée au §9, bien qu'admise par le fichier d'étape ;
+3. classe « graine `env11` » non détaillée : branche et URL déclarées de la graine de `$C5`, que la
+   copie distincte du Mac (même URL, même branche qu'`essais/env-11/qemu`) ne pouvait pas montrer.
+
+Constats de la VM, sans écart de critère : notification de D36 visible seulement dans le centre de
+notifications ; `env11.code-workspace` copié de `$C5` avec son chemin absolu (clangd relancé sur
+`$C5`, déjà vu en R66-1) ; répertoire de l'extension 0.5.3 laissé par VSCodium (comme au Mac) ;
+`CLAUDE_PROJECT_DIR` vide dans Bash (déjà vu en R66-1).
+
 ## 4. Journal des messages (§2bis)
 
 | ID | Type | Sens | Date (heure locale) | Résumé | Remis |
@@ -258,6 +294,15 @@ Aucun refus.
 | R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | `env-13-debian` conforme (noyau seul, 3889 liens, `CONFORME`, 0 / 16, `check` 0 ; résumé : écart D34 seul) ; `graft-update` d'`env-53-c5` annoncé « À CONFIRMER » (3 sur 4), graine locale `env11` sur `master` 6d3d2a5, 3059 liens | reçu |
 | R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | `env-53-c5` conforme (noyau seul ; `salut` accepté ; graine `env11` sans amont laissée ; 3059 liens, `CONFORME`, F7 0 / 4, `check` 0) ; `graft-update` d'`env-53-debian` annoncé « À CONFIRMER » (4 sur 4), graine sur `original-tree` 15740f9 | reçu |
 | R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | **fin des invites de la VM jusqu'au push** (D39) ; §9 terminé : 4 regreffes, 4 invites confirmées, 4 codes 0 ; `env-53-debian` conforme (écart D34 seul) ; `$U`, `$E13`, `$R53` : même diff, la variante seule ; `$C5` sans écart ; passage au §10 | reçu |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | §10 : deux codes 0 ; c4-chemins `écarts=15 / 165` (classes listées) ; c4-graine `écarts=2 / 244` (g1, r1-status), « location » des greffons en `ssh://` sur la VM | **non remis** (ECONNRESET ×2), consigné par la VM dans `~/env-72-journaux/0-messages-R72-1.md` ; contenu reçu par le message suivant |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | §11.1 : fixtures 65, 60, 56 `écarts=0` ; fixture70 `écarts=2 / 202` (`k01-218.git-err`, `k01-250.git-err`) ; **D35 prouvé** (k01, k02, k03, k07, f05 : `fatal: Remote branch nope…`) ; g04, g06, g11, g13, g21 code 1 ; §11.2 : `fatal⍽: La branche distante nope…`, code 2, `depots` vide ; pytest lancé 15:53 UTC ; §11.4 étape 1 demandée à l'utilisateur | reçu |
+| R72-1 | RÉPONSE | Mac → VM | 2026-11-24 | relais du §10 inutile ; 15 = 13 de la copie distincte + 2 de l'hôte ; « location » = URL déclarée par la graine `env11` de `$C5` (classe « graine », non détaillée par la consigne : défaut D38 (3)), admis si g1, r1 ne diffèrent que par commits, configurations et « location » ; relever `.scion.sources.list` | accepté par le serveur |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | §11.3 pytest 616 passed (178,9 s), modules = Mac ; §11.4 T3 : « Observation de 5 » puis « de 6 » après `seed add` au terminal (16:34:41 UTC) ; suppression du clone (16:37:30) : aucune notification vue ; hypothèse inotify | reçu |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | correction : une seule notification « Clone de library-env72lib supprimé hors de lepton… », trouvée par l'utilisateur dans le centre de notifications (non affichée en surimpression) ; T3 conforme ; hypothèse retirée ; §12.1 lancé sur `devenv/env-72-debian` | reçu |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | §12 conforme : `rejouer-oracle` code 0 au premier passage (variable du profil) ; host 7/7 ; 16 presets ; banc 20/20, 16/16, 19/19 ×2, `peripheriques` ×4 ; mklepton = R66-1 = `env-52-apres` ; `comparer_R66-1` 0 et `hors_debug=0` ×16 ; `mirror-sync --dry-run` 8 × 0 référence, 0 signalement ; rédaction du rapport | reçu |
+| R72-1 | QUESTION | VM → Mac | 2026-11-24 | rapport commité 9869e39 sur `devenv/env-72-debian` (depuis 5411f78 : rapport, pièces, oracle) ; C1-C7 atteints, C8 écarté, C9 après le push ; accord de push demandé à l'utilisateur dans la session VM | reçu |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | push annoncé « À CONFIRMER », accord de l'utilisateur dans la session VM | reçu |
+| R72-1 | FIN-SUCCÈS | VM → Mac | 2026-11-24 | C1-C7 atteints, C8 écarté, C9 fait ; `devenv/env-72-debian` 9869e39 poussée (16:49:10 UTC, invite confirmée) ; 8 écarts et constats ; 1 message non remis (§10) | reçu |
 
 §0 (utilisateur) : `LEPTON_EMBOS_ROOT` absente au premier essai (l'`export` n'avait été tapé que
 dans un terminal) ; ligne ajoutée à la fin de `~/.bashrc` (shell `/bin/bash`, pas de
@@ -275,3 +320,9 @@ Second défaut de la consigne (QUESTION au §9) : le §9 attendait `écarts=0 / 
 `graft-update` sans lister la variante « point de montage » de git (D34, `/home` distinct sur la
 VM), alors que le fichier d'étape la donne pour « écart admis à la main ». Réponse de la session
 Mac fondée sur cette décision existante (PA-120) ; l'utilisateur en est informé.
+
+Troisième défaut de la consigne (§10, AVANCEMENT non remis puis résumé) : la classe « graine
+`env11` » ne citait que le commit et les presets ; sur la VM, `g1-status.out` et `r1-status.out`
+portent aussi les URL déclarées par la graine de `$C5` (`ssh://git@github.com/…`, contre
+`https://…` au Mac). La copie distincte du Mac gardait les URL d'`essais/env-11/qemu` : le
+contrôle D38 (3) ne pouvait pas la faire paraître, faute d'en avoir changé aussi les URL.
