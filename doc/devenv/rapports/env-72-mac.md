@@ -204,3 +204,42 @@ C7 : `LEPTON_EMBOS_ROOT` vient du profil de la VM (§0, PA-121) ; le premier pas
 Rootstocks d'essai du Mac (tâche 3) : `essais/env-13-vierge` est déjà regreffé (§1.3) ; restent
 `essais/env-9` et, sous `essais/env-11/`, `qemu`, `qemu-gra2`, `bout-en-bout/rootstock`, `f429zi`,
 `wl55jc1`, après l'`AVANCEMENT` « fin des invites de la VM » ou le `FIN-*` (D39), sur accord.
+
+## 4. Journal des messages (§2bis)
+
+| ID | Type | Sens | Date (heure locale) | Résumé | Remis |
+| --- | --- | --- | --- | --- | --- |
+| — | annonce | VM → Mac | 2026-11-24 | session `debian-linux-vm` prête : `devenv/env-72`, tête 5411f78, arbre propre | reçu |
+| R72-1 | ORDRE | Mac → VM | 2026-11-24 16:22 | consigne par chemin, commit 5411f78 et sha256 `5556a024…0f36` ; décisions du PA-131 ; invites à refuser et à confirmer ; D39 ; forme de fin | accepté par le serveur ; accusé reçu |
+| R72-1 | ACCUSÉ | VM → Mac | 2026-11-24 | ordre reformulé ; Claude Code 2.1.331 ; tête 5411f78, sha256 de la consigne = ordre ; 4 empreintes = Mac ; variables du PA-121 conformes (`LANG=fr_FR.UTF-8`, `LC_ALL` absente) ; têtes = Mac ; `$U`, `$E13`, `$R53` : graine sur `original-tree` 15740f9, noyau 2b4a647, 3889 liens ; `$C5` : graine locale `env11` sur `master` 6d3d2a5, 3059 liens ; écart 1 : `~/env-66-journaux`, `~/tmp-pytest/env-66` absents | reçu |
+| R72-1 | RÉPONSE | Mac → VM | 2026-11-24 | écart 1 = défaut de la consigne (chemins supprimés par R66-2, `handoff/env-66.md` l. 38) ; §5 et §8.2 : absence attendue ; §14 : correction à venir après décision de l'utilisateur ; poursuivre | accepté par le serveur |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | §6 : noyau 2b4a647 → 0c2e43e, `SCION_REF` 0.6.3.4 (noyau et lepton-tools), `.vsix` 0.5.4 `31678dd3…b8d1` ; lancement des 3 installations | reçu |
+| R72-1 | RÉPONSE | Mac → VM | 2026-11-24 | §14 corrigé (décision de l'utilisateur) : `supprimer-essai.sh` sur `env-72-essai`, `env-72-fixture`, `~/tmp-pytest/env-72-enveloppe` ; C9 en conséquence | accepté par le serveur |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | §6 conforme (scion 0.6.3.4, `gitops.cause` ; lepton 18 modules = dépôt ; extension 0.5.3 → 0.5.4, `batch.js`, `watch.js` observe la liste ; ancien répertoire 0.5.3 resté, comme au Mac) ; §7 conforme (2 copies, 3059 liens, `check` 0, `depot72` bf69c9b, racine de `c4/rs` sans `.DS_Store`) ; deux RÉPONSES reçues | reçu |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | §8.1-8.2 : réglages = R66-1 (2 règles) ; U1 code 1, U2 code 128, cibles absentes ; R1, R2 code 2, rien supprimé ; E1 code 0 (`sous/` supprimé, `g` gardé) ; A1 annoncé « À REFUSER » | reçu |
+| R72-1 | QUESTION | VM → Mac | 2026-11-24 | A1 confirmée par erreur dans la session VM (`accept user_temporary projectSettings`, 15:29:07 UTC), sans effet (code 1, « n'est pas un rootstock », cible absente) ; options (a) relancer A1 pour la refuser, (b) consigner et poursuivre | reçu |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | option (a) choisie par l'utilisateur dans la session VM ; A1 relancée, annoncée « À REFUSER » | reçu |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | §8 terminé : A1 relancée `rejet-invite` (15:30:15 UTC) ; H1 `reject hook hook` ; cibles absentes, liens de c6 = départ ; U1, U2, R1, R2, E1 `subcommandResults` ; préparation du §8.2 au classifieur (hors règle, accepté) ; §9 : `graft-update` d'`env-28-debian` annoncé « À CONFIRMER » (1 sur 4), graine sur `original-tree` 15740f9 | reçu |
+| R72-1 | QUESTION | VM → Mac | 2026-11-24 | `env-28-debian` regreffé, conforme hors du résumé : `écarts=1 / 1`, variante « point de montage » de git (D34) au lieu de la ligne « not a git repository » ; options (a) admettre pour `$U`, `$E13`, `$R53`, (b) arrêt | reçu |
+| R72-1 | RÉPONSE | Mac → VM | 2026-11-24 | (a) : écart déjà admis par le plan (D34 hors plan, PA-120 ; fichier d'étape, Pièges connus), omis par la consigne ; admis seulement si le diff se limite à cette ligne ; poursuivre | accepté par le serveur |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | RÉPONSE (a) reçue ; `graft-update` d'`env-13-debian` annoncé « À CONFIRMER » (2 sur 4), graine sur `original-tree` 15740f9, 3889 liens | reçu |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | `env-13-debian` conforme (noyau seul, 3889 liens, `CONFORME`, 0 / 16, `check` 0 ; résumé : écart D34 seul) ; `graft-update` d'`env-53-c5` annoncé « À CONFIRMER » (3 sur 4), graine locale `env11` sur `master` 6d3d2a5, 3059 liens | reçu |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | `env-53-c5` conforme (noyau seul ; `salut` accepté ; graine `env11` sans amont laissée ; 3059 liens, `CONFORME`, F7 0 / 4, `check` 0) ; `graft-update` d'`env-53-debian` annoncé « À CONFIRMER » (4 sur 4), graine sur `original-tree` 15740f9 | reçu |
+| R72-1 | AVANCEMENT | VM → Mac | 2026-11-24 | **fin des invites de la VM jusqu'au push** (D39) ; §9 terminé : 4 regreffes, 4 invites confirmées, 4 codes 0 ; `env-53-debian` conforme (écart D34 seul) ; `$U`, `$E13`, `$R53` : même diff, la variante seule ; `$C5` sans écart ; passage au §10 | reçu |
+
+§0 (utilisateur) : `LEPTON_EMBOS_ROOT` absente au premier essai (l'`export` n'avait été tapé que
+dans un terminal) ; ligne ajoutée à la fin de `~/.bashrc` (shell `/bin/bash`, pas de
+`~/.bash_profile`), vérifiée dans un nouveau terminal ; session VM ouverte depuis ce terminal
+(confirmé par l'utilisateur avant l'envoi de l'ordre).
+
+Défaut de la consigne relevé par l'ACCUSÉ : §5 et §8.2 donnaient `~/env-66-journaux` et
+`~/tmp-pytest/env-66` présents, et le §14 les supprimait. Ils avaient été supprimés par `R66-2`
+(`handoff/env-66.md` l. 38 ; le fichier d'étape disait « `~/tmp-pytest` vide »). Décision de
+l'utilisateur (2026-11-24, pendant R72-1) : liste du §14 réduite à `env-72-essai`,
+`env-72-fixture`, `~/tmp-pytest/env-72-enveloppe`, transmise à la VM ; la consigne versionnée n'est
+pas modifiée en cours d'ordre.
+
+Second défaut de la consigne (QUESTION au §9) : le §9 attendait `écarts=0 / 1` sur le résumé de
+`graft-update` sans lister la variante « point de montage » de git (D34, `/home` distinct sur la
+VM), alors que le fichier d'étape la donne pour « écart admis à la main ». Réponse de la session
+Mac fondée sur cette décision existante (PA-120) ; l'utilisateur en est informé.
