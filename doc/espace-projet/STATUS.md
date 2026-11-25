@@ -1,23 +1,20 @@
 # État du chantier « espace-projet »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-11-25 — plan établi (EP-0 à EP-8), relu et corrigé, commité sur
-`espace-projet/plan` ; PA-E0 ouvert pour la fusion et l'import de la skill.
+Dernière mise à jour : 2026-11-25 — plan établi (EP-0 à EP-8), relu et corrigé ; skill
+`espace-projet-session` importée ; PA-E0 clos ; `espace-projet/plan` fusionnée dans `main`.
 
 ## Prochaine action
 
-Fin du PA-E0, sur accord de l'utilisateur : fusionner `espace-projet/plan` dans `main`
-(`--no-ff`) et pousser (PA-P) ; l'utilisateur importe la skill `espace-projet-session` sur le
-compte (`~/Downloads/espace-projet-session.zip`) ; après synchronisation (`claude -p` hors du
-dépôt), `scripts/importer-skills.sh -n espace-projet-session`, puis sans `-n`, et commit dédié.
-Ensuite : EP-0 (`etapes/EP-0-essai-vscodium-lien.md`), en relevant d'abord la version de Claude
-Code.
+EP-0 (`etapes/EP-0-essai-vscodium-lien.md`), dans une nouvelle session, par la skill
+`espace-projet-session`. Vérifier d'abord que `main` = `origin/main` (push accordé au PA-E0) et
+relever la version de Claude Code.
 
 ## Étapes
 
 | Étape | Titre | Statut | Branche(s) | Passation |
 | --- | --- | --- | --- | --- |
-| plan | Plan du chantier (skill `lepton-portage-instructions`) | en cours ; PA-E0 ouvert | lepton-tools `espace-projet/plan` (depuis `main` e25a414) | — |
+| plan | Plan du chantier (skill `lepton-portage-instructions`) | terminée (2026-11-25) | lepton-tools `espace-projet/plan` (depuis `main` e25a414 ; fusionnée `--no-ff` dans `main`) | — |
 | EP-0 | Essai VSCodium : espace ouvert par un lien du trunk ; plusieurs rootstocks | à faire | | |
 | EP-1 | Greffon de type `projet` dans lepton | à faire | | |
 | EP-2 | scion : fichiers ignorés greffables déclarés par le greffon | à faire | | |
@@ -73,7 +70,8 @@ C1 à C10 (utilisateur, 2026-11-25) : `CADRAGE.md` §5, non recopiées.
 | P4 | 2026-11-25 | D41 et D42 du hors-plan d'ENV repris par ce chantier, en EP-7. | utilisateur, sur proposition de la session |
 | P5 | 2026-11-25 | Nom et format du fichier de poste, nom de la déclaration de scion, sort des graines d'essai à `project/` : décidés au point d'arrêt de l'étape concernée (PA-E8, PA-E4, PA-E2). | utilisateur, sur proposition de la session |
 | P6 | 2026-11-25 | J-Link, option (ii) du résidu `tauon-basic`, graine multi-BSP et publication sur Open VSX : consignés dans `HORS-PLAN.md`. | utilisateur, sur proposition de la session |
-| PA-E0 (relecture) | 2026-11-25 | Constats 1 à 11 de la relecture indépendante, constats mineurs et suggestion d'un essai sur la VM avant EP-4 : retenus et appliqués. Fusion dans `main`, push et import de la skill : restent à accorder. | utilisateur |
+| PA-E0 (relecture) | 2026-11-25 | Constats 1 à 11 de la relecture indépendante, constats mineurs et suggestion d'un essai sur la VM avant EP-4 : retenus et appliqués. | utilisateur |
+| PA-E0 (clôture) | 2026-11-25 | Fusion d'`espace-projet/plan` dans `main` et push de `main` accordés (PA-P). Skill `espace-projet-session` importée sur le compte par l'utilisateur, puis copiée dans le dépôt. | utilisateur |
 
 ## Journal
 
@@ -96,3 +94,7 @@ C1 à C10 (utilisateur, 2026-11-25) : `CADRAGE.md` §5, non recopiées.
   non présentées à l'utilisateur, non appliquées : liste attendue du grep d'EP-3, carte absente
   en EP-5, formulations d'EP-2, forme de `pipx install` en EP-1, description de `devenv-session`.
   Ajouts hors source de la session : essai (c) d'EP-0, critères d'oracle d'EP-1.
+- 2026-11-25 — Plan commité sur `espace-projet/plan` (764974f, c09e7d6). Skill
+  `espace-projet-session` : copie synchronisée du compte identique à la version préparée
+  (SHA-256 0fa50811…), copiée par `scripts/importer-skills.sh espace-projet-session`, commit
+  dédié. PA-E0 clos : fusion `--no-ff` dans `main`, push de `main` accordé par l'utilisateur.

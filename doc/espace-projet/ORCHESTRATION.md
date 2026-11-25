@@ -108,7 +108,7 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 
 | ID | Étape | Question ou validation | État |
 | --- | --- | --- | --- |
-| PA-E0 | plan | Plan relu par un agent indépendant ; constats retenus ; commit ; `CLAUDE.md` ; fusion d'`espace-projet/plan` dans `main` et push (PA-P) ; import de la skill `espace-projet-session` sur le compte, synchronisation (`claude -p` hors du dépôt), puis `scripts/importer-skills.sh espace-projet-session` et commit dédié | ouvert |
+| PA-E0 | plan | Plan relu par un agent indépendant ; constats retenus ; commit ; `CLAUDE.md` ; fusion d'`espace-projet/plan` dans `main` et push (PA-P) ; import de la skill `espace-projet-session` sur le compte, synchronisation (`claude -p` hors du dépôt), puis `scripts/importer-skills.sh espace-projet-session` et commit dédié | clos (2026-11-25) |
 | PA-E1 | EP-0 | Résultats de l'essai VSCodium : C2 et C3 maintenues ou révisées ; effets sur EP-1, EP-2, EP-4 ; essais (a) et (b) sur la VM Debian avant EP-4, ou non ; constat du besoin 2 ; sort des essais | ouvert |
 | PA-E2 | EP-1 | Conception du type `projet` avant toute modification : schémas, noms, emplacement du manifeste et modification ou non du lecteur CMake du noyau, interface de `seed new`, régime de référence avec greffon projet (T8), sort des graines existantes à `project/`, versions, où consigner les exigences modifiées (T9) | ouvert |
 | PA-E3 | EP-1 | Rapport, essai VSCodium par l'utilisateur, sort des essais, publication | ouvert |
