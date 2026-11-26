@@ -15,8 +15,8 @@ Archétype : infrastructure, iso-fonctionnel en l'absence de déclaration. Forme
 d'ENV-70 (`doc/devenv/etapes/ENV-70-scion-cause-git-version-graine.md`).
 
 ## Prérequis
-- Indépendante d'EP-1. Conseillée après le PA-E1 d'EP-0 : si C2 est révisée, relire C5 avec
-  l'utilisateur avant de commencer.
+- Indépendante d'EP-1. Conseillée après le PA-E1 d'EP-0. C2 y a été révisée (espace à la racine
+  du rootstock, `STATUS.md` §Décisions) : relire C5 avec l'utilisateur avant de commencer.
 - `<SEED_SCIONS>` `master` 929c01a, tag `0.6.3.4` ; compte des tests de scion à relever.
 - `SCION_MIN_VERSION` = (0, 6, 2, 0) (`lepton/__init__.py`) ; `SCION_REF` = `0.6.3.4`
   (`scripts/install-vscodium.sh`, et `scripts/install-{macos,debian}.sh` du clone noyau).

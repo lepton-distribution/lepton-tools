@@ -136,8 +136,8 @@ EP-5 et EP-6 ; ici, aucune écriture flash.
   jusqu'à la fusion dans sa branche par défaut (`doc/devenv/rapports/env-29-scion.md` §4).
 - Tant que le noyau amputé n'est pas publié avec la graine et les BSP, un rootstock mis à jour à
   moitié a des presets sans XML : d'où l'ordre du PA-E6.
-- En régime de référence, `generate` continue d'écrire l'espace à la racine du rootstock
-  jusqu'à EP-4 ; le comportement de lepton avec ce greffon est celui retenu au PA-E2 (T8).
+- En régime de référence, `generate` écrit l'espace à la racine du rootstock (C2 révisée, C8
+  annotée au PA-E1) ; le comportement de lepton avec ce greffon est celui retenu au PA-E2 (T8).
 - Les rootstocks de la VM et les rootstocks d'essai du Mac se regreffent en EP-8, pas ici.
 
 ## À la fin de l'étape

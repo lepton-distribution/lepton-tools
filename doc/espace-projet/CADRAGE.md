@@ -156,22 +156,30 @@ Trois couches : **graine et greffon projet = projet** (versionnés, partagés) ;
 machine** (non versionné : chaîne, outils, sondes et numéros de série par carte) ; **espace de
 travail = projection des deux**, en chemins relatifs, régénérée sans effet de bord.
 
+Note (PA-E1, 2026-11-26) : depuis la révision de C2, le `.code-workspace` n'est plus un fichier du
+greffon projet ; celui-ci fournit le contenu versionné que `generate` projette dans l'espace, à la
+racine du rootstock.
+
 ## 5. Décisions prises (utilisateur, 2026-11-25)
 
 | # | Décision |
 | --- | --- |
 | C1 | Les quatre axes du §1 sont l'objet du chantier ; référence de comportement : IAR Embedded Workbench. |
-| C2 | Emplacement de l'espace : `trunk/sys/user/<projet>/<nom>.code-workspace`, fourni par le greffon projet (revient sur D2 d'ENV-9). |
+| C2 | Emplacement de l'espace : `trunk/sys/user/<projet>/<nom>.code-workspace`, fourni par le greffon projet (revient sur D2 d'ENV-9). — **Révisée au PA-E1 (2026-11-26, `STATUS.md` §Décisions)** : l'espace reste un fichier régulier à la racine du rootstock, généré depuis le contenu versionné du greffon projet (piste P-a, `rapports/ep-0-essai-lien.md` §6) ; D2 d'ENV-9 n'est touchée que si le contenu d'équipe retenu au PA-E8 le demande (T9). |
 | C3 | **Un seul** espace par projet, complété par un fichier de poste non versionné (pas plusieurs `.code-workspace` par projet). |
 | C4 | Nouveau type de greffon `projet` à dépôt propre (ou partagé avec BSP et bin) ; il **remplace** le `project/` du dépôt de la graine (un seul concept). `seed new` crée ou désigne ce dépôt. Conséquence : le critère de reconnaissance de la graine de référence devient « pas de `lepton-graine.json` ». Sort des graines d'essai existantes : à borner dans l'étape. |
 | C5 | Fichiers de poste : solution (a) — scion greffe des motifs ignorés par git **déclarés par le greffon** (évolution générique de scion, NF-2) ; lepton crée le fichier de poste dans le greffon projet, ignoré par git, et `generate` le lit. (b) fichiers tolérés dans le trunk et (c) fichier à la racine du rootstock sont écartés. |
 | C6 | `tauon-basic` : **option B** — greffon `lepton-original-tree-project` (type `projet`, dépôt GitHub propre sous `lepton-distribution/`), `scion/sys/user/lepton-basic/`. Les XML **gardent leur nom** (`mkconf_tauon_basic_*.xml`). Repris : les 5 XML des cartes portées et les 10 `etc/<carte>/{.boot,.init}` — 15 fichiers, `src_file` réécrits `sys/user/lepton-basic/…`. Non repris : `etc/.boot`, `.init`, `.mount`, les 5 variantes `.init_*`, `src/bin/*`, les 7 `user_kernel_mkconf.h` (hors plan, comme A3). |
 | C7 | Résidu dans le noyau : option (i) — `sys/user/tauon-basic/` reste dans le noyau, amputé des 15 fichiers repris ; le test hôte de mklepton garde ses entrées au même chemin (empreintes inchangées) ; le trunk porte `sys/user/tauon-basic/` (résidu, consigné hors plan) à côté de `sys/user/lepton-basic/` (greffon). Option (ii) — déplacer le jeu Olimex sous `tests/host/` et supprimer le résidu — **pour plus tard**. |
-| C8 | **Régime de graine de référence conservé** pour `original-tree` : le greffon `lepton-original-tree-project` y est ajouté par scion, dans son dépôt (comme les BSP en ENV-13/19/20) ; pas de conversion en graine de projet (impossible sans manifeste multi-BSP/multi-backend : hors chantier). `generate` écrit l'espace dans le greffon projet dès qu'un greffon de type `projet` est greffé — le greffon n'est pas la graine, PA-23 Q3 reste respecté — et à la racine du rootstock sinon. |
+| C8 | **Régime de graine de référence conservé** pour `original-tree` : le greffon `lepton-original-tree-project` y est ajouté par scion, dans son dépôt (comme les BSP en ENV-13/19/20) ; pas de conversion en graine de projet (impossible sans manifeste multi-BSP/multi-backend : hors chantier). `generate` écrit l'espace dans le greffon projet dès qu'un greffon de type `projet` est greffé — le greffon n'est pas la graine, PA-23 Q3 reste respecté — et à la racine du rootstock sinon. — **Annotée au PA-E1 (2026-11-26)** : la branche « espace dans le greffon projet » est sans objet depuis la révision de C2 ; l'espace est à la racine dans les deux régimes. Le reste de C8 est inchangé. |
 | C9 | J-Link : **différé** — sera validé plus tard sur une autre carte, avec un projet et un BSP spécifiques. Le schéma garde `jlink` ; le chantier valide OpenOCD avec ST-LINK et CMSIS-DAP. |
 | C10 | Chantier propre (`doc/espace-projet/`), plan à établir par la skill `lepton-portage-instructions` depuis une session Claude Code CLI sur la machine de développement ; suivi de l'état à choisir : réutiliser `DEVENV-STATUS.md` ou ouvrir un fichier d'état propre (recommandation §8). |
 
 ## 6. Directions techniques (propositions de la session, non validées une à une)
+
+Note (PA-E1, 2026-11-26) : texte historique. L'essai (a)/(b) a été fait en EP-0 et C2 révisée ;
+la phrase « `${workspaceFolder:trunk}/..`, acceptés par clangd, CMake Tools, `launch`, `tasks` »
+est réfutée pour clangd (`rapports/ep-0-essai-lien.md` §3).
 
 - **Portabilité** : l'espace cesse de figer le poste. Chemins relatifs à l'espace
   (`${workspaceFolder:trunk}/..`, acceptés par clangd, CMake Tools, `launch`, `tasks`) ; valeurs de
@@ -198,6 +206,9 @@ travail = projection des deux**, en chemins relatifs, régénérée sans effet d
   lepton-tools (§2.5) ; graine de référence ; validation Debian.
 
 ## 7. Étapes candidates et dépendances (entrée de `lepton-portage-instructions`)
+
+Note (PA-E1, 2026-11-26) : texte historique, entrée du plan ; l'emplacement de l'espace décrit
+pour E-C est révisé (C2, `STATUS.md` §Décisions).
 
 Préfixe et numérotation à fixer par le plan. Ordre des dépendances :
 

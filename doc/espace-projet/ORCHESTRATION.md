@@ -109,14 +109,14 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 | ID | Étape | Question ou validation | État |
 | --- | --- | --- | --- |
 | PA-E0 | plan | Plan relu par un agent indépendant ; constats retenus ; commit ; `CLAUDE.md` ; fusion d'`espace-projet/plan` dans `main` et push (PA-P) ; import de la skill `espace-projet-session` sur le compte, synchronisation (`claude -p` hors du dépôt), puis `scripts/importer-skills.sh espace-projet-session` et commit dédié | clos (2026-11-25) |
-| PA-E1 | EP-0 | Résultats de l'essai VSCodium : C2 et C3 maintenues ou révisées ; effets sur EP-1, EP-2, EP-4 ; essais (a) et (b) sur la VM Debian avant EP-4, ou non ; constat du besoin 2 ; sort des essais | ouvert |
+| PA-E1 | EP-0 | Résultats de l'essai VSCodium : C2 et C3 maintenues ou révisées ; effets sur EP-1, EP-2, EP-4 ; essais (a) et (b) sur la VM Debian avant EP-4, ou non ; constat du besoin 2 ; sort des essais | clos (2026-11-26) |
 | PA-E2 | EP-1 | Conception du type `projet` avant toute modification : schémas, noms, emplacement du manifeste et modification ou non du lecteur CMake du noyau, interface de `seed new`, régime de référence avec greffon projet (T8), sort des graines existantes à `project/`, versions, où consigner les exigences modifiées (T9) | ouvert |
 | PA-E3 | EP-1 | Rapport, essai VSCodium par l'utilisateur, sort des essais, publication | ouvert |
 | PA-E4 | EP-2 | Évolution de scion avant implémentation : nom et emplacement de la déclaration, syntaxe, cas limites, numéro de version, `SCION_MIN_VERSION`, `SCION_REF` | ouvert |
 | PA-E5 | EP-2 | Rapport, sort des essais, publication (tag et `master` de `<SEED_SCIONS>`) | ouvert |
 | PA-E6 | EP-3 | Audit et oracle avant : nom de clé et clone du greffon, arborescence, historique, visibilité et licence du dépôt, presets du noyau et source de `seed new --mkconf` (T4), tests hôte, empreintes et BSP qui citent les fichiers repris (T10), ordre de publication, version du noyau | ouvert |
 | PA-E7 | EP-3 | Rapport et oracle après ; création du dépôt GitHub par `gh` ; publication ; application à `<ROOTSTOCK>` | ouvert |
-| PA-E8 | EP-4 | Conception de la génération portable : classement projet / poste, mécanisme par valeur, fichier de poste (nom, format, schéma, portée : T1), espace versionné ou non (T2), nom et repli en régime de référence, valeurs de poste quand l'espace est replié (T11), sort de l'ancien espace | ouvert |
+| PA-E8 | EP-4 | Conception de la génération portable : classement projet / poste, mécanisme par valeur, fichier de poste (nom, format, schéma, portée : T1), forme du contenu d'équipe fourni par le greffon projet et projeté dans l'espace (C2 révisée au PA-E1), sort d'une retouche faite par l'interface, nom de l'espace, valeurs de poste sans greffon projet greffé (T11), sort de l'ancien espace | ouvert |
 | PA-E9 | EP-4 | Rapport, essais de portabilité, essai VSCodium par l'utilisateur, publication | ouvert |
 | PA-E10 | EP-5 | Conception du débogage : où se règlent le serveur et l'interface, ce que `generate` émet, modification ou non des BSP (T3), serveurs hors OpenOCD, `jlink` (T6) | ouvert |
 | PA-E11 | EP-5 | Autorisation d'écriture flash ; rapport de validation sur cartes ; publication | ouvert |
@@ -129,22 +129,22 @@ La session s'arrête, expose la question et attend la réponse. La réponse est 
 
 ## 5. Tensions relevées au plan, à arbitrer
 
-Relevées à l'analyse du 2026-11-25, non tranchées. Chacune est présentée au point d'arrêt
+Relevées à l'analyse du 2026-11-25, non tranchées, sauf mention dans la colonne Arbitrage. Chacune est présentée au point d'arrêt
 indiqué, avec les faits de l'audit de l'étape.
 
 | ID | Tension | Arbitrage |
 | --- | --- | --- |
 | T1 | C5 (a) place le fichier de poste dans le clone du greffon projet : il est propre au rootstock et au projet, alors que `CADRAGE.md` §4 le dit propre à la machine (chaîne, sondes). Plusieurs rootstocks = plusieurs saisies ; une copie de rootstock l'emporte. | PA-E8 |
-| T2 | C2 : espace « fourni par le greffon projet » ; §4 : espace = projection régénérée. Versionné ou ignoré par git (donc dépendant d'EP-2) : non dit. | PA-E8 |
+| T2 | C2 : espace « fourni par le greffon projet » ; §4 : espace = projection régénérée. Versionné ou ignoré par git (donc dépendant d'EP-2) : non dit. | sans objet : C2 révisée au PA-E1 (espace régulier, non versionné, à la racine du rootstock) |
 | T3 | `CADRAGE.md` §7 donne à E-D les dépôts lepton-tools et noyau ; scinder la cfg OpenOCD et faire de `sonde` une liste touche le schéma et les manifestes des BSP (7 dépôts publiés, dont 5 portent `openocd` et `sonde`). | PA-E10 |
 | T4 | Après EP-3, les presets du noyau citeraient `sys/user/lepton-basic/…`, fourni par un autre dépôt ; source de `seed new --mkconf` pour une graine sans ce greffon ; publication sur plusieurs dépôts avec état intermédiaire cassé. | PA-E6 |
 | T5 | `CADRAGE.md` §6 : propositions « non validées une à une ». | règle du §1 |
 | T6 | C9 : `jlink` émis par `generate` sans validation. | PA-E10 |
 | T7 | `CADRAGE.md` §6 propose `sondes: {<bsp>: <série>}` ; deux cartes NUCLEO-WL55JC1 (A et B) ont le même BSP. | PA-E12 |
 | T8 | C8 ne dit que le sort de l'espace quand un greffon `projet` est greffé sans `lepton-graine.json` ; celui de `CMakeUserPresets.json` et des commandes de PA-23 n'est pas dit. | PA-E2 |
-| T9 | Le chantier revient sur D2 d'ENV-9 et sur le critère PA-19 C, et lit le champ `sonde` de GRF-3 : `doc/devenv/SPECIFICATION.md` amendée, ou exigences consignées dans ce dossier. | PA-E2 |
+| T9 | Le chantier revient sur le critère PA-19 C (et sur D2 d'ENV-9 seulement si le contenu d'équipe retenu au PA-E8 le demande : D2 interdit tout `.vscode/` dans le trunk et dans un clone ; C2 révisée au PA-E1), et lit le champ `sonde` de GRF-3 : `doc/devenv/SPECIFICATION.md` amendée, ou exigences consignées dans ce dossier. | PA-E2 |
 | T10 | C7 dit les empreintes du test hôte inchangées et `CADRAGE.md` §2.5 qu'aucun CMake ne cite les fichiers repris. Or, dans le clone noyau, `scion/tests/host/CMakeLists.txt` (`host.mklepton_format`) lit `mkconf_tauon_basic_qemu_mps2.xml` ; mklepton écrit le chemin du XML en tête de `kernel_mkconf.h`, donc les empreintes des cartes portées de `mklepton_empreintes.sha256` changent ; 5 BSP publiés posent `LEPTON_NET_TEST_FTP_REFERENCE` sur un `.boot` repris. Relevé à la relecture du plan (2026-11-25). | PA-E6 |
-| T11 | C8 replie l'espace à la racine du rootstock quand aucun greffon projet n'est greffé ; C5 écarte le fichier de poste à la racine : la source des valeurs de poste dans ce cas n'est pas dite. | PA-E8 |
+| T11 | C8 replie l'espace à la racine du rootstock quand aucun greffon projet n'est greffé ; C5 écarte le fichier de poste à la racine : la source des valeurs de poste dans ce cas n'est pas dite. Reformulée au PA-E1 (C2 révisée : l'espace est à la racine dans tous les cas) : source des valeurs de poste quand aucun greffon projet n'est greffé. | PA-E8 |
 
 ## 6. Graphe des étapes
 
