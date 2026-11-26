@@ -2,12 +2,12 @@
 
 ## Statut
 terminée — essais (a), (b), (c) et constat du besoin 2 faits sur macOS ; PA-E1 clos ; plan révisé
-et relu ; branche non fusionnée.
+et relu ; branche fusionnée dans `main` et poussée sur accord.
 
 ## État exact des dépôts
 | Dépôt | Branche | Dernier commit (hash court + titre) | Propre ? |
 | --- | --- | --- | --- |
-| lepton-tools | `espace-projet/ep-0` (depuis `main` cf34908) | commit de fin de session « espace-projet(ep-0): état et passation » (seul commit de la branche) | oui après commit ; non fusionnée, non poussée |
+| lepton-tools | `espace-projet/ep-0` (depuis `main` cf34908) | commit de fin de session « espace-projet(ep-0): état et passation » (seul commit de la branche) | oui ; fusionnée `--no-ff` dans `main`, poussée (accord du 2026-11-26) |
 | clone noyau `depots/lepton/original/master` | `master` | 0c2e43e Fusion de devenv/env-70 | oui (inchangé) |
 | `<SEED_SCIONS>` | `master` | 929c01a Fusion de devenv/env-70 | oui (inchangé) |
 | graine de référence `depots/lepton-seed.scions/original-tree` | `original-tree` | 15740f9 Fusion de devenv/env-20 | oui (inchangé) |
@@ -30,8 +30,8 @@ et relu ; branche non fusionnée.
   clone noyau `status --short` vides, comme au début.
 
 ## Reste à faire dans l'étape
-- [ ] Rien dans l'étape. Hors étape : fusion d'`espace-projet/ep-0` dans `main` et push (PA-P),
-      à demander à l'utilisateur au début de la session suivante.
+- [ ] Rien dans l'étape. Hors étape : fusion et push faits sur accord (PA-P) ;
+      rien ne reste.
 
 ## Décisions
 | Décision | Auteur (utilisateur / proposition non validée) | Consignée dans STATUS ? |
@@ -69,5 +69,5 @@ Tickets créés pendant la session : aucun.
 ## Reprise
 Commande ou première action de la session suivante :
 ```
-démarre EP-1   (skill espace-projet-session ; d'abord : fusion d'espace-projet/ep-0 dans main et push, sur accord)
+démarre EP-1   (skill espace-projet-session ; vérifier main = origin/main)
 ```

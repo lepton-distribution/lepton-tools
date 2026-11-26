@@ -2,22 +2,21 @@
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
 Dernière mise à jour : 2026-11-26 — EP-0 terminée : essai VSCodium du lien, PA-E1 clos (C2
-révisée, piste P-a), plan révisé et relu ; branche `espace-projet/ep-0` non fusionnée.
+révisée, piste P-a), plan révisé et relu ; `espace-projet/ep-0` fusionnée dans `main`, poussée.
 
 ## Prochaine action
 
 EP-1 (`etapes/EP-1-greffon-type-projet.md`), dans une nouvelle session, par la skill
 `espace-projet-session` (EP-2 possible à la place : ordre interchangeable, ORCHESTRATION §6).
-Avant de créer `espace-projet/ep-1` : demander à l'utilisateur la fusion d'`espace-projet/ep-0`
-dans `main` et son push (PA-P), non faits en EP-0 ; la branche de l'étape part de `main`
-après cette fusion.
+Vérifier d'abord que `main` = `origin/main` (fusion d'`espace-projet/ep-0` et push accordés le
+2026-11-26) ; la branche de l'étape part de `main`.
 
 ## Étapes
 
 | Étape | Titre | Statut | Branche(s) | Passation |
 | --- | --- | --- | --- | --- |
 | plan | Plan du chantier (skill `lepton-portage-instructions`) | terminée (2026-11-25) | lepton-tools `espace-projet/plan` (depuis `main` e25a414 ; fusionnée `--no-ff` dans `main`) | — |
-| EP-0 | Essai VSCodium : espace ouvert par un lien du trunk ; plusieurs rootstocks | terminée (2026-11-26) | lepton-tools `espace-projet/ep-0` (depuis `main` cf34908 ; non fusionnée, non poussée) | `handoff/ep-0.md` |
+| EP-0 | Essai VSCodium : espace ouvert par un lien du trunk ; plusieurs rootstocks | terminée (2026-11-26) | lepton-tools `espace-projet/ep-0` (depuis `main` cf34908 ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/ep-0.md` |
 | EP-1 | Greffon de type `projet` dans lepton | à faire | | |
 | EP-2 | scion : fichiers ignorés greffables déclarés par le greffon | à faire | | |
 | EP-3 | Greffon `lepton-original-tree-project` (extraction de `lepton-basic`) | à faire | | |
@@ -79,6 +78,7 @@ C1 à C10 (utilisateur, 2026-11-25) : `CADRAGE.md` §5, non recopiées.
 | PA-E1 (Debian) | 2026-11-26 | Essais d'EP-0 non refaits sur la VM Debian avant EP-4 ; preuve Debian laissée à EP-8, critère C7 : espace généré à la racine ouvert par la ligne de commande et par le gestionnaire de fichiers (dossiers résolus), retouche par l'interface puis `generate` selon le PA-E8. | utilisateur, sur recommandation de la session |
 | PA-E1 (relevé QEMU) | 2026-11-26 | Relevé incident du constat du besoin 2 (QEMU lancé par Cortex-Debug à l'écoute sur toutes les interfaces) : hors plan, H6. Le besoin 2 est constaté sans défaut (rapport §5). | utilisateur |
 | PA-E1 (essais) | 2026-11-26 | `essais/ep-0/` (copies `a` et `b`, relevés `*.out` et journaux de construction) à supprimer en fin de session par `scripts/supprimer-essai.sh`. | utilisateur |
+| PA-P (EP-0) | 2026-11-26 | Fusion `--no-ff` d'`espace-projet/ep-0` dans `main` et push de `main` accordés. | utilisateur |
 | PA-E1 (openocdPath) | 2026-11-26 | Forme portable de `cortex-debug.openocdPath`, non essayée en EP-0 (BSP QEMU) : vérifiée en EP-5. | utilisateur, sur recommandation de la session |
 
 ## Journal
@@ -125,3 +125,5 @@ C1 à C10 (utilisateur, 2026-11-25) : `CADRAGE.md` §5, non recopiées.
   d'abord : gardées. Écartés : aucun. Non confirmés : aucun.
 - 2026-11-26 — `essais/ep-0/` supprimé par `scripts/supprimer-essai.sh` (rc 0). Restent dans
   VSCodium les états `workspaceStorage` des chemins d'essai (sans effet).
+- 2026-11-26 — Fusion `--no-ff` d'`espace-projet/ep-0` dans `main` et push de `main` (PA-P,
+  accord de l'utilisateur).
