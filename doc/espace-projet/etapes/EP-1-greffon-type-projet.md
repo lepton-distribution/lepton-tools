@@ -3,7 +3,8 @@
 ## Contexte
 C4 : un projet de développement est une graine à dépôt propre qui intègre noyau, famille, BSP,
 applications, et un greffon **projet** portant `trunk/sys/user/<projet>/` (XML mklepton, `.boot`,
-`.init`, plus tard l'espace et le fichier de poste). Ce greffon a un dépôt propre, ou partagé
+`.init`, plus tard le fichier de poste ; l'espace reste à la racine du rootstock, C2 révisée au
+PA-E1). Ce greffon a un dépôt propre, ou partagé
 avec le BSP et les applications. Il **remplace** le `project/` du dépôt de la graine : un seul
 concept.
 
@@ -22,7 +23,7 @@ Existant (`CADRAGE.md` §2.1, §2.3, §2.4) :
   d'ENV-16) ; les commandes qui modifient la graine y sont refusées (PA-23 d'ENV-18).
 
 Cette étape ne change **que** le porteur des fichiers du projet. L'emplacement de l'espace de
-travail reste la racine du rootstock (il change en EP-4). Archétype : infrastructure, avec
+travail reste la racine du rootstock (C2 révisée au PA-E1 ; EP-4 rend l'espace portable). Archétype : infrastructure, avec
 contrainte iso-fonctionnelle pour une graine migrée.
 
 ## Prérequis
@@ -130,8 +131,8 @@ n'a pas de commande de création de projet.
   l'emplacement du greffon projet de celui de la graine.
 - La graine de référence d'aujourd'hui n'a ni manifeste ni greffon projet : le critère réduit ne
   doit pas la faire changer de régime.
-- Ne pas déplacer l'espace de travail ni toucher à `render_workspace` hors de ce qu'impose le
-  changement de porteur : c'est EP-4.
+- Ne pas toucher à `render_workspace` hors de ce qu'impose le changement de porteur : c'est
+  EP-4.
 - lepton s'essaie par le venv de développement ; le lepton installé par pipx n'est remplacé
   qu'après le PA-E3 (`pipx install --force <LEPTON_TOOLS>`).
 

@@ -57,7 +57,9 @@ clôt le plan.
       attendus ; `mklepton-empreintes.sha256` et `net.ping_ftpd` selon le PA-E6 (T10) ; tout
       autre écart expliqué.
     - **C7** — extension par `install-vscodium.sh` ; si l'utilisateur a accès à l'interface de
-      la VM : ouverture de l'espace par le chemin du trunk (essais (a) et (b) d'EP-0 sur Debian).
+      la VM : espace généré à la racine ouvert par la ligne de commande et par le gestionnaire de
+      fichiers (dossiers résolus), retouche par l'interface puis `generate` selon le PA-E8
+      (décision du PA-E1).
       `<À CONFIRMER au PA-E16>`.
     - **C8** — cartes et sondes sur la VM (EP-5, EP-6 ; `lsusb`). `<À CONFIRMER au PA-E16>`.
     - **C9** — nettoyage par `scripts/supprimer-essai.sh`. `<À CONFIRMER au PA-E16>`.

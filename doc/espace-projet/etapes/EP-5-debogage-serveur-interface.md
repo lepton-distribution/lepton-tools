@@ -39,10 +39,12 @@ Relever :
 - les configurations `launch` et les tâches de flash actuellement émises.
 
 Proposer, sans rien modifier :
-- où se règlent serveur et interface : graine (`configurations[].debug`), fichier de poste,
-  choix au lancement ; et comment le choix se fait « dans VSCodium » (commande de l'extension,
+- où se règlent serveur et interface : graine (`configurations[].debug`), contenu d'équipe du
+  greffon projet retenu au PA-E8 (s'il y en a un), fichier de poste, choix au lancement ; et comment le choix se fait « dans VSCodium » (commande de l'extension,
   liste de configurations, `${input:…}`) ;
 - ce que `generate` émet : une configuration par serveur admis, ou une seule paramétrée ;
+- forme portable de `cortex-debug.openocdPath` (non essayée en EP-0, BSP QEMU ; décision du
+  PA-E1) : essai, sur une carte, des formes retenues au PA-E8 pour les outils hôtes ;
 - rôle du champ `sonde` du BSP (liste des sondes admises) ; cfg OpenOCD scindée en cible et
   interface, ou interface substituée sans toucher aux BSP ;
 - T3 : si les manifestes ou les cfg des BSP changent, la liste des dépôts touchés (schéma, BSP
