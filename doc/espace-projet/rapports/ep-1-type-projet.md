@@ -289,5 +289,16 @@ greffon projet ; `seed lock` refuse ensuite tant que ce dépôt n'est pas commit
 | `seed.py` `project_stem`, `graft_project` ; `generate.py` | renommés en place : racine et regreffe du greffon de type projet |
 | `cli.py` `--project-repo` | aide de l'option (`depots/lepton-project/NAME`) |
 
-### 6.6 Extension
-Non touchée (0.5.4) : rien n'y dépend de `project/` (§1.4). Essai VSCodium au PA-E3.
+### 6.6 Extension et essai VSCodium (PA-E3)
+Essai par l'utilisateur sur `essais/ep-1/neuf/rootstock` (lepton de la branche par `lepton.path`),
+XML de la graine remis d'abord sur celui du noyau : `lepton.seedStatus` (rôle « projet », origine
+`depots/lepton-project/bout-en-bout`), vue Architecture, dossier « git · bout-en-bout »,
+`lepton.seedMkconfImport` (XML, `.boot`, `.init` copiés ; regreffe automatique de l'extension par
+le champ `stem`, `graft --path …`), `lepton.generate` (`LEPTON_MKCONF` = XML du projet, rappel de
+commit du greffon projet) : conformes. Libellé « … dans la graine » de `lepton.seedMkconfImport`
+corrigé sur décision (PA-E3) : extension **0.5.5** (`npm test` 29 verts, `.vsix` reconstruit et
+installé), revenant sur le point (8) du PA-E2.
+
+### 6.7 Clôture
+lepton 0.2.0 réinstallé par pipx (18 modules identiques) ; `essais/ep-1/` supprimé ; fusion et push
+accordés (PA-P).
