@@ -213,3 +213,81 @@ une section ajoutée en fin d'étape.
 
 Toutes les propositions recommandées du §3 sont retenues (§3.1 à §3.9) ; variantes écartées.
 Consignée dans `STATUS.md` §Décisions.
+
+## 6. Réalisation (2026-11-27)
+
+### 6.1 Commits de `espace-projet/ep-1`
+
+| Commit | Contenu |
+| --- | --- |
+| b8582cc | audit, PA-E2 |
+| 9c688fa | schémas : type `projet`, exemples `greffon-projet.json`, `invalides/projet-{destination,sources}.json` ; `valider-schemas.sh` conforme |
+| dbc6b86 | lepton 0.2.0 : `rootstock.py`, `seed.py`, `generate.py`, `checks.py`, `mkconf.py`, `cli.py`, modèle `templates/project/` |
+| ee65f4f | tests : `tests/test_project_scion.py` (23) et tests adaptés |
+| 642ee6a, d2a4bf0 | `README.md`, `scripts/bout-en-bout.sh` |
+
+Écart à la consigne de l'étape (tâche 3, « tests d'abord, un commit par commande ») : le code des
+commandes a été écrit avant les nouveaux tests, puis commité en un seul commit, les modifications
+étant liées (signature de `project_stem`, `graft_project`, `import_mkconf` partagée par `seed new`,
+`seed mkconf import`, `generate`). Compensation : les 23 nouveaux tests ont été lancés sur `main`
+(worktree détaché, `PYTHONPATH`) : **23 échecs** ; sur la branche : 23 verts.
+
+### 6.2 Défaut trouvé en cours d'étape
+`check` désignait le manifeste du greffon projet par son chemin dans le clone, non par le trunk
+(IDE-4) : `_manifest_label` cherchait `scion/sys/root/src/` dans le chemin ; il utilise désormais
+`Manifest.trunk_dir`. Relevé par `test_check_names_grafted_manifests_by_trunk`.
+
+### 6.3 `pytest`
+**642 verts** (10 min 25) = 616 au départ + 3 exemples de schéma + 23 nouveaux. Aucun test supprimé.
+Tests adaptés (intention conservée, emplacement ou nom déplacé vers le greffon projet) :
+`test_generate.py` (`_snapshot`, `test_generate_presets_grafted_in_trunk`,
+`test_workspace_folders_settings_launch_tasks` : 5 dossiers dont `depots/lepton-project/demo`,
+`test_check_names_grafted_manifests_by_trunk` : manifeste `trunk/sys/user/demo/`) ;
+`test_project_mkconf.py` (`_stem`, `test_seed_new_copie_xml_et_fichiers`, message O5) ;
+`test_milestone3.py` (`test_gra6_status` : nom `demo` ; `test_gra3_version_with_slash` : commit du
+greffon projet avant `seed lock`) ; `test_milestone6.py` (`test_check_rootstock_conforme` : 6
+fichiers ; `test_cfg5_check_pilote_binaire_non_fournis` ; `test_gra5_seed_lock_verify_restore` :
+`demo` figé) ; `test_reference_seed.py` (messages). Tests inversés :
+`test_generate.py::test_status_and_lock_with_project_scion` (greffon projet **dans** le verrou) ;
+`test_milestone6.py::test_check_graine_projet_sans_manifeste_refusee` (graine sans manifeste =
+graine de référence ; l'ancien format est refusé, `test_project_scion.py`).
+
+Conséquence à connaître : `seed add` ou `scion new` d'une application écrit `<bin>` dans le XML du
+greffon projet ; `seed lock` refuse ensuite tant que ce dépôt n'est pas commité (règle existante
+« clone modifié », appliquée au greffon projet par le §3.4).
+
+### 6.4 Non-régression
+- **Projet neuf** : `scripts/bout-en-bout.sh essais/ep-1/neuf` avec `LEPTON` = lepton de la
+  branche et `LEPTON_REF_ROOTSTOCK` = `essais/ep-1/ref` : succès (lepton 0.2.0 ; XML greffé depuis
+  `depots/lepton-project/bout-en-bout/scion/` ; `check` ; `seed lock` et `--verify` ; host ;
+  `qemu-mps2-an386-freertos` ; `smoke.lsh` vert). Puis `generate` (presets dans le greffon projet),
+  `cmake --preset bout-en-bout-debug-qemu`, construction, `ctest -L smoke` : **vert**.
+- **Copie de `<ROOTSTOCK>`** (`essais/ep-1/ref`, `rsync -a --exclude=/build/`) : même worktree,
+  `main` c76612d (lepton 0.1.0) puis branche 642ee6a (0.2.0) ; `check` code 0 et 19 fichiers
+  conformes les deux fois ; espace `original-tree.code-workspace` : **`diff` vide**. Écarts des
+  sorties : le libellé du critère de référence (« pas de lepton-graine.json ») ; « écrit » puis
+  « inchangé » (la copie gardait l'espace de l'original, schémas du venv pipx). Première tentative
+  invalide (lepton de la branche chargé par `python -m` depuis le dépôt) : écartée, refaite hors du
+  dépôt avec contrôle de la version.
+- **Procédure manuelle de l'ancien format** (`README.md`) sur `essais/ep-1/ancien`, copie sans
+  `build/` d'`essais/env-11/qemu` : refus « graine à l'ancien format » d'abord ; procédure : il
+  manquait `scion seed-clone` (liste greffée), ajouté au README ; ensuite `graft`, `check` (6
+  fichiers conformes), `generate` : presets identiques à l'octet, espace = celui d'origine plus le
+  dossier « git · env11 » et les chemins propres à la copie.
+- Oracle binaire (skill `lepton-oracle`) : non joué, aucune graine migrée par lepton (§3.7) ; le
+  critère « binaires identiques » est sans objet.
+
+### 6.5 Grep du critère
+`grep -rnE 'PROJECT_SUBPATH|project_key|project_stem|graft_project|project/' lepton --include='*.py'`
+(après d2a4bf0) :
+
+| Occurrence | Justification |
+| --- | --- |
+| `rootstock.py` `PROJECT_SUBPATH`, `refuse_legacy_project` ; `__init__.py`, `seed.py` l. 6, `generate.py` l. 7, `mkconf.py` l. 5 (commentaires) | détection et mention de l'ancien format (§3.7) |
+| `generate.py` `files.exclude` `project/scion` | gardé pour l'espace de la graine de référence (H8, EP-4) |
+| `rootstock.py` `project_key` ; `seed.py` `seed new` | clé `lepton@project-<nom>` du greffon créé (§3.3) |
+| `seed.py` `project_stem`, `graft_project` ; `generate.py` | renommés en place : racine et regreffe du greffon de type projet |
+| `cli.py` `--project-repo` | aide de l'option (`depots/lepton-project/NAME`) |
+
+### 6.6 Extension
+Non touchée (0.5.4) : rien n'y dépend de `project/` (§1.4). Essai VSCodium au PA-E3.
