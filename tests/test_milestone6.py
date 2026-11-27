@@ -96,7 +96,7 @@ def _graine_path(project: Path) -> Path:
 def test_check_rootstock_conforme(project, capsys):
     code, out = _check(project, capsys)
     assert code == 0, out
-    assert "5 fichier(s) conforme(s)." in out       # 3 manifestes, graine, XML
+    assert "6 fichier(s) conforme(s)." in out       # 4 manifestes (dont le greffon projet, EP-1), graine, XML
 
     code, out = _check(project, capsys, "--json")
     report = json.loads(out)
@@ -219,8 +219,8 @@ def test_grf5_check_coeur_backend_dependances(project, capsys):
 
 
 def test_cfg5_check_pilote_binaire_non_fournis(project, capsys):
-    xml = (project / "trunk" / PROJECT_XML).resolve()     # fichier de la graine (O5), jamais le trunk
-    assert "lepton-seed" in xml.parts
+    xml = (project / "trunk" / PROJECT_XML).resolve()     # fichier du greffon projet (O5, EP-1), jamais le trunk
+    assert "lepton-project" in xml.parts
     xml.write_text(XML.format(extra_dev='<dev name="dev_ghost_map" use="on"/>',
                               extra_bin='<bin name="ls" stack="2048" priority="100" timeslice="1" />'))
     code, out = _check(project, capsys)
@@ -317,7 +317,8 @@ def test_gra5_seed_lock_verify_restore(project, repos, capsys):
         "building": None,                                  # répertoire local hors git de scion
         "lepton-noyau": locked_kernel,
         "fam-test": _git(repos["family"], "rev-parse", "HEAD").strip(),
-        "board-q": _git(repos["bsp"], "rev-parse", "HEAD").strip()}
+        "board-q": _git(repos["bsp"], "rev-parse", "HEAD").strip(),
+        "demo": _git(project / "depots/lepton-project/demo", "rev-parse", "HEAD").strip()}   # greffon projet (EP-1)
     assert main(["seed", "lock", "--verify", "-C", str(project)]) == 0
 
     # origine distante : nouveau commit dans le clone → écart → restauration au commit figé
@@ -355,7 +356,7 @@ Q_XML = "sys/user/ref/etc/mkconf_q.xml"     # XML du seul board-q
 
 def _reference(tmp_path: Path, repos: dict, presets: list[dict]) -> Path:
     """Rootstock greffé par scion seul, comme original-tree : noyau (presets donnés), famille, deux
-    BSP ; graine sans lepton-graine.json ni project/."""
+    BSP ; graine sans lepton-graine.json (critère réduit en EP-1)."""
     _commit_files(repos["kernel"], {"CMakePresets.json": json.dumps({"version": 6, "configurePresets": [
         {"name": "base", "hidden": True}, {"name": "host", "inherits": "base"},
         {"name": "cross", "hidden": True, "inherits": "base"}, *presets]})})
@@ -427,13 +428,15 @@ def test_check_graine_reference_anomalies(tmp_path, repos, capsys):
 
 
 def test_check_graine_projet_sans_manifeste_refusee(project, capsys):
-    """Graine de projet (project/ présent) sans lepton-graine.json : anomalie conservée."""
+    """Inversé en EP-1 (PA-E2, C4) : graine sans lepton-graine.json = graine de référence (contrôles
+    déduits des greffons et des presets du noyau) ; l'ancienne graine abîmée (project/ présent) est
+    refusée comme ancien format (tests/test_project_scion.py)."""
     _graine_path(project).unlink()
     capsys.readouterr()
-    assert main(["check", "-C", str(project)]) == 1
+    assert main(["check", "-C", str(project)]) == 1      # presets du noyau factice absents
     out, err = capsys.readouterr()
-    assert "lepton-graine.json: manifeste de graine absent (graine hors lepton)" in out
-    assert "graine de référence" not in err
+    assert "graine de référence" in err and "pas de lepton-graine.json" in err
+    assert "manifeste de graine absent" not in out
 
 
 def test_check_graine_projet_invalide_refusee(project, capsys):

@@ -1,7 +1,8 @@
 """ENV-12 lot 2, O5 (CFG-1) : XML mklepton du projet dans la graine, applications déclarées.
 
-Décision du 2026-10-20 : XML et fichiers `src_file` copiés dans `<graine>/project/scion/sys/user/<projet>/etc/`,
-greffés par le greffon local du projet ; `<bin>` ajouté / retiré par `scion new/remove` et
+Décision du 2026-10-20 : XML et fichiers `src_file` copiés dans `sys/user/<projet>/etc/` du greffon projet
+(EP-1 : greffon de type projet, dépôt propre `depots/lepton-project/<projet>` ; auparavant `<graine>/project/scion/`),
+greffés à la racine du trunk ; `<bin>` ajouté / retiré par `scion new/remove` et
 `seed add/remove` d'une application ; `lepton seed mkconf import` pour une graine existante.
 """
 
@@ -54,8 +55,12 @@ def _seed(root: Path) -> Path:
     return root / "depots" / "lepton-seed" / "demo"
 
 
+def _project_repo(root: Path) -> Path:
+    return root / "depots" / "lepton-project" / "demo"
+
+
 def _stem(root: Path) -> Path:
-    return _seed(root) / "project" / "scion"
+    return _project_repo(root) / "scion"
 
 
 def _graine_path(root: Path) -> Path:
@@ -126,8 +131,9 @@ def test_seed_new_copie_xml_et_fichiers(project):
     assert (stem / "sys/user/demo/etc/.init").read_text() == "lsh &\n"
     ref = (trunk / MKCONF).resolve()
     assert "depots" in ref.parts and ref.read_text() == REF       # modèle du noyau inchangé
-    tracked = _git(_seed(project), "ls-files").split()
-    assert f"project/scion/{PROJECT_XML}" in tracked and "project/scion/sys/user/demo/etc/.boot" in tracked
+    tracked = _git(_project_repo(project), "ls-files").split()
+    assert f"scion/{PROJECT_XML}" in tracked and "scion/sys/user/demo/etc/.boot" in tracked
+    assert not _git(_project_repo(project), "status", "--porcelain")
     assert not _git(_seed(project), "status", "--porcelain")
     assert_trunk_clean(project)
 
@@ -199,7 +205,7 @@ def test_graine_non_migree_avertit_sans_ecrire(project, capsys):
     assert f"{MKCONF} hors du greffon du projet" in err and "lepton seed mkconf import" in err
     assert (project / "trunk" / MKCONF).read_text() == REF       # XML du noyau jamais modifié
     main(["check", "-C", str(project)])
-    assert "XML fourni par un greffon partagé, pas par la graine (CFG-1, O5)" in capsys.readouterr().err
+    assert "XML fourni par un greffon partagé, pas par le greffon projet (CFG-1, O5)" in capsys.readouterr().err
 
 
 def test_mkconf_import(project, capsys):
