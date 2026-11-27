@@ -124,14 +124,17 @@ def _add_seed_parser(sub, common) -> None:
     p = seed_sub.add_parser("new", parents=[common], help="crée un rootstock greffé depuis une graine neuve (GRA-1)")
     p.add_argument("name", metavar="NAME", help="nom du projet")
     p.add_argument("--bsp", required=True, metavar="BSP", help="greffon BSP de la carte")
-    p.add_argument("--mkconf", required=True, metavar="PATH",
+    p.add_argument("--mkconf", metavar="PATH",
                    help="XML mklepton de référence, chemin relatif au trunk (ou absolu sous le trunk de -C), "
-                        "copié dans la graine (O5)")
+                        "copié dans le greffon projet (O5) ; requis sauf greffon projet désigné qui fournit "
+                        "sys/user/NAME/etc/mkconf_NAME.xml")
     p.add_argument("--backend", default="embos", choices=["embos", "freertos"], help="backend (défaut : embos)")
     p.add_argument("--seed-repo", metavar="DIR", help="dépôt git de la graine (défaut : depots/lepton-seed/NAME)")
+    p.add_argument("--project-repo", metavar="DIR",
+                   help="dépôt git du greffon projet créé (défaut : depots/lepton-project/NAME)")
     p.add_argument("--origin", action="append", metavar="SCION=LOCATION[@VERSION][:PATH]",
                    help="origine d'un greffon (BSP et famille obligatoires ; noyau : lepton-noyau, "
-                        f"défaut {seed.DEFAULT_KERNEL_ORIGIN})")
+                        f"défaut {seed.DEFAULT_KERNEL_ORIGIN} ; NAME : greffon projet existant, sinon créé)")
     p.set_defaults(func=seed.seed_new)
 
     p = seed_sub.add_parser("status", parents=[common], help="état des greffons de la graine (GRA-6)")

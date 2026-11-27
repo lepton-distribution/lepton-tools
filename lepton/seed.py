@@ -2,7 +2,8 @@
 
 Toute écriture des listes `.scion.*` et du trunk passe par scion ; lepton écrit seulement les
 manifestes `lepton-graine.json`, `lepton-graine.lock.json`, à la création les fichiers du modèle de
-graine, et les fichiers du greffon local du projet (`project/scion/` : XML mklepton du projet, O5).
+graine et du greffon projet, et les fichiers du greffon de type projet (XML mklepton du projet, O5 ;
+EP-1 : dépôt propre, remplace `project/` de la graine).
 """
 
 import json
@@ -17,7 +18,7 @@ from urllib.parse import urlparse
 from lepton import __version__, cmake, mkconf
 from lepton.checks import removal_unprovided
 from lepton.errors import EXIT_OK, EXIT_TOOL, EXIT_USER, LeptonError
-from lepton.rootstock import (KERNEL_KEY, KEY_PREFIX, PROJECT_SUBPATH, SHELF, SOURCES_LIST, STEM_DIR, Manifest,
+from lepton.rootstock import (KERNEL_KEY, KEY_PREFIX, SHELF, SOURCES_LIST, STEM_DIR, GraftedEntry, Manifest,
                               Rootstock, TrunkReport, expand_user, find_manifest, is_system_file, project_key,
                               read_sources, scion_key)
 from lepton.scion_runner import git, run, scion
@@ -193,7 +194,8 @@ def _manifest_of(rs: Rootstock, key: str) -> Manifest | None:
 def _expect(rs: Rootstock, key: str, name: str, kind: str) -> Manifest:
     m = _manifest_of(rs, key)
     if m is None:
-        raise LeptonError(f"greffon « {name} » ({key}) : aucun lepton-greffon.json sous scion/sys/root/src/",
+        where = f"scion/sys/user/{name}/" if kind == "projet" else "scion/sys/root/src/"
+        raise LeptonError(f"greffon « {name} » ({key}) : aucun lepton-greffon.json sous {where}",
                           "vérifier l'origine (racine du dépôt, :PATH)")
     if m.name != name or m.kind != kind:
         raise LeptonError(f"greffon {key} : manifeste « {m.name} » de type « {m.kind} », "
@@ -203,11 +205,21 @@ def _expect(rs: Rootstock, key: str, name: str, kind: str) -> Manifest:
 
 
 # --------------------------------------------------------------------------
-# greffon local du projet (ENV-9 : presets ; O5 : XML mklepton du projet)
+# greffon projet (EP-1, PA-E2 : type projet, dépôt propre ; presets d'ENV-9, XML mklepton d'O5)
 # --------------------------------------------------------------------------
-def project_stem(seed_root: Path) -> Path:
-    """`<graine>/project/scion/` : racine greffée à la racine du trunk."""
-    return seed_root / PROJECT_SUBPATH / STEM_DIR
+def project_entry(rs: Rootstock, graine: dict) -> GraftedEntry:
+    """Greffon de type projet de la graine : nom = `projet.nom` (PA-E2) ; absent : refus."""
+    name = graine["projet"]["nom"]
+    entry = rs.project_entry(name)
+    if entry is None:
+        raise LeptonError(f"greffon projet « {name} » (type projet) non greffé",
+                          "lepton seed status ; lepton check")
+    return entry
+
+
+def project_stem(rs: Rootstock, entry: GraftedEntry) -> Path:
+    """Racine `scion/` du greffon projet, greffée à la racine du trunk."""
+    return rs.clone(entry) / STEM_DIR
 
 
 def _project_links_missing(rs: Rootstock, stem: Path) -> bool:
@@ -219,33 +231,19 @@ def _project_links_missing(rs: Rootstock, stem: Path) -> bool:
     return False
 
 
-def graft_project(rs: Rootstock, seed_root: Path, project: str) -> bool:
-    """Greffon local du projet : déclaré, inscrit puis greffé tant qu'un lien du trunk manque ;
-    rend vrai si la graine ou le trunk a changé."""
-    key = project_key(project)
-    changed = False
-    if key not in {s.key for s in rs.sources()}:
-        try:
-            location = str(seed_root.relative_to(rs.path))
-        except ValueError:
-            location = str(seed_root)
-        scion("seed-scion-add", "--seed", str(seed_root), key, LOCAL_VERSION, location, PROJECT_SUBPATH,
-              cwd=rs.path)
-        changed = True
-    if key not in {e.key for e in rs.grafted()}:
-        scion("seed-clone", "--seed", str(seed_root), cwd=rs.path)   # inscrit la clé dans la liste greffée
-        changed = True
-    if _project_links_missing(rs, project_stem(seed_root)):
-        scion_on_trunk(rs, "graft", "--scion", key)
-        changed = True
-    return changed
+def graft_project(rs: Rootstock, entry: GraftedEntry) -> bool:
+    """Greffon projet regreffé tant qu'un lien du trunk manque (fichier nouveau : presets, XML) ; rend
+    vrai si le trunk a changé."""
+    if _project_links_missing(rs, project_stem(rs, entry)):
+        scion_on_trunk(rs, "graft", "--scion", entry.key)
+        return True
+    return False
 
 
-def in_project(rs: Rootstock, seed_root: Path, rel: str) -> Path | None:
+def in_project(rs: Rootstock, stem: Path, rel: str) -> Path | None:
     """Fichier du greffon projet désigné par `rel` (relatif au trunk), si le trunk y mène."""
     target = (rs.trunk / rel).resolve()
-    stem = project_stem(seed_root).resolve()
-    return target if target.is_file() and target.is_relative_to(stem) else None
+    return target if target.is_file() and target.is_relative_to(stem.resolve()) else None
 
 
 def _validate_project_xml(xml: Path, label: str) -> None:
@@ -260,7 +258,7 @@ def _validate_project_xml(xml: Path, label: str) -> None:
         _warn(f"{label}: {a.message} (lepton check)")
 
 
-def import_mkconf(rs: Rootstock, seed_root: Path, project: str, reference: str) -> str:
+def import_mkconf(rs: Rootstock, entry: GraftedEntry, project: str, reference: str) -> str:
     """O5 : copie du XML de référence `reference` (relatif au trunk) et de ses `<file src_file>` dans
     le greffon projet, `src_file` réécrits ; greffe ; rend le chemin du XML du projet (trunk).
     Chemin absolu admis sous le trunk (désigné dans l'explorateur, F7 d'ENV-12), ramené au trunk ;
@@ -279,11 +277,11 @@ def import_mkconf(rs: Rootstock, seed_root: Path, project: str, reference: str) 
     text = mkconf.read(ref)
     target_rel = mkconf.project_xml(project)
     copies = mkconf.project_copies(text, project)
-    stem = project_stem(seed_root)
+    stem = project_stem(rs, entry)
     plan = [(ref, target_rel)] + [(rs.trunk / src, dest) for src, dest in copies.items()]
     for source, dest in plan:
         if (stem / dest).exists():
-            raise LeptonError(f"{stem / dest} existe déjà : XML du projet déjà présent dans la graine",
+            raise LeptonError(f"{stem / dest} existe déjà : XML du projet déjà présent dans le greffon projet",
                               "le modifier en place (lepton seed status : champ XML)")
         if (rs.trunk / dest).exists() or (rs.trunk / dest).is_symlink():
             raise LeptonError(f"{rs.trunk / dest} fourni par un autre greffon : conflit avec le XML du projet",
@@ -298,7 +296,7 @@ def import_mkconf(rs: Rootstock, seed_root: Path, project: str, reference: str) 
     (stem / target_rel).parent.mkdir(parents=True, exist_ok=True)
     (stem / target_rel).write_text(mkconf.rewrite_src_files(text, copies), encoding="utf-8")
     _validate_project_xml(stem / target_rel, target_rel)
-    graft_project(rs, seed_root, project)
+    graft_project(rs, entry)
     _info(f"XML du projet : {target_rel} (copie de {reference}"
           + (f", avec {', '.join(Path(d).name for d in copies.values())}" if copies else "") + ")")
     return target_rel
@@ -308,7 +306,7 @@ def declare_application(rs: Rootstock, graine: dict, name: str, add: bool) -> bo
     """O5 : `<bin>` de l'application `name` ajouté au XML du projet ou retiré ; XML hors du greffon
     projet (graine non migrée) : rien n'est écrit. Rend vrai si le XML a changé."""
     rel = graine["mklepton_xml"]
-    xml = in_project(rs, rs.seed_root(), rel)
+    xml = in_project(rs, project_stem(rs, project_entry(rs, graine)), rel)
     bin_name = c_identifier(name)
     if xml is None:
         _warn(f"{rel} hors du greffon du projet : <bin name=\"{bin_name}\"> non {'déclaré' if add else 'retiré'} "
@@ -328,16 +326,18 @@ def seed_mkconf_import(args) -> int:
     """Migration d'une graine (O5) : XML du projet copié depuis `PATH`, applications déclarées."""
     rs, seed_root, graine_path, graine = _seed_context(args, "seed mkconf import")
     project = graine["projet"]["nom"]
-    if in_project(rs, seed_root, graine["mklepton_xml"]) is not None:
+    entry = project_entry(rs, graine)
+    if in_project(rs, project_stem(rs, entry), graine["mklepton_xml"]) is not None:
         raise LeptonError(f"XML de la graine déjà fourni par le greffon du projet ({graine['mklepton_xml']})",
                           "le modifier en place")
-    graine["mklepton_xml"] = import_mkconf(rs, seed_root, project, args.path)
+    graine["mklepton_xml"] = import_mkconf(rs, entry, project, args.path)
     save_graine(graine_path, graine)
     for app in graine.get("applications", []):
         declare_application(rs, graine, app, add=True)
     finish(rs, no_cmake=True)
     _info(f"presets à régénérer (LEPTON_MKCONF) : lepton generate -C {rs.path}")
     _remind_commit(seed_root)
+    _remind_commit(_git_root(project_stem(rs, entry)), "greffon projet")
     return EXIT_OK
 
 
@@ -363,21 +363,17 @@ def _new_mkconf(text: str, rootstock: str | None) -> str:
                       "sys/user/<application>/etc/mkconf_<…>.xml)")
 
 
+PROJECT_DEPOT = Path("depots") / "lepton-project"   # dépôt du greffon projet créé (PA-E2 d'EP-1)
+
+
 def seed_new(args) -> int:
     name, bsp_name = args.name, args.bsp
-    args.mkconf = _new_mkconf(args.mkconf, args.rootstock)
     for label, value in (("NAME", name), ("--bsp", bsp_name)):
         if not _IDENT.match(value):
             raise LeptonError(f"{label} « {value} » invalide", "minuscules, chiffres, « . », « _ », « - »")
-    # Manifeste de graine contrôlé avant toute action (nom, XML mklepton, backend)
-    probe = validate_data(json.loads(render_text(
-        (templates_dir() / "seed" / GRAINE_REL).read_text(encoding="utf-8"),
-        graine_values(name, bsp_name, args.backend, args.mkconf,
-                      [{"nom": "debug-qemu", "construction": "Debug", "execution": "qemu"}]),
-        json_file=True)), "seed", SEED_MANIFEST)
-    if probe:
-        raise LeptonError("graine refusée :\n" + "\n".join(f"  {a.location}: {a.message}" for a in probe),
-                          "corriger NAME, --bsp, --backend ou --mkconf (chemin relatif au trunk)")
+    if name in (bsp_name, KERNEL_NAME):
+        raise LeptonError(f"NAME « {name} » : nom du greffon projet, distinct du noyau et du BSP",
+                          "choisir un autre nom de projet")
 
     origins = dict(parse_origin_option(o) for o in args.origin or [])
     if len(origins) != len(args.origin or []):
@@ -386,11 +382,31 @@ def seed_new(args) -> int:
     if bsp_name not in origins:
         raise LeptonError(f"origine du BSP « {bsp_name} » absente", f"--origin {bsp_name}=LOCATION[@VERSION][:PATH]")
     bsp_text = origins.pop(bsp_name)
+    project_text = origins.pop(name, None)       # greffon projet désigné (PA-E2), sinon créé
     if len(origins) != 1:
-        raise LeptonError("une et une seule origine de greffon famille attendue en plus du noyau et du BSP "
-                          f"(reçu : {', '.join(origins) or 'aucune'})",
+        raise LeptonError("une et une seule origine de greffon famille attendue en plus du noyau, du BSP et du "
+                          f"greffon projet (reçu : {', '.join(origins) or 'aucune'})",
                           "--origin <famille du BSP>=LOCATION[@VERSION][:PATH]")
     family_name, family_text = next(iter(origins.items()))
+    if project_text is None and not args.mkconf:
+        raise LeptonError("--mkconf absent : XML mklepton de référence requis pour un greffon projet créé",
+                          f"--mkconf sys/user/<application>/etc/mkconf_<…>.xml, ou --origin {name}=LOCATION "
+                          "d'un greffon projet qui fournit son XML")
+    if project_text is not None and args.project_repo:
+        raise LeptonError(f"--project-repo et --origin {name}=… : greffon projet créé ou désigné, pas les deux",
+                          "retirer l'une des deux options")
+    if args.mkconf:
+        args.mkconf = _new_mkconf(args.mkconf, args.rootstock)
+    xml_rel = args.mkconf or mkconf.project_xml(name)
+    # Manifeste de graine contrôlé avant toute action (nom, XML mklepton, backend)
+    probe = validate_data(json.loads(render_text(
+        (templates_dir() / "seed" / GRAINE_REL).read_text(encoding="utf-8"),
+        graine_values(name, bsp_name, args.backend, xml_rel,
+                      [{"nom": "debug-qemu", "construction": "Debug", "execution": "qemu"}]),
+        json_file=True)), "seed", SEED_MANIFEST)
+    if probe:
+        raise LeptonError("graine refusée :\n" + "\n".join(f"  {a.location}: {a.message}" for a in probe),
+                          "corriger NAME, --bsp, --backend ou --mkconf (chemin relatif au trunk)")
 
     root = expand_user(args.rootstock or ".", "-C").resolve()
     if root.exists() and (not root.is_dir() or any(root.iterdir())):
@@ -399,31 +415,48 @@ def seed_new(args) -> int:
                  else root / "depots" / "lepton-seed" / name)
     if seed_repo.exists() and (not seed_repo.is_dir() or any(seed_repo.iterdir())):
         raise LeptonError(f"{seed_repo} existe et n'est pas vide", "choisir un autre --seed-repo")
+    project_repo = None
+    if project_text is None:
+        project_repo = (expand_user(args.project_repo, "--project-repo").resolve() if args.project_repo
+                        else root / PROJECT_DEPOT / name)
+        if project_repo.exists() and (not project_repo.is_dir() or any(project_repo.iterdir())):
+            raise LeptonError(f"{project_repo} existe et n'est pas vide", "choisir un autre --project-repo")
+        if project_repo == seed_repo or project_repo.is_relative_to(seed_repo) or seed_repo.is_relative_to(project_repo):
+            raise LeptonError(f"--project-repo {project_repo} et dépôt de la graine {seed_repo} imbriqués",
+                              "deux dépôts distincts")
     kernel = parse_location(kernel_text, rootstock=root)
     family = parse_location(family_text, rootstock=root)
     bsp = parse_location(bsp_text, rootstock=root)
+    project = parse_location(project_text, rootstock=root) if project_text is not None else None
 
-    # 1. rootstock ; 2. dépôt de la graine (modèle sans manifeste) ; 3. déclaration des greffons
+    # 1. rootstock ; 2. dépôts de la graine (modèle sans manifeste) et du greffon projet créé ;
+    # 3. déclaration des greffons
     root.mkdir(parents=True, exist_ok=True)
     scion("rootstock-install", cwd=root)
-    values = graine_values(name, bsp_name, args.backend, args.mkconf, [])
+    values = graine_values(name, bsp_name, args.backend, xml_rel, [])
     render_tree("seed", seed_repo, values, exclude={GRAINE_REL})
     git(seed_repo, "init", "-q")
+    if project_repo is not None:
+        render_tree("project", project_repo, {"name": name, "description": f"Greffon projet de {name}."})
+        git(project_repo, "init", "-q")
+        project = parse_location(str(project_repo), rootstock=root)
     for key, origin in ((KERNEL_KEY, kernel), (scion_key("famille", family_name), family),
-                        (scion_key("bsp", bsp_name), bsp)):
+                        (scion_key("bsp", bsp_name), bsp), (project_key(name), project)):
         scion("seed-scion-add", "--seed", str(seed_repo), key, *origin.scion_args(), cwd=root)
 
     # 4. clonage et greffe
     scion("seed-add", str(seed_repo), str(root), cwd=root)
     scion("graft", cwd=root)
     rs = Rootstock(root)
-    left = (f"état laissé : rootstock {root} greffé, graine {seed_repo} non commitée sans {SEED_MANIFEST}")
+    left = (f"état laissé : rootstock {root} greffé, graine {seed_repo} non commitée sans {SEED_MANIFEST}"
+            + (f", greffon projet {project_repo} non commité" if project_repo is not None else ""))
 
-    # 5. contrôles des manifestes (GRA-2, cœur et backend)
+    # 5. contrôles des manifestes (GRA-2, cœur et backend ; greffon projet, PA-E2)
     try:
         k = _expect(rs, KERNEL_KEY, KERNEL_NAME, "noyau")
         b = _expect(rs, scion_key("bsp", bsp_name), bsp_name, "bsp")
         f = _expect(rs, scion_key("famille", family_name), family_name, "famille")
+        _expect(rs, project_key(name), name, "projet")
         if b.data.get("famille") != family_name:
             raise LeptonError(f"le BSP {bsp_name} déclare la famille « {b.data.get('famille')} », "
                               f"origine donnée pour « {family_name} »",
@@ -436,27 +469,39 @@ def seed_new(args) -> int:
         if args.backend not in k.data.get("backends", []):
             raise LeptonError(f"backend « {args.backend} » non fourni par le noyau "
                               f"({', '.join(k.data.get('backends', []))})", "--backend embos|freertos")
-        if not (rs.trunk / args.mkconf).exists():
-            raise LeptonError(f"--mkconf « {args.mkconf} » absent du trunk greffé",
-                              "donner le chemin, relatif au trunk, d'un XML mklepton fourni par un greffon")
-        # 6. XML du projet (O5) : copie du XML de référence dans le greffon local du projet
-        xml = import_mkconf(rs, seed_repo, name, args.mkconf)
+        entry = rs.project_entry(name)
+        if args.mkconf:
+            if not (rs.trunk / args.mkconf).exists():
+                raise LeptonError(f"--mkconf « {args.mkconf} » absent du trunk greffé",
+                                  "donner le chemin, relatif au trunk, d'un XML mklepton fourni par un greffon")
+            # 6. XML du projet (O5) : copie du XML de référence dans le greffon projet
+            xml = import_mkconf(rs, entry, name, args.mkconf)
+        elif in_project(rs, project_stem(rs, entry), xml_rel) is not None:
+            xml = xml_rel                        # greffon projet désigné qui fournit son XML
+        else:
+            raise LeptonError(f"greffon projet désigné sans {xml_rel}",
+                              "--mkconf sys/user/<application>/etc/mkconf_<…>.xml (XML de référence à copier)")
     except LeptonError as e:
         e.action = f"{e.action} ; {left}"
         raise
 
-    # 7. manifeste de graine, commit initial du dépôt de la graine
+    # 7. manifeste de graine ; commits initiaux de la graine et du greffon projet créé
     render_tree("seed", seed_repo, dict(values, configurations=configurations_for(b), mkconf=xml),
                 only={GRAINE_REL})
     finish(rs, no_cmake=True)
     git(seed_repo, "add", "-A")
     git(seed_repo, "commit", "-q", "-m", f"Graine {name} créée par lepton seed new")
+    if project_repo is not None:
+        git(project_repo, "add", "-A")
+        git(project_repo, "commit", "-q", "-m", f"Greffon projet {name} créé par lepton seed new")
 
     _info(f"rootstock : {root}")
     _info(f"graine    : {seed_repo}")
     for label, key, o in (("noyau", KERNEL_KEY, kernel), ("famille", scion_key("famille", family_name), family),
-                          ("bsp", scion_key("bsp", bsp_name), bsp)):
+                          ("bsp", scion_key("bsp", bsp_name), bsp), ("projet", project_key(name), project)):
         _info(f"  {label:8} {key:32} {o.version:8} {o.location}{(':' + o.subpath) if o.subpath else ''}")
+    if project_repo is None and args.mkconf:
+        _remind_commit(_git_root(project_stem(rs, entry)), "greffon projet")
     _info(f"presets et espace de travail VSCodium : lepton generate -C {root}")
     return EXIT_OK
 
@@ -488,8 +533,8 @@ def status_data(rs: Rootstock) -> tuple[dict, dict | None, dict, list[str], Trun
     sources = {s.key: s for s in rs.sources()}
     manifests = rs.manifests()
     roles = {}
-    project = project_key(graine["projet"]["nom"]) if graine else None
     if graine:
+        roles[graine["projet"]["nom"]] = "projet"
         roles[graine["noyau"]] = "noyau"
         roles[graine["bsp"]] = "bsp"
         bsp_m = next((m for m in manifests.values() if m.name == graine["bsp"]), None)
@@ -505,7 +550,7 @@ def status_data(rs: Rootstock) -> tuple[dict, dict | None, dict, list[str], Trun
         m = manifests.get(e.key)
         name = m.name if m else e.name
         src = sources.get(e.key)
-        role = roles.get(name) if m else ("projet" if e.key == project else "sans manifeste")
+        role = roles.get(name) if m else "sans manifeste"
         if role is None:
             # déclaré dans .scion.sources.list sans rôle dans lepton-graine.json (ex. ancien BSP)
             role = ("non utilisé" if src else "hors graine") if graine else (m.kind or "?")
@@ -557,7 +602,7 @@ def seed_status(args) -> int:
     _info(f"rootstock : {rs.path}")
     _info(f"graine    : {seed_state['path']}  {_fmt_git(seed_state)}")
     if graine is None and rs.is_reference_seed():
-        _info(f"            graine de référence (ni {SEED_MANIFEST} ni {PROJECT_SUBPATH}/) : rôles d'après les "
+        _info(f"            graine de référence (pas de {SEED_MANIFEST}) : rôles d'après les "
               "manifestes des greffons, presets du noyau")
     elif graine is None:
         _info(f"            {SEED_MANIFEST} absent : rôles non déterminés (graine hors lepton)")
@@ -610,7 +655,7 @@ def refuse_reference(rs: Rootstock, command: str, action: str = REFERENCE_ACTION
     """PA-23 d'ENV-18 : commande qui modifie la graine, refusée sur la graine de référence avant toute
     action (code 1)."""
     if rs.is_reference_seed():
-        raise LeptonError(f"graine de référence {rs.seed_root()} (ni {SEED_MANIFEST} ni {PROJECT_SUBPATH}/) : "
+        raise LeptonError(f"graine de référence {rs.seed_root()} (pas de {SEED_MANIFEST}) : "
                           f"lepton {command} modifie la graine, refusé", action)
 
 
@@ -622,8 +667,19 @@ def _seed_context(args, command: str) -> tuple[Rootstock, Path, Path, dict]:
     return rs, seed_root, graine_path, load_graine(graine_path)
 
 
-def _remind_commit(seed_root: Path) -> None:
-    _info(f"graine modifiée, non commitée : git -C {seed_root} commit -am \"…\"")
+def _remind_commit(root: Path | None, what: str = "graine") -> None:
+    if root is None:
+        return
+    if what == "graine":
+        _info(f"graine modifiée, non commitée : git -C {root} commit -am \"…\"")
+    else:
+        _info(f"{what} modifié, non commité : git -C {root} add -A && git -C {root} commit -m \"…\"")
+
+
+def _git_root(path: Path) -> Path | None:
+    """Racine du dépôt git qui contient `path` (greffon projet : dépôt propre ou partagé), sinon None."""
+    res = run(["git", "-C", str(path), "rev-parse", "--show-toplevel"], check=False)
+    return Path(res.stdout.strip()) if res.returncode == 0 and res.stdout.strip() else None
 
 
 def check_new_scion(rs: Rootstock, name: str, kind: str) -> str:
@@ -722,9 +778,10 @@ def seed_remove(args, command: str = "seed remove") -> int:
         key, name = without_clone
     if key is None:
         raise LeptonError(f"greffon « {name} » non greffé", "lepton seed status")
-    if name == graine["noyau"] or name == graine["bsp"]:
-        raise LeptonError(f"« {name} » est le {'noyau' if name == graine['noyau'] else 'BSP'} de la graine, "
-                          "obligatoire (GRA-2)", "lepton seed replace pour en changer l'origine")
+    if name in (graine["noyau"], graine["bsp"], graine["projet"]["nom"]):
+        role = {graine["noyau"]: "noyau", graine["bsp"]: "BSP", graine["projet"]["nom"]: "greffon projet"}[name]
+        raise LeptonError(f"« {name} » est le {role} de la graine, obligatoire (GRA-2)",
+                          "lepton seed replace pour en changer l'origine")
     bsp_key = rs.key_of(graine["bsp"])
     bsp_m = _manifest_of(rs, bsp_key) if bsp_key else None
     if bsp_m is not None and bsp_m.data.get("famille") == name:
@@ -814,11 +871,7 @@ def _locked_entries(rs: Rootstock) -> list[dict]:
     grafted = {e.key: e for e in rs.grafted()}
     names = {key: m.name for key, m in rs.manifests().items()}
     entries, refused = [], []
-    graine = rs.seed_manifest_path()
-    project = project_key(load_graine(graine)["projet"]["nom"]) if graine.exists() else None
     for s in rs.sources():
-        if s.key == project:
-            continue                       # greffon du projet = dépôt de la graine elle-même (ENV-9)
         e = grafted.get(s.key)
         if e is None:
             refused.append(f"  {s.key} : déclaré dans la graine, non greffé")
@@ -866,9 +919,7 @@ def _projected_entries(rs: Rootstock, done: set[str], refused: list[str]) -> lis
 def _lock_gaps(rs: Rootstock, locked: list[dict]) -> list[str]:
     """Écarts entre les clones et le verrou (`--verify`)."""
     grafted = {e.key: e for e in rs.grafted()}
-    graine = rs.seed_manifest_path()
-    project = project_key(load_graine(graine)["projet"]["nom"]) if graine.exists() else None
-    declared = {s.key for s in rs.sources()} - {project}
+    declared = {s.key for s in rs.sources()}
     gaps = []
     for entry in locked:
         e = grafted.get(entry["key"])

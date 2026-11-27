@@ -21,7 +21,7 @@ from dataclasses import replace
 from pathlib import Path
 
 from lepton.errors import EXIT_TOOL, LeptonError
-from lepton.rootstock import PROJECT_SUBPATH, SOURCE_ROOT, STEM_DIR, Manifest, Rootstock
+from lepton.rootstock import STEM_DIR, Manifest, Rootstock
 from lepton.validation import Anomaly, locate, validate_data, validate_json, validate_xml
 
 KERNEL_PRESETS = "CMakePresets.json"   # presets du greffon noyau, à la racine du trunk
@@ -142,6 +142,12 @@ def check_seed(graine: dict, by_name: dict[str, Manifest], label: str) -> list[A
 
     kernel = role("noyau", graine.get("noyau"), "noyau", "/noyau")
     bsp = role("BSP", graine.get("bsp"), "bsp", "/bsp")
+    project = (graine.get("projet") or {}).get("nom")
+    role("greffon projet", project, "projet", "/projet/nom")      # PA-E2 d'EP-1 : nom = projet.nom
+    others = sorted(m.name for m in by_name.values() if m.kind == "projet" and m.name != project)
+    if others:
+        found.append(Anomaly(label, "/projet/nom", f"greffon(s) de type projet greffé(s) en plus de « {project} » : "
+                             f"{', '.join(others)} (un seul greffon projet par graine)"))
     for field, kind in (("applications", "application"), ("bibliotheques", "bibliotheque")):
         for i, n in enumerate(graine.get(field, [])):
             role(kind, n, kind, f"/{field}/{i}")
@@ -359,13 +365,10 @@ def removal_unprovided(rs: Rootstock, graine: dict, key: str) -> list[Anomaly]:
 def _manifest_label(rs: Rootstock, m: Manifest) -> str:
     """Manifeste de greffon désigné par le trunk (seul chemin d'ouverture, PA-1, IDE-4 : la tâche
     « lepton : vérifier » de l'éditeur ouvre ce chemin) quand le lien y mène ; sinon par le clone."""
-    parts, src = m.path.parts, (STEM_DIR, *Path(SOURCE_ROOT).parts)
-    for i in range(len(parts) - len(src), -1, -1):
-        if parts[i:i + len(src)] == src:
-            in_trunk = rs.trunk.joinpath(*parts[i + 1:])
-            if in_trunk.is_symlink() and in_trunk.resolve() == m.path.resolve():
-                return _rel(rs, in_trunk)
-            break
+    # trunk_dir : posé par Rootstock.manifests (sys/root/src/… ou, greffon projet, sys/user/<nom>/, EP-1)
+    in_trunk = m.trunk_dir / m.path.name if m.trunk_dir is not None else None
+    if in_trunk is not None and in_trunk.is_symlink() and in_trunk.resolve() == m.path.resolve():
+        return _rel(rs, in_trunk)
     return _rel(rs, m.path)
 
 
@@ -508,16 +511,13 @@ def check_rootstock(rs: Rootstock, warn, info) -> tuple[list[str], list[Anomaly]
     graine_path = rs.seed_manifest_path()
     label = _rel(rs, graine_path)
     if rs.is_reference_seed():
-        info(f"graine de référence ({_rel(rs, rs.seed_root())} : ni {graine_path.name} ni {PROJECT_SUBPATH}/) : "
+        info(f"graine de référence ({_rel(rs, rs.seed_root())} : pas de {graine_path.name}) : "
              "contrôles déduits des greffons greffés et des presets du noyau")
         found_checked, found = check_reference_seed(rs, list(manifests.values()), warn, info)
         checked.extend(found_checked)
         anomalies.extend(found)
         return checked, _located(rs, anomalies)
     checked.append(label)
-    if not graine_path.exists():
-        anomalies.append(Anomaly(label, "", "manifeste de graine absent (graine hors lepton)"))
-        return checked, _located(rs, anomalies)
     found = validate_json(graine_path, "seed")
     anomalies.extend(found)
     if found:
@@ -532,9 +532,10 @@ def check_rootstock(rs: Rootstock, warn, info) -> tuple[list[str], list[Anomaly]
     if not xml.exists():
         anomalies.append(Anomaly(label, "/mklepton_xml", f"« {graine['mklepton_xml']} » absent du trunk"))
         return checked, _located(rs, anomalies)
-    if not xml.resolve().is_relative_to((rs.seed_root() / PROJECT_SUBPATH / STEM_DIR).resolve()):
-        # O5 (CFG-1) : XML du projet versionné dans la graine ; ici XML d'un greffon partagé
-        warn(f"{xml_label} : XML fourni par un greffon partagé, pas par la graine (CFG-1, O5) ; "
+    project = rs.project_entry(graine["projet"]["nom"])
+    if project is not None and not xml.resolve().is_relative_to((rs.clone(project) / STEM_DIR).resolve()):
+        # O5 (CFG-1) : XML du projet versionné dans le greffon projet (EP-1) ; ici XML d'un greffon partagé
+        warn(f"{xml_label} : XML fourni par un greffon partagé, pas par le greffon projet (CFG-1, O5) ; "
              f"lepton seed mkconf import {graine['mklepton_xml']}")
     anomalies.extend(_xml_anomalies(xml, xml_label, [m for m, _ in manifests.values()], warn))
     return checked, _located(rs, anomalies)

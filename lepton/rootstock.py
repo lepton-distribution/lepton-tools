@@ -24,13 +24,16 @@ RAMIFICATIONS = ".scion.ramifications"
 PROJECTIONS = ".scion.projections"
 STEM_DIR = "scion"
 SOURCE_ROOT = Path("sys/root/src")   # racine des destinations des manifestes (lecteur CMake)
+PROJECT_ROOT = Path("sys/user")      # greffon de type projet : manifeste sous sys/user/<nom>/ (EP-1, PA-E2)
 
 SHELF = "lepton"
 KERNEL_KEY = f"{SHELF}@original::tree"
 # Type de greffon (enum des schémas) → préfixe de clé scion créée par lepton (décision S2 d'ENV-8)
-KEY_PREFIX = {"famille": "family", "bsp": "bsp", "application": "application", "bibliotheque": "library"}
+KEY_PREFIX = {"famille": "family", "bsp": "bsp", "application": "application", "bibliotheque": "library",
+              "projet": "project"}
 
-# Greffon local du projet (ENV-9) : fichiers générés versionnés dans la graine, sous project/scion/
+# Ancien format (ENV-9 à EP-0) : greffon local du projet sous project/ du dépôt de la graine ;
+# refusé depuis EP-1 (PA-E2 : graine à l'ancien format, recréée par lepton seed new)
 PROJECT_SUBPATH = "project"
 
 _WHITESPACE = re.compile(r"[ \t\n]+")
@@ -58,8 +61,8 @@ def scion_key(kind: str, name: str) -> str:
 
 
 def project_key(project: str) -> str:
-    """Clé scion du greffon local du projet (presets générés par lepton generate)."""
-    return f"{SHELF}@{PROJECT_SUBPATH}-{project}"
+    """Clé scion du greffon projet créé par lepton seed new (EP-1)."""
+    return scion_key("projet", project)
 
 
 def _fields(line: str) -> list[str]:
@@ -197,11 +200,16 @@ class Manifest:
 
 
 def find_manifest(clone: Path) -> Manifest | None:
-    """Manifeste d'un greffon : le moins profond sous `<clone>/scion/sys/root/src/`."""
+    """Manifeste d'un greffon : le moins profond sous `<clone>/scion/sys/root/src/` ; à défaut, celui
+    d'un greffon de type projet, `<clone>/scion/sys/user/<nom>/` (EP-1, PA-E2), unique."""
     root = clone / STEM_DIR / SOURCE_ROOT
-    if not root.is_dir():
-        return None
-    found = sorted(root.rglob(SCION_MANIFEST), key=lambda p: (len(p.parts), str(p)))
+    found = sorted(root.rglob(SCION_MANIFEST), key=lambda p: (len(p.parts), str(p))) if root.is_dir() else []
+    if not found:
+        found = sorted((clone / STEM_DIR / PROJECT_ROOT).glob(f"*/{SCION_MANIFEST}"))
+        if len(found) > 1:
+            raise LeptonError(f"{clone} : {len(found)} manifestes sous {STEM_DIR}/{PROJECT_ROOT}/ "
+                              f"({', '.join(p.parent.name for p in found)}), un seul greffon projet par greffon",
+                              "un dépôt partagé déclare chaque greffon à son propre sous-chemin (:PATH)")
     if not found:
         return None
     try:
@@ -238,11 +246,11 @@ class Rootstock:
             if not (path / SIGNATURE).exists():
                 raise LeptonError(f"{path} n'est pas un rootstock ({SIGNATURE} absent)",
                                   "indiquer la racine du rootstock avec -C DIR")
-            return cls(path)
+            return cls(path).refuse_legacy_project()
         current = Path(start or Path.cwd()).resolve()
         for candidate in (current, *current.parents):
             if (candidate / SIGNATURE).exists():
-                return cls(candidate)
+                return cls(candidate).refuse_legacy_project()
         raise LeptonError(f"aucun rootstock trouvé depuis {current}",
                           "se placer dans un rootstock ou utiliser -C DIR ; nouveau projet : lepton seed new")
 
@@ -280,9 +288,29 @@ class Rootstock:
         return self.seed_dot() / SEED_MANIFEST
 
     def is_reference_seed(self) -> bool:
-        """Graine de référence (PA-19 C d'ENV-16, PA-23 d'ENV-18) : ni `lepton-graine.json` ni greffon
-        local de projet (`project/`) ; une graine de projet abîmée garde `project/`."""
-        return not self.seed_manifest_path().exists() and not (self.seed_root() / PROJECT_SUBPATH).exists()
+        """Graine de référence (PA-19 C d'ENV-16, PA-23 d'ENV-18, réduit par C4 au PA-E2 d'EP-1) : pas
+        de `lepton-graine.json`."""
+        return not self.seed_manifest_path().exists()
+
+    def refuse_legacy_project(self) -> "Rootstock":
+        """PA-E2 d'EP-1 : graine à l'ancien format (`project/` dans son dépôt), refusée par toute commande."""
+        try:
+            legacy = self.seed_root() / PROJECT_SUBPATH
+        except LeptonError:
+            return self                  # pas de graine unique : signalé par la commande elle-même
+        if legacy.is_dir():
+            raise LeptonError(f"graine à l'ancien format : {legacy} (greffon local du projet, remplacé par un "
+                              "greffon de type projet depuis lepton 0.2.0)",
+                              "recréer le projet par lepton seed new, ou suivre « Graine à l'ancien format » "
+                              "du README de lepton-tools")
+        return self
+
+    def project_entry(self, name: str | None = None) -> GraftedEntry | None:
+        """Greffon greffé de type projet (de nom `name` si donné) ; plusieurs sans nom : le premier."""
+        for key, m in self.manifests().items():
+            if m.kind == "projet" and (name is None or m.name == name):
+                return next(e for e in self.grafted() if e.key == key)
+        return None
 
     def sources(self) -> list[SourceEntry]:
         return read_sources(self.seed_dot() / SOURCES_LIST)

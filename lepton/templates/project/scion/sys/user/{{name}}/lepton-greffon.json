@@ -1,0 +1,6 @@
+{
+  "nom": {{name}},
+  "type": "projet",
+  "version": "0.1.0",
+  "description": {{description}}
+}

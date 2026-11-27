@@ -3,12 +3,12 @@
 Sources : manifeste de graine et manifestes des greffons greffés (CFG-1 : jamais le XML mklepton,
 dont seul le chemin est recopié). Emplacements (décisions ENV-9 du 2026-10-14) :
 
-- `CMakeUserPresets.json` dans le dépôt de la graine, sous `project/scion/`, greffé à la racine du
-  trunk par le greffon local `lepton@project-<projet>` ; il hérite des presets cachés du noyau ;
+- `CMakeUserPresets.json` à la racine `scion/` du greffon de type projet (EP-1, PA-E2 ; auparavant
+  `project/scion/` de la graine), greffé à la racine du trunk ; il hérite des presets cachés du noyau ;
 - `<ROOTSTOCK>/<projet>.code-workspace`, non versionné, avec `launch` et `tasks` intégrés.
 
-Graine de référence (PA-23 d'ENV-18) : aucun `CMakeUserPresets.json`, aucun greffon projet ; les
-presets de carte du noyau servent tels quels ; espace `<ROOTSTOCK>/<répertoire de la graine>.code-workspace`.
+Graine de référence (PA-23 d'ENV-18 ; T8 au PA-E2 d'EP-1) : aucun `CMakeUserPresets.json`, même si un
+greffon projet est greffé ; les presets de carte du noyau servent tels quels ; espace `<ROOTSTOCK>/<répertoire de la graine>.code-workspace`.
 
 Écriture seulement si le contenu change ; aucun horodatage : deux appels successifs ne changent rien.
 """
@@ -23,9 +23,10 @@ from pathlib import Path, PurePosixPath
 
 from lepton.checks import KERNEL_PRESETS, board_presets, check_seed_options
 from lepton.errors import EXIT_OK, EXIT_TOOL, LeptonError
-from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, expand_user, project_key
+from lepton.rootstock import PROJECT_SUBPATH, STEM_DIR, Rootstock, SOURCE_ROOT, expand_user
 from lepton.scion_runner import run
-from lepton.seed import _info, _remind_commit, _warn, finish, graft_project, load_graine, project_stem
+from lepton.seed import (_git_root, _info, _remind_commit, _warn, finish, graft_project, load_graine, project_entry,
+                         project_stem)
 from lepton.validation import SCHEMA_FILES, SCION_MANIFEST, SEED_MANIFEST, schemas_dir
 
 PRESETS_FILE = "CMakeUserPresets.json"
@@ -351,7 +352,7 @@ def workspace_folders(ctx: Context) -> list[dict]:
     folders = [{"name": "trunk", "path": _folder_path(ctx, ctx.rs.trunk)}]
     names = {key: m.name for key, m in ctx.rs.manifests().items()}
     seen = set()
-    skipped = ctx.rs.projected_keys() | {project_key(ctx.project)}
+    skipped = ctx.rs.projected_keys()
     repos = [(f"graine {ctx.project}", ctx.seed_root)]
     repos += [(names.get(e.key, e.name), ctx.rs.clone(e)) for e in ctx.rs.grafted() if e.key not in skipped]
     for label, path in repos:
@@ -387,7 +388,7 @@ def workspace_settings(ctx: Context, tools: dict, probe_serial: str | None = Non
     settings = {
         # Dossiers « git · … » : fichiers greffés masqués (ouverts par le trunk seul, IDE-4) ; restent
         # visibles les fichiers non greffés et `scion/.scion/` de la graine. Le trunk n'a ni `scion/`
-        # ni `project/` à sa racine.
+        # ni `project/` à sa racine (`project/scion` : ancien format, retiré à EP-4).
         "files.exclude": {"**/.DS_Store": True, "**/._*": True, f"{STEM_DIR}/[!.]*": True,
                           f"{PROJECT_SUBPATH}/{STEM_DIR}": True},
         "cmake.useCMakePresets": "always",
@@ -625,11 +626,11 @@ def generate(args) -> int:
     ctx = Context(rs)
     tools = host_tools(ctx, args.clangd)
 
-    seed_changed = False
-    if not ctx.reference:            # graine de référence : rien n'est écrit dans la graine (PA-23 Q3)
-        presets = project_stem(ctx.seed_root) / PRESETS_FILE
+    project_changed = False
+    if not ctx.reference:            # graine de référence : rien n'est écrit (PA-23 Q3 ; T8, PA-E2 d'EP-1)
+        presets = project_stem(rs, project_entry(rs, ctx.graine)) / PRESETS_FILE
         presets_changed = _write_if_changed(presets, json.dumps(render_presets(ctx), ensure_ascii=False, indent=2) + "\n")
-        seed_changed = graft_project(rs, ctx.seed_root, ctx.project) or presets_changed
+        project_changed = graft_project(rs, project_entry(rs, ctx.graine)) or presets_changed
         if presets_changed:
             touch_link(rs.trunk / PRESETS_FILE)
     workspace = rs.path / f"{ctx.project}.code-workspace"
@@ -643,7 +644,7 @@ def generate(args) -> int:
         _info(f"graine de référence {ctx.seed_root} : presets du noyau ({rs.trunk / KERNEL_PRESETS}), "
               f"aucun {PRESETS_FILE} écrit")
     else:
-        _info(f"{'écrit    ' if seed_changed else 'inchangé '} {presets} (greffé : {rs.trunk / PRESETS_FILE})")
+        _info(f"{'écrit    ' if project_changed else 'inchangé '} {presets} (greffé : {rs.trunk / PRESETS_FILE})")
     _info(f"{'écrit    ' if ws_changed else 'inchangé '} {workspace}")
     _info(f"presets : {', '.join(c.preset for c in ctx.configurations)} (cmake --list-presets dans {rs.trunk})")
     for board, names in ctx.ungrafted.items():
@@ -655,6 +656,6 @@ def generate(args) -> int:
         else:
             _warn("configuration carte sans --probe-serial : OpenOCD prend la première sonde, "
                   "une seule carte branchée à la fois")
-    if seed_changed:
-        _remind_commit(ctx.seed_root)
+    if project_changed:
+        _remind_commit(_git_root(presets.parent), "greffon projet")
     return EXIT_OK
