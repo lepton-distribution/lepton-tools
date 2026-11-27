@@ -1,0 +1,8 @@
+{
+  "$schema": "../../greffon.schema.json",
+  "nom": "tauon-basic",
+  "type": "projet",
+  "version": "1.0.0",
+  "description": "Invalide : un greffon projet ne compile rien.",
+  "sources": ["main.c"]
+}

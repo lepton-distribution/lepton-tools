@@ -19,7 +19,7 @@
       "required": ["nom", "version"],
       "properties": {
         "nom": {
-          "description": "Nom du projet.",
+          "description": "Nom du projet ; aussi nom du greffon de type projet de la graine, qui porte sys/user/<nom>/ (EP-1).",
           "$ref": "#/$defs/identifiant"
         },
         "version": {
@@ -67,8 +67,8 @@
       "items": { "$ref": "#/$defs/configuration" }
     },
     "mklepton_xml": {
-      "description": "Chemin du XML mklepton du projet, relatif au trunk ; fourni par le greffon local du projet (project/scion/ de la graine, sys/user/<projet>/etc/mkconf_<projet>.xml), copié par lepton seed new ou lepton seed mkconf import.",
-      "$comment": "CFG-1 (XML mklepton, seconde source de configuration, versionnée dans la graine).",
+      "description": "Chemin du XML mklepton du projet, relatif au trunk ; fourni par le greffon de type projet de nom projet.nom (sys/user/<projet>/etc/mkconf_<projet>.xml), copié par lepton seed new ou lepton seed mkconf import.",
+      "$comment": "CFG-1 (XML mklepton, seconde source de configuration, versionnée dans le greffon projet depuis EP-1 ; auparavant dans project/ de la graine).",
       "$ref": "#/$defs/chemin_relatif"
     },
     "options": {
