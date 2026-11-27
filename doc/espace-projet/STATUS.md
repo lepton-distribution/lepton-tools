@@ -1,15 +1,15 @@
 # État du chantier « espace-projet »
 
 Source unique de l'état. Mis à jour en fin de chaque session (ORCHESTRATION §3).
-Dernière mise à jour : 2026-11-26 — EP-0 terminée : essai VSCodium du lien, PA-E1 clos (C2
-révisée, piste P-a), plan révisé et relu ; `espace-projet/ep-0` fusionnée dans `main`, poussée.
+Dernière mise à jour : 2026-11-27 — EP-1 terminée : greffon de type `projet` (lepton 0.2.0,
+extension 0.5.5), PA-E2 et PA-E3 clos ; `espace-projet/ep-1` fusionnée dans `main`, poussée.
 
 ## Prochaine action
 
-EP-1 (`etapes/EP-1-greffon-type-projet.md`), dans une nouvelle session, par la skill
-`espace-projet-session` (EP-2 possible à la place : ordre interchangeable, ORCHESTRATION §6).
-Vérifier d'abord que `main` = `origin/main` (fusion d'`espace-projet/ep-0` et push accordés le
-2026-11-26) ; la branche de l'étape part de `main`.
+EP-2 (`etapes/EP-2-scion-ignores-greffables.md`), dans une nouvelle session, par la skill
+`espace-projet-session` (EP-3 ou EP-7 possibles à la place : prérequis terminés, ORCHESTRATION §6).
+Vérifier d'abord que `main` = `origin/main` (fusion d'`espace-projet/ep-1` et push accordés le
+2026-11-27) ; la branche de l'étape part de `main`.
 
 ## Étapes
 
@@ -17,7 +17,7 @@ Vérifier d'abord que `main` = `origin/main` (fusion d'`espace-projet/ep-0` et p
 | --- | --- | --- | --- | --- |
 | plan | Plan du chantier (skill `lepton-portage-instructions`) | terminée (2026-11-25) | lepton-tools `espace-projet/plan` (depuis `main` e25a414 ; fusionnée `--no-ff` dans `main`) | — |
 | EP-0 | Essai VSCodium : espace ouvert par un lien du trunk ; plusieurs rootstocks | terminée (2026-11-26) | lepton-tools `espace-projet/ep-0` (depuis `main` cf34908 ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/ep-0.md` |
-| EP-1 | Greffon de type `projet` dans lepton | à faire | | |
+| EP-1 | Greffon de type `projet` dans lepton | terminée (2026-11-27) | lepton-tools `espace-projet/ep-1` (depuis `main` c76612d ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/ep-1.md` |
 | EP-2 | scion : fichiers ignorés greffables déclarés par le greffon | à faire | | |
 | EP-3 | Greffon `lepton-original-tree-project` (extraction de `lepton-basic`) | à faire | | |
 | EP-4 | `lepton generate` portable et fichier de poste | à faire | | |
@@ -54,8 +54,8 @@ section.
 | seed.scions | `master` 929c01a, tag 0.6.3.4 | |
 | Clone noyau | `master` 0c2e43e | |
 | scion | 0.6.3.4 (Mac) | |
-| lepton | 0.1.0 | |
-| Extension Lepton | 0.5.4 | |
+| lepton | 0.1.0 | EP-1 : **0.2.0** (greffon de type `projet`, ancien format refusé) ; pipx réinstallé depuis `espace-projet/ep-1` c1aa189 le 2026-11-27, 18 modules, modèles et schémas identiques au dépôt |
+| Extension Lepton | 0.5.4 | EP-1 : **0.5.5** (libellé de `seed mkconf import`, PA-E3) ; `extension/dist/lepton-0.5.5.vsix`, installé par `codium --install-extension … --force` le 2026-11-27 ; VM : non installé (EP-8) |
 | git | Mac 2.50.1 ; VM Debian 2.47.3 | |
 | Claude Code | Mac 2.1.331 (`CADRAGE.md`) ; `claude --version` : 2.1.332 le 2026-11-25 | |
 
@@ -79,6 +79,12 @@ C1 à C10 (utilisateur, 2026-11-25) : `CADRAGE.md` §5, non recopiées.
 | PA-E1 (relevé QEMU) | 2026-11-26 | Relevé incident du constat du besoin 2 (QEMU lancé par Cortex-Debug à l'écoute sur toutes les interfaces) : hors plan, H6. Le besoin 2 est constaté sans défaut (rapport §5). | utilisateur |
 | PA-E1 (essais) | 2026-11-26 | `essais/ep-0/` (copies `a` et `b`, relevés `*.out` et journaux de construction) à supprimer en fin de session par `scripts/supprimer-essai.sh`. | utilisateur |
 | PA-P (EP-0) | 2026-11-26 | Fusion `--no-ff` d'`espace-projet/ep-0` dans `main` et push de `main` accordés. | utilisateur |
+| PA-E2 | 2026-11-27 | Propositions recommandées du rapport `rapports/ep-1-type-projet.md` §3 retenues toutes : (1) manifeste `lepton-greffon.json` de type `projet` à `scion/sys/user/<nom>/`, champs `nom` (= nom du projet), `type`, `version`, `description`, autres refusés ; `find_manifest` étendu ; **noyau non modifié** ; (2) greffon projet désigné par `projet.nom`, sans nouvelle clé de graine ; (3) `seed new` : créé par défaut (`--project-repo`, défaut `<rootstock>/depots/lepton-project/<nom>`, version `*`, clé `lepton@project-<nom>`) ou désigné par `--origin <nom>=…` ; (4) graines à `project/` : refus explicite (« ancien format »), essais abandonnés (hors plan), `essais/env-53-c5` de la VM en EP-8 ; critère « graine migrée » sans objet ; (5) T8 : en régime de référence rien n'est écrit, refus PA-23 inchangés ; (6) T9 : `doc/espace-projet/EXIGENCES.md`, `doc/devenv/` non modifié ; (7) §3.4-§3.5 tels quels (critère « pas de `lepton-graine.json` », dossier « git · <nom> », `files.exclude` inchangé) ; (8) lepton 0.2.0, extension 0.5.4 non touchée. | utilisateur, sur recommandation de la session |
+| PA-E3 (essai) | 2026-11-27 | Essai VSCodium par l'utilisateur sur `essais/ep-1/neuf/rootstock` (lepton de la branche par `lepton.path`) : `lepton.seedStatus` (rôle « projet », origine `depots/lepton-project/bout-en-bout`), vue Architecture, dossier « git · bout-en-bout », `lepton.seedMkconfImport` (XML, `.boot`, `.init` copiés et regreffés par l'extension), `lepton.generate` (`LEPTON_MKCONF` = XML du projet) : conformes. | utilisateur |
+| PA-E3 (libellé) | 2026-11-27 | Libellé de `lepton.seedMkconfImport` (« … dans la graine ») corrigé maintenant : extension 0.5.5, `.vsix` reconstruit et installé ; **revient sur le point (8) du PA-E2** (extension non touchée). | utilisateur, contre la recommandation de la session (hors plan) |
+| PA-E3 (essais) | 2026-11-27 | `essais/ep-1/` (`ref`, `neuf`, `ancien`) supprimé en fin de session par `scripts/supprimer-essai.sh`. | utilisateur, sur recommandation de la session |
+| PA-E3 (pipx) | 2026-11-27 | lepton 0.2.0 réinstallé par `pipx install --force <LEPTON_TOOLS>` depuis `espace-projet/ep-1` ; réglage `lepton.path` de l'essai à retirer par l'utilisateur. | utilisateur, sur recommandation de la session |
+| PA-P (EP-1) | 2026-11-27 | Fusion `--no-ff` d'`espace-projet/ep-1` dans `main` et push de `main` accordés. | utilisateur, sur recommandation de la session |
 | PA-E1 (openocdPath) | 2026-11-26 | Forme portable de `cortex-debug.openocdPath`, non essayée en EP-0 (BSP QEMU) : vérifiée en EP-5. | utilisateur, sur recommandation de la session |
 
 ## Journal
@@ -127,3 +133,14 @@ C1 à C10 (utilisateur, 2026-11-25) : `CADRAGE.md` §5, non recopiées.
   VSCodium les états `workspaceStorage` des chemins d'essai (sans effet).
 - 2026-11-26 — Fusion `--no-ff` d'`espace-projet/ep-0` dans `main` et push de `main` (PA-P,
   accord de l'utilisateur).
+- 2026-11-27 — EP-1. Audit (`rapports/ep-1-type-projet.md` §1 à §4 ; pytest de départ 616) ;
+  PA-E2 : propositions recommandées toutes retenues. Schémas (type `projet`) ; lepton 0.2.0
+  (lecteur `sys/user/<nom>/`, `seed new` crée ou désigne le greffon projet, critère de référence
+  « pas de `lepton-graine.json` », ancien format refusé) ; 23 tests nouveaux (échouent sur `main`),
+  tests adaptés ; pytest 642 verts. Défaut trouvé et corrigé : manifeste du greffon projet désigné
+  par le clone dans `check`. Non-régression : bout-en-bout et fumée QEMU du preset généré verts ;
+  copie de `<ROOTSTOCK>` : `check` 0, espace de `main` et de la branche identiques ; procédure
+  manuelle de l'ancien format essayée (`seed-clone` ajouté au README). `EXIGENCES.md` (T9) ; H7,
+  H8. Écart : code avant tests, un commit pour toutes les commandes (rapport §6.1). PA-E3 : essai
+  VSCodium conforme ; libellé de l'extension corrigé (0.5.5, contre la recommandation) ; pipx
+  0.2.0 ; `essais/ep-1/` supprimé (`supprimer-essai.sh`, rc 0) ; fusion et push accordés.

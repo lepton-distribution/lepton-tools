@@ -79,6 +79,11 @@ def _seed(root: Path) -> Path:
     return root / "depots" / "lepton-seed" / "demo"
 
 
+def _project_repo(root: Path) -> Path:
+    """Dépôt du greffon projet créé par seed new (EP-1 ; auparavant `project/` de la graine)."""
+    return root / "depots" / "lepton-project" / "demo"
+
+
 def _graine(root: Path) -> Path:
     return _seed(root) / "scion" / ".scion" / "lepton-graine.json"
 
@@ -91,7 +96,7 @@ def _set_graine(root: Path, **fields) -> None:
 
 
 def _snapshot(root: Path) -> dict:
-    files = [_seed(root) / "project" / "scion" / gen.PRESETS_FILE, root / "demo.code-workspace",
+    files = [_project_repo(root) / "scion" / gen.PRESETS_FILE, root / "demo.code-workspace",
              _seed(root) / "scion" / ".scion" / ".scion.sources.list", root / "trunk" / ".scion.grafted.list"]
     return {str(p): (p.read_bytes(), p.stat().st_mtime_ns) for p in files}
 
@@ -104,7 +109,7 @@ def test_generate_presets_grafted_in_trunk(project, tools):
     assert main(["generate", "-C", str(project)]) == 0
 
     link = project / "trunk" / gen.PRESETS_FILE
-    source = _seed(project) / "project" / "scion" / gen.PRESETS_FILE
+    source = _project_repo(project) / "scion" / gen.PRESETS_FILE
     assert link.is_symlink() and link.resolve() == source.resolve()
     presets = json.loads(source.read_text(encoding="utf-8"))
     assert presets["vendor"]["lepton"]["note"] == gen.NOTE
@@ -120,7 +125,8 @@ def test_generate_presets_grafted_in_trunk(project, tools):
 
     rs = Rootstock(project)
     key = project_key("demo")
-    assert any(s.key == key and s.subpath == "project" and s.version == "*" for s in rs.sources())
+    assert any(s.key == key and s.location == "depots/lepton-project/demo" and s.version == "*"
+               for s in rs.sources())
     assert key in {e.key for e in rs.grafted()}
     assert_trunk_clean(project)
 
@@ -179,7 +185,8 @@ def test_workspace_folders_settings_launch_tasks(project, tools):
     assert folders[0] == {"name": "trunk", "path": "trunk"}
     paths = [f["path"] for f in folders[1:]]
     assert paths[0] == "depots/lepton-seed/demo"                 # graine (git), une seule fois
-    assert len(paths) == len(set(paths)) == 4                     # graine, noyau, famille, BSP
+    assert len(paths) == len(set(paths)) == 5                     # graine, noyau, famille, BSP, greffon projet
+    assert "depots/lepton-project/demo" in paths                  # dépôt propre (EP-1, PA-E2)
     assert "depots/generation/building" not in paths              # pas un dépôt git
 
     s = ws["settings"]
@@ -402,7 +409,10 @@ def test_check_names_grafted_manifests_by_trunk(project, capsys):
     main(["check", "--json", "-C", str(project)])
     files = json.loads(capsys.readouterr().out)["files"]
     manifests = [f for f in files if f.endswith("lepton-greffon.json")]
-    assert manifests and all(f.startswith("trunk/sys/root/src/") for f in manifests)
+    # greffon projet (EP-1) : manifeste sous sys/user/<projet>/, les autres sous sys/root/src/
+    assert manifests and all(f.startswith("trunk/sys/root/src/") or f == "trunk/sys/user/demo/lepton-greffon.json"
+                             for f in manifests)
+    assert "trunk/sys/user/demo/lepton-greffon.json" in manifests
     assert all((project / f).is_symlink() for f in manifests)
 
 
@@ -550,17 +560,17 @@ def test_find_clangd(tools, monkeypatch):
 
 
 def test_status_and_lock_with_project_scion(project, tools, capsys):
-    """Greffon du projet : rôle « projet » dans seed status ; hors du verrou (dépôt de la graine)."""
+    """Greffon du projet : rôle « projet » dans seed status ; figé par le verrou (dépôt propre, EP-1)."""
     assert main(["generate", "-C", str(project)]) == 0
-    _git(_seed(project), "add", "-A")
-    _git(_seed(project), "commit", "-q", "-m", "presets")
+    _git(_project_repo(project), "add", "-A")
+    _git(_project_repo(project), "commit", "-q", "-m", "presets")
     capsys.readouterr()
     assert main(["seed", "status", "--json", "-C", str(project)]) == 0
     roles = {s["key"]: s["role"] for s in json.loads(capsys.readouterr().out)["scions"]}
     assert roles[project_key("demo")] == "projet"
     assert main(["seed", "lock", "-C", str(project), "--no-cmake"]) == 0
     lock = json.loads((_seed(project) / "scion" / ".scion" / "lepton-graine.lock.json").read_text())
-    assert project_key("demo") not in {e["key"] for e in lock["scions"]}
+    assert project_key("demo") in {e["key"] for e in lock["scions"]}
     _git(_seed(project), "add", "-A")
     _git(_seed(project), "commit", "-q", "-m", "verrou")
     assert main(["seed", "lock", "--verify", "-C", str(project)]) == 0

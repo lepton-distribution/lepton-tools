@@ -1,9 +1,9 @@
-"""XML mklepton du projet (O5, décision du 2026-10-20) : copie dans la graine, déclaration des applications.
+"""XML mklepton du projet (O5, décision du 2026-10-20) : copie dans le greffon projet, déclaration des applications.
 
 Le XML du projet et les fichiers qu'il copie dans le système de fichiers racine (`<file src_file>`,
-ex. `.boot`, `.init`) sont versionnés dans le dépôt de la graine, sous
-`project/scion/sys/user/<projet>/etc/`, et greffés par le greffon local du projet (comme
-`CMakeUserPresets.json`). Le XML de référence du noyau reste un modèle, jamais modifié par lepton.
+ex. `.boot`, `.init`) sont versionnés dans le greffon de type projet, sous `scion/sys/user/<projet>/etc/`,
+et greffés avec lui (comme `CMakeUserPresets.json`) ; EP-1 : auparavant `project/scion/` de la graine.
+Le XML de référence du noyau reste un modèle, jamais modifié par lepton.
 
 Édition textuelle : commentaires et mise en forme du XML sont conservés.
 """
@@ -24,7 +24,7 @@ _INDENT = re.compile(r"^([ \t]*)<bin\b", re.M)
 
 
 def project_etc(project: str) -> PurePosixPath:
-    """Répertoire du XML du projet, relatif au trunk (et à `project/scion/` de la graine)."""
+    """Répertoire du XML du projet, relatif au trunk (et à la racine `scion/` du greffon projet)."""
     return PurePosixPath("sys/user") / project / "etc"
 
 

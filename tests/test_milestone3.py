@@ -269,6 +269,9 @@ def test_gra3_version_with_slash(project, repos, capsys):
     assert branch == "devenv/x"
     assert (project / "trunk/sys/root/src/bin/my-app/my-app.c").is_symlink()
     assert _by_name(_status(project, capsys)[1])["my-app"]["version"] == "devenv/x"
+    # <bin> déclaré dans le XML du greffon projet, figé par le verrou (EP-1) : commité d'abord
+    repo = project / "depots/lepton-project/demo"
+    subprocess.run(["git", "-C", str(repo), "commit", "-qam", "my-app"], check=True)
     assert main(["seed", "lock", "-C", str(project), "--no-cmake"]) == 0
     assert main(["seed", "lock", "--verify", "-C", str(project), "--no-cmake"]) == 0
     assert main(["seed", "remove", "my-app", "--purge", "-C", str(project), "--no-cmake"]) == 0
@@ -391,7 +394,7 @@ def test_gra6_status(project, repos, capsys):
     assert code == 0 and st["missing"] == [] and st["trunk_check"] == {"regular_files": [], "broken_links": []}
     scions = _by_name(st)
     assert {n: s["role"] for n, s in scions.items() if n != "building"} == \
-        {"lepton-noyau": "noyau", "fam-test": "famille", "board-q": "bsp", "project-demo": "projet"}
+        {"lepton-noyau": "noyau", "fam-test": "famille", "board-q": "bsp", "demo": "projet"}   # nom du manifeste (EP-1)
     assert scions["building"]["role"] == "sans manifeste" and scions["building"]["commit"] is None
     assert scions["board-q"]["branch"] == "master" and scions["board-q"]["dirty"] == 0
     assert scions["lepton-noyau"]["ahead"] == 0 and scions["lepton-noyau"]["behind"] == 0

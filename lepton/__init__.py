@@ -1,6 +1,6 @@
 """Outil lepton : environnement de développement Lepton, client de scion (ENV-8)."""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"   # EP-1 : greffon de type projet, project/ refusé (PA-E2)
 
 # Version minimale de scion (ENV-7 : seed-scion-add/remove, graft --scion, graft-remove ;
 # ENV-15 : fichiers ignorés par git non greffés, fichiers tolérés du trunk ;

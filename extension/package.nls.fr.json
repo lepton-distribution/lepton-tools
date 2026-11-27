@@ -6,7 +6,7 @@
   "command.seedLock": "figer, vérifier ou restaurer la graine",
   "command.seedConfigAdd": "ajouter une configuration à la graine",
   "command.seedConfigRemove": "retirer une configuration de la graine",
-  "command.seedMkconfImport": "importer un XML mklepton de référence dans la graine",
+  "command.seedMkconfImport": "importer un XML mklepton de référence dans le greffon projet",
   "command.scionNew": "créer un greffon",
   "command.scionRemove": "retirer un greffon",
   "command.fileAdd": "créer un fichier dans le greffon",

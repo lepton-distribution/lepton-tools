@@ -47,7 +47,7 @@ def test_reference_status_et_tree(reference, capsys):
     capsys.readouterr()
     assert main(["seed", "status", "-C", str(reference)]) == 0
     out = capsys.readouterr().out
-    assert "graine de référence (ni lepton-graine.json ni project/)" in out
+    assert "graine de référence (pas de lepton-graine.json)" in out           # critère réduit (EP-1, C4)
     assert "graine hors lepton" not in out
     assert main(["seed", "status", "--json", "-C", str(reference)]) == 0
     status = json.loads(capsys.readouterr().out)
@@ -136,8 +136,8 @@ def test_reference_refus(reference, capsys, argv, command):
     capsys.readouterr()
     assert main([*argv, "-C", str(reference)]) == 1
     err = capsys.readouterr().err
-    assert f"lepton: erreur: graine de référence {Rootstock(reference).seed_root()} (ni lepton-graine.json " \
-           f"ni project/) : lepton {command} modifie la graine, refusé" in err
+    assert f"lepton: erreur: graine de référence {Rootstock(reference).seed_root()} (pas de lepton-graine.json) " \
+           f": lepton {command} modifie la graine, refusé" in err
     assert ("--no-seed" if command == "scion new" else "lepton seed new") in err
     assert _seed_state(reference) == before
     assert (reference / "trunk" / ".scion.grafted.list").read_text() == grafted

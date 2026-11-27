@@ -4,8 +4,8 @@ Outillage de l'environnement de développement Lepton : outil en ligne de comman
 (graine, greffons, configuration, génération des fichiers de l'éditeur), schémas, modèles et
 script d'installation de VSCodium.
 
-État : outil `lepton` 0.1.0 (ENV-8 à ENV-16 ; interface : `doc/devenv/rapports/env-8-interface.md`) ;
-extension Lepton 0.5.4 (`extension/`). Voir `doc/devenv/`.
+État : outil `lepton` 0.2.0 (ENV-8 à ENV-16, EP-1 ; interface : `doc/devenv/rapports/env-8-interface.md`, amendements `doc/espace-projet/EXIGENCES.md`) ;
+extension Lepton 0.5.5 (`extension/`). Voir `doc/devenv/`.
 
 Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée par pipx ; scion ≥ 0.6.2.0
 requis, projection des dépôts tiers ; `scripts/install-vscodium.sh` installe 0.6.3.4, extraction partielle des clones projetés, aucun répertoire laissé par un clonage en échec, aucun clone gardé ni repris hors de sa version, graine clonée contrôlée avant sa mise à jour, cause de l'échec de git dans le message). Développement : `python3 -m venv ~/lepton-tools-dev/venv-lepton-tools`, puis
@@ -17,7 +17,7 @@ Intel et Debian 13 ; Apple Silicon : non validé) :
 `scripts/install-vscodium.sh --lepton-clone <clone du noyau> [--seed-scions <clone seed.scions>]`
 (`--dry-run` affiche sans exécuter ; `--help` pour les options). Rejouable.
 
-Commandes disponibles (0.1.0) : `lepton --version`, `lepton check [FILE...]` (sans argument :
+Commandes disponibles (0.2.0) : `lepton --version`, `lepton check [FILE...]` (sans argument :
 graine, greffons greffés et XML du rootstock), `lepton seed new | status | tree | add | remove |
 replace | lock`, `lepton seed mkconf import`, `lepton seed config add | remove`, `lepton scion new | remove`,
 `lepton file add | remove | mv | owner`, `lepton dir add | remove`, `lepton graft`, `lepton generate`
@@ -37,17 +37,42 @@ lepton file add sys/root/src/kernel/dev/bsp/ma-carte/gpio.c    # créé dans le 
 lepton file owner sys/root/src/kernel/dev/bsp/ma-carte/spi.c   # greffon propriétaire (--json)
 lepton check                                                   # GRA-2, GRF-5, CFG-5
 lepton seed lock                                               # lepton-graine.lock.json (GRA-5)
-lepton generate        # CMakeUserPresets.json (graine, greffé) et ~/demo/demo.code-workspace
+lepton generate        # CMakeUserPresets.json (greffon projet, greffé) et ~/demo/demo.code-workspace
 lepton seed config add release-qemu --build-type Release --run qemu   # preset demo-release-qemu
 codium ~/demo/demo.code-workspace
 ```
 
+Greffon projet (lepton 0.2.0, EP-1) : `seed new` crée un dépôt git propre, de type `projet`,
+`depots/lepton-project/<projet>` (`--project-repo DIR` pour un autre emplacement), clé
+`lepton@project-<projet>`, manifeste `scion/sys/user/<projet>/lepton-greffon.json` (invisible du
+lecteur CMake du noyau) ; ou désigne un greffon existant par `--origin <projet>=LOCATION[@VERSION][:PATH]`
+(dépôt partagé avec BSP et applications : `:PATH`). La graine le désigne par `projet.nom`. Il porte
+`CMakeUserPresets.json` (écrit par `lepton generate`) et le XML du projet ; ses modifications se
+commitent dans son dépôt. La graine de référence se reconnaît à l'absence de `lepton-graine.json`.
+
 XML mklepton du projet (CFG-1) : `seed new` copie le XML `--mkconf` (modèle du noyau) et ses
-fichiers `src_file` (`.boot`, `.init`) dans la graine, sous `project/scion/sys/user/<projet>/etc/`,
+fichiers `src_file` (`.boot`, `.init`) dans le greffon projet, sous `scion/sys/user/<projet>/etc/`,
 greffés dans le trunk (`sys/user/<projet>/etc/mkconf_<projet>.xml`) ; il se modifie par le trunk.
 `scion new`, `seed add`, `scion remove`, `seed remove` d'une application y ajoutent ou retirent son
-`<bin>` (bloc `/usr/bin`). Graine antérieure : `lepton seed mkconf import <XML du trunk>`, puis
-`lepton generate`.
+`<bin>` (bloc `/usr/bin`). XML resté dans un greffon partagé : `lepton seed mkconf import <XML du
+trunk>`, puis `lepton generate`.
+
+Graine à l'ancien format (lepton 0.1.0 : greffon local `project/` dans le dépôt de la graine) :
+refusée par toute commande. La recréer par `lepton seed new` ; ou, à la main (essayée en EP-1 sur
+une copie d'`essais/env-11/qemu`), depuis le rootstock :
+
+```
+mkdir -p depots/lepton-project/<projet> && cp -R <graine>/project/scion depots/lepton-project/<projet>/
+echo '{"nom": "<projet>", "type": "projet", "version": "0.1.0"}' \
+    > depots/lepton-project/<projet>/scion/sys/user/<projet>/lepton-greffon.json
+git -C depots/lepton-project/<projet> init && git -C depots/lepton-project/<projet> add -A \
+    && git -C depots/lepton-project/<projet> commit -m "Greffon projet <projet>"
+scion seed-scion-remove --seed <graine> lepton@project-<projet>
+scion seed-scion-add --seed <graine> lepton@project-<projet> '*' depots/lepton-project/<projet>
+git -C <graine> rm -rq project && git -C <graine> commit -qam "Greffon projet en dépôt propre"
+scion seed-clone --seed <graine>        # liste greffée : nouvel emplacement de la clé
+lepton graft && lepton check && lepton generate
+```
 
 Dans VSCodium, ouvrir les fichiers par le dossier `trunk` (les fichiers greffés sont masqués dans les
 dossiers `git · …`). Après un changement de preset, rouvrir les fichiers déjà ouverts (ou
