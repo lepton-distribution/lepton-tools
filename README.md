@@ -37,17 +37,32 @@ lepton file add sys/root/src/kernel/dev/bsp/ma-carte/gpio.c    # créé dans le 
 lepton file owner sys/root/src/kernel/dev/bsp/ma-carte/spi.c   # greffon propriétaire (--json)
 lepton check                                                   # GRA-2, GRF-5, CFG-5
 lepton seed lock                                               # lepton-graine.lock.json (GRA-5)
-lepton generate        # CMakeUserPresets.json (graine, greffé) et ~/demo/demo.code-workspace
+lepton generate        # CMakeUserPresets.json (greffon projet, greffé) et ~/demo/demo.code-workspace
 lepton seed config add release-qemu --build-type Release --run qemu   # preset demo-release-qemu
 codium ~/demo/demo.code-workspace
 ```
 
+Greffon projet (lepton 0.2.0, EP-1) : `seed new` crée un dépôt git propre, de type `projet`,
+`depots/lepton-project/<projet>` (`--project-repo DIR` pour un autre emplacement), clé
+`lepton@project-<projet>`, manifeste `scion/sys/user/<projet>/lepton-greffon.json` (invisible du
+lecteur CMake du noyau) ; ou désigne un greffon existant par `--origin <projet>=LOCATION[@VERSION][:PATH]`
+(dépôt partagé avec BSP et applications : `:PATH`). La graine le désigne par `projet.nom`. Il porte
+`CMakeUserPresets.json` (écrit par `lepton generate`) et le XML du projet ; ses modifications se
+commitent dans son dépôt. La graine de référence se reconnaît à l'absence de `lepton-graine.json`.
+
 XML mklepton du projet (CFG-1) : `seed new` copie le XML `--mkconf` (modèle du noyau) et ses
-fichiers `src_file` (`.boot`, `.init`) dans la graine, sous `project/scion/sys/user/<projet>/etc/`,
+fichiers `src_file` (`.boot`, `.init`) dans le greffon projet, sous `scion/sys/user/<projet>/etc/`,
 greffés dans le trunk (`sys/user/<projet>/etc/mkconf_<projet>.xml`) ; il se modifie par le trunk.
 `scion new`, `seed add`, `scion remove`, `seed remove` d'une application y ajoutent ou retirent son
-`<bin>` (bloc `/usr/bin`). Graine antérieure : `lepton seed mkconf import <XML du trunk>`, puis
-`lepton generate`.
+`<bin>` (bloc `/usr/bin`). XML resté dans un greffon partagé : `lepton seed mkconf import <XML du
+trunk>`, puis `lepton generate`.
+
+Graine à l'ancien format (lepton 0.1.0 : greffon local `project/` dans le dépôt de la graine) :
+refusée par toute commande. La recréer par `lepton seed new` ; ou, à la main : créer un dépôt git
+dont `scion/` reprend `project/scion/` et ajoute `scion/sys/user/<projet>/lepton-greffon.json`
+(`{"nom": "<projet>", "type": "projet", "version": "0.1.0"}`), le déclarer à la place de
+`project/` (`scion seed-scion-remove` puis `seed-scion-add --seed <graine> lepton@project-<projet>
+* <dépôt>`), retirer `project/` de la graine, puis `lepton graft` et `lepton check`.
 
 Dans VSCodium, ouvrir les fichiers par le dossier `trunk` (les fichiers greffés sont masqués dans les
 dossiers `git · …`). Après un changement de preset, rouvrir les fichiers déjà ouverts (ou

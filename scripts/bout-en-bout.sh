@@ -60,11 +60,11 @@ lance "$lepton" seed new bout-en-bout -C "$root" --bsp qemu-mps2-an386 --backend
     --origin "qemu-mps2=file://localhost$ref/depots/${depots_ref[1]}@master" \
     --origin "qemu-mps2-an386=file://localhost$ref/depots/${depots_ref[2]}@master"
 
-etape "XML du projet greffé depuis la graine (CFG-1, O5)"
+etape "XML du projet greffé depuis le greffon projet (CFG-1, O5, EP-1)"
 cible=$([ -L "$root/trunk/$xml_projet" ] && readlink -f "$root/trunk/$xml_projet")
 case $cible in
-    "$(cd "$root" && pwd -P)"/depots/lepton-seed/bout-en-bout/project/scion/*) echo "$xml_projet -> $cible" >>"$journal" ;;
-    *) echo "ÉCHEC : $xml_projet absent du trunk ou hors de la graine (journal : $journal)" >&2; exit 1 ;;
+    "$(cd "$root" && pwd -P)"/depots/lepton-project/bout-en-bout/scion/*) echo "$xml_projet -> $cible" >>"$journal" ;;
+    *) echo "ÉCHEC : $xml_projet absent du trunk ou hors du greffon projet (journal : $journal)" >&2; exit 1 ;;
 esac
 
 etape "lepton check (graine, manifestes, XML : GRA-2, GRF-5, CFG-5)"
