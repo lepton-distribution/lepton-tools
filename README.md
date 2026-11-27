@@ -4,7 +4,7 @@ Outillage de l'environnement de développement Lepton : outil en ligne de comman
 (graine, greffons, configuration, génération des fichiers de l'éditeur), schémas, modèles et
 script d'installation de VSCodium.
 
-État : outil `lepton` 0.1.0 (ENV-8 à ENV-16 ; interface : `doc/devenv/rapports/env-8-interface.md`) ;
+État : outil `lepton` 0.2.0 (ENV-8 à ENV-16, EP-1 ; interface : `doc/devenv/rapports/env-8-interface.md`, amendements `doc/espace-projet/EXIGENCES.md`) ;
 extension Lepton 0.5.4 (`extension/`). Voir `doc/devenv/`.
 
 Installation : `pipx install <ce dépôt>` (dépendance `jsonschema` installée par pipx ; scion ≥ 0.6.2.0
@@ -17,7 +17,7 @@ Intel et Debian 13 ; Apple Silicon : non validé) :
 `scripts/install-vscodium.sh --lepton-clone <clone du noyau> [--seed-scions <clone seed.scions>]`
 (`--dry-run` affiche sans exécuter ; `--help` pour les options). Rejouable.
 
-Commandes disponibles (0.1.0) : `lepton --version`, `lepton check [FILE...]` (sans argument :
+Commandes disponibles (0.2.0) : `lepton --version`, `lepton check [FILE...]` (sans argument :
 graine, greffons greffés et XML du rootstock), `lepton seed new | status | tree | add | remove |
 replace | lock`, `lepton seed mkconf import`, `lepton seed config add | remove`, `lepton scion new | remove`,
 `lepton file add | remove | mv | owner`, `lepton dir add | remove`, `lepton graft`, `lepton generate`
