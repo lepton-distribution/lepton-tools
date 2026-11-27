@@ -58,11 +58,21 @@ greffés dans le trunk (`sys/user/<projet>/etc/mkconf_<projet>.xml`) ; il se mod
 trunk>`, puis `lepton generate`.
 
 Graine à l'ancien format (lepton 0.1.0 : greffon local `project/` dans le dépôt de la graine) :
-refusée par toute commande. La recréer par `lepton seed new` ; ou, à la main : créer un dépôt git
-dont `scion/` reprend `project/scion/` et ajoute `scion/sys/user/<projet>/lepton-greffon.json`
-(`{"nom": "<projet>", "type": "projet", "version": "0.1.0"}`), le déclarer à la place de
-`project/` (`scion seed-scion-remove` puis `seed-scion-add --seed <graine> lepton@project-<projet>
-* <dépôt>`), retirer `project/` de la graine, puis `lepton graft` et `lepton check`.
+refusée par toute commande. La recréer par `lepton seed new` ; ou, à la main (essayée en EP-1 sur
+une copie d'`essais/env-11/qemu`), depuis le rootstock :
+
+```
+mkdir -p depots/lepton-project/<projet> && cp -R <graine>/project/scion depots/lepton-project/<projet>/
+echo '{"nom": "<projet>", "type": "projet", "version": "0.1.0"}' \
+    > depots/lepton-project/<projet>/scion/sys/user/<projet>/lepton-greffon.json
+git -C depots/lepton-project/<projet> init && git -C depots/lepton-project/<projet> add -A \
+    && git -C depots/lepton-project/<projet> commit -m "Greffon projet <projet>"
+scion seed-scion-remove --seed <graine> lepton@project-<projet>
+scion seed-scion-add --seed <graine> lepton@project-<projet> '*' depots/lepton-project/<projet>
+git -C <graine> rm -rq project && git -C <graine> commit -qam "Greffon projet en dépôt propre"
+scion seed-clone --seed <graine>        # liste greffée : nouvel emplacement de la clé
+lepton graft && lepton check && lepton generate
+```
 
 Dans VSCodium, ouvrir les fichiers par le dossier `trunk` (les fichiers greffés sont masqués dans les
 dossiers `git · …`). Après un changement de preset, rouvrir les fichiers déjà ouverts (ou
