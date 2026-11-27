@@ -17,7 +17,7 @@ Vérifier d'abord que `main` = `origin/main` (fusion d'`espace-projet/ep-0` et p
 | --- | --- | --- | --- | --- |
 | plan | Plan du chantier (skill `lepton-portage-instructions`) | terminée (2026-11-25) | lepton-tools `espace-projet/plan` (depuis `main` e25a414 ; fusionnée `--no-ff` dans `main`) | — |
 | EP-0 | Essai VSCodium : espace ouvert par un lien du trunk ; plusieurs rootstocks | terminée (2026-11-26) | lepton-tools `espace-projet/ep-0` (depuis `main` cf34908 ; fusionnée `--no-ff` dans `main`, poussée) | `handoff/ep-0.md` |
-| EP-1 | Greffon de type `projet` dans lepton | à faire | | |
+| EP-1 | Greffon de type `projet` dans lepton | en cours (depuis 2026-11-27) | lepton-tools `espace-projet/ep-1` (depuis `main` c76612d) | |
 | EP-2 | scion : fichiers ignorés greffables déclarés par le greffon | à faire | | |
 | EP-3 | Greffon `lepton-original-tree-project` (extraction de `lepton-basic`) | à faire | | |
 | EP-4 | `lepton generate` portable et fichier de poste | à faire | | |
@@ -79,6 +79,7 @@ C1 à C10 (utilisateur, 2026-11-25) : `CADRAGE.md` §5, non recopiées.
 | PA-E1 (relevé QEMU) | 2026-11-26 | Relevé incident du constat du besoin 2 (QEMU lancé par Cortex-Debug à l'écoute sur toutes les interfaces) : hors plan, H6. Le besoin 2 est constaté sans défaut (rapport §5). | utilisateur |
 | PA-E1 (essais) | 2026-11-26 | `essais/ep-0/` (copies `a` et `b`, relevés `*.out` et journaux de construction) à supprimer en fin de session par `scripts/supprimer-essai.sh`. | utilisateur |
 | PA-P (EP-0) | 2026-11-26 | Fusion `--no-ff` d'`espace-projet/ep-0` dans `main` et push de `main` accordés. | utilisateur |
+| PA-E2 | 2026-11-27 | Propositions recommandées du rapport `rapports/ep-1-type-projet.md` §3 retenues toutes : (1) manifeste `lepton-greffon.json` de type `projet` à `scion/sys/user/<nom>/`, champs `nom` (= nom du projet), `type`, `version`, `description`, autres refusés ; `find_manifest` étendu ; **noyau non modifié** ; (2) greffon projet désigné par `projet.nom`, sans nouvelle clé de graine ; (3) `seed new` : créé par défaut (`--project-repo`, défaut `<rootstock>/depots/lepton-project/<nom>`, version `*`, clé `lepton@project-<nom>`) ou désigné par `--origin <nom>=…` ; (4) graines à `project/` : refus explicite (« ancien format »), essais abandonnés (hors plan), `essais/env-53-c5` de la VM en EP-8 ; critère « graine migrée » sans objet ; (5) T8 : en régime de référence rien n'est écrit, refus PA-23 inchangés ; (6) T9 : `doc/espace-projet/EXIGENCES.md`, `doc/devenv/` non modifié ; (7) §3.4-§3.5 tels quels (critère « pas de `lepton-graine.json` », dossier « git · <nom> », `files.exclude` inchangé) ; (8) lepton 0.2.0, extension 0.5.4 non touchée. | utilisateur, sur recommandation de la session |
 | PA-E1 (openocdPath) | 2026-11-26 | Forme portable de `cortex-debug.openocdPath`, non essayée en EP-0 (BSP QEMU) : vérifiée en EP-5. | utilisateur, sur recommandation de la session |
 
 ## Journal
